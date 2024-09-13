@@ -1,4 +1,4 @@
-# UnRen.sh
+# UnRen-Linux.sh
 
 A Linux and MacOS port in one script of [UnRen.bat](https://f95zone.to/threads/3083/) by [Sam](https://github.com/F95Sam) with additions and updates ported from [UnRen-Ultrahack](https://f95zone.to/threads/92717/) by [VepsrP](https://f95zone.to/members/vepsrp.329951/).
 
