@@ -1,31 +1,76 @@
 # Decompile .rpyc files with unrpyc (Python 3)
 
-_unren_script_version_major() {
-    local sv
-    sv="$(grep -rh 'config\.script_version' \
-        "${UNREN_GAME}/game/script_version.rpy" "${UNREN_GAME}/game/script_version.txt" \
-        "${UNREN_GAME}/script_version.rpy" "${UNREN_GAME}/script_version.txt" 2>/dev/null \
-        | head -1 | sed -n 's/.*([[:space:]]*\([0-9][0-9]*\).*/\1/p')"
-    [[ -n "$sv" ]] && printf '%s\n' "$sv" || printf '0\n'
+_unren_decompile_roots() {
+    local -n _roots=$1
+    local -A seen=()
+    local d
+    _roots=()
+    for d in "${UNREN_APP}/game" "${UNREN_GAME}"; do
+        [[ -d "$d" ]] || continue
+        d="$(cd -P "$d" 2>/dev/null && pwd)" || continue
+        [[ -n "${seen[$d]+x}" ]] && continue
+        seen[$d]=1
+        _roots+=("$d")
+    done
+    # UNREN_GAME is usually APP/game already; only nest when it is the distro root.
+    if [[ "${UNREN_GAME}" != */game && -d "${UNREN_GAME}/game" ]]; then
+        d="$(cd -P "${UNREN_GAME}/game" 2>/dev/null && pwd)" || d=""
+        if [[ -n "$d" && -z "${seen[$d]+x}" ]]; then
+            seen[$d]=1
+            _roots+=("$d")
+        fi
+    fi
 }
 
-_unren_decompile_search_paths() {
-    local -n _paths=$1
-    _paths=()
-    if [[ -d "${UNREN_GAME}/game" ]]; then
-        _paths=("${UNREN_GAME}/game")
-    else
-        _paths=("$UNREN_GAME")
+_unren_decompile_primary_root() {
+    local -a roots=()
+    _unren_decompile_roots roots
+    if [[ ${#roots[@]} -gt 0 ]]; then
+        printf '%s\n' "${roots[0]}"
+        return 0
     fi
+    printf '%s\n' "${UNREN_GAME}"
 }
 
 _unren_decompile_find() {
     local -a roots=()
     local root
-    _unren_decompile_search_paths roots
+    _unren_decompile_roots roots
     for root in "${roots[@]}"; do
         find "$root" \( -name '*.rpyc' -o -name '*.rpymc' \) -type f -print0 2>/dev/null
     done
+}
+
+_unren_decompile_has_rpyc() {
+    local hit=
+    while IFS= read -r -d '' hit || [[ -n "${hit:-}" ]]; do
+        [[ -n "$hit" && -f "$hit" ]] && return 0
+    done < <(_unren_decompile_find)
+    return 1
+}
+
+_unren_decompile_relpath() {
+    local rpyc="$1"
+    local -a roots=()
+    local root
+    _unren_decompile_roots roots
+    for root in "${roots[@]}"; do
+        if [[ "$rpyc" == "${root}/"* ]]; then
+            printf '%s\n' "${rpyc#"${root}/"}"
+            return 0
+        fi
+    done
+    printf '%s\n' "$(basename "$rpyc")"
+}
+
+_unren_script_version_major() {
+    local sv
+    sv="$(grep -rh 'config\.script_version' \
+        "${UNREN_APP}/game/script_version.rpy" "${UNREN_APP}/game/script_version.txt" \
+        "${UNREN_GAME}/script_version.rpy" "${UNREN_GAME}/script_version.txt" \
+        2>/dev/null \
+        | head -1 | sed -n 's/.*([[:space:]]*\([0-9][0-9]*\).*/\1/p')"
+    [[ -n "$sv" ]] && printf '%s\n' "$sv" || printf '0\n'
 }
 
 _unren_decompile_source_path() {
@@ -76,17 +121,17 @@ _unren_decompile_targets() {
     while IFS= read -r -d '' rpyc; do
         source="$(_unren_decompile_source_path "$rpyc")"
         if [[ ! -f "$source" ]]; then
-            rel="${rpyc#$UNREN_GAME/}"
+            rel="$(_unren_decompile_relpath "$rpyc")"
             _out+=("$rel")
             continue
         fi
         if (( force_all )); then
-            rel="${rpyc#$UNREN_GAME/}"
+            rel="$(_unren_decompile_relpath "$rpyc")"
             _out+=("$rel")
             continue
         fi
         if (( want_clobber )) && _unren_rpy_is_stub "$source"; then
-            rel="${rpyc#$UNREN_GAME/}"
+            rel="$(_unren_decompile_relpath "$rpyc")"
             _out+=("$rel")
             continue
         fi
@@ -94,8 +139,9 @@ _unren_decompile_targets() {
 }
 
 unren_decompile() {
-    local -a opts=() targets=()
+    local -a opts=() targets=() searched=()
     local unrpyc_py py_runner=() rc want_clobber=0 force_all=0 skipped=0 try_harder=0
+    local decompile_root dir
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --clobber) want_clobber=1 ;;
@@ -109,8 +155,14 @@ unren_decompile() {
     [[ "${UNREN_DECOMPILE_FORCE_ALL:-0}" == "1" ]] && force_all=1
     (( want_clobber )) && opts+=(--clobber)
 
-    if ! _unren_decompile_find | grep -qz .; then
-        echo "No .rpyc files found in ${UNREN_GAME}!"
+    decompile_root="$(_unren_decompile_primary_root)"
+
+    if ! _unren_decompile_has_rpyc; then
+        echo "  No .rpyc files found. Searched:"
+        _unren_decompile_roots searched
+        for dir in "${searched[@]}"; do
+            echo "    ${dir}"
+        done
         echo
         return 0
     fi
@@ -165,7 +217,7 @@ unren_decompile() {
 
     local errortemp
     errortemp="$(mktemp "${TMPDIR:-/tmp}/unren-rpyc.XXXXXX")"
-    pushd "$UNREN_GAME" >/dev/null || return 0
+    pushd "$decompile_root" >/dev/null || return 0
     set +e
     "${py_runner[@]}" "$unrpyc_py" "$UNRPYC" "${opts[@]}" "${targets[@]}" >"$errortemp" 2>&1
     rc=$?
