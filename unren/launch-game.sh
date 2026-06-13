@@ -261,6 +261,10 @@ unren_launch_game() {
     if [[ -f "${UNREN_ROOT}/tools/decompile-fixes/run-all.sh" ]]; then
         env -u PYTHONHOME -u PYTHONPATH -u UNREN_PYTHON \
             sh "${UNREN_ROOT}/tools/decompile-fixes/run-all.sh" "${UNREN_APP}"
+    elif [[ -f "${UNREN_ROOT}/unren/decompile-fixes.sh" ]]; then
+        # shellcheck source=unren/decompile-fixes.sh
+        source "${UNREN_ROOT}/unren/decompile-fixes.sh"
+        unren_decompile_fixes
     fi
     _unren_configure_sdl_video "$py_major" "$lib_dir"
     set +e
