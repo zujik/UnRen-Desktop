@@ -55,6 +55,30 @@ _unren_configure_python_env() {
     fi
 }
 
+_unren_configure_sdk_python_env() {
+    local py_bin="$1" sdk_root="$2" sdk_lib="$3"
+    local phome py_args ld_path
+
+    phome="$(_unren_sdk_pythonhome "$sdk_root" "$sdk_lib")"
+    if [[ -n "$phome" ]]; then
+        PYTHONHOME="$phome"
+        PYTHONPATH="$phome"
+        [[ -d "${sdk_root}/renpy" ]] && PYTHONPATH="${PYTHONPATH}:${sdk_root}/renpy"
+        export PYTHONHOME PYTHONPATH
+    else
+        unset PYTHONHOME PYTHONPATH
+    fi
+
+    PYARGS=()
+    py_args="$(_unren_sdk_py_args "$sdk_root")"
+    [[ -n "$py_args" ]] && PYARGS=("$py_args")
+
+    ld_path="$(_unren_sdk_ld_library_path "$sdk_lib" "$sdk_root")"
+    if [[ -n "$ld_path" ]]; then
+        export LD_LIBRARY_PATH="${ld_path}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+    fi
+}
+
 _unren_renpy_platform() {
     if [[ -n "${RENPY_PLATFORM:-}" ]]; then
         printf '%s\n' "$RENPY_PLATFORM"
@@ -124,6 +148,7 @@ resolve_game_and_python() {
     UNREN_GAME=""
     UNREN_PYTHON=""
     UNREN_SDK_ROOT=""
+    UNREN_SDK_LIB=""
     PYARGS=()
 
     # macOS .app bundle
@@ -168,12 +193,30 @@ resolve_game_and_python() {
             unren_die "Bundled SDK Python missing under ${sdk_lib}"
         fi
         UNREN_SDK_ROOT="${sdk_root}"
+        UNREN_SDK_LIB="${sdk_lib}"
         UNREN_PYTHON="${sdk_py}"
-        _unren_configure_python_env "$UNREN_PYTHON" "${sdk_root}" "${sdk_root}/renpy"
+        _unren_configure_sdk_python_env "$UNREN_PYTHON" "${sdk_root}" "${sdk_lib}"
         return 0
     fi
 
     unren_die "No game Python found and no usable bundled SDK runtime in sdk/. See sdk/README.md"
+}
+
+# rpatool is Python 3 — never run it with the game's embedded py2 SDK interpreter.
+unren_resolve_rpatool_python() {
+    local py
+    if [[ -n "${UNREN_RPA_PYTHON:-}" && -x "${UNREN_RPA_PYTHON}" ]]; then
+        printf '%s\n' "${UNREN_RPA_PYTHON}"
+        return 0
+    fi
+
+    py="$(command -v python3 2>/dev/null || true)"
+    if [[ -n "$py" ]]; then
+        printf '%s\n' "$py"
+        return 0
+    fi
+
+    unren_die "rpatool needs python3 (system python3 not found). Set UNREN_RPA_PYTHON to a Python 3 interpreter."
 }
 
 _unren_python_has_multiprocessing() {
