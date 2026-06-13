@@ -181,9 +181,17 @@ fi
 
 cd "$ROOT" || exit 1
 
-if [ -f "$ROOT/${BASEFILE}.py" ] && [ -x "$LIB/python" ]; then
-    exec ${RENPY_GDB} "$LIB/python" "$ROOT/${BASEFILE}.py" "$ROOT" run "$@"
+# Prefer native stubs; set PYTHONHOME when falling back to sdk python + .py bootstrap.
+if [ -d "$ROOT/lib/python3.12" ]; then
+    export PYTHONHOME="$ROOT/lib/python3.12"
+elif [ -d "$ROOT/lib/python2.7" ]; then
+    export PYTHONHOME="$ROOT/lib/python2.7"
+elif [ -d "$ROOT/sdk/py3-8.5.3/lib/python3.12" ]; then
+    export PYTHONHOME="$ROOT/sdk/py3-8.5.3/lib/python3.12"
+elif [ -d "$ROOT/sdk/py2-7.8.7/lib/python2.7" ]; then
+    export PYTHONHOME="$ROOT/sdk/py2-7.8.7/lib/python2.7"
 fi
+unset PYTHONPATH
 
 if [ -e "$LIB/$BASEFILE" ]; then
     exec ${RENPY_GDB} "$LIB/$BASEFILE" "$ROOT" run "$@"
@@ -191,6 +199,10 @@ fi
 
 if [ -e "$LIB/renpy" ]; then
     exec ${RENPY_GDB} "$LIB/renpy" "$ROOT" run "$@"
+fi
+
+if [ -f "$ROOT/${BASEFILE}.py" ] && [ -x "$LIB/python" ]; then
+    exec ${RENPY_GDB} "$LIB/python" "$ROOT/${BASEFILE}.py" "$ROOT" run "$@"
 fi
 
 if [ -x "$LIB/python" ] && [ -f "$ROOT/renpy.py" ]; then
