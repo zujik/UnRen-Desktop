@@ -208,7 +208,7 @@ def get_ast(in_file, try_harder, context):
 
 def decompile_rpyc(input_filename, context, overwrite=False, try_harder=False, dump=False,
                    comparable=False, no_pyexpr=False, translator=None, init_offset=False,
-                   sl_custom_names=None):
+                   sl_custom_names=None, sl1_as_python=False):
 
     # Output filename is input filename but with .rpy extension
     if dump:
@@ -233,7 +233,8 @@ def decompile_rpyc(input_filename, context, overwrite=False, try_harder=False, d
             astdump.pprint(out_file, ast, comparable=comparable, no_pyexpr=no_pyexpr)
         else:
             options = decompiler.Options(log=context.log_contents, translator=translator,
-                                         init_offset=init_offset, sl_custom_names=sl_custom_names)
+                                         init_offset=init_offset, sl_custom_names=sl_custom_names,
+                                         sl1_as_python=sl1_as_python)
 
             decompiler.pprint(out_file, ast, options)
 
@@ -286,7 +287,7 @@ def worker_common(arg_tup):
             filename, context, overwrite=args.clobber, try_harder=args.try_harder,
             dump=args.dump, no_pyexpr=args.no_pyexpr, comparable=args.comparable,
             init_offset=args.init_offset, sl_custom_names=args.sl_custom_names,
-            translator=args.translator)
+            translator=args.translator, sl1_as_python=args.sl1_as_python)
 
     except Exception as e:
         context.set_error(e)
@@ -387,6 +388,13 @@ def main():
         dest="try_harder",
         action="store_true",
         help="Tries some workarounds against common obfuscation methods. This is a lot slower.")
+
+    ap.add_argument(
+        '--sl1-as-python',
+        dest='sl1_as_python',
+        action='store_true',
+        help="For Ren'Py 6/7 screen language v1 screens: emit a python: block instead of "
+        "screenlang (needed for older games like Magic Shop).")
 
     ap.add_argument(
         '-p',
