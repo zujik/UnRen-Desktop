@@ -65,19 +65,15 @@ class ATLDecompiler(DecompilerBase):
         with self.increase_indent():
             # ren'py requires that animation is the first statement in a block, so print it first
             # it doesn't actually seem to check that though?
-            if block.animation:
+            if getattr(block, "animation", False):
                 self.indent()
                 self.write("animation")
 
-            if block.statements:
-                self.print_nodes(block.statements)
-
-            # If a statement ends with a colon but has no block after it, loc will
-            # get set to ('', 0). That isn't supposed to be valid syntax, but it's
-            # the only thing that can generate that, so we do not write "pass" then.
-            elif block.loc != ('', 0):
-
-                # if there were no contents insert a pass node to keep syntax valid.
+            statements = getattr(block, "statements", None)
+            if statements:
+                self.print_nodes(statements)
+            elif not getattr(block, "animation", False):
+                # Empty ATL blocks must contain a statement or Ren'Py rejects the script.
                 self.indent()
                 self.write("pass")
 

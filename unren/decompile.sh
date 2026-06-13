@@ -222,7 +222,22 @@ unren_decompile() {
     "${py_runner[@]}" "$unrpyc_py" "$UNRPYC" "${opts[@]}" "${targets[@]}" >"$errortemp" 2>&1
     rc=$?
     set -e
-    awk '!/^Co.*exec_prefix/ && !/^Traceback/ && !/^  File / && !/^ModuleNotFoundError/ && !/^The multiprocessing module/ && !/Attempting to deobfuscate/ && !/strategy extract_slot_/{ if (length) print "  > "$0 }' "$errortemp"
+    awk '
+        /^Unknown AST node:/ { unknown++; next }
+        /^Warning: Encountered a user-defined displayable/ { displayable++; skip=5; next }
+        skip > 0 { skip--; next }
+        !/^Co.*exec_prefix/ && !/^Traceback/ && !/^  File / && !/^ModuleNotFoundError/ && !/^The multiprocessing module/ && !/Attempting to deobfuscate/ && !/strategy extract_slot_/ {
+            if (length) print "  > "$0
+        }
+        END {
+            if (unknown) {
+                print "  > (" unknown " Unknown AST node warning(s) — custom game statements; see docs/TESTING.md)"
+            }
+            if (displayable) {
+                print "  > (" displayable " custom displayable warning(s) — substituted style names)"
+            }
+        }
+    ' "$errortemp"
     if (( rc != 0 )); then
         echo
         echo "  Decompile finished with errors (exit ${rc})."
@@ -238,5 +253,13 @@ unren_decompile() {
     fi
     rm -f "$errortemp"
     popd >/dev/null || return 0
+    if ! declare -F unren_decompile_fixes >/dev/null 2>&1 \
+        && [[ -f "${UNREN_ROOT}/unren/decompile-fixes.sh" ]]; then
+        # shellcheck source=unren/decompile-fixes.sh
+        source "${UNREN_ROOT}/unren/decompile-fixes.sh"
+    fi
+    if declare -F unren_decompile_fixes >/dev/null 2>&1; then
+        unren_decompile_fixes
+    fi
     return 0
 }
