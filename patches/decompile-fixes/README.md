@@ -14,7 +14,7 @@ Add `patches/decompile-fixes/<slug>.sh` with a `unren_decompile_fix_<slug>()` fu
 
 | Game | Detector | Fixes (`tools/decompile-fixes/`) |
 |------|----------|----------------------------------|
-| Innocent Witches | `Innocent Witches.exe` / `Innocent_Witches.exe` | `fix-sonya-store.py`, `fix-achievements-init.py`, `fix-spell-cast-anims.py`, `fix-community-tl.py`, truncated `credits/credits.rpy` |
+| Innocent Witches | `Innocent Witches.exe` / `Innocent_Witches.exe` | `fix-sonya-store.py`, `fix-achievements-init.py`, `fix-spell-cast-anims.py`, `fix-community-tl.py`, `fix-tutorial-settings.py`, truncated `credits/credits.rpy` |
 
 Re-decompile workflow: flat-copy UnRen → option **8** (decompile) → generic fixes run automatically → Innocent Witches hook runs if detected → option **g** (launch) re-runs fixes before start. Patches are idempotent (skip if marker already present).
 
