@@ -47,7 +47,9 @@
   "tools": {
     "unrpyc": {
       "path": "tools/unrpyc-py3",
-      "version": "v2.0.3",
+      "version": "v2.0.4",
+      "upstream": "v2.0.4",
+      "patches": "tools/unrpyc-py3/PATCHES.md",
       "source": "https://github.com/CensoredUsername/unrpyc"
     },
     "rpatool": {
