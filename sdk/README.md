@@ -19,8 +19,16 @@ Uses `../renpy-8.5.3-sdk` and `../renpy-7.8.7-sdk` by default, or set `RENPY_PY3
 
 ## Git strategy
 
-Large binaries under `lib/` and `renpy/` are **not committed** on the development branch.
-Small launcher files (`renpy.sh`, `renpy.py`, `LICENSE.txt`) may be committed.
+SDK binaries under `lib/` and `renpy/` are tracked with **Git LFS** (see `.gitattributes`).
 
-For releases, prefer **GitHub Release tarballs** (`scripts/package-sdk-release.sh`).
-Git LFS is an alternative if you want binaries versioned inside git — see root `README.md`.
+After cloning:
+
+```bash
+git lfs pull          # fetch LFS objects (if you use LFS for sdk/)
+./scripts/populate-sdk.sh   # or rebuild locally from full Ren'Py SDKs
+```
+
+Small files (`renpy.sh`, `renpy.py`, `LICENSE.txt`) stay in normal git.
+
+Release tarballs (`scripts/package-sdk-release.sh`) remain an option for forum
+users who download a zip without git.
