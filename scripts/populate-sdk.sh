@@ -5,8 +5,10 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-PY3_SRC="${RENPY_PY3_SRC:-$(dirname "$ROOT")/renpy-8.5.3-sdk}"
-PY2_SRC="${RENPY_PY2_SRC:-$(dirname "$ROOT")/renpy-7.8.7-sdk}"
+PERSONAL="$(cd "${ROOT}/.." && pwd)"
+SDK_SOURCES="${RENPY_SDK_SOURCES:-${PERSONAL}/sdk-sources}"
+PY3_SRC="${RENPY_PY3_SRC:-${SDK_SOURCES}/renpy-8.5.3-sdk}"
+PY2_SRC="${RENPY_PY2_SRC:-${SDK_SOURCES}/renpy-7.8.7-sdk}"
 PY3_DEST="${ROOT}/sdk/py3-8.5.3"
 PY2_DEST="${ROOT}/sdk/py2-7.8.7"
 
