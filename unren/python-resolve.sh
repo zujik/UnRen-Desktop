@@ -25,7 +25,29 @@ _unren_sdk_platform_dir() {
 
 _unren_find_encodings_dir() {
     local root="$1"
-    find "$root" -type d -name encodings 2>/dev/null | head -1
+    find "$root" -type d -name encodings ! -path "*/sdk/*" 2>/dev/null | head -1
+}
+
+_unren_find_game_encodings_dir() {
+    local py_bin="$1" app="$2" enc_dir candidate
+    local -a candidates=()
+
+    candidates+=("${app}/lib/python3.12")
+    candidates+=("${app}/lib/python3.11")
+    candidates+=("${app}/lib/python3.9")
+    candidates+=("${app}/lib/python2.7")
+    candidates+=("${app}/lib/pythonlib2.7")
+    candidates+=("$(dirname "$py_bin")")
+
+    for candidate in "${candidates[@]}"; do
+        [[ -d "${candidate}/encodings" ]] || continue
+        printf '%s\n' "${candidate}/encodings"
+        return 0
+    done
+
+    enc_dir="$(_unren_find_encodings_dir "$(dirname "$py_bin")")"
+    [[ -n "$enc_dir" ]] && printf '%s\n' "$enc_dir" && return 0
+    _unren_find_encodings_dir "$app"
 }
 
 _unren_configure_python_env() {
@@ -33,10 +55,7 @@ _unren_configure_python_env() {
     local extra_paths=("${@:2}")
 
     local enc_dir
-    enc_dir="$(_unren_find_encodings_dir "$(dirname "$py_bin")")"
-    if [[ -z "$enc_dir" ]]; then
-        enc_dir="$(_unren_find_encodings_dir "$UNREN_APP")"
-    fi
+    enc_dir="$(_unren_find_game_encodings_dir "$py_bin" "${UNREN_APP}")"
 
     if [[ -n "$enc_dir" ]]; then
         PYTHONHOME="$(dirname "$enc_dir")"

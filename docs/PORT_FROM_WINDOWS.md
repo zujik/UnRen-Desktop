@@ -9,6 +9,9 @@ Reference Windows spec (archived): `../../_archive/unren-legacy/UnRen-forall-la_
 | rpycCorrector | **c**, option **9** pre-step | `tools/rpyccorrect-py3/` — from AON/SC4X v1.04, **not** in forall |
 | altrpatool (JAS/RWA/SVAC) | option **1** fallback | `tools/altrpatool-py3/` — JoeLurmel / forall embed |
 | detect_renpy_version | automatic | `tools/detect-renpy-version/` + `sdk-resolve.sh` |
+| detect_rpa_ext + detect_archive | option **1** | `tools/forall/` — extension scan + per-file rpatool/altrpatool pick |
+| detect_rpyc_version | options **2**, **8**, **9** | `tools/forall/` — RPC3 warning before decompile |
+| wos_decrypt_all | options **2**, **8**, **9** | `tools/forall/` — when `renpy/wos_rpyc_loader.py` present |
 | Sync folder cleanup | **n** | `unren/extras.sh` → `unren-nsync.rpy` |
 | `.org` restore | **r** | `unren/extras.sh` |
 | macOS quarantine | **m** (macOS only, opt-in) | `unren/mac.sh` — removed from auto-resolve |
@@ -33,7 +36,7 @@ Use **`rpycCorrector_1.04`** from `_archive/unren-legacy/misc/` — forall `.bat
 ## Attribution
 
 - **F.Rvv3** — `rpmac.sh` version detect + SDK download (f95zone thread 287097)
-- **JoeLurmel** — altrpatool, unren-nsync patch
+- **JoeLurmel / Lurmel** — [UnRen-forall](https://github.com/Lurmel/UnRen-forall) (`la_0.77-le_9.7.60-cu_9.7.80`): altrpatool, forall detect scripts, wos_decrypt, unren-nsync patch
 - **AON/SC4X** — rpycCorrector 1.04
 
 See `tools/SOURCES.md` for paths.

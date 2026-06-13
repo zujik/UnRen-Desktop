@@ -2,7 +2,9 @@
 
 Run after toolchain or launcher changes. Copy **all** of `UnRen-Desktop/` into each game root (flat layout), then `./UnRen.sh`.
 
-Ports merged 2026-06-13 — see `docs/PORT_FROM_WINDOWS.md`. Slim deploy is **after** this matrix — see `docs/DEPLOY.md`.
+Ports merged 2026-06-13 — see `docs/PORT_FROM_WINDOWS.md`. **forall staging** (`tools/forall/`, Lurmel attribution) wired into extract + decompile. Slim deploy is **after** this matrix — see `docs/DEPLOY.md`.
+
+**Ready for bulk testing** on branch `rename-refactor` — flat-copy full tree per game, log rows below.
 
 ## How to run each game
 

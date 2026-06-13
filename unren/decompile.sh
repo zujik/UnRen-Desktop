@@ -147,6 +147,9 @@ unren_decompile() {
         echo
     fi
 
+    unren_forall_rpyc_version_warn
+    unren_wos_decrypt_if_needed
+
     _unren_decompile_auto_opts opts
 
     if (( try_harder )); then

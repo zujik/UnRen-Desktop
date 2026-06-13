@@ -70,6 +70,13 @@
     "detect_renpy_version": {
       "path": "tools/detect-renpy-version/detect_renpy_version.py",
       "source": "UnRen-forall-la (embedded)"
+    },
+    "forall": {
+      "path": "tools/forall/",
+      "source": "https://github.com/Lurmel/UnRen-forall",
+      "tag": "UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80",
+      "author": "JoeLurmel / Lurmel",
+      "attribution": "tools/forall/ATTRIBUTION.md"
     }
   }
 }
