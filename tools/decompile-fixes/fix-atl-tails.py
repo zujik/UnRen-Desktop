@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scan/fix .rpy files truncated with an empty trailing block."""
+"""Scan/fix .rpy and .rpym files truncated with an empty trailing block."""
 
 from __future__ import annotations
 
@@ -68,6 +68,8 @@ def _needs_pass(line: str) -> re.Match[str] | None:
     body = match.group("body").strip()
     if not body or body.startswith("#"):
         return None
+    if body.startswith("image live2d"):
+        return None
     # Dialogue / strings:  e "Hello":  or  "Hello":
     if body.endswith(('"', "'")):
         return None
@@ -121,12 +123,13 @@ def main(argv: list[str]) -> int:
         game = pathlib.Path(root)
         if not game.is_dir():
             continue
-        for path in sorted(game.rglob("*.rpy")):
-            tail = scan_file(path)
-            if tail:
-                hits.append((path, tail))
-            if not scan_only and fix_file(path):
-                fixed.append(path)
+        for ext in ("*.rpy", "*.rpym"):
+            for path in sorted(game.rglob(ext)):
+                tail = scan_file(path)
+                if tail:
+                    hits.append((path, tail))
+                if not scan_only and fix_file(path):
+                    fixed.append(path)
 
     if scan_only:
         print(f"  {len(hits)} file(s) with empty trailing blocks")
