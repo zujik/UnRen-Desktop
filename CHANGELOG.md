@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Bash modules moved from `lib/` to `unren/` so flat copies into game roots do not collide with Ren'Py's `lib/` Python folder.
+- Decompile skips `.rpyc`/`.rpymc` when a matching `.rpy`/`.rpym` already exists (default for options 2, 8, 9). Option 0, `--clobber`, or `UNREN_DECOMPILE_CLOBBER=1` overwrites.
 - `UnRen.sh` is now a thin entry point; removed broken apt/brew auto-install block.
 - README rewritten for GitHub distribution.
 

@@ -26,18 +26,66 @@ _unren_decompile_auto_opts() {
     fi
 }
 
+_unren_decompile_targets() {
+    local force_clobber=$1
+    local -n _out=$2
+    local rpyc rel
+
+    _out=()
+    if (( force_clobber )); then
+        _out=(.)
+        return 0
+    fi
+
+    while IFS= read -r -d '' rpyc; do
+        case "$rpyc" in
+            *.rpyc)
+                [[ -f "${rpyc%.rpyc}.rpy" ]] && continue
+                ;;
+            *.rpymc)
+                [[ -f "${rpyc%.rpymc}.rpym" ]] && continue
+                ;;
+            *)
+                continue
+                ;;
+        esac
+        rel="${rpyc#$UNREN_GAME/}"
+        _out+=("$rel")
+    done < <(find "$UNREN_GAME" \( -name '*.rpyc' -o -name '*.rpymc' \) -type f -print0 2>/dev/null)
+}
+
 unren_decompile() {
-    local -a opts=()
-    local unrpyc_py py_runner=() rc
+    local -a opts=() targets=()
+    local unrpyc_py py_runner=() rc want_clobber=0
     while [[ $# -gt 0 ]]; do
-        opts+=("$1")
+        if [[ "$1" == "--clobber" ]]; then
+            want_clobber=1
+        else
+            opts+=("$1")
+        fi
         shift
     done
 
-    if ! find "$UNREN_GAME" -name '*.rpyc' -type f -print -quit 2>/dev/null | grep -q .; then
+    [[ "${UNREN_DECOMPILE_CLOBBER:-0}" == "1" ]] && want_clobber=1
+    (( want_clobber )) && opts+=(--clobber)
+
+    if ! find "$UNREN_GAME" \( -name '*.rpyc' -o -name '*.rpymc' \) -type f -print -quit 2>/dev/null | grep -q .; then
         echo "No .rpyc files found in ${UNREN_GAME}!"
         echo
         return 0
+    fi
+
+    _unren_decompile_targets "$want_clobber" targets
+    if [[ ${#targets[@]} -eq 0 ]]; then
+        echo "  All compiled scripts already have matching .rpy/.rpym — skipping decompile."
+        echo "  Use option 0, --clobber, or UNREN_DECOMPILE_CLOBBER=1 to overwrite."
+        echo
+        return 0
+    fi
+
+    if (( ! want_clobber )); then
+        echo "  Skipping .rpyc/.rpymc with existing .rpy/.rpym (${#targets[@]} file(s) to decompile)"
+        echo
     fi
 
     _unren_decompile_auto_opts opts
@@ -53,7 +101,7 @@ unren_decompile() {
     errortemp="$(mktemp "${TMPDIR:-/tmp}/unren-rpyc.XXXXXX")"
     pushd "$UNREN_GAME" >/dev/null || return 0
     set +e
-    "${py_runner[@]}" "$unrpyc_py" "$UNRPYC" "${opts[@]}" . >"$errortemp" 2>&1
+    "${py_runner[@]}" "$unrpyc_py" "$UNRPYC" "${opts[@]}" "${targets[@]}" >"$errortemp" 2>&1
     rc=$?
     set -e
     awk '!/^Co.*exec_prefix/ && !/^Traceback/ && !/^  File / && !/^ModuleNotFoundError/ && !/^The multiprocessing module/ && !/Attempting to deobfuscate/ && !/strategy extract_slot_/{ if (length) print "  > "$0 }' "$errortemp"
