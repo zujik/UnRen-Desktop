@@ -82,9 +82,16 @@ _unren_launcher_sdk_elif_block() {
         phome="$(_unren_sdk_pythonhome "$sdk_root" "$lib_dir")"
         py_args="$(_unren_sdk_py_args "$sdk_root")"
         layout="$(_unren_sdk_layout "$sdk_root")"
+        rel_sdk="${sdk_root#"${app}/"}"
         case "$layout" in
-            renpy6|renpy5) ld_line='    SDK_LD_PATH="$LIB:$LIB/lib"' ;;
-            *) ld_line='    SDK_LD_PATH="$LIB"' ;;
+            renpy6|renpy5)
+                ld_line='    SDK_LD_PATH="$LIB:$LIB/lib"'
+                renpy_py_line="    SDK_RENPY_PY=\"\$ROOT/${rel_sdk}/renpy.py\""
+                ;;
+            *)
+                ld_line='    SDK_LD_PATH="$LIB"'
+                renpy_py_line='    SDK_RENPY_PY=""'
+                ;;
         esac
 
         printf '%s\n' \
@@ -92,7 +99,8 @@ _unren_launcher_sdk_elif_block() {
             "    LIB=\"\$ROOT/${rel_lib}\"" \
             "    SDK_PYHOME=\"\$ROOT/${phome#"${app}/"}\"" \
             "    SDK_PY_ARGS=\"${py_args}\"" \
-            "$ld_line"
+            "$ld_line" \
+            "$renpy_py_line"
     done < <(_unren_sdk_fallback_chain "$app")
 }
 
@@ -134,6 +142,7 @@ BASEFILE=\$(basename "\$SCRIPT" .sh)
 SDK_PYHOME=""
 SDK_LD_PATH=""
 SDK_PY_ARGS=""
+SDK_RENPY_PY=""
 
 if [ -z "\$RENPY_PLATFORM" ]; then
     RENPY_PLATFORM="\$(uname -s)-\$(uname -m)"
@@ -181,15 +190,21 @@ if [ -e "\$LIB/\$BASEFILE" ]; then
     exec \${RENPY_GDB} "\$LIB/\$BASEFILE" "\$ROOT" run "\$@"
 fi
 
-# Game .py bootstrap uses the game's bundled renpy/ — required for SDK fallback on
-# Windows ports. LIB/renpy would load the SDK engine and break (e.g. 00db.rpy conflicts).
+# Ren'Py 5/6 SDK slices: use bundled sdk/renpy.py engine (pygame_sdl2, matching common/).
+if [ -n "\$SDK_RENPY_PY" ] && [ -f "\$SDK_RENPY_PY" ] && { [ -x "\$LIB/python" ] || [ -x "\$LIB/python.real" ]; }; then
+    PYBIN="python"
+    [ -x "\$LIB/python.real" ] && PYBIN="python.real"
+    exec \${RENPY_GDB} "\$LIB/\$PYBIN" \$SDK_PY_ARGS "\$SDK_RENPY_PY" "\$ROOT" run "\$@"
+fi
+
+# Modern SDK / native lib: game .py uses the game's bundled renpy/ tree.
 if [ -f "\$ROOT/\${BASEFILE}.py" ] && { [ -x "\$LIB/python" ] || [ -x "\$LIB/python.real" ]; }; then
     PYBIN="python"
     [ -x "\$LIB/python.real" ] && PYBIN="python.real"
     exec \${RENPY_GDB} "\$LIB/\$PYBIN" \$SDK_PY_ARGS "\$ROOT/\${BASEFILE}.py" "\$ROOT" run "\$@"
 fi
 
-if [ -e "\$LIB/renpy" ]; then
+if [ -z "\$SDK_RENPY_PY" ] && [ -e "\$LIB/renpy" ]; then
     exec \${RENPY_GDB} "\$LIB/renpy" "\$ROOT" run "\$@"
 fi
 
