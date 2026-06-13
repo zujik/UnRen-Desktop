@@ -136,7 +136,7 @@ You do **not** need 5× everything before first upload to yourself; hit **Tier A
 ```
 Date       Game                 Bucket  Result   Issue / fix
 2026-06-13 Magic Shop 1.03      A1      PASS     rpatool py3, SDL x11, PYTHONHOME SDK-first
-2026-06-13 Innocent Witches     B2      PASS     6121 rpyc decompiled; custom store.* AST = warnings only. Launch blocked by truncated ATL in credits.rpy + others — fixed via fix-atl-tails.py + innocent-witches hook (auto on decompile/launch).
+2026-06-14 Innocent Witches     B2      FAIL/LAUNCH  **Decompile/extract/stubs:** FAIL (custom AST, broken plot). **Vanilla Linux (confirmed):** fresh unzip → flat-copy UnRen → **3–6** → **g** — launches, language/terms flow, main menu, start game. No options 1/2/8. Crash-report prompt on first run is normal.
 ```
 
 ### Decompile warning noise

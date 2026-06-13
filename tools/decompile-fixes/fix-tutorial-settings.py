@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stub tutorial persistent settings and init after decompile loss."""
+"""Pad tutorial persistent settings for rpyc and decompiled launches."""
 
 from __future__ import annotations
 
@@ -7,15 +7,19 @@ import pathlib
 import sys
 
 _STUB_NAME = "init_stub.rpy"
-_MARKER = "# UnRen stub: tutorial menu/init failed to decompile"
-_STUB = '''# UnRen stub: tutorial menu/init failed to decompile (RawMenu in main.rpy).
-
-default persistent.tutorial_settings = get_MP_value(
-    "tutorial_settings",
-    [True, None, None, 0],
-)
+_MARKER = "# UnRen stub: tutorial settings guard (rpyc + decompile)"
+_DEFAULTS = "[True, 'passive', set(), 1, 0, 0, None]"
+_STUB = f"""{_MARKER}
 
 init -500 python in tutorial:
+    _tutorial_settings_defaults = {_DEFAULTS}
+    settings = store.persistent.tutorial_settings
+    if settings is None:
+        store.persistent.tutorial_settings = list(_tutorial_settings_defaults)
+    else:
+        while len(settings) < len(_tutorial_settings_defaults):
+            settings.append(_tutorial_settings_defaults[len(settings)])
+
     memory_fragments = 0
     level = 0
     girl = None
@@ -23,12 +27,10 @@ init -500 python in tutorial:
     def _ensure_settings():
         settings = store.persistent.tutorial_settings
         if settings is None:
-            settings = [True, None, None, 0]
+            settings = list(_tutorial_settings_defaults)
             store.persistent.tutorial_settings = settings
-        while len(settings) < 4:
-            settings.append(None)
-        if settings[3] is None:
-            settings[3] = 0
+        while len(settings) < len(_tutorial_settings_defaults):
+            settings.append(_tutorial_settings_defaults[len(settings)])
         return settings
 
     def init(start=False):
@@ -53,7 +55,7 @@ label tutorial.enter:
 
 label tutorial.levels:
     return
-'''
+"""
 
 _CHANGING_OLD = """init 100 python hide in tutorial:
     level_up_changing(store.persistent.tutorial_settings[3])"""
@@ -61,7 +63,7 @@ _CHANGING_OLD = """init 100 python hide in tutorial:
 _CHANGING_NEW = """init 100 python hide in tutorial:
     _settings = store.persistent.tutorial_settings
     if _settings is None:
-        _settings = store.persistent.tutorial_settings = [True, None, None, 0]
+        _settings = store.persistent.tutorial_settings = [True, "passive", set(), 1, 0, 0, None]
     _level = _settings[3] if len(_settings) > 3 and _settings[3] is not None else 0
     store.tutorial.level = _level
     level_up_changing(_level)"""
@@ -70,7 +72,9 @@ _CHANGING_NEW = """init 100 python hide in tutorial:
 def fix_stub(game: pathlib.Path) -> bool:
     path = game / "mechanics" / "tutorial" / _STUB_NAME
     if path.is_file():
-        return False
+        old = path.read_text(encoding="utf-8", errors="surrogateescape")
+        if old == _STUB + "\n":
+            return False
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(_STUB + "\n", encoding="utf-8")
     return True
