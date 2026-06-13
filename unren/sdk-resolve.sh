@@ -188,7 +188,7 @@ _unren_sdk_fallback_chain() {
             wanted=(py2-5.6.7 py2-6.99.14.3 py2-7.8.7)
             ;;
         4|3|2|1)
-            wanted=(py2-5.6.7 py2-4.8.10 py2-6.99.14.3)
+            wanted=(py2-5.6.7 py2-6.99.14.3)
             ;;
         *)
             wanted=(py3-8.5.3 py2-7.8.7 py2-6.99.14.3 py2-5.6.7)
@@ -204,18 +204,18 @@ _unren_resolve_sdk_runtime() {
     local app="$1" py_major=$2 platform=$3
     local -n _root_out=$4
     local -n _lib_out=$5
-    local slice sdk_root lib_dir
+    local slice resolved_root resolved_lib
 
     _root_out=""
     _lib_out=""
 
     while IFS= read -r slice; do
         [[ -n "$slice" ]] || continue
-        sdk_root="$(_unren_sdk_slice_dir "$slice")"
-        lib_dir="$(_unren_sdk_lib_dir "$sdk_root" "$py_major" "$platform")" || continue
-        _unren_sdk_lib_usable "$lib_dir" || continue
-        _root_out="$sdk_root"
-        _lib_out="$lib_dir"
+        resolved_root="$(_unren_sdk_slice_dir "$slice")"
+        resolved_lib="$(_unren_sdk_lib_dir "$resolved_root" "$py_major" "$platform")" || continue
+        _unren_sdk_lib_usable "$resolved_lib" || continue
+        _root_out="$resolved_root"
+        _lib_out="$resolved_lib"
         return 0
     done < <(_unren_sdk_fallback_chain "$app")
 
