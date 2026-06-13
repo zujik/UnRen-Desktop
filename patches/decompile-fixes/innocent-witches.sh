@@ -8,7 +8,7 @@ unren_decompile_fix_innocent_witches() {
 
     [ -d "$game" ] || return 0
 
-    for script in fix-sonya-store.py fix-achievements-init.py fix-spell-cast-anims.py fix-community-tl.py; do
+    for script in fix-sonya-store.py fix-achievements-init.py fix-spell-cast-anims.py fix-community-tl.py fix-tutorial-settings.py; do
         if [ -f "${tools}/${script}" ]; then
             $py "${tools}/${script}" "$game" || true
         fi
