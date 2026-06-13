@@ -107,3 +107,32 @@ resolve_game_and_python() {
     UNREN_PYTHON="${sdk_py}"
     _unren_configure_python_env "$UNREN_PYTHON" "${sdk_root}" "${sdk_root}/renpy"
 }
+
+_unren_python_has_multiprocessing() {
+    local py="$1"
+    PYTHONHOME="${PYTHONHOME-}" PYTHONPATH="${PYTHONPATH-}" \
+        "$py" -c "import _multiprocessing" 2>/dev/null
+}
+
+# unrpyc does not need Ren'Py's embedded Python; prefer an interpreter with working multiprocessing.
+unren_resolve_unrpyc_python() {
+    if [[ -n "${UNREN_UNRPYC_PYTHON:-}" && -x "${UNREN_UNRPYC_PYTHON}" ]]; then
+        printf '%s\n' "${UNREN_UNRPYC_PYTHON}"
+        return 0
+    fi
+
+    if _unren_python_has_multiprocessing "$UNREN_PYTHON"; then
+        printf '%s\n' "$UNREN_PYTHON"
+        return 0
+    fi
+
+    local py
+    py="$(command -v python3 2>/dev/null || true)"
+    if [[ -n "$py" ]] && env -u PYTHONHOME -u PYTHONPATH \
+        "$py" -c 'import sys; raise SystemExit(0 if sys.version_info[:2] >= (3, 9) else 1)' 2>/dev/null; then
+        printf '%s\n' "$py"
+        return 0
+    fi
+
+    printf '%s\n' "$UNREN_PYTHON"
+}

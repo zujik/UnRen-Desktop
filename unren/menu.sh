@@ -30,15 +30,17 @@ unren_menu() {
         echo "   8) Options 1-6"
         echo "   9) Options 1-6 + Deobfuscate rpyc"
         echo "   0) Decompile rpyc and overwrite existing rpy files"
+        echo "   g) Install / launch game (creates GameName.sh from .exe if needed)"
         echo "   q) Quit"
         echo
-        read -r -s -n 1 -p "     Enter choice (0-9, q): " choice
+        read -r -s -n 1 -p "     Enter choice (0-9, g, q): " choice
         echo
         echo "----------------------------------------------------"
         echo
 
         case "$choice" in
             0) unren_decompile --clobber ;;
+            g|G) unren_launch_game ;;
             1) unren_extract ;;
             2) unren_decompile ;;
             3) unren_console ;;
@@ -115,20 +117,21 @@ unren_resolve_target_path() {
 unren_main() {
     trap 'printf -- %s\\n "Interrupted."; exit 1' INT TERM
 
+    cd "${UNREN_ROOT}" || exit 1
     unren_splash
 
     if [[ $# -ge 1 ]]; then
         UNREN_TARGET="$(unren_resolve_target_path "$1")"
         echo "Working with: ${UNREN_TARGET}"
-    elif [[ -e "./Contents/Resources/autorun/game" ]]; then
-        UNREN_TARGET="$(pwd)"
+    elif [[ -e "${UNREN_ROOT}/Contents/Resources/autorun/game" ]]; then
+        UNREN_TARGET="${UNREN_ROOT}"
         echo "Working with (macOS bundle): ${UNREN_TARGET}"
-    elif [[ -e "./renpy" && -e "./game" ]]; then
-        UNREN_TARGET="$(pwd)"
+    elif [[ -e "${UNREN_ROOT}/renpy" && -e "${UNREN_ROOT}/game" ]]; then
+        UNREN_TARGET="${UNREN_ROOT}"
         echo "Working with (game root): ${UNREN_TARGET}"
-    elif [[ -e "../renpy" && -e "../game" ]]; then
-        UNREN_TARGET="$(cd .. && pwd)"
-        echo "Working with (parent game root): ${UNREN_TARGET}"
+    elif [[ -e "${UNREN_ROOT}/../renpy" && -e "${UNREN_ROOT}/../game" ]]; then
+        UNREN_TARGET="$(cd "${UNREN_ROOT}/.." && pwd)"
+        echo "Working with (parent of UnRen folder): ${UNREN_TARGET}"
     else
         echo "Drag-and-drop the game folder or .app here, then press ENTER:"
         read -r input_path

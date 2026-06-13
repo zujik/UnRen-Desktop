@@ -6,26 +6,79 @@ Formerly known as **UnRen-Linux.sh**; renamed to reflect cross-platform support.
 
 ## Quick start
 
-1. Clone or download this repository.
-2. Run `scripts/populate-sdk.sh` once (copies trimmed Ren'Py runtimes from local SDK archives — see below).
-3. Place `UnRen.sh` (or `UnRen.command` on Mac) inside the game folder, or pass the game path as an argument.
-4. Run `./UnRen.sh` or double-click `UnRen.command`.
+UnRen is a **folder tool**, not a single script. You need `UnRen.sh` plus `unren/`, `tools/`, `patches/`, and `sdk/`.
+
+**Important:** Ren'Py games already have a `lib/` folder (Python runtime). UnRen bash modules live in **`unren/`**, not `lib/`. Copying everything into a game root is fine — but do not expect UnRen modules to appear under the game's `lib/`.
+
+### Option A — Run from the repo (no copy into game)
 
 ```bash
+git clone https://github.com/zujik/UnRen-Desktop.git
+cd UnRen-Desktop
+git lfs pull
 ./UnRen.sh /path/to/GameFolder
-# or for macOS .app bundles:
-./UnRen.sh "/path/to/Game.app"
 ```
+
+### Option B — Copy into the game (classic UnRen style)
+
+Copy **all** UnRen-Desktop files and folders into the game. Two layouts work:
+
+**B1 — Flat into game root** (same layout as original UnRen.bat):
+
+```
+GameFolder/
+├── game/
+├── renpy/
+├── lib/                ← game's Python (unchanged)
+├── UnRen.sh
+├── unren/              ← UnRen bash modules (not lib/)
+├── tools/
+├── patches/
+└── sdk/
+```
+
+```bash
+cd /path/to/GameFolder
+./UnRen.sh
+```
+
+**B2 — Subfolder** (keeps game root cleaner):
+
+```
+GameFolder/
+├── game/
+├── renpy/
+└── UnRen/              ← full UnRen-Desktop contents here
+    ├── UnRen.sh
+    ├── unren/
+    ├── tools/
+    ├── patches/
+    └── sdk/
+```
+
+```bash
+cd /path/to/GameFolder/UnRen
+./UnRen.sh
+```
+
+The script auto-detects the game when `game/` and `renpy/` are in the current folder, or in the parent folder (B2).
+
+**Do not** copy only `UnRen.sh` — that will fail with missing `unren/` errors.
+
+### macOS
+
+Double-click `UnRen.command`, or use Option A/B above.
 
 ## What it does
 
 | Option | Action |
 |--------|--------|
-| 1 | Extract RPA archives |
+| 1 | Extract RPA archives (renames `.rpa` → `.rpa.bak` after extraction) |
 | 2 | Decompile `.rpyc` → `.rpy` |
 | 3–6 | Console, quick save/load, skip, rollback patches |
 | 7–9 | Combinations of the above |
 | 0 | Decompile and overwrite existing `.rpy` files |
+| g | Install / launch game (`GameName.sh` from `.exe` or `build.name`, `lib/` then `sdk/`) |
 
 ## Python runtime strategy
 
@@ -41,7 +94,7 @@ Pinned SDK versions: **Ren'Py 8.5.3** (Python 3) and **7.8.7** (Python 2).
 UnRen-Desktop/
 ├── UnRen.sh              # main entry (Linux + macOS terminal)
 ├── UnRen.command         # macOS Finder double-click wrapper
-├── lib/                  # bash modules
+├── unren/                # bash modules (not lib/ — games use lib/ for Python)
 ├── tools/                # rpatool + unrpyc (plain Python, not base64)
 ├── patches/              # .rpy patch templates
 ├── sdk/                  # trimmed Ren'Py runtime slices
