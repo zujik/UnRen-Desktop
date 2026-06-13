@@ -95,9 +95,9 @@ UnRen installs **`GameName.sh`** and **`GameName.py`** from the templates in `un
 
 Ren'Py **py2** builds (including SDK fallback for Windows-only games) ship an old `pygame_sdl2` without native Wayland. On a Wayland session (`XDG_SESSION_TYPE=wayland`), SDL may try Wayland first and crash with `wayland not available`.
 
-For those **py2** runtimes, `GameName.sh` automatically sets `SDL_VIDEODRIVER=x11` so the game runs through **XWayland**.
+For **py2** runtimes, `GameName.sh` sets `SDL_VIDEODRIVER=x11` on Linux. This covers Wayland desktops **and** environments where KDE (or similar) already exports `SDL_VIDEODRIVER=wayland` — old `pygame_sdl2` cannot use native Wayland and crashes with `wayland not available`.
 
-**py3** games (native Linux `lib/` or `sdk/py3-*`) do not get this override. Modern SDL2 already matches the session (Wayland on Wayland, X11 on X11) and falls back if native Wayland is unavailable — no shell-side driver switching needed.
+**py3** games (native Linux `lib/` or `sdk/py3-*`) do not get this override. Modern SDL2 already matches the session and falls back if native Wayland is unavailable.
 
 ### Regenerate or override
 
