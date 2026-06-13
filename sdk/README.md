@@ -8,7 +8,6 @@ Trimmed Ren'Py runtimes used when a game folder has no Linux/macOS `lib/` Python
 | `py2-7.8.7/` | 7.8.7 | 2019–2024 (Py2) | yes |
 | `py2-6.99.14.3/` | 6.99.14 | 2016–2018 (Py2) | yes (`lib/linux-*`) |
 | `py2-5.6.7/` | 5.6.7 | 2007–2009 (Py2) | yes (`lib/linux-x86`, 32-bit) |
-| `py2-4.8.10/` | 4.8.10 | 2005–2006 | Windows SDK only (no Linux `lib/`) |
 
 UnRen picks the SDK slice from `config.script_version` / bundled `renpy/` metadata, then
 falls back to newer slices if the preferred one is missing.

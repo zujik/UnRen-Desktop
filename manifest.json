@@ -42,11 +42,6 @@
       "renpy_version": "5.6.7",
       "sdk_dir": "sdk/py2-5.6.7",
       "note": "Ren'Py 5.x; lib/linux-x86 (32-bit)"
-    },
-    "py2_early": {
-      "renpy_version": "4.8.10",
-      "sdk_dir": "sdk/py2-4.8.10",
-      "note": "Windows SDK reference only; no Linux lib/"
     }
   },
   "tools": {

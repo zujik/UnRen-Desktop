@@ -90,7 +90,6 @@ Double-click `UnRen.command`, or use Option A/B above.
    - `py2-7.8.7` (Ren'Py 7)
    - `py2-6.99.14.3` (Ren'Py 6)
    - `py2-5.6.7` (Ren'Py 5, 32-bit Linux)
-   - `py2-4.8.10` (Ren'Py 4, Windows reference only)
 3. **Download fallback** — `scripts/populate-sdk.sh` can fetch modern slices from renpy.org if missing.
 
 Legacy slices are copied manually from [renpy.org](https://www.renpy.org/) archives.
