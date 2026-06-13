@@ -258,13 +258,9 @@ unren_launch_game() {
 
     echo "  Launching ${basename} ..."
     echo
-    if ! declare -F unren_decompile_fixes >/dev/null 2>&1 \
-        && [[ -f "${UNREN_ROOT}/unren/decompile-fixes.sh" ]]; then
-        # shellcheck source=unren/decompile-fixes.sh
-        source "${UNREN_ROOT}/unren/decompile-fixes.sh"
-    fi
-    if declare -F unren_decompile_fixes >/dev/null 2>&1; then
-        unren_decompile_fixes
+    if [[ -f "${UNREN_ROOT}/tools/decompile-fixes/run-all.sh" ]]; then
+        env -u PYTHONHOME -u PYTHONPATH -u UNREN_PYTHON \
+            sh "${UNREN_ROOT}/tools/decompile-fixes/run-all.sh" "${UNREN_APP}"
     fi
     _unren_configure_sdl_video "$py_major" "$lib_dir"
     set +e

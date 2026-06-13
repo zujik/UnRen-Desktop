@@ -4,7 +4,9 @@ UnRen runs these automatically after decompile and before launch.
 
 ## Generic
 
-- `tools/decompile-fixes/fix-atl-tails.py` — appends `pass` to `.rpy` files that end with an empty block (`at transform:`, `image foo:`, screen widgets, etc.).
+- `tools/decompile-fixes/run-all.sh` — POSIX entry used by `GameName.sh` launchers (`/bin/sh` safe).
+- `tools/decompile-fixes/fix-atl-tails.py` — empty trailing blocks (`at transform:`, `image foo:`, `show …:`, etc.).
+- `tools/decompile-fixes/fix-sl-keywords.py` — restores SL keywords (`imagetext_button` → `imagetextbutton`, etc.).
 
 ## Per-game hooks
 
