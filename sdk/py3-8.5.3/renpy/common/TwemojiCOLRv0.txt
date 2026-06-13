@@ -1,15 +1,3 @@
-Twiemoji
---------
-
-https://github.com/jdecked/twemoji (was: https://github.com/twitter/twemoji)
-https://github.com/Emoji-COLRv0/Emoji-COLRv0
-
-Copyright 2019-2025 Twitter, Inc and other contributors
-
-Code licensed under the MIT License: http://opensource.org/licenses/MIT
-
-Graphics licensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/
-
-Instructions for building the font are at:
-
-https://github.com/renpy/renpy/issues/6595#issuecomment-3239195401
+version https://git-lfs.github.com/spec/v1
+oid sha256:1d407ea0bf0bae3660a4a0efdded19fd022636031f0e8e345193128c61386290
+size 464
