@@ -1,0 +1,132 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-e473f41b4199816d806e6056fed7ffe052540e1f">ImageDissolve</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ImageDissolve" name="ImageDissolve" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/ImageDissolve.html">ImageDissolve</a></b>(</td>
+<td>image, time, ramplen=8, ramptype='linear', ramp=None, reverse=False, old_widget=None, new_widget=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This dissolves the old scene into the new scene, using an image to control the dissolve process. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">A list of values is used to control this mapping. This list of values consists 256 fully transparent values, a ramp (of a specified number of steps) from full transparency to full opacity, and 256 fully opaque values. A 256 entry window is slid over this list, and the values found within are used to map the red channel of the image onto the opacity of the new scene. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">Basically, this means that white pixels come in first, black last, and the ramp controls the sharpness of the transition. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>image</em> - The image that will be used to control this transition. The image should be the same size as the scene being dissolved. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>time</em> - The amount of time the dissolve will take. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>ramplen</em> - The number of pixels of ramp to use. This defaults to 8. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>ramptype</em> - Type of alpha ramp. Possible types are: linear, cube, dcube, mcube. Default is linear. Non-linear types must have ramplen &gt;= 8. "cube": Ease in, sharp out. "dcube": Sharp in, sharp out. "mcube": Ease in, ease out. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>ramp</em> - If given, this is expected to be a sequence of integers in the range 0 to 255. This sequence explicitly gives the ramp to be used. If given, this overrides <em>ramplen</em> and <em>ramptype</em>. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>reverse</em> - This reverses the ramp and the direction of the window slide. When True, black pixels dissolve in first, and white pixels come in last. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-24" />
+<h2 id="head-5c87baf005104784485720ede44303382b3fcb28">Example</h2>
+<span class="anchor" id="line-25" />
+<p class="line867"><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /><span class="anchor" id="line-40" /><span class="anchor" id="line-41" /><span class="anchor" id="line-42" /><span class="anchor" id="line-43" /><span class="anchor" id="line-44" /><span class="anchor" id="line-45" /><span class="anchor" id="line-46" /><span class="anchor" id="line-47" /><span class="anchor" id="line-48" /><span class="anchor" id="line-49" /><span class="anchor" id="line-50" /><span class="anchor" id="line-51" /><span class="anchor" id="line-52" /><span class="anchor" id="line-53" /><span class="anchor" id="line-54" /><span class="anchor" id="line-55" /><span class="anchor" id="line-56" /><span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /><span class="anchor" id="line-60" /><span class="anchor" id="line-61" /><span class="anchor" id="line-62" /><span class="anchor" id="line-63" /><span class="anchor" id="line-64" /><span class="anchor" id="line-65" /><span class="anchor" id="line-66" /><span class="anchor" id="line-67" /><span class="anchor" id="line-68" /><span class="anchor" id="line-69" /><span class="anchor" id="line-70" /><span class="anchor" id="line-71" /><span class="anchor" id="line-72" /><span class="anchor" id="line-73" /><span class="anchor" id="line-74" /><span class="anchor" id="line-75" /><span class="anchor" id="line-76" /><span class="anchor" id="line-77" /><span class="anchor" id="line-78" /><span class="anchor" id="line-79" /><span class="anchor" id="line-80" /><span class="anchor" id="line-81" /><span class="anchor" id="line-82" /><span class="anchor" id="line-83" /><span class="anchor" id="line-84" /><span class="anchor" id="line-85" /><span class="anchor" id="line-86" /><span class="anchor" id="line-87" /><span class="anchor" id="line-88" /><span class="anchor" id="line-89" /><span class="anchor" id="line-90" /><span class="anchor" id="line-91" /><span class="anchor" id="line-92" /><span class="anchor" id="line-93" /><span class="anchor" id="line-94" /><span class="anchor" id="line-95" /><span class="anchor" id="line-96" /><span class="anchor" id="line-97" /><span class="anchor" id="line-98" /><span class="anchor" id="line-99" /><span class="anchor" id="line-100" /><span class="anchor" id="line-101" /><span class="anchor" id="line-102" /><span class="anchor" id="line-103" /><span class="anchor" id="line-104" /><span class="anchor" id="line-105" /><span class="anchor" id="line-106" /><span class="anchor" id="line-107" /><span class="anchor" id="line-108" /><span class="anchor" id="line-109" /><span class="anchor" id="line-110" /><span class="anchor" id="line-111" /><span class="anchor" id="line-112" /><span class="anchor" id="line-113" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> slowcirciris = ImageDissolve("<span class="renpy_string">circiris.png</span>", 5.0, 8)
+    <span class="renpy_keyword">$</span> circirisout = ImageDissolve("<span class="renpy_string">circiris.png</span>", 1.0, 8)
+    <span class="renpy_keyword">$</span> circirisoutramp = ImageDissolve("<span class="renpy_string">circiris.png</span>", 3.0, ramp=[ 16 * i for i in range(0, 15) + range(15, 0, -1) + range(0, 15) + range(15, 0, -1) + range(0, 15)  + range(15, 0, -1) + range(0, 15) ] )
+    <span class="renpy_keyword">$</span> circirisin = ImageDissolve("<span class="renpy_string">circiris.png</span>", 1.0, 8, reverse=True)
+
+    <span class="renpy_keyword">$</span> demotrans = ImageDissolve("<span class="renpy_string">demotrans.png</span>", 3.0, 16)
+
+e "<span class="renpy_string">ImageDissolve allows us to have dissolve transitions that are
+   controlled by images.</span>"
+
+e "<span class="renpy_string">This lets us specify very complex transitions, fairly
+   simply.</span>"
+
+e "<span class="renpy_string">Let's try some, and then I'll show how they work.</span>"
+
+e "<span class="renpy_string">There are two ImageDissolve transitions present by
+   default in the standard config.</span>"
+            
+<span class="renpy_keyword">scene</span> black <span class="renpy_keyword">with</span> blinds
+<span class="renpy_keyword">scene</span> bg washington
+<span class="renpy_keyword">show</span> eileen happy
+<span class="renpy_keyword">with</span> blinds
+
+e "<span class="renpy_string">The blinds transition opens and closes what looks like
+   vertical blinds.</span>"
+
+<span class="renpy_keyword">scene</span> black <span class="renpy_keyword">with</span> squares
+<span class="renpy_keyword">scene</span> bg washington
+<span class="renpy_keyword">show</span> eileen happy
+<span class="renpy_keyword">with</span> squares
+
+e "<span class="renpy_string">The squares transition uses these squares to show
+   things.</span>"
+
+e "<span class="renpy_string">I'm not sure why anyone would want to use it, but it
+   was used in some translated games, so we added it.</span>"
+
+e "<span class="renpy_string">There are also a few transitions that aren't in the
+   standard config.</span>"
+
+e "<span class="renpy_string">These ones require images the size of the screen, and
+   so we couldn't include them as the size of the screen
+   can change from game to game.</span>"
+
+e "<span class="renpy_string">You can find them defined in the source of the demo
+   script.</span>"
+
+<span class="renpy_keyword">scene</span> black <span class="renpy_keyword">with</span> circirisin
+
+e "<span class="renpy_string">We can hide things with a circirisin...</span>"
+
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">scene</span> bg washington
+<span class="renpy_keyword">with</span> circirisout
+
+e "<span class="renpy_string">... and show them again with a circirisout.</span>"
+
+e "<span class="renpy_string">The ramp parameter lets things dissolve in and out
+   along the way.</span>"
+
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">with</span> circirisoutramp
+
+e "<span class="renpy_string">It's even possible to have weird custom transitions.</span>"
+
+<span class="renpy_keyword">scene</span> circiris <span class="renpy_keyword">with</span> demotrans
+
+e "<span class="renpy_string">What we're showing here is the picture that's used in
+   the circiris transitions.</span>"
+
+e "<span class="renpy_string">If you take a look, the center of it is white, while
+   the edges are darker.</span>"
+
+e "<span class="renpy_string">When we use an ImageDissolve, the white will dissolve
+   in first, followed by progressively darker colors.</span>"
+
+e "<span class="renpy_string">Let's try it.</span>"
+
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">scene</span> bg washington
+<span class="renpy_keyword">show</span> eileen happy
+<span class="renpy_keyword">with</span> slowcirciris
+
+            
+e "<span class="renpy_string">It's also possible to reverse the transition, so that
+   the black pixels are dissolved in first.</span>"
+</pre>
+<span class="anchor" id="line-114" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

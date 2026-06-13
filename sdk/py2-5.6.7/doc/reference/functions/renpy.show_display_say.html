@@ -1,0 +1,48 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-d02b45153231911eb1c6a7af498fc1357e88f112">renpy.show_display_say</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.show_display_say" name="renpy.show_display_say" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.show_display_say.html">renpy.show_display_say</a></b>(</td>
+<td>who, what, who_args={}, what_args={}, window_args={}, image=False, **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This is called (by default) by <a href="../../reference/functions/renpy.display_say.html">renpy.display_say</a> to add the widgets corresponding to a screen of dialogue to the user. It is not expected to be called by the user, but instead to be called by <a href="../../reference/functions/renpy.display_say.html">renpy.display_say</a> , or by a function passed as the <em>show_function argument</em> to <a href="../../reference/functions/Character.html">Character</a> or <a href="../../reference/functions/renpy.display_say.html">renpy.display_say</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>who</em> - The name of the character that is speaking, or None to not show this name to the user. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>what</em> - What that character is saying. Please note that this may not be a string, as it can also be a list containing both text and displayables, suitable for use as the first argument of <a href="../../reference/functions/ui.text.html">ui.text</a> . <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>who_args</em> - Additional keyword arguments intended to be supplied to the <a href="../../reference/functions/ui.text.html">ui.text</a> that creates the who widget of this dialogue. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>what_args</em> - Additional keyword arguments intended to be supplied to the <a href="../../reference/functions/ui.text.html">ui.text</a> that creates the what widget of this dialogue. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>window_args</em> - Additional keyword arguments intended to be supplied to the <a href="../../reference/functions/ui.window.html">ui.window</a> that creates the who widget of this dialogue. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>image</em> - If True, then who should be interpreted as an image or displayable rather than a text string. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>callback</em> - If not None, a function that should be called with no arguments before each time something is shown. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>kwargs</em> - Additional keyword arguments should be ignored. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line862">This function is required to return the <a href="../../reference/functions/ui.text.html">ui.text</a> widget displaying the what text. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-26" />
+<h2 id="head-f398557a547deab88339d6facfbedd247ab1a191">Example</h2>
+<span class="anchor" id="line-27" />
+<p class="line867"><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /></p>
+<pre class="renpy">
+TODO
+</pre>
+<span class="anchor" id="line-30" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

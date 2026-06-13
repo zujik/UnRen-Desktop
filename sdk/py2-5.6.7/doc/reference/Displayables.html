@@ -1,0 +1,987 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-1c5f55fd6412a724ae614d4eef6408414fe60e4c">Displayables</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="table-of-contents">
+<p class="table-of-contents-heading">Contents</p>
+<ol>
+<li><a href="#head-1c5f55fd6412a724ae614d4eef6408414fe60e4c">Displayables</a>
+<ol>
+<li><a href="#head-5f2a0b7e0befe5a09021fecec85ddb9b91158747">Image Manipulators</a></li>
+<li><a href="#head-dc309b62e9aef6e9dcbec707ee4af1badf51afb4">Backgrounds</a></li>
+<li><a href="#head-fd18e75baf2726f4152ea7312fa57a25fd16256e">Text</a></li>
+<li><a href="#head-e6797dd35255bf5ffe2fccdfa283a205bbea365c">Dynamic</a></li>
+<li><a href="#head-4c92081e2c1e7116259075d8cd8a623ab15252e2">Animations</a></li>
+<li><a href="#head-846985934f05fd1f39bd03d56cb071142a15bbdc">Layout</a></li>
+<li><a href="#head-6388e5b3d5ea5a34c3c68838deb0a7c24f413aab">Widget</a></li>
+<li><a href="#head-cb0e66bf81ca739da5fc4862c1556996aa72e21b">Particle Motion</a></li>
+<li><a href="#head-5ffc25332ba4c4745cc6a2a4e5c36556db5aaafe">Position and Motion Functions</a></li>
+<li><a href="#head-e407326b51b66f688052e2e4b8e13800ad996cab">Position Definitions</a></li>
+</ol>
+</li>
+</ol>
+</div>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">A <strong>displayable</strong> is a python object implementing an interface that allows it to be displayed to the screen. Displayables can be assigned to an image name using an <tt class="backtick">image</tt> statement, and can then be shown to the user using the <tt class="backtick">show</tt> and <tt class="backtick">hide</tt> statements. They can be supplied as an argument to the <a href="../reference/functions/ui.add.html">ui.add</a> function. They are also used as the argument to certain style properties. In this section, we will describe functions that create displayables. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">When Ren'Py requires colors to be specified for a displayable, it allows them to be specified in a number of forms. In the following examples, lowercase letters stand for hexadecimal digits, while uppercase letters are short for numbers between 0 and 255. r, g, b, and a are short for red, green, blue, and alpha. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<ul>
+<li>A string of the form "#rgb". (yellow = "#ff0", blue = "#00f") <span class="anchor" id="line-10" /></li>
+<li>A string of the form "#rgba". (yellow = "#ff0f", blue = "#00ff") <span class="anchor" id="line-11" /></li>
+<li>A string of the form "#rrggbb". (yellow = "#ffff00", blue = "#0000ff") <span class="anchor" id="line-12" /></li>
+<li>A string of the form "#rrggbbaa". (yellow = "#ffff00ff", blue = "#0000ffff") <span class="anchor" id="line-13" /></li>
+<li>A 4-tuple of the form (R, G, B, A). (yellow = (255, 255, 0, 255), blue = (0, 0, 255, 255)) <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></li>
+</ul>
+<p class="line874">When Ren'Py expects a displayable to be specified, it allows them to be in the following forms: <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<ul>
+<li>A displayable may be given directly, in which case it is used. <span class="anchor" id="line-18" /></li>
+<li>A string beginning with "#" is used to create a solid object, with the color interpreted as above. <span class="anchor" id="line-19" /></li>
+<li>Other strings are interpreted as the filenames of images, and are used to create image objects. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></li>
+</ul>
+<p class="line867" />
+<h2 id="head-5f2a0b7e0befe5a09021fecec85ddb9b91158747">Image Manipulators</h2>
+<span class="anchor" id="line-22" /><span class="anchor" id="line-23" />
+<p class="line874">An Image is a type of displayable that contains bitmap data that can be shown to the screen. All images are displayables, but not all displayables are images. Images differ from displayables in that they can be statically computed, and stored in the image cache. This loading occurs sometime before the image is to be used (but not at the time the Image is created). This generally makes Images faster than arbitrary displayables. An image manipulator is a function that returns an Image. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line874">When an image manipulator requires another as input, the second image manipulator can be specified in a number of ways. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<ul>
+<li>
+<p class="line862">It may be supplied as a string, which is interpreted as a filename and loaded with <a href="../reference/functions/im.Image.html">im.Image</a> . <span class="anchor" id="line-28" /></p>
+</li>
+<li>It may be a directly specified image manipulator, in which case it is passed through unchanged. <span class="anchor" id="line-29" /><span class="anchor" id="line-30" /></li>
+</ul>
+<p class="line867"><strong>Run-length Encoding.</strong> Ren'Py supports the use of run-length encoding to efficiently draw images with large amounts of transparency. All image manipulators support an <em>rle</em> argument. When True, run-length encoding is used. When false, it is not used. When None (the default), Ren'Py will randomly sample 10 points in the image image to try to find transparency, and use rle only if transparency is found. In exchange for increased load time, and additional memory proportional to the number of non-transparent pixels in the image, run-length encoding can draw images to the screen in time proportional to the number of non-transparent pixels in the image. When an image is mostly transparent, this can lead to a significant speedup in drawing time. <em>(RLE was added in 5.6.2.)</em> <span class="anchor" id="line-31" /><span class="anchor" id="line-32" /></p>
+<p class="line867"><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> eileen happy = Image("<span class="renpy_string">eileen_happy.png</span>", rle=True)
+</pre>
+<span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" />
+<p class="line867"><strong>Image Manipulator List.</strong> The image manipulators are: <span class="anchor" id="line-39" /></p>
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.Image" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.Image" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Image" name="im.Image" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.Image.html">im.Image</a></b>(</td>
+<td>filename, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This image manipulator loads an image from a file. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>filename</em> - The filename that the image will be loaded from. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="line-11" />
+<p class="line874">Note that Image is an alias for im.Image. <span class="anchor" id="line-12" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.Image" /></p>
+</div>
+<span class="anchor" id="line-40" /><span class="anchor" id="line-41" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Image" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Image" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Image" name="Image" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Image.html">Image</a></b>(</td>
+<td>...)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">An alias for <a href="../reference/functions/im.Image.html">im.Image</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Image" /></div>
+<span class="anchor" id="line-42" /><span class="anchor" id="line-43" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.Alpha" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.Alpha" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Alpha" name="im.Alpha" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.Alpha.html">im.Alpha</a></b>(</td>
+<td>image, alpha, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns an alpha-mapped version of the image. Alpha is the maximum alpha that this image can have, a number between 0.0 (fully transparent) and 1.0 (opaque). <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">If an image already has an alpha channel, values in that alpha channel are reduced as appropriate. <span class="anchor" id="line-8" /></p>
+</div>
+<span class="anchor" id="line-9" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.Alpha" /></div>
+<span class="anchor" id="line-44" /><span class="anchor" id="line-45" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.Composite" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.Composite" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Composite" name="im.Composite" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.Composite.html">im.Composite</a></b>(</td>
+<td>size, *args, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This image manipulator composites one or more images together. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">This takes a variable number of arguments. The first argument is size, which is either the desired size of the image (in pixels), or None to indicate that the size should be the size of the first image. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">It then takes an even number of further arguments. (For an odd number of total arguments.) The second and other even numbered arguments contain position tuples, while the third and further odd-numbered arguments give images (or image manipulators). A position argument gives the position of the image immediately following it, with the position expressed as a tuple giving an offset from the upper-left corner of the image. The images are composited in bottom-to-top order, with the last image being closest to the user. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.Composite" /></div>
+<span class="anchor" id="line-46" /><span class="anchor" id="line-47" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.Crop" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.Crop" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Crop" name="im.Crop" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.Crop.html">im.Crop</a></b>(</td>
+<td>im, x, y, w, h, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This crops the image that is its child. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.Crop" /></div>
+<span class="anchor" id="line-48" /><span class="anchor" id="line-49" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.Flip" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.Flip" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Flip" name="im.Flip" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.Flip.html">im.Flip</a></b>(</td>
+<td>im, horizontal=False, vertical=False, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This is an image manipulator that can flip the image horizontally or vertically. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>im</em> - The image to be flipped. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>horizontal</em> - True to flip the image horizontally. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>vertical</em> - True to flip the image vertically. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.Flip" /></div>
+<span class="anchor" id="line-50" /><span class="anchor" id="line-51" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.Map" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.Map" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Map" name="im.Map" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.Map.html">im.Map</a></b>(</td>
+<td>im, rmap=im.ramp(0, 255), gmap=im.ramp(0, 255), bmap=im.ramp(0, 255), amap=im.ramp(0, 255), force_alpha=False, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This adjusts the colors of the image that is its child. It takes as arguments 4 256 character strings. If a pixel channel has a value of 192, then the value of the 192nd character in the string is used for the mapped pixel component. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" />The im.Map function can be used in a simple way, like <a href="../reference/functions/im.Recolor.html">im.Recolor</a> , to scale down or remove color components from the source image, or it can be used in a more complex way to totally remap the color of the source image. <span class="anchor" id="line-9" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.Map" /></div>
+<span class="anchor" id="line-52" /><span class="anchor" id="line-53" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.ramp" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.ramp" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.ramp" name="im.ramp" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.ramp.html">im.ramp</a></b>(</td>
+<td>start, end)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Returns a 256 character linear ramp, where the first character has the value start and the last character has the value end. Such a ramp can be used as a map argument of <a href="../reference/functions/im.Map.html">im.Map</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.ramp" /></div>
+<span class="anchor" id="line-54" /><span class="anchor" id="line-55" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.Scale" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.Scale" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Scale" name="im.Scale" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.Scale.html">im.Scale</a></b>(</td>
+<td>im, width, height, bilinear=True, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This is an image manipulator that scales another image manipulator to the specified <em>width</em> and <em>height</em>. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>bilinear</em> - If True, bilinear interpolation is used. If False, nearest-neighbor filtering is used. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.Scale" /></div>
+<span class="anchor" id="line-56" /><span class="anchor" id="line-57" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.Recolor" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.Recolor" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Recolor" name="im.Recolor" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.Recolor.html">im.Recolor</a></b>(</td>
+<td>im, rmul=255, gmul=255, bmul=255, amul=255, force_alpha=False, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This adjusts the colors of the supplied image, <em>im</em>. It takes four arguments, <em>rmul</em>, <em>gmul</em>, <em>bmul</em> and <em>amul</em>, corresponding to the red, green, blue and alpha channels, with each being an integer between 0 and 255. Each channel has its value mapped so that 0 is 0, 255 is the argument supplied for that channel, and other values are linearly mapped in-between. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.Recolor" /></div>
+<span class="anchor" id="line-58" /><span class="anchor" id="line-59" />
+<p class="line867"><span class="anchor" id="line-60" /><span class="anchor" id="line-61" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.Rotozoom" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.Rotozoom" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Rotozoom" name="im.Rotozoom" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.Rotozoom.html">im.Rotozoom</a></b>(</td>
+<td>im, angle, zoom, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This is an image manipulator that is a smooth rotation and zoom of another image manipulator. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>im</em> - The image to be rotozoomed. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>angle</em> - The number of degrees counterclockwise the image is to be rotated. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>zoom</em> - The zoom factor. Numbers that are greater than 1.0 lead to the image becoming larger. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.Rotozoom" /></div>
+<span class="anchor" id="line-62" /><span class="anchor" id="line-63" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/im.Tile" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/im.Tile" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Tile" name="im.Tile" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/im.Tile.html">im.Tile</a></b>(</td>
+<td>im, size=None, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This tiles the image, repeating it vertically and horizontally until it is as large as the specified size. If no size is given, then the size defaults to the size of the screen. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/im.Tile" /></div>
+<span class="anchor" id="line-64" /><span class="anchor" id="line-65" />
+<p class="line867" />
+<h2 id="head-dc309b62e9aef6e9dcbec707ee4af1badf51afb4">Backgrounds</h2>
+<span class="anchor" id="line-66" /><span class="anchor" id="line-67" />
+<p class="line874">There are two displayables that are eminently suitable for use as backgrounds: <span class="anchor" id="line-68" /></p>
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Frame" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Frame" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Frame" name="Frame" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Frame.html">Frame</a></b>(</td>
+<td>image, xborder, yborder, tile=False)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns a displayable that is a frame, based on the supplied image filename. A frame is an image that is automatically rescaled to the size allocated to it. The image has borders that are only scaled in one axis. The region within xborder pixels of the left and right borders is only scaled in the y direction, while the region within yborder pixels of the top and bottom axis is scaled only in the x direction. The corners are not scaled at all, while the center of the image is scaled in both x and y directions. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>image</em> - The image (which may be a filename or image object) that will be scaled. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>xborder</em> - The number of pixels in the x direction to use as a border. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>yborder</em> - The number of pixels in the y direction to use as a border. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>tile</em> - If true, then tiling is performed rather then scaling. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line874">For better performance, have the image share a dimension length in common with the size the frame will be rendered at. We detect this and avoid scaling if possible. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-18" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Frame" /></div>
+<span class="anchor" id="line-69" /><span class="anchor" id="line-70" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Solid" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Solid" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Solid" name="Solid" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Solid.html">Solid</a></b>(</td>
+<td>color)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns a Displayable that is solid, and filled with a single color. A Solid expands to fill all the space allocated to it, making it suitable for use as a background. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>color</em> - The color that the display will be filled with, given either as an RGBA tuple, or an html-style string <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Solid" /></div>
+<span class="anchor" id="line-71" /><span class="anchor" id="line-72" />
+<p class="line867" />
+<h2 id="head-fd18e75baf2726f4152ea7312fa57a25fd16256e">Text</h2>
+<span class="anchor" id="line-73" /><span class="anchor" id="line-74" />
+<p class="line867"><a href="../reference/functions/Text.html">Text</a> can be used to show text to the user, as a displayable. <span class="anchor" id="line-75" /><span class="anchor" id="line-76" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Text" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Text" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Text" name="Text" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Text.html">Text</a></b>(</td>
+<td>text, slow=False, slow_done=None, slow_speed=None, slow_start=0, slow_abortable=False, pause=None, tokenized=False, style='default', **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">A displayable that can format and display text on the screen. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>text</em> - The text that will be displayed on the screen. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>slow</em> - If True, the text will be slowly typed onto the screen. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>style</em> - A style that will be applied to the text. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>properties</em> - Additional properties that are applied to the text. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>pause</em> - If not None, then we display up to the pauseth pause (0-numbered.) <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>slow_done</em> - A callback that occurs when slow text is done. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>slow_speed</em> - The speed of slow text. If none, it's taken from the preferences. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>slow_offset</em> - The offset into the text to start the slow text. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>slow_abortable</em> - If True, clicking aborts the slow text. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867"><em>tokenized</em> - True if the text is already tokenized. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-28" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Text" /></div>
+<span class="anchor" id="line-77" /><span class="anchor" id="line-78" />
+<p class="line862">Ren'Py also supports a parameterized text object, which shows text as if it was an image on the screen. But care should be taken, as it's almost always better to use a <a href="../reference/functions/Character.html">Character</a> object to show text. By default there is one <a href="../reference/functions/ParameterizedText.html">ParameterizedText</a> image, named <tt class="backtick">text</tt> declared, but the user can declare more than one to show multiple text blocks on the screen at once. <span class="anchor" id="line-79" /></p>
+<div dir="ltr" id="Include_renpy/doc/reference/functions/ParameterizedText" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/ParameterizedText" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ParameterizedText" name="ParameterizedText" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/ParameterizedText.html">ParameterizedText</a></b>(</td>
+<td>style='default', **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This can be used as an image. When used, this image is expected to have a single parameter, a string which is rendered as the image. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/ParameterizedText" /></div>
+<span class="anchor" id="line-80" /><span class="anchor" id="line-81" />
+<p class="line867" />
+<h2 id="head-e6797dd35255bf5ffe2fccdfa283a205bbea365c">Dynamic</h2>
+<span class="anchor" id="line-82" /><span class="anchor" id="line-83" />
+<p class="line867"><a href="../reference/functions/DynamicDisplayable.html">DynamicDisplayable</a> can be used in styles to change the displayable shown over the course of the game. <span class="anchor" id="line-84" /><span class="anchor" id="line-85" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/DynamicDisplayable" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/DynamicDisplayable" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="DynamicDisplayable" name="DynamicDisplayable" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/DynamicDisplayable.html">DynamicDisplayable</a></b>(</td>
+<td>function, *args, **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This displayable evaluates a function, and uses the result of that function to determine what to show. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>function</em> should be function that should accept at least two arguments. The first argument is the time (in seconds) that the DynamicDisplayable has been shown for. The second argument is the number of seconds that a displayable with the same image tag has been shown for. Additional positional and keyword arguments passed to DynamicDisplayable are also given to the function. The function is expected to return a 2-tuple. The first element of this tuple should be a displayable. The second should be either the time (in seconds) that the return value is valid for, or None to indicate the return value is valid indefinitely. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">The function is evaluated at least once for each interaction. It is also evaluated again when the specified time has elapsed. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line862">Note that DynamicDisplayable does not accept properties. Instead, it uses the properties of the displayable returned by <em>function</em> <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line862">For compatibility with pre-5.6.3 versions of Ren'Py, DynamicDisplayable also accepts a string as the <em>function</em> argument. In this case, the string is evaluated once per interaction, with the result being used as the displayable for that interaction. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/DynamicDisplayable" /></div>
+<span class="anchor" id="line-86" /><span class="anchor" id="line-87" />
+<p class="line867" />
+<h2 id="head-4c92081e2c1e7116259075d8cd8a623ab15252e2">Animations</h2>
+<span class="anchor" id="line-88" /><span class="anchor" id="line-89" />
+<p class="line874">Ren'Py provides several kinds of animation displayables. <span class="anchor" id="line-90" /><span class="anchor" id="line-91" /></p>
+<p class="line862">These animation functions take an <em>anim_timebase</em> parameter, that determines which timebase to use. The animation timebase, used when anim_timebase is True, starts at the instant of the first frame from which the tag of the image containing this animation has been shown on the screen. This can be used to switch between two animations, in a way that ensures they are synchronized to the same timebase. The displayable timebase, used when anim_timebase=False, starts at the first frame after the displayable is shown, and can be used to ensure the entire animation is seen, even if an image with the same tag was already on the screen. <span class="anchor" id="line-92" /><span class="anchor" id="line-93" /></p>
+<p class="line874">The animation functions are: <span class="anchor" id="line-94" /></p>
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Animation" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Animation" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Animation" name="Animation" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Animation.html">Animation</a></b>(</td>
+<td>*args, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">A Displayable that draws an animation, which is a series of images that are displayed with time delays between them. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Odd (first, third, fifth, etc.) arguments to Animation are interpreted as image filenames, while even arguments are the time to delay between each image. If the number of arguments is odd, the animation will stop with the last image (well, actually delay for a year before looping). Otherwise, the animation will restart after the final delay time. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>anim_timebase</em> - If True, the default, use the animation timebase. Otherwise, use the displayable timebase. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Animation" /></div>
+<span class="anchor" id="line-95" /><span class="anchor" id="line-96" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/anim.Blink" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/anim.Blink" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="anim.Blink" name="anim.Blink" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/anim.Blink.html">anim.Blink</a></b>(</td>
+<td>image, on=0.5, off=0.5, rise=0.5, set=0.5, high=1.0, low=0.0, offset=0.0, anim_timebase=False, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This takes as an argument an image or widget, and blinks that image by varying its alpha. The sequence of phases is on - set - off - rise - on - ... All times are given in seconds, all alphas are fractions between 0 and 1. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>image</em> - The image or widget that will be blinked. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>on</em> - The amount of time the widget spends on, at high alpha. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>off</em> - The amount of time the widget spends off, at low alpha. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>rise</em> - The amount time the widget takes to ramp from low to high alpha. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>set</em> - The amount of time the widget takes to ram from high to low. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>high</em> - The high alpha. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>low</em> - The low alpha. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>offset</em> - A time offset, in seconds. Use this to have a blink that does not start at the start of the on phase. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>anim_timebase</em> - If True, use the animation timebase, if false, the displayable timebase. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-26" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/anim.Blink" /></div>
+<span class="anchor" id="line-97" /><span class="anchor" id="line-98" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/anim.Filmstrip" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/anim.Filmstrip" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="anim.Filmstrip" name="anim.Filmstrip" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/anim.Filmstrip.html">anim.Filmstrip</a></b>(</td>
+<td>image, framesize, gridsize, delay, frames=None, loop=True, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates an animation from a single image. This image must consist of a grid of frames, with the number of columns and rows in the grid being taken from gridsize, and the size of each frame in the grid being taken from framesize. This takes frames and sticks them into an <a href="../reference/functions/Animation.html">Animation</a> , with the given delay between each frame. The frames are taken by going from left-to-right across the first row, left-to-right across the second row, and so on until all frames are consumed, or a specified number of frames are taken. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>image</em> - The image that the frames must be taken from. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>framesize</em> - A (width, height) tuple giving the size of each of the frames in the animation. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>gridsize</em> - A (columns, rows) tuple giving the number of columns and rows in the grid. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>delay</em> - The delay, in seconds, between frames. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>frames</em> - The number of frames in this animation. If None, then this defaults to colums * rows frames, that is, taking every frame in the grid. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>loop</em> - If True, loop at the end of the animation. If False, this performs the animation once, and then stops. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line862">Other keyword arguments are as for <a href="../reference/functions/anim.SMAnimation.html">anim.SMAnimation</a> . <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-22" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/anim.Filmstrip" /></div>
+<span class="anchor" id="line-99" /><span class="anchor" id="line-100" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/anim.SMAnimation" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/anim.SMAnimation" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="anim.SMAnimation" name="anim.SMAnimation" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/anim.SMAnimation.html">anim.SMAnimation</a></b>(</td>
+<td>initial, *args, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This creates a state-machine animation. Such an animation is created by randomly traversing the edges between states in a defined state machine. Each state corresponds to an image shown to the user, with the edges corresponding to the amount of time an image is shown, and the transition it is shown with. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Images are shown, perhaps with a transition, when we are transitioning into a state containing that image. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>initial</em> - The name (a string) of the initial state we start in. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>showold</em> - If the keyword parameter showold is True, then the old image is shown instead of the new image when in an edge. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>anim_timebase</em> - If True, we use the animation timebase. If False, we use the displayable timebase. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line862">This accepts as additional arguments the <a href="../reference/functions/anim.State.html">anim.State</a> and <a href="../reference/functions/anim.Edge.html">anim.Edge</a> objects that are used to make up this state machine. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-18" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/anim.SMAnimation" /></div>
+<span class="anchor" id="line-101" /><span class="anchor" id="line-102" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/anim.State" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/anim.State" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="anim.State" name="anim.State" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/anim.State.html">anim.State</a></b>(</td>
+<td>name, image, *atlist, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates a state that can be used in an <a href="../reference/functions/anim.SMAnimation.html">anim.SMAnimation</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>name</em> - A string giving the name of this state. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>image</em> - The displayable that is shown to the user while we are in (entering) this state. For convenience, this can also be a string or tuple, which is interpreted with <a href="../reference/functions/Image.html">Image</a> . <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>image</em> should be None when this State is used with motion, to indicate that the image will be replaced with the child of the motion. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>atlist</em> - A list of functions to call on the image. (In general, if something can be used in an at clause, it can be used here as well.) <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line862">If any keyword arguments are given, they are used to construct a <a href="../reference/functions/Position.html">Position</a> object, that modifies the position of the image. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-18" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/anim.State" /></div>
+<span class="anchor" id="line-103" /><span class="anchor" id="line-104" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/anim.Edge" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/anim.Edge" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="anim.Edge" name="anim.Edge" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/anim.Edge.html">anim.Edge</a></b>(</td>
+<td>old, delay, new, trans=None, prob=1)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates an edge that can be used with a <a href="../reference/functions/anim.SMAnimation.html">anim.SMAnimation</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>old</em> - The name (a string) of the state that this transition is from. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>delay</em> - The number of seconds that this transition takes. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>new</em> - The name (a string) of the state that this transition is to. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>trans</em> - The transition that will be used to show the image found in the new state. If None, the image is show immediately. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>prob</em> - The number of times this edge is added. This can be used to make a transition more probable then others. For example, if one transition out of a state has prob=5, and the other has prob=1, then the one with prob=5 will execute 5/6 of the time, while the one with prob=1 will only occur 1/6 of the time. (Don't make this too large, as memory use is proportional to this value.) <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-18" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/anim.Edge" /></div>
+<span class="anchor" id="line-105" /><span class="anchor" id="line-106" />
+<p class="line874">We present two examples of this in action. The first shows how one can create a character that ocassionally, randomly, performs a 3-frame blink about once a minute. <span class="anchor" id="line-107" /><span class="anchor" id="line-108" /><span class="anchor" id="line-109" /><span class="anchor" id="line-110" /><span class="anchor" id="line-111" /><span class="anchor" id="line-112" /><span class="anchor" id="line-113" /><span class="anchor" id="line-114" /><span class="anchor" id="line-115" /><span class="anchor" id="line-116" /><span class="anchor" id="line-117" /><span class="anchor" id="line-118" /><span class="anchor" id="line-119" /><span class="anchor" id="line-120" /><span class="anchor" id="line-121" /><span class="anchor" id="line-122" /><span class="anchor" id="line-123" /><span class="anchor" id="line-124" /><span class="anchor" id="line-125" /><span class="anchor" id="line-126" /><span class="anchor" id="line-127" /><span class="anchor" id="line-128" /><span class="anchor" id="line-129" /><span class="anchor" id="line-130" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> blinking = anim.SMAnimation("<span class="renpy_string">a</span>",
+        anim.State("<span class="renpy_string">a</span>", "<span class="renpy_string">eyes_open.png</span>"),
+
+        <span class="renpy_comment"># This edge keeps us showing the eyes open for a second.</span>
+        anim.Edge("<span class="renpy_string">a</span>", 1.0, "<span class="renpy_string">a</span>", prob=60),
+
+        <span class="renpy_comment"># This edge causes the eyes to start closing...</span>
+        anim.Edge("<span class="renpy_string">a</span>", 0.25, "<span class="renpy_string">b</span>"),
+
+        <span class="renpy_comment"># ..because it brings us here.</span>
+        anim.State("<span class="renpy_string">b</span>", "<span class="renpy_string">eyes_half.png</span>"),
+
+        <span class="renpy_comment"># And so on...</span>
+        anim.Edge("<span class="renpy_string">b</span>", 0.25, "<span class="renpy_string">c</span>"),
+        anim.State("<span class="renpy_string">c</span>", "<span class="renpy_string">eyes_closed.png</span>"),
+        anim.Edge("<span class="renpy_string">c</span>", 0.25, "<span class="renpy_string">d</span>"),
+        anim.State("<span class="renpy_string">d</span>", "<span class="renpy_string">eyes_half.png</span>"),
+
+        <span class="renpy_comment"># And back to a.</span>
+        anim.Edge("<span class="renpy_string">d</span>", 0.5, "<span class="renpy_string">a</span>")
+        )
+</pre>
+<span class="anchor" id="line-131" />
+<p class="line874">Remember, State can take a Position, and Edge can take a transition. This lets you move things around the screen, dissolve images into others, and do all sorts of complicated, unexpected, things. (But be careful... not all transitions do what you'd expect when used with SMAnimation.) <span class="anchor" id="line-132" /><span class="anchor" id="line-133" /></p>
+<p class="line867" />
+<h2 id="head-846985934f05fd1f39bd03d56cb071142a15bbdc">Layout</h2>
+<span class="anchor" id="line-134" /><span class="anchor" id="line-135" />
+<p class="line874">These displayables are used to layout multiple displayables at once. <span class="anchor" id="line-136" /><span class="anchor" id="line-137" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/LiveComposite" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/LiveComposite" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="LiveComposite" name="LiveComposite" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/LiveComposite.html">LiveComposite</a></b>(</td>
+<td>size, *args, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This is similar to <a href="../reference/functions/im.Composite.html">im.Composite</a> , but can be used with displayables instead of images. This allows it to be used to composite, for example, an animation on top of the image. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">This is less efficient than <a href="../reference/functions/im.Composite.html">im.Composite</a> , as it needs to draw all of the displayables on the screen. On the other hand, it allows displayables to change while they are on the screen, which is necessary for animation. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">This takes a variable number of arguments. The first argument is size, which must be a tuple giving the width and height of the composited widgets, for layout purposes. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">It then takes an even number of further arguments. (For an odd number of total arguments.) The second and other even numbered arguments contain position tuples, while the third and further odd-numbered arguments give displayables. A position argument gives the position of the displayable immediately following it, with the position expressed as a tuple giving an offset from the upper-left corner of the LiveComposite. The displayables are drawn in bottom-to-top order, with the last being closest to the user. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/LiveComposite" /></div>
+<span class="anchor" id="line-138" /><span class="anchor" id="line-139" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Fixed" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Fixed" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Fixed" name="Fixed" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Fixed.html">Fixed</a></b>(</td>
+<td>*args, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">A layout that expands to take the size allotted to it. Each displayable is allocated the entire size of the layout, with the first displayable further from the user than the second, and so on. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">This function takes both positional and keyword arguments. Positional arguments should be displayables or images to be laid out. Keyword arguments are interpreted as style properties, except for the style keyword argument, which is the name of the parent style of this layout. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Fixed" /></div>
+<span class="anchor" id="line-140" /><span class="anchor" id="line-141" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/HBox" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/HBox" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="HBox" name="HBox" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/HBox.html">HBox</a></b>(</td>
+<td>*args, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">A layout that lays out displayables from left to right. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">This function takes both positional and keyword arguments. Positional arguments should be displayables or images to be laid out. Keyword arguments are interpreted as style properties, except for the style keyword argument, which is the name of the parent style of this layout. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/HBox" /></div>
+<span class="anchor" id="line-142" /><span class="anchor" id="line-143" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/VBox" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/VBox" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="VBox" name="VBox" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/VBox.html">VBox</a></b>(</td>
+<td>*args, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">A layout that lays out displayables from top to bottom. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">This function takes both positional and keyword arguments. Positional arguments should be displayables or images to be laid out. Keyword arguments are interpreted as style properties, except for the style keyword argument, which is the name of the parent style of this layout. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/VBox" /></div>
+<span class="anchor" id="line-144" /><span class="anchor" id="line-145" />
+<p class="line867" />
+<h2 id="head-6388e5b3d5ea5a34c3c68838deb0a7c24f413aab">Widget</h2>
+<span class="anchor" id="line-146" /><span class="anchor" id="line-147" />
+<p class="line874">These are generally used with the ui functions, but may sometimes be used as displayables. <span class="anchor" id="line-148" /><span class="anchor" id="line-149" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Bar" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Bar" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ui.bar" name="ui.bar" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/ui.bar.html">ui.bar</a></b>(</td>
+<td>range, value, clicked=None, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates a Bar displayable, the displayable equivalent of a <a href="../reference/functions/ui.bar.html">ui.bar</a> . The parameters are the same as for <a href="../reference/functions/ui.bar.html">ui.bar</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Bar" /></div>
+<span class="anchor" id="line-150" /><span class="anchor" id="line-151" />
+<p class="line867" />
+<p><strong class="warning">Include: Nothing found for "^== "!</strong></p>
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Button" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Button" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Button" name="Button" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Button.html">Button</a></b>(</td>
+<td>child, clicked=None, hovered=None, unhovered=None, role='', **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates a button displayable that can be clicked by the user. When this button is clicked or otherwise selected, the function supplied as the clicked argument is called. If it returns a value, that value is returned from <a href="../reference/functions/ui.interact.html">ui.interact</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>child</em> - The displayable that is contained within this button. This is required. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>clicked</em> - A function that is called when this button is clicked. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>hovered</em> - A function that is called when this button gains focus. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>unhovered</em> - A function that is called when this button loses focus. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>role</em> - The role this button undertakes. This can be the empty string, or "selected_". <span class="anchor" id="line-16" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Button" /></p>
+</div>
+<span class="anchor" id="line-152" /><span class="anchor" id="line-153" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Window" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Window" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Window" name="Window" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Window.html">Window</a></b>(</td>
+<td>child, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Creates a Window displayable with the given child and properties. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Window" /></div>
+<span class="anchor" id="line-154" /><span class="anchor" id="line-155" />
+<p class="line867" />
+<h2 id="head-cb0e66bf81ca739da5fc4862c1556996aa72e21b">Particle Motion</h2>
+<span class="anchor" id="line-156" /><span class="anchor" id="line-157" />
+<p class="line862">Ren'Py supports particle motion. Particle motion is the motion of many particles on the screen at once, with particles having a lifespan that is shorter than a single interaction. Particle motion can be used to have multiple things moving on the screen at once, such as snow, cherry blossoms, bubbles, fireflies, and more. There are two interfaces we've provided for the particle motion engine. The <a href="../reference/functions/SnowBlossom.html">SnowBlossom</a> function is a convenience constructor for the most common cases of linearly falling or rising particles, while the <a href="../reference/functions/Particles.html">Particles</a> function gives complete control over the particle engine. <span class="anchor" id="line-158" /><span class="anchor" id="line-159" /></p>
+<p class="line867"><a href="../reference/functions/SnowBlossom.html">SnowBlossom</a> is a function that can be used for the common case of linearly rising or falling particles. Some cases in which it can be used are for falling snow, falling cherry blossoms, and rising bubbles. <span class="anchor" id="line-160" /><span class="anchor" id="line-161" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/SnowBlossom" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/SnowBlossom" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="SnowBlossom" name="SnowBlossom" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/SnowBlossom.html">SnowBlossom</a></b>(</td>
+<td>image, count=10, border=50, xspeed=(20, 50), yspeed=(100, 200), start=0)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This implements the snowblossom effect, which is a simple linear motion up or down the screen. This effect can be used for falling cherry blossoms, falling snow, and rising bubbles, along with other things. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>image</em> - The image that is to be used for the particles. This can actually be any displayable, so it's okay to use an Animation as an argument to this parameter. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>count</em> - The number of particles to maintain at any given time. (Realize that not all of the particles may be on the screen at once.) <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>border</em> - How many pixels off the screen to maintain a particle for. This is used to ensure that a particle is not displayed on the screen when it is created, and that it is completely off the screen when it is destroyed. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>xspeed</em> - The horizontal speed of the particles, in pixels per second. This may be a single integer, or it may be a tuple of two integers. In the latter case, the two numbers are used as a range from which to pick the horizontal speed for each particle. The numbers can be positive or negative, as long as the second is larger then the first. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>yspeed</em> - The vertical speed of the particles, in pixels per second. This may be a single integer, but it should almost certainly be a pair of integers which are used as a range from which to pick the vertical speed of each particle. (Using a single number will lead to every particle being used in a wave... not what is wanted.) The second number in the tuple should be larger then the first. The numbers can be positive or negative, but you shouldn't mix the two in the same tuple. If positive numbers are given, the particles fall from the top of the screen to the bottom, as with snow or cherry blossoms. If negative numbers are given, the particles rise from the bottom of the screen to the top, as with bubbles. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>start</em> - This is the number of seconds it will take to start all particles moving. Setting this to a non-zero number prevents an initial wave of particles from overwhelming the screen. Each particle will start in a random amount of time less than this number of seconds. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>fast</em> - If true, then all particles will be started at once, and they will be started at random places on the screen, rather then on the top or bottom. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-22" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/SnowBlossom" /></div>
+<span class="anchor" id="line-162" /><span class="anchor" id="line-163" />
+<p class="line862">The result of <a href="../reference/functions/SnowBlossom.html">SnowBlossom</a> is best used to define an image, which can then be shown to the user. <span class="anchor" id="line-164" /><span class="anchor" id="line-165" /><span class="anchor" id="line-166" /><span class="anchor" id="line-167" /><span class="anchor" id="line-168" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> blossoms = SnowBlossom(Animation("<span class="renpy_string">sakura1.png</span>", 0.15,
+                                           "<span class="renpy_string">sakura2.png</span>", 0.15))
+</pre>
+<span class="anchor" id="line-169" />
+<p class="line874">It may make sense to show multiple snowblossoms at once. For example, in a scene with falling cherry blossoms, one can have small cherry blossoms falling slowly behind a character, while having larger cherry blossoms falling faster in front of her. <span class="anchor" id="line-170" /><span class="anchor" id="line-171" /></p>
+<p class="line862">If <a href="../reference/functions/SnowBlossom.html">SnowBlossom</a> does not do what you want, it may make sense to define your own particle motion. This is done by calling the <a href="../reference/functions/Particles.html">Particles</a> function. <span class="anchor" id="line-172" /><span class="anchor" id="line-173" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Particles" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Particles" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Particles" name="Particles" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Particles.html">Particles</a></b>(</td>
+<td>factory, style='default', **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Supports particle motion. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>factory</em> - A factory object. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">The particles function expects to take as an argument a factory object. This object (which should be pickleable) must support two methods. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">The create method of the factory object is called once per frame with two arguments. The first is either a list of existing particles, or None if this is the first time this Particles is shown (and hence there are no particles on the screen). The second argument is the time in seconds from some arbitrary point, increasing each time create is called. The method is expected to return a list of new particles created for this frame, or an empty list if no particles are to be created this frame. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">The predict method of the factory object is called when image prediction is requested for the Particles. It is expected to return a list of displayables and/or image filenames that will be used. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line874">Particles are represented by the objects returned from each factory function. Each particle object must have an update method. This method is called once per frame per particle, usually with the time from the same arbitrary point as was used to create the object. (The arbitrary point may change when hidden and shown, so particle code should be prepared to deal with this.) The update method may return None to indicate that the particle is dead. Nothing is shown for a dead particle, and update is never called on it. The update method can also return an (xpos, ypos, time, displayable) tuple. The xpos and ypos parameters are a position on the screen to show the particle at, interpreted in the same way as the xpos and ypos style properties. The time is the time of display. This should start with the time parameter, but it may make sense to offset it to make multiple particle animations out of phase. Finally, the displayable is a displayable or image filename that is shown as the particle. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-18" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Particles" /></div>
+<span class="anchor" id="line-174" /><span class="anchor" id="line-175" />
+<p class="line867" />
+<h2 id="head-5ffc25332ba4c4745cc6a2a4e5c36556db5aaafe">Position and Motion Functions</h2>
+<span class="anchor" id="line-176" /><span class="anchor" id="line-177" />
+<p class="line874">The result of these functions are suitable for use as the argument to the "at" clause of the scene and show statements. The result can also be called (using a second call) to return a displayable. <span class="anchor" id="line-178" /><span class="anchor" id="line-179" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Position" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Position" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Position" name="Position" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Position.html">Position</a></b>(</td>
+<td>**properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Position, when given position properties as arguments, returns a callable that can be passed to the "at" clause of a show or scene statement to display the image at the given location. See the Position Properties section to get a full explanation of how they are used to lay things out. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Position" /></div>
+<span class="anchor" id="line-180" /><span class="anchor" id="line-181" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Motion" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Motion" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Motion" name="Motion" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Motion.html">Motion</a></b>(</td>
+<td>function, period, repeat=False, bounce=False, time_warp=None, add_sizes=False, anim_timebase=False, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Motion, when given the appropriate arguments, returns an object that when given as the <tt class="backtick">at</tt> clause of an image causes an image to be moved on the screen. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>function</em> is a function that takes one or two arguments. The first argument is a fraction of the period, a number between 0 and 1. If <em>add_sizes</em> is true, <em>function</em> should take a second argument, a 4-tuple giving the width and height of the area in which the child will be shown, and the width and height of the child itself. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>function</em> should return a tuple containing two or four values. The first two values are interpreted as the xpos and the ypos of the motion. (Please note that if these values are floating point numbers, they are interpreted as a fraction of the screen. If they are integers, they are interpreted as the absolute position of the anchor of the motion.) If four values are returned, the third and fourth values are interpreted as an xanchor and yanchor. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line862">Please note that the function may be pickled, which means that it cannot be an inner function or a lambda, but must be a function defined in an init block of your script. In general, it's better to use a <a href="../reference/functions/Pan.html">Pan</a> or a <a href="../reference/functions/Move.html">Move</a> , rather than defining your own motion. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>period</em> is the time, in seconds, it takes to complete one cycle of a motion. If <em>repeat</em> is True, then the cycle repeats when it finishes, if False, the motion stops after one period. If <em>bounce</em> is True, the argument to the function goes from 0 to 1 to 0 in a single period, if False, it goes from 0 to 1. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>time_warp</em>, if given, is a function that takes a fractional time period (a number between 0.0 and 1.0) and returns a fractional time period. This allows non-linear motions. This function may also be pickled. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>anim_timebase</em> is true to use the animation timebase, false to use the displayable timebase. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>add_sizes</em> was added in 5.6.6. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-22" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Motion" /></div>
+<span class="anchor" id="line-182" /><span class="anchor" id="line-183" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Pan" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Pan" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Pan" name="Pan" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Pan.html">Pan</a></b>(</td>
+<td>startpos, endpos, time, repeat=False, bounce=False, time_warp=None, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Pan, when given the appropriate arguments, gives an object that can be passed to the at clause of an image to cause the image to be panned on the screen. The parameters <em>startpos</em> and <em>endpos</em> are tuples, containing the x and y coordinates of the upper-left hand corner of the screen relative to the image. <em>time</em> is the time it will take this position to move from startpos to endpos. <em>repeat</em>, <em>bounce</em>, and <em>time_warp</em> are as for <a href="../reference/functions/Motion.html">Motion</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">As the current implementation of Ren'Py is quite limited, there are quite a few restrictions that we put on pan. The big one is that there always must be a screen's worth of pixels to the right and below the start and end positions. Failure to ensure this may lead to inconsistent rendering. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line862">Please note that the pan will be immediately displayed, and that Ren'Py will not wait for it to complete before moving on to the next statement. This may lead to the pan being overlayed with text or dialogue. You may want to use a call to <a href="../reference/functions/renpy.pause.html">renpy.pause</a> to delay for the time it will take to complete the pan. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">Finally, also note that when a pan is completed, the image locks into the ending position. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Pan" /></div>
+<span class="anchor" id="line-184" /><span class="anchor" id="line-185" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Move" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Move" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Move" name="Move" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Move.html">Move</a></b>(</td>
+<td>startpos, endpos, time, repeat=False, bounce=False, time_warp=None, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Move is similar to <a href="../reference/functions/Pan.html">Pan</a> , insofar as it involves moving things. But where <a href="../reference/functions/Pan.html">Pan</a> moves the screen through an image, Move moves an image on the screen. Specifially, move changes the position style of an image with time. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">Move takes as parameters a starting position, an ending position, the amount of time it takes to move from the starting position to the ending position, and extra position properties. The positions are given as tuples containing xpos and ypos properties. The positions may be integer or floating point, but it's not permissable to mix the two. <em>repeat</em>, <em>bounce</em>, and <em>time_warp</em> are as for <a href="../reference/functions/Motion.html">Motion</a> . <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Move" /></div>
+<span class="anchor" id="line-186" /><span class="anchor" id="line-187" />
+<p class="line862">In general, one wants to use <a href="../reference/functions/Pan.html">Pan</a> when an image is bigger than the screen, and <a href="../reference/functions/Move.html">Move</a> when it is smaller. Both <a href="../reference/functions/Pan.html">Pan</a> and <a href="../reference/functions/Move.html">Move</a> are special cases of <a href="../reference/functions/Motion.html">Motion</a> . <span class="anchor" id="line-188" /><span class="anchor" id="line-189" /></p>
+<p class="line867"><a href="../reference/functions/anim.SMAnimation.html">anim.SMAnimation</a> can also be used to declare complicated motions. Use None instead of an image in States, and supply a move transition when moving between states. A SMAnimation so created can be passed in to the at clause of an image, allowing it to move things around the screen. <span class="anchor" id="line-190" /><span class="anchor" id="line-191" /></p>
+<p class="line862">These movement clauses can also be used as <a href="../reference/Transitions.html">Transitions</a>, in which case they affect the position of a single layer or the entire screen, as appropriate. <span class="anchor" id="line-192" /><span class="anchor" id="line-193" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Zoom" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Zoom" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Zoom" name="Zoom" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Zoom.html">Zoom</a></b>(</td>
+<td>size, start, end, time, after_child=None, time_warp=None, bilinear=True, opaque=True, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This causes a zoom to take place, using image scaling. When used as an <tt class="backtick">at</tt> clause, this creates a displayable. The render of this displayable is always of the supplied size. The child displayable is rendered, and a rectangle is cropped out of it. This rectangle is interpolated between the start and end rectangles. The rectangle is then scaled to the supplied size. The zoom will take <em>time</em> seconds, after which it will show the end rectangle, unless an <em>after_child</em> is given. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">The start and end rectangles must fit completely inside the size of the child, otherwise an error will occur. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>size</em> - The size that the rectangle is scaled to, a (width, height) tuple. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>start</em> - The start rectangle, an (xoffset, yoffset, width, height) tuple. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>end</em> - The end rectangle, an (xoffset, yoffset, width, height) tuple. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>time</em> - The amount of time it will take to interpolate from the start to the end rectange. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>after_child</em> - If present, a second child widget. This displayable will be rendered after the zoom completes. Use this to snap to a sharp displayable after the zoom is done. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>time_warp</em> - If not None, a function that takes a fractional period (between 0.0 and 0.1), and returns a fractional period. Use this to implement non-linear zooms. This function may be pickled, so it cannot be a lambda or other non-top-level function. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>bilinear</em> - If True, the default, this will use bilinear filtering. If false, this will use ugly yet fast nearest neighbor filtering. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>opaque</em> - If True and bilinear is True, this will use a very efficient method that does not support transparency. If False, this supports transparency, but is less efficient. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-26" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Zoom" /></div>
+<span class="anchor" id="line-194" /><span class="anchor" id="line-195" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/FactorZoom" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/FactorZoom" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="FactorZoom" name="FactorZoom" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/FactorZoom.html">FactorZoom</a></b>(</td>
+<td>size, start, end, time, after_child=None, time_warp=None, bilinear=True, opaque=True, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This causes a zoom to take place, using image scaling. When used as an <tt class="backtick">at</tt> clause, this creates a displayable. The render of this displayable is always of the supplied size. The child displayable is rendered, and then scaled by an appropriate factor, interpolated between the start and end factors. The rectangle is then scaled to the supplied size. The zoom will take <em>time</em> seconds, after which it will show the end, unless an <em>after_child</em> is given. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">The algorithm used for scaling does not perform any interpolation or other smoothing. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>size</em> - The size that the rectangle is scaled to, a (width, height) tuple. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>start</em> - The start zoom factor, a floating point number. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>end</em> - The end zoom factor, a floating point number. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>time</em> - The amount of time it will take to interpolate from the start to the end <span class="anchor" id="line-16" />factors. <span class="anchor" id="line-17" /><span class="anchor" id="line-18" /></p>
+<p class="line867"><em>after_child</em> - If present, a second child widget. This displayable will be rendered after the zoom completes. Use this to snap to a sharp displayable after the zoom is done. <span class="anchor" id="line-19" /><span class="anchor" id="line-20" /></p>
+<p class="line867"><em>time_warp</em> - If not None, a function that takes a fractional period (between 0.0 and 0.1), and returns a fractional period. Use this to implement non-linear zooms. <span class="anchor" id="line-21" />This function may be pickled, so it cannot be a lambda or other non-top-level function. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>bilinear</em> - If True, the default, this will use bilinear filtering. If false, this will use ugly yet fast nearest neighbor filtering. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867"><em>opaque</em> - If True and bilinear is True, this will use a very efficient method that does not support transparency. If False, this supports transparency, but is less efficient. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-28" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/FactorZoom" /></div>
+<span class="anchor" id="line-196" /><span class="anchor" id="line-197" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/RotoZoom" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/RotoZoom" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="RotoZoom" name="RotoZoom" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/RotoZoom.html">RotoZoom</a></b>(</td>
+<td>self, rot_start, rot_end, rot_delay, zoom_start, zoom_end, zoom_delay, rot_repeat=False, zoom_repeat=False, rot_bounce=False, zoom_bounce=False, rot_anim_timebase=False, zoom_anim_timebase=False, rot_time_warp=None, zoom_time_warp=None, opaque=True, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This function returns an object, suitable for use in an at cause, that rotates and/or zooms its child. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>rot_start</em> - The number of degrees of clockwise rotation at the start time. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>rot_end</em> - The number of degrees of clockwise rotation at the end time. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>rot_delay</em> - The time it takes to complete rotation. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>zoom_start</em> - The zoom factor at the start time. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>zoom_end</em> - The zoom factor at the end time. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>zoom_delay</em> - The time it takes to complete a zoom. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>rot_repeat</em> - If true, the rotation cycle repeats once it is finished. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>zoom_repeat</em> - If true, the xzoom cycle repeats once it is finished. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>rot_bounce</em> - If true, rotate from start to end to start each cycle. If False, rotate from start to end once. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867"><em>zoom_bounce</em> - If true, zoom from start to end to start each cycle. If False, zoom from start to end once. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<p class="line867"><em>rot_anim_timebase</em> - If true, rotation times are judged from when a displayable with the same tag was first shown. If false, times are judged from when this displayable was first shown. <span class="anchor" id="line-28" /><span class="anchor" id="line-29" /></p>
+<p class="line867"><em>zoom_anim_timebase</em> - If true, zoom times are judged from when a displayable with the same tag was first shown. If false, times are judged from when this displayable was first shown. <span class="anchor" id="line-30" /><span class="anchor" id="line-31" /></p>
+<p class="line867"><em>opaque</em> - This should be True if the child is fully opaque, and False otherwise. <span class="anchor" id="line-32" /><span class="anchor" id="line-33" /></p>
+<p class="line862">RotoZoom uses a bilinear interpolation method that is accurate when the zoom factor is &gt;= 0.5. <span class="anchor" id="line-34" /><span class="anchor" id="line-35" /></p>
+<p class="line874">Rotation is around the center of the child displayable. <span class="anchor" id="line-36" /><span class="anchor" id="line-37" /></p>
+<p class="line874">Note that this shrinks what it is rotozooming by 1 pixel horizontally and vertically. Images should be 1 pixel larger then they would otherwise be. <span class="anchor" id="line-38" /><span class="anchor" id="line-39" /></p>
+<p class="line874">The produced displayable has height and with equal to the hypotenuse of the sides of the child. This may disturb the layout somewhat. To minimize this, position the center of the RotoZoom. <span class="anchor" id="line-40" /><span class="anchor" id="line-41" /></p>
+<p class="line874">The time taken to RotoZoom is proportional to the area of the rotozoomed image that is shown on screen. <span class="anchor" id="line-42" /><span class="anchor" id="line-43" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-44" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/RotoZoom" /></div>
+<span class="anchor" id="line-198" /><span class="anchor" id="line-199" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Revolve" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Revolve" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Revolve" name="Revolve" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Revolve.html">Revolve</a></b>(</td>
+<td>start, end, time, around=(0.5, 0.5), cor=(0.5, 0.5), **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Used to revolve it's child around a point in its parent. <em>around</em> is the point in the parent that we are revolving around, while <em>cor</em> is the center of revolution for the child. <em>start</em> is the start revolution, and <em>end</em> is the end revolution, both in degrees clockwise. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">Other keyword arguments are as for <a href="../reference/functions/Motion.html">Motion</a> . <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Revolve" /></div>
+<span class="anchor" id="line-200" /><span class="anchor" id="line-201" />
+<p class="line867" />
+<h2 id="head-e407326b51b66f688052e2e4b8e13800ad996cab">Position Definitions</h2>
+<span class="anchor" id="line-202" /><span class="anchor" id="line-203" />
+<p class="line874">These positions can be used as the argument to the at clause of a scene or show statement. <span class="anchor" id="line-204" /><span class="anchor" id="line-205" /></p>
+<p class="line867" />
+<div class="documented"><a id="left" name="left" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;left</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-206" /><span class="anchor" id="line-207" />
+<p class="line874">A Position in which the left side of the image is aligned with the left side of the screen, with the bottom flush against the bottom of the screen. <span class="anchor" id="line-208" /><span class="anchor" id="line-209" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-210" /><span class="anchor" id="line-211" />
+<p class="line867" />
+<div class="documented"><a id="right" name="right" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;right</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-212" /><span class="anchor" id="line-213" />
+<p class="line874">A position in which the right side of the image is aligned with the right side of the screen, with the bottom of the image flush against the bottom of the screen. <span class="anchor" id="line-214" /><span class="anchor" id="line-215" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-216" /><span class="anchor" id="line-217" />
+<p class="line867" />
+<div class="documented"><a id="center" name="center" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;center</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-218" /><span class="anchor" id="line-219" />
+<p class="line874">A position in which the image is centered horizontally, with the bottom of the image flush against the bottom of the screen. <span class="anchor" id="line-220" /><span class="anchor" id="line-221" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-222" /><span class="anchor" id="line-223" />
+<p class="line867" />
+<div class="documented"><a id="offscreenleft" name="offscreenleft" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;offscreenleft</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-224" /><span class="anchor" id="line-225" />
+<p class="line874">A position in which the image is placed just off the left side of the screen. Please note that an image placed in this position, while not visible to the user, still consumes resources, and so images should be hidden when not visible. This position is intended to be used with the move transition. <span class="anchor" id="line-226" /><span class="anchor" id="line-227" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-228" /><span class="anchor" id="line-229" />
+<p class="line867" />
+<div class="documented"><a id="offscreenright" name="offscreenright" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;offscreenright</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-230" /><span class="anchor" id="line-231" />
+<p class="line874">A position in which the image is placed just off the right side of the screen. Please note that an image placed in this position, while not visible to the user, still consumes resources, and so images should be hidden when not visible. This position is intended to be used with the move transition. <span class="anchor" id="line-232" /><span class="anchor" id="line-233" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-234" /><span class="anchor" id="bottom" /></div>
+<div id="pagebottom" />
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

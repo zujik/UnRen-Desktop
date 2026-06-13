@@ -1,0 +1,48 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-063e117851b9a6857069101cf2163f84fa3b95dd">ui.vbox</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ui.vbox" name="ui.vbox" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/ui.vbox.html">ui.vbox</a></b>(</td>
+<td>spacing=None, style='vbox', **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates a layout that places widgets next to each other, from top to bottom. New widgets are added to this vbox until <a href="../../reference/functions/ui.close.html">ui.close</a> is called. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>spacing</em> - The number of pixels to leave between widgets. If None, take the amount of spacing from the style. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /><span class="anchor" id="line-10" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-11" />
+<h2 id="head-b2014b3eddff2b095287199cfeb439c02f729adf">Example</h2>
+<span class="anchor" id="line-12" />
+<p class="line867"><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">python</span>:
+    <span class="renpy_comment"># Single-child widget, contains the following ui.vbox</span>
+    ui.window()
+
+    <span class="renpy_comment"># Multiple-child widget - all new widgets following this will be</span>
+    <span class="renpy_comment"># added as children to it, until the next ui.close</span>
+    ui.vbox() 
+    ui.text("<span class="renpy_string">To get to the next screen, click the 'Continue' button.</span>")
+    ui.close()
+</pre>
+<span class="anchor" id="line-23" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

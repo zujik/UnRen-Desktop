@@ -1,0 +1,54 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-7ad17dd32e8c4945bd1e6974dd714fb97b7690f6">ui.add</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ui.add" name="ui.add" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/ui.add.html">ui.add</a></b>(</td>
+<td>w, make_current=False, once=False)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This is used to add a displayable to the current widget. If <em>make_current</em> is True, then the widget is made the current widget. If <em>once</em> is True, then the displayable will be made the current widget, but only for the next widget to be added. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" />
+<h2 id="head-56e404bd21e68b155ea36c0ac3b3f9903c19f4a6">Example</h2>
+<span class="anchor" id="line-9" />
+<p class="line867"><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /></p>
+<pre class="renpy">
+<span class="renpy_comment"># This is called when the quick save button is clicked.</span>
+<span class="renpy_keyword">label</span> _quick_save:
+    <span class="renpy_keyword">call</span> _enter_menu_without_scene <span class="renpy_keyword">from</span> __call__enter_menu_4
+
+    <span class="renpy_comment"># Save the game.</span>
+    <span class="renpy_keyword">$</span> renpy.save('<span class="renpy_string">quicksave</span>', _('<span class="renpy_string">Quick Save</span>'))
+
+    <span class="renpy_comment"># Tell the user that we saved the game.</span>
+    <span class="renpy_keyword">$</span> ui.add(Solid((0, 0, 0, 128))) <span class="renpy_comment"># adds a full screen 50% transparent black overlay</span>
+    <span class="renpy_keyword">$</span> ui.text(_('<span class="renpy_string">The game has been saved using quick save.</span>'),
+              xpos=0.5, xanchor='<span class="renpy_string">center</span>', ypos=0.5, yanchor='<span class="renpy_string">center</span>')
+
+    <span class="renpy_keyword">$</span> ui.saybehavior()
+    <span class="renpy_keyword">$</span> ui.interact(suppress_overlay=True, suppress_underlay=True)
+
+    <span class="renpy_keyword">return</span>
+</pre>
+<span class="anchor" id="line-27" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

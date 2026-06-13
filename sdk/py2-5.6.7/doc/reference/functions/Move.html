@@ -1,0 +1,44 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-13aef8545ac06a7b9b5770ddd0353a552bad5049">Move</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Move" name="Move" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/Move.html">Move</a></b>(</td>
+<td>startpos, endpos, time, repeat=False, bounce=False, time_warp=None, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Move is similar to <a href="../../reference/functions/Pan.html">Pan</a> , insofar as it involves moving things. But where <a href="../../reference/functions/Pan.html">Pan</a> moves the screen through an image, Move moves an image on the screen. Specifially, move changes the position style of an image with time. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">Move takes as parameters a starting position, an ending position, the amount of time it takes to move from the starting position to the ending position, and extra position properties. The positions are given as tuples containing xpos and ypos properties. The positions may be integer or floating point, but it's not permissable to mix the two. <em>repeat</em>, <em>bounce</em>, and <em>time_warp</em> are as for <a href="../../reference/functions/Motion.html">Motion</a> . <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" />
+<h2 id="head-319b6082c0d9c6a4da7ca4bff91a89911d22004b">Example</h2>
+<span class="anchor" id="line-11" />
+<p class="line867"><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<pre class="renpy">
+"<span class="renpy_string">The following example moves a ball from the upper-left to the
+ lower-right of the screen, taking 10 seconds to do so.</span>"
+
+<span class="renpy_keyword">show</span> ball <span class="renpy_keyword">at</span> Move((0.0, 0.0), (1.0, 1.0), 10.0,
+                  xanchor="<span class="renpy_string">center</span>", yanchor="<span class="renpy_string">center</span>")
+</pre>
+<span class="anchor" id="line-18" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

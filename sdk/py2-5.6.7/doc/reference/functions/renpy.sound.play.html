@@ -1,0 +1,42 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-5c98458d7ba3bf58087f80f65d6d59de4a0c3834">renpy.sound.play</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.sound.play" name="renpy.sound.play" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.sound.play.html">renpy.sound.play</a></b>(</td>
+<td>filename, channel=0, fadeout=0, fadein=0, tight=False)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Plays the named file once on the given channel. This will cause any playing sound effect to be stopped (after the given fadeout number of seconds, if necessary), and the new sound to be played in its place. The sound is faded in for the given number of seconds. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">The filename may be that of a file in an archive. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">If tight is True, then a fadeout of this sound will continue into the next-queued sound. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" />
+<h2 id="head-05b44c21f1b3151bc68e7c7ae6638e13dff0d40f">Example</h2>
+<span class="anchor" id="line-13" />
+<p class="line867"><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">$</span> renpy.<span class="renpy_keyword">sound</span>.<span class="renpy_keyword">play</span>("<span class="renpy_string">quindar.wav</span>")
+e "<span class="renpy_string">Ground control to Major Tom.</span>"
+</pre>
+<span class="anchor" id="line-17" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

@@ -1,0 +1,111 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-2" />
+<p class="line867" />
+<h1 id="head-091e3f6b1b7db9ecfdb989df1bbb752d2df0f686">A Simple Ren'Py Script</h1>
+<span class="anchor" id="line-3" /><span class="anchor" id="line-4" />
+<p class="line874">The following is a simple but complete Ren'Py script. The colors are added to make it easier to read, and aren't part of the script proper. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" /><span class="anchor" id="line-7" /><span class="anchor" id="line-8" /><span class="anchor" id="line-9" /><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> bg whitehouse = "<span class="renpy_string">whitehouse.jpg</span>"
+    <span class="renpy_keyword">image</span> eileen happy = "<span class="renpy_string">eileen_happy.png</span>"
+    <span class="renpy_keyword">image</span> eileen upset = "<span class="renpy_string">eileen_upset.png</span>"
+    <span class="renpy_keyword">$</span> e = Character('<span class="renpy_string">Eileen</span>')
+
+<span class="renpy_keyword">label</span> start:
+
+    <span class="renpy_keyword">scene</span> bg whitehouse
+    <span class="renpy_keyword">show</span> eileen happy
+
+    e "<span class="renpy_string">I'm standing in front of the White House.</span>"
+
+    <span class="renpy_keyword">show</span> eileen upset
+
+    e "<span class="renpy_string">I once wanted to go on a tour of the West Wing, but you have to
+       know somebody to get in.</span>"
+
+    "<span class="renpy_string">For some reason, she really seems upset about this.</span>"
+
+    e "<span class="renpy_string">I considered sneaking in, but that probably isn't a good idea.</span>"
+</pre>
+<span class="anchor" id="line-28" />
+<p class="line862">The beginning of this script is an <em>init block</em>, used to setup the overall game configuration and to declare resource names that will be used throughout the rest of the script. First, three images are defined: <span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">image</span> bg whitehouse = "<span class="renpy_string">whitehouse.jpg</span>"
+    <span class="renpy_keyword">image</span> eileen happy = "<span class="renpy_string">eileen_happy.png</span>"
+    <span class="renpy_keyword">image</span> eileen upset = "<span class="renpy_string">eileen_upset.png</span>"
+</pre>
+<span class="anchor" id="line-34" />
+<p class="line862">These definitions create what in Ren'Py terminology are called <a href="../reference/Displayables.html">Displayables</a>, which can then be referred to in other script statements, such as <tt class="backtick">show</tt>, by name. It's worth noting that the names must be valid Python variable names, which cannot start with numbers. <span class="anchor" id="line-35" /><span class="anchor" id="line-36" /></p>
+<p class="line862">In the next line in the init block, a <a href="../reference/functions/Character.html">Character</a> variable is declared: <span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">$</span> e = Character('<span class="renpy_string">Eileen</span>')
+</pre>
+<span class="anchor" id="line-40" />
+<p class="line862">The <tt class="backtick">$</tt> at the start of this line indicates that the line is actually a Python statement. It can be difficult at first to know what needs to be done in your script in a Python statement, and what can be done with the normal, simple Ren'Py core language statements, but at the most basic level you will only need a few Python statements. <span class="anchor" id="line-41" /><span class="anchor" id="line-42" /></p>
+<p class="line862">In this case, the statement is creating a variable, <tt class="backtick">e</tt>, and assigning to it the result of a call to the <a href="../reference/functions/Character.html">Character</a> function with the argument <tt class="backtick">'Eileen'</tt>. In simpler terms, it creates a shortcut for use when writing lines of dialogue in the script, so that the full name Eileen doesn't have to be typed out every time she says something. <span class="anchor" id="line-43" /><span class="anchor" id="line-44" /></p>
+<p class="line862">The next line introduces the <tt class="backtick">label</tt> statement: <span class="anchor" id="line-45" /><span class="anchor" id="line-46" /><span class="anchor" id="line-47" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">label</span> start:
+</pre>
+<span class="anchor" id="line-48" />
+<p class="line862">A label provides a spot for other Ren'Py script statements to call or jump to. By default, the Ren'Py main menu jumps to the label <tt class="backtick">start</tt> when you start a new game. <span class="anchor" id="line-49" /><span class="anchor" id="line-50" /></p>
+<p class="line862">Following the <tt class="backtick">start</tt> label is the part of the script where you write the actual interactive game, so to speak. First, a <tt class="backtick">scene</tt> statement: <span class="anchor" id="line-51" /><span class="anchor" id="line-52" /><span class="anchor" id="line-53" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">scene</span> bg whitehouse
+</pre>
+<span class="anchor" id="line-54" />
+<p class="line862">This scene statement simply adds the previously defined Displayable <tt class="backtick">bg&#160;whitehouse</tt> to the screen. <span class="anchor" id="line-55" /><span class="anchor" id="line-56" /></p>
+<p class="line862">Next, a <tt class="backtick">show</tt> statement: <span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">show</span> eileen happy
+</pre>
+<span class="anchor" id="line-60" />
+<p class="line862">This show statement adds the previously defined <tt class="backtick">eileen&#160;happy</tt> to the screen, on top of the image shown by the preceding scene statement. <span class="anchor" id="line-61" /><span class="anchor" id="line-62" /></p>
+<p class="line867"><span class="anchor" id="line-63" /><span class="anchor" id="line-64" /></p>
+<pre class="renpy">
+    e "<span class="renpy_string">I'm standing in front of the White House.</span>"
+</pre>
+<span class="anchor" id="line-65" />
+<p class="line862">This line is an example of a <tt class="backtick">say</tt> statement, although you will notice that it doesn't start with an actual 'say' keyword. Since <tt class="backtick">say</tt> statements make up the bulk of a game script, they use the most basic syntax possible. <span class="anchor" id="line-66" /><span class="anchor" id="line-67" /></p>
+<p class="line862">Here, the statement starts with the previously defined Python variable <tt class="backtick">e</tt>, which is used to indicate to the Ren'Py interpreter that the line of dialogue should be shown on screen with the name defined in the call to its <a href="../reference/functions/Character.html">Character</a> function - 'Eileen', of course. <span class="anchor" id="line-68" /><span class="anchor" id="line-69" /></p>
+<p class="line862">Next comes another <tt class="backtick">show</tt> statement: <span class="anchor" id="line-70" /><span class="anchor" id="line-71" /><span class="anchor" id="line-72" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">show</span> eileen upset
+</pre>
+<span class="anchor" id="line-73" />
+<p class="line862">This line demonstrates one of the subtle advantages to using a show statement in combination with a multi-word Displayable label. Recall that in the init block, there were <tt class="backtick">eileen&#160;happy</tt> and <tt class="backtick">eileen&#160;upset</tt> definitions. When the show statement executes, it first checks whether there are already any images on the screen where the first word of the name matches the first word of the new image to show. If it finds any, the previous image is hidden and replaced with the new one. <span class="anchor" id="line-74" /><span class="anchor" id="line-75" /></p>
+<p class="line862">Put simply, the <tt class="backtick">eileen&#160;happy</tt> image already on the screen is hidden and replaced with <tt class="backtick">eileen&#160;upset</tt>, since they both start with <tt class="backtick">eileen</tt>. <span class="anchor" id="line-76" /><span class="anchor" id="line-77" /></p>
+<p class="line874">Next is another line of Eileen dialogue: <span class="anchor" id="line-78" /><span class="anchor" id="line-79" /><span class="anchor" id="line-80" /><span class="anchor" id="line-81" /></p>
+<pre class="renpy">
+    e "<span class="renpy_string">I once wanted to go on a tour of the West Wing, but you have to
+       know somebody to get in.</span>"
+</pre>
+<span class="anchor" id="line-82" />
+<p class="line862">This line happens to be split onto two physical script lines, but will be joined when shown on screen. Note that script line breaks will not be carried into the displayed line - if you want to force a linebreak on screen, you will need to use an explicit newline (<tt class="backtick">\n</tt>). <span class="anchor" id="line-83" /><span class="anchor" id="line-84" /></p>
+<p class="line874">Next, another say statement, in its simplest form: <span class="anchor" id="line-85" /><span class="anchor" id="line-86" /><span class="anchor" id="line-87" /></p>
+<pre class="renpy">
+    "<span class="renpy_string">For some reason, she really seems upset about this.</span>"
+</pre>
+<span class="anchor" id="line-88" />
+<p class="line874">The simplest say statement is just one quoted string. It will be shown on screen without a character name label, and is thus generally used as narration of POV character thoughts. <span class="anchor" id="line-89" /><span class="anchor" id="line-90" /></p>
+<p class="line874">Finally, the last line is more dialogue: <span class="anchor" id="line-91" /><span class="anchor" id="line-92" /><span class="anchor" id="line-93" /></p>
+<pre class="renpy">
+    e "<span class="renpy_string">I considered sneaking in, but that probably isn't a good idea.</span>"
+</pre>
+<span class="anchor" id="line-94" />
+<p class="line874">After you click on the final line of dialogue in-game, you will be returned to the main menu. <span class="anchor" id="line-95" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

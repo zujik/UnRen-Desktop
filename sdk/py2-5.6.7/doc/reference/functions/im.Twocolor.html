@@ -1,0 +1,41 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-3753c9e827e19ee9de4fbffccc642d39cca93e71">im.Twocolor</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Twocolor" name="im.Twocolor" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/im.Twocolor.html">im.Twocolor</a></b>(</td>
+<td>im, white, black, force_alpha=False, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" />This takes as arguments two colors, white and black. The image is mapped such that pixels in white have the white color, pixels in black have the black color, and shades of gray are linearly interpolated inbetween. The alpha channel is mapped linearly between 0 and the alpha found in the white color, the black color's alpha is ignored. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" />
+<p class="line867" />
+</div>
+<span class="anchor" id="line-7" />
+<h2 id="head-5a74e8e47650eb12e75277f7c736e8c9ceab869d">Example</h2>
+<span class="anchor" id="line-8" />
+<p class="line867"><span class="anchor" id="line-9" /><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> cyan twocolor = im.Twocolor("<span class="renpy_string">blackwhite.png</span>",
+                                      (0, 255, 255, 255),
+                                      (255, 255, 0, 255))
+</pre>
+<span class="anchor" id="line-14" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

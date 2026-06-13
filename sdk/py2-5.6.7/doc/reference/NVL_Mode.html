@@ -1,0 +1,228 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-bebaf8f4e764f8b0a6d4dddf736a6365a17582af">NVL Mode</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line874">NVL mode is a mode in which Ren'Py shows more than one line of dialogue on the screen at once. This is used to better emulate the Japanese visual novel format, whereas the default settings of Ren'Py emulate the ADV format. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line874">To use NVL mode, one must declare NVLCharacters, instead of regular characters. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+<div class="documented"><a id="NVLCharacter" name="NVLCharacter" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;NVLCharacter</b>(</td>
+<td>name, **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-8" /><span class="anchor" id="line-9" />
+<p class="line862">Declares an NVLCharacter. Keyword arguments are as for <a href="../reference/functions/Character.html">Character</a> . <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" /><span class="anchor" id="line-13" />
+<p class="line874">The narrator can also be made an NVLCharacter, by setting the narrator variable to an NVLCharacter with the name of None. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> e = NVLCharacter("<span class="renpy_string">Eileen</span>", color="<span class="renpy_string">#c8ffc8</span>")
+    <span class="renpy_keyword">$</span> narrator = NVLCharacter(None)
+</pre>
+<span class="anchor" id="line-20" /><span class="anchor" id="line-21" />
+<p class="line862">When dialogue is spoken with an NVLCharacter, it is added to the end of a buffer, and then the entire contents of that buffer are shown to the user. The buffer can be cleared using the <tt>nvl&#160;clear</tt> statement. It should be cleared before the first use. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">nvl</span> <span class="renpy_keyword">clear</span>
+
+e "<span class="renpy_string">This is the first line of the first screen.</span>"
+
+e "<span class="renpy_string">This is the second line of the first screen.</span>"
+
+<span class="renpy_keyword">nvl</span> <span class="renpy_keyword">clear</span>
+
+e "<span class="renpy_string">This is the first line of the second screen.</span>"
+
+e "<span class="renpy_string">This is the second line of the first screen.</span>"
+</pre>
+<span class="anchor" id="line-37" /><span class="anchor" id="line-38" />
+<p class="line862">The <tt>nvl&#160;show</tt> <em>transition</em> statement causes a transition to occur from the previous screen to a screen with the buffer shown. The <tt>nvl&#160;hide</tt> <em>transition</em> statement causes a transition to occur from a screen with the buffer shown to a screen without the buffer shown. <span class="anchor" id="line-39" /><span class="anchor" id="line-40" /></p>
+<p class="line867"><strong>Menus.</strong> The <tt>nvl_menu</tt> function shows a menu in NVL-mode. To use it, it should be assigned to <tt>menu</tt> in an init block, using code like: <span class="anchor" id="line-41" /><span class="anchor" id="line-42" /></p>
+<p class="line867"><span class="anchor" id="line-43" /><span class="anchor" id="line-44" /><span class="anchor" id="line-45" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> <span class="renpy_keyword">menu</span> = nvl_menu
+</pre>
+<span class="anchor" id="line-46" /><span class="anchor" id="line-47" />
+<p class="line862">As nvl-mode menus are shown without being added to the buffer, we suggest clearing the buffer (using <tt>nvl&#160;clear</tt>) immediately after each menu. <span class="anchor" id="line-48" /><span class="anchor" id="line-49" /></p>
+<p class="line867"><strong>Function Equivalents.</strong> For each of the nvl-mode statements, there is an equivalent python function. <span class="anchor" id="line-50" /><span class="anchor" id="line-51" /></p>
+<p class="line867" />
+<div class="documented"><a id="nvl_clear" name="nvl_clear" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;nvl_clear</b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-52" /><span class="anchor" id="line-53" />
+<p class="line862">Equivalent to <tt>nvl&#160;clear</tt>. <span class="anchor" id="line-54" /><span class="anchor" id="line-55" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-56" /><span class="anchor" id="line-57" />
+<p class="line867" />
+<div class="documented"><a id="nvl_hide" name="nvl_hide" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;nvl_hide</b>(</td>
+<td>transition)</td>
+</tr>
+</table>
+<span class="anchor" id="line-58" /><span class="anchor" id="line-59" />
+<p class="line862">Equivalent to <tt>nvl&#160;hide</tt> <em>transition</em>. <span class="anchor" id="line-60" /><span class="anchor" id="line-61" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-62" /><span class="anchor" id="line-63" />
+<p class="line867" />
+<div class="documented"><a id="nvl_show" name="nvl_show" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;nvl_show</b>(</td>
+<td>transition)</td>
+</tr>
+</table>
+<span class="anchor" id="line-64" /><span class="anchor" id="line-65" />
+<p class="line862">Equivalent to <tt>nvl&#160;show</tt> <em>transition</em>. <span class="anchor" id="line-66" /><span class="anchor" id="line-67" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-68" /><span class="anchor" id="line-69" />
+<p class="line867"><strong>Styles.</strong> There are several styles that are used by the nvl-mode. <span class="anchor" id="line-70" /><span class="anchor" id="line-71" /></p>
+<p class="line867" />
+<div class="documented"><a id="nvl_window" name="nvl_window" />
+<table class="sig">
+<tr>
+<td><b>Style: nvl_window</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-72" /><span class="anchor" id="line-73" />
+<p class="line874">The style of the window containing the displayed nvl_mode buffer. <span class="anchor" id="line-74" /><span class="anchor" id="line-75" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-76" /><span class="anchor" id="line-77" />
+<p class="line867" />
+<div class="documented"><a id="nvl_vbox" name="nvl_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: nvl_vbox</b> (inherits from <a href="#vbox">vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-78" /><span class="anchor" id="line-79" />
+<p class="line874">The style of a vbox containing each of the nvl_mode entries. <span class="anchor" id="line-80" /><span class="anchor" id="line-81" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-82" /><span class="anchor" id="line-83" />
+<p class="line867" />
+<div class="documented"><a id="nvl_label" name="nvl_label" />
+<table class="sig">
+<tr>
+<td><b>Style: nvl_label</b> (inherits from <a href="#say_label">say_label</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-84" /><span class="anchor" id="line-85" />
+<p class="line874">The style of the label giving a NVLCharacter's name. <span class="anchor" id="line-86" /><span class="anchor" id="line-87" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-88" /><span class="anchor" id="line-89" />
+<p class="line867" />
+<div class="documented"><a id="nvl_dialogue" name="nvl_dialogue" />
+<table class="sig">
+<tr>
+<td><b>Style: nvl_dialogue</b> (inherits from <a href="#say_dialogue">say_dialogue</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-90" /><span class="anchor" id="line-91" />
+<p class="line874">The style of a NVLCharacter's dialogue. <span class="anchor" id="line-92" /><span class="anchor" id="line-93" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-94" /><span class="anchor" id="line-95" />
+<p class="line867" />
+<div class="documented"><a id="nvl_entry" name="nvl_entry" />
+<table class="sig">
+<tr>
+<td><b>Style: nvl_entry</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-96" /><span class="anchor" id="line-97" />
+<p class="line874">The style of a window containing the name and dialogue from each NVLCharacter. <span class="anchor" id="line-98" /><span class="anchor" id="line-99" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-100" /><span class="anchor" id="line-101" />
+<p class="line867" />
+<div class="documented"><a id="nvl_menu_window" name="nvl_menu_window" />
+<table class="sig">
+<tr>
+<td><b>Style: nvl_menu_window</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-102" /><span class="anchor" id="line-103" />
+<p class="line874">The style of a window containing a menu shown in NVL mode. <span class="anchor" id="line-104" /><span class="anchor" id="line-105" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-106" /><span class="anchor" id="line-107" />
+<p class="line867" />
+<div class="documented"><a id="nvl_menu_choice" name="nvl_menu_choice" />
+<table class="sig">
+<tr>
+<td><b>Style: nvl_menu_choice</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-108" /><span class="anchor" id="line-109" />
+<p class="line874">The style of the text of a menu choice in NVL-mode. <span class="anchor" id="line-110" /><span class="anchor" id="line-111" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-112" /><span class="anchor" id="line-113" />
+<p class="line867" />
+<div class="documented"><a id="nvl_menu_choice_chosen" name="nvl_menu_choice_chosen" />
+<table class="sig">
+<tr>
+<td><b>Style: nvl_menu_choice_chosen</b> (inherits from <a href="#nvl_menu_choice">nvl_menu_choice</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-114" /><span class="anchor" id="line-115" />
+<p class="line874">The style of a menu choice in NVL-mode, that has been chosen at least once by the user. <span class="anchor" id="line-116" /><span class="anchor" id="line-117" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-118" /><span class="anchor" id="line-119" />
+<p class="line867" />
+<div class="documented"><a id="nvl_menu_choice_button" name="nvl_menu_choice_button" />
+<table class="sig">
+<tr>
+<td><b>Style: nvl_menu_choice_button</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-120" /><span class="anchor" id="line-121" />
+<p class="line874">The style of a button containing a menu choice in NVL-mode. <span class="anchor" id="line-122" /><span class="anchor" id="line-123" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-124" /><span class="anchor" id="line-125" />
+<p class="line867" />
+<div class="documented"><a id="nvl_menu_choice_chosen_button" name="nvl_menu_choice_chosen_button" />
+<table class="sig">
+<tr>
+<td><b>Style: nvl_menu_choice_chosen_button</b> (inherits from <a href="#nvl_menu_choice_button">nvl_menu_choice_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-126" /><span class="anchor" id="line-127" />
+<p class="line874">The style of a button containing a menu choice in NVL-mode, when that choice has been chosen at least once by the user. <span class="anchor" id="line-128" /><span class="anchor" id="line-129" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-130" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

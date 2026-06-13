@@ -1,0 +1,1297 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-1a8675f80df0d25542ccb25a9c8b20563d0fe666">Configuration Variables</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line874">Much of the the configuration of Ren'Py is done using configuration variable. These variables, when assigned in a python block, change the behavior of the interpreter. As configuration variables aren't saved, and many need to be set before the GUI initializes, it makes sense to set all configuration variable inside init blocks. An example setting of variables is: <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /><span class="anchor" id="line-6" /><span class="anchor" id="line-7" /><span class="anchor" id="line-8" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> config.screen_width = 640
+    <span class="renpy_keyword">$</span> config.screen_width = 480
+</pre>
+<span class="anchor" id="line-9" /><span class="anchor" id="line-10" />
+<p class="line867" />
+<div class="documented"><a id="config.afm_bonus" name="config.afm_bonus" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.afm_bonus</b>&#160;=</td>
+<td>25</td>
+</tr>
+</table>
+<span class="anchor" id="line-11" /><span class="anchor" id="line-12" />
+<p class="line874">The number of bonus characters added to every string when auto-forward mode is in effect. <span class="anchor" id="line-13" /><span class="anchor" id="line-14" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-15" /><span class="anchor" id="line-16" />
+<p class="line867" />
+<div class="documented"><a id="config.afm_callback" name="config.afm_callback" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.afm_callback</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-17" /><span class="anchor" id="line-18" />
+<p class="line874">If not None, a python function that is called to determine if it is safe to auto-forward. The intent is that this can be used by a voice system to disable auto-forwarding when a voice is playing. <span class="anchor" id="line-19" /><span class="anchor" id="line-20" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-21" /><span class="anchor" id="line-22" />
+<p class="line867" />
+<div class="documented"><a id="config.afm_characters" name="config.afm_characters" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.afm_characters</b>&#160;=</td>
+<td>250</td>
+</tr>
+</table>
+<span class="anchor" id="line-23" /><span class="anchor" id="line-24" />
+<p class="line874">The number of characters in a string it takes to cause the amount of time specified in the auto forward mode preference to be delayed before auto-forward mode takes effect. <span class="anchor" id="line-25" /><span class="anchor" id="line-26" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-27" /><span class="anchor" id="line-28" />
+<p class="line867" />
+<div class="documented"><a id="config.all_preferences" name="config.all_preferences" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.all_preferences</b>&#160;=</td>
+<td>dict(...)</td>
+</tr>
+</table>
+<span class="anchor" id="line-29" /><span class="anchor" id="line-30" />
+<p class="line874">This is a map from preference name to the preference object implementing that preference. This variable shouldn't be modified by the user directly, but instead provides a stable source of preferences that can be added to config.preferences. <span class="anchor" id="line-31" /><span class="anchor" id="line-32" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-33" /><span class="anchor" id="line-34" />
+<p class="line867" />
+<div class="documented"><a id="config.allow_skipping" name="config.allow_skipping" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.allow_skipping</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-35" /><span class="anchor" id="line-36" />
+<p class="line874">If set to False, the user is not able to skip over the text of the game. <span class="anchor" id="line-37" /><span class="anchor" id="line-38" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-39" /><span class="anchor" id="line-40" />
+<p class="line867" />
+<div class="documented"><a id="config.always_has_joystick" name="config.always_has_joystick" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.always_has_joystick</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-41" /><span class="anchor" id="line-42" />
+<p class="line874">If True, the joystick interface is always available. This may be used by people without joysticks to see the joystick interface for themeing purposes. <span class="anchor" id="line-43" /><span class="anchor" id="line-44" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-45" /><span class="anchor" id="line-46" />
+<p class="line867" />
+<div class="documented"><a id="config.archives" name="config.archives" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.archives</b>&#160;=</td>
+<td>[ ]</td>
+</tr>
+</table>
+<span class="anchor" id="line-47" /><span class="anchor" id="line-48" />
+<p class="line874">A list of archive files that will be searched for images. <span class="anchor" id="line-49" /><span class="anchor" id="line-50" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-51" /><span class="anchor" id="line-52" />
+<p class="line867" />
+<div class="documented"><a id="config.auto_choice_delay" name="config.auto_choice_delay" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.auto_choice_delay</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-53" /><span class="anchor" id="line-54" />
+<p class="line874">If not None,this variable gives a number of seconds that Ren'Py will pause at an in-game menu before picking a random choice from that menu. We'd expect this variable to always be set to None in released games, but setting it to a number will allow for automated demonstrations of games without much human interaction. <span class="anchor" id="line-55" /><span class="anchor" id="line-56" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-57" /><span class="anchor" id="line-58" />
+<p class="line867" />
+<div class="documented"><a id="config.button_properties" name="config.button_properties" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.button_properties</b>&#160;=</td>
+<td>{</td>
+</tr>
+</table>
+} <span class="anchor" id="line-59" /><span class="anchor" id="line-60" />
+<p class="line874">A map from the (untranslated) name of a button, to additional properties that will be supplied when that button is created. <span class="anchor" id="line-61" /><span class="anchor" id="line-62" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-63" /><span class="anchor" id="line-64" />
+<p class="line867" />
+<div class="documented"><a id="config.button_text_properties" name="config.button_text_properties" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.button_text_properties</b>&#160;=</td>
+<td>{</td>
+</tr>
+</table>
+} <span class="anchor" id="line-65" /><span class="anchor" id="line-66" />
+<p class="line874">A map from the (untranslated) name of a button, to additional properties that will be supplied when that button's text is created. <span class="anchor" id="line-67" /><span class="anchor" id="line-68" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-69" /><span class="anchor" id="line-70" />
+<p class="line867" />
+<div class="documented"><a id="config.character_callback" name="config.character_callback" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.character_callback</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-71" /><span class="anchor" id="line-72" />
+<p class="line862">The default value of the callback parameter of <a href="../reference/functions/Character.html">Character</a> . <span class="anchor" id="line-73" /><span class="anchor" id="line-74" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-75" /><span class="anchor" id="line-76" />
+<p class="line867" />
+<div class="documented"><a id="config.debug" name="config.debug" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.debug</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-77" /><span class="anchor" id="line-78" />
+<p class="line874">Enables some minor debugging functionality (mostly by turning some missing files into errors.) This should always be turned off in a release. <span class="anchor" id="line-79" /><span class="anchor" id="line-80" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-81" /><span class="anchor" id="line-82" />
+<p class="line867" />
+<div class="documented"><a id="config.debug_image_cache" name="config.debug_image_cache" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.debug_image_cache</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-83" /><span class="anchor" id="line-84" />
+<p class="line874">If True, Ren'Py will print the contents of the image cache to standard output (wherever that goes) whenever the contents of the image cache change. <span class="anchor" id="line-85" /><span class="anchor" id="line-86" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-87" /><span class="anchor" id="line-88" />
+<p class="line867" />
+<div class="documented"><a id="config.debug_sound" name="config.debug_sound" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.debug_sound</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-89" /><span class="anchor" id="line-90" />
+<p class="line874">Enables debugging of sound functionality. This disables the supression of errors when generating sound. However, if a sound card is missing or flawed, then such errors are normal, and enabling this may prevent Ren'Py from functioning normally. This should always be False in a released game. <span class="anchor" id="line-91" /><span class="anchor" id="line-92" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-93" /><span class="anchor" id="line-94" />
+<p class="line867" />
+<div class="documented"><a id="config.default_fullscreen" name="config.default_fullscreen" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.default_fullscreen</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-95" /><span class="anchor" id="line-96" />
+<p class="line874">This sets the default value of the fullscreen preference. This should be True or False. If None, this is ignored, allowing other code to set the default value. (It's usually set to False in options.rpy.) <span class="anchor" id="line-97" /><span class="anchor" id="line-98" /></p>
+<p class="line874">The file saves/persistent in the game directory must be deleted for this to take effect. <span class="anchor" id="line-99" /><span class="anchor" id="line-100" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-101" /><span class="anchor" id="line-102" />
+<p class="line867" />
+<div class="documented"><a id="config.default_text_cps" name="config.default_text_cps" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.default_text_cps</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-103" /><span class="anchor" id="line-104" />
+<p class="line874">If not None, this sets the default number of characters per second to show. 0 is special cased to mean an infinite number of characters per second. (It's usually set to 0 in options.rpy.) <span class="anchor" id="line-105" /><span class="anchor" id="line-106" /></p>
+<p class="line874">The file saves/persistent in the game directory must be deleted for this to take effect. <span class="anchor" id="line-107" /><span class="anchor" id="line-108" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-109" /><span class="anchor" id="line-110" />
+<p class="line867" />
+<div class="documented"><a id="config.developer" name="config.developer" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.developer</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-111" /><span class="anchor" id="line-112" />
+<p class="line874">If set to True, developer mode is enabled. <span class="anchor" id="line-113" /><span class="anchor" id="line-114" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-115" /><span class="anchor" id="line-116" />
+<p class="line867" />
+<div class="documented"><a id="config.disable_file_pager" name="config.disable_file_pager" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.disable_file_pager</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-117" /><span class="anchor" id="line-118" />
+<p class="line874">If True, there will be only a single page of file in the file picker. <span class="anchor" id="line-119" /><span class="anchor" id="line-120" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-121" /><span class="anchor" id="line-122" />
+<p class="line867" />
+<div class="documented"><a id="config.disable_thumbnails" name="config.disable_thumbnails" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.disable_thumbnails</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-123" /><span class="anchor" id="line-124" />
+<p class="line874">If True, the file picker will not show thumbnails. <span class="anchor" id="line-125" /><span class="anchor" id="line-126" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-127" /><span class="anchor" id="line-128" />
+<p class="line867" />
+<div class="documented"><a id="config.editor" name="config.editor" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.editor</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-129" /><span class="anchor" id="line-130" />
+<p class="line874">If not None, this is expected to be a command-line for an editor that is invoked when the launch_editor (normally shift-E) key is pressed. There are two subsitutions that make sense here. %(filename)s is replaced with the filename of the currently-executing line of Ren'Py code. %(line)d is replaced with the line number of the currently-executing line of Ren'Py code. <span class="anchor" id="line-131" /><span class="anchor" id="line-132" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-133" /><span class="anchor" id="line-134" />
+<p class="line867" />
+<div class="documented"><a id="config.enable_fast_dissolve" name="config.enable_fast_dissolve" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.enable_fast_dissolve</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-135" /><span class="anchor" id="line-136" />
+<p class="line874">Setting this to False can fix a potential bug in the dissolve transition when used with an overlay layer that has an alpha channel that is not fully transparent or opaque, at the cost of 25% of the performance of dissolve. It usually can be kept at True with no ill effects. <span class="anchor" id="line-137" /><span class="anchor" id="line-138" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-139" /><span class="anchor" id="line-140" />
+<p class="line867" />
+<div class="documented"><a id="config.enter_sound" name="config.enter_sound" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.enter_sound</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-141" /><span class="anchor" id="line-142" />
+<p class="line874">If not None, this is a sound file that is played when entering the game menu without clicking a button. (For example, when right-clicking during the game.) <span class="anchor" id="line-143" /><span class="anchor" id="line-144" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-145" /><span class="anchor" id="line-146" />
+<p class="line867" />
+<div class="documented"><a id="config.enter_transition" name="config.enter_transition" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.enter_transition</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-147" /><span class="anchor" id="line-148" />
+<p class="line874">If not None, this variable should give a transition that will be used when entering the game menu. <span class="anchor" id="line-149" /><span class="anchor" id="line-150" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-151" /><span class="anchor" id="line-152" />
+<p class="line867" />
+<div class="documented"><a id="config.exit_sound" name="config.exit_sound" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.exit_sound</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-153" /><span class="anchor" id="line-154" />
+<p class="line874">If not None, this is a sound file that is played when exiting the game menu without clicking a button. (For example, when right-clicking inside the game menu.) <span class="anchor" id="line-155" /><span class="anchor" id="line-156" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-157" /><span class="anchor" id="line-158" />
+<p class="line867" />
+<div class="documented"><a id="config.exit_transition" name="config.exit_transition" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.exit_transition</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-159" /><span class="anchor" id="line-160" />
+<p class="line874">If not None, this variable should give a transition that will be performed when exiting the game menu. <span class="anchor" id="line-161" /><span class="anchor" id="line-162" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-163" /><span class="anchor" id="line-164" />
+<p class="line867" />
+<div class="documented"><a id="config.fade_music" name="config.fade_music" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.fade_music</b>&#160;=</td>
+<td>0.0</td>
+</tr>
+</table>
+<span class="anchor" id="line-165" /><span class="anchor" id="line-166" />
+<p class="line874">This is the amount of time in seconds to spend fading the old track out before a new music track starts. This should probably be fairly short, so the wrong music doesn't play for too long. <span class="anchor" id="line-167" /><span class="anchor" id="line-168" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-169" /><span class="anchor" id="line-170" />
+<p class="line867" />
+<div class="documented"><a id="config.fast_skipping" name="config.fast_skipping" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.fast_skipping</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-171" /><span class="anchor" id="line-172" />
+<p class="line874">Set this to True to allow fast skipping outside of developer mode. <span class="anchor" id="line-173" /><span class="anchor" id="line-174" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-175" /><span class="anchor" id="line-176" />
+<p class="line867" />
+<div class="documented"><a id="config.file_page_cols" name="config.file_page_cols" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.file_page_cols</b>&#160;=</td>
+<td>2</td>
+</tr>
+</table>
+<span class="anchor" id="line-177" /><span class="anchor" id="line-178" />
+<p class="line874">This is the number of columns of save slots that are show in the picker that's used in the load and save screens of the game menu. <span class="anchor" id="line-179" /><span class="anchor" id="line-180" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-181" /><span class="anchor" id="line-182" />
+<p class="line867" />
+<div class="documented"><a id="config.file_page_rows" name="config.file_page_rows" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.file_page_rows</b>&#160;=</td>
+<td>5</td>
+</tr>
+</table>
+<span class="anchor" id="line-183" /><span class="anchor" id="line-184" />
+<p class="line874">This is the number of rows of save slots that are show in the picker that's used in the load and save screens of the game menu. <span class="anchor" id="line-185" /><span class="anchor" id="line-186" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-187" /><span class="anchor" id="line-188" />
+<p class="line867" />
+<div class="documented"><a id="config.file_picker_positions" name="config.file_picker_positions" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.file_picker_positions</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-189" /><span class="anchor" id="line-190" />
+<p class="line874">If not None, elements of the file picker are rendered at the top level of the game menu, at the specified positions. Elements are named as follows <span class="anchor" id="line-191" /><span class="anchor" id="line-192" /></p>
+<ul>
+<li>nav_Previous - The previous page button. <span class="anchor" id="line-193" /></li>
+<li>nav_Next - The next page button. <span class="anchor" id="line-194" /></li>
+<li>
+<p class="line862">nav_<em>number</em> - The quick access button to page <em>number</em> (nav_1, nav_2, etc.). <span class="anchor" id="line-195" /></p>
+</li>
+<li>
+<p class="line862">entry_<em>number</em> - File picker entry number <em>number</em>. (entry_1, entry_2). <span class="anchor" id="line-196" /><span class="anchor" id="line-197" /></p>
+</li>
+</ul>
+<p class="line874">Positions are specified as a dict of position properties. <span class="anchor" id="line-198" /><span class="anchor" id="line-199" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-200" /><span class="anchor" id="line-201" />
+<p class="line867" />
+<div class="documented"><a id="config.file_quick_access_pages" name="config.file_quick_access_pages" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.file_quick_access_pages</b>&#160;=</td>
+<td>5</td>
+</tr>
+</table>
+<span class="anchor" id="line-202" /><span class="anchor" id="line-203" />
+<p class="line874">The number of pages of the file picker to provide quick access to. Quick access is provided by number buttons which are at the top of the file picker. <span class="anchor" id="line-204" /><span class="anchor" id="line-205" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-206" /><span class="anchor" id="line-207" />
+<p class="line867" />
+<div class="documented"><a id="config.focus_crossrange_penalty" name="config.focus_crossrange_penalty" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.focus_crossrange_penalty</b>&#160;=</td>
+<td>1024</td>
+</tr>
+</table>
+<span class="anchor" id="line-208" /><span class="anchor" id="line-209" />
+<p class="line874">This is the amount of penalty to apply to moves perpendicular to the selected direction of motion, when moving focus with the keyboard. <span class="anchor" id="line-210" /><span class="anchor" id="line-211" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-212" /><span class="anchor" id="line-213" />
+<p class="line867" />
+<div class="documented"><a id="config.font_replacement_map" name="config.font_replacement_map" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.font_replacement_map</b>&#160;=</td>
+<td>dict()</td>
+</tr>
+</table>
+<span class="anchor" id="line-214" /><span class="anchor" id="line-215" />
+<p class="line874">This is a map from (font, bold, italics) to (font, bold, italics), used to replace a font with one that's specialized as having bold and/or italics. For example, if you wanted to have everything using an italic version of "Vera.ttf" use "VeraIt.ttf" instead, you could write config.font_replacement_map["Vera.ttf", False, True] = ("VeraIt.ttf", False, False). Please note that these mappings only apply to specific variants of a font. In this case, requests for a bold italic version of vera will get a bold italic version of vera, rather than a bold version of the italic vera. <span class="anchor" id="line-216" /><span class="anchor" id="line-217" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-218" /><span class="anchor" id="line-219" />
+<p class="line867" />
+<div class="documented"><a id="config.game_menu" name="config.game_menu" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.game_menu</b>&#160;=</td>
+<td>[ ... ]</td>
+</tr>
+</table>
+<span class="anchor" id="line-220" /><span class="anchor" id="line-221" />
+<p class="line862">This is used to customize the choices on the game menu. Please read <a href="../reference/Customizing_the_Main_and_Game_Menus.html">Customizing the Main and Game Menus</a> for more details on the contents of this variable. <span class="anchor" id="line-222" /><span class="anchor" id="line-223" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-224" /><span class="anchor" id="line-225" />
+<p class="line867" />
+<div class="documented"><a id="config.game_menu_music" name="config.game_menu_music" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.game_menu_music</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-226" /><span class="anchor" id="line-227" />
+<p class="line874">If not None, a music file to play when at the game menu. <span class="anchor" id="line-228" /><span class="anchor" id="line-229" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-230" /><span class="anchor" id="line-231" />
+<p class="line867" />
+<div class="documented"><a id="config.game_menu_positions" name="config.game_menu_positions" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.game_menu_positions</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-232" /><span class="anchor" id="line-233" />
+<p class="line874">If not None, this is a map between the default label for buttons on the game menu, and a dictionary containing properties that are applied to that button. This provides a simple way of customizing the game menu by changing where buttons are located on the screen. Please note that this disables the usual button-placement algorithm, so if one button is positioned this way, all must be. <span class="anchor" id="line-234" /><span class="anchor" id="line-235" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-236" /><span class="anchor" id="line-237" />
+<p class="line867" />
+<div class="documented"><a id="config.hard_rollback_limit" name="config.hard_rollback_limit" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.hard_rollback_limit</b>&#160;=</td>
+<td>10</td>
+</tr>
+</table>
+<span class="anchor" id="line-238" /><span class="anchor" id="line-239" />
+<p class="line874">This is the number of steps that Ren'Py will let the user interactively rollback. Set this to 0 to disable rollback entirely, although we don't recommend that, as rollback is useful to let the user see text he skipped by mistake. <span class="anchor" id="line-240" /><span class="anchor" id="line-241" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-242" /><span class="anchor" id="line-243" />
+<p class="line867" />
+<div class="documented"><a id="config.has_afm" name="config.has_afm" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.has_afm</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-244" /><span class="anchor" id="line-245" />
+<p class="line874">If True, the preference for auto-forward mode is shown to the user. <span class="anchor" id="line-246" /><span class="anchor" id="line-247" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-248" /><span class="anchor" id="line-249" />
+<p class="line867" />
+<div class="documented"><a id="config.has_cps" name="config.has_cps" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.has_cps</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-250" /><span class="anchor" id="line-251" />
+<p class="line874">If True, the preference for changing the text speed is shown to the user. <span class="anchor" id="line-252" /><span class="anchor" id="line-253" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-254" /><span class="anchor" id="line-255" />
+<p class="line867" />
+<div class="documented"><a id="config.has_music" name="config.has_music" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.has_music</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-256" /><span class="anchor" id="line-257" />
+<p class="line874">If True, the preference for enabling and disabling music will be presented to the user. This should be set to False if the game does not play any music. <span class="anchor" id="line-258" /><span class="anchor" id="line-259" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-260" /><span class="anchor" id="line-261" />
+<p class="line867" />
+<div class="documented"><a id="config.has_skip_after_choices" name="config.has_skip_after_choices" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.has_skip_after_choices</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-262" /><span class="anchor" id="line-263" />
+<p class="line874">If True, the preference enabling skip after choices will be shown to the user. <span class="anchor" id="line-264" /><span class="anchor" id="line-265" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-266" /><span class="anchor" id="line-267" />
+<p class="line867" />
+<div class="documented"><a id="config.has_skipping" name="config.has_skipping" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.has_skipping</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-268" /><span class="anchor" id="line-269" />
+<p class="line874">If True, the preference controlling what TAB and CTRL skip will be shown to the user. <span class="anchor" id="line-270" /><span class="anchor" id="line-271" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-272" /><span class="anchor" id="line-273" />
+<p class="line867" />
+<div class="documented"><a id="config.has_sound" name="config.has_sound" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.has_sound</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-274" /><span class="anchor" id="line-275" />
+<p class="line874">If True, the preference for enabling and disabling sound effects is presented to the user. This should be set to False if the game does not have any sound effects. <span class="anchor" id="line-276" /><span class="anchor" id="line-277" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-278" /><span class="anchor" id="line-279" />
+<p class="line867" />
+<div class="documented"><a id="config.has_transitions" name="config.has_transitions" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.has_transitions</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-280" /><span class="anchor" id="line-281" />
+<p class="line874">If True, the preference for enabling and disabling transitions is presented to the user. This should be set to False if the game does not have any transitions (that is, never uses the with statement or clause). <span class="anchor" id="line-282" /><span class="anchor" id="line-283" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-284" /><span class="anchor" id="line-285" />
+<p class="line867" />
+<div class="documented"><a id="config.hbox_pref_choices" name="config.hbox_pref_choices" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.hbox_pref_choices</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-286" /><span class="anchor" id="line-287" />
+<p class="line874">If True, the choice buttons in a preference will be placed together in an hbox. <span class="anchor" id="line-288" /><span class="anchor" id="line-289" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-290" /><span class="anchor" id="line-291" />
+<p class="line867" />
+<div class="documented"><a id="config.hyperlink_callback" name="config.hyperlink_callback" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.hyperlink_callback</b>&#160;=</td>
+<td>...</td>
+</tr>
+</table>
+<span class="anchor" id="line-292" /><span class="anchor" id="line-293" />
+<p class="line874">A function that is called with the argument to a hyperlink when that hyperlink is clicked. Defaults to a function that inteprets the argument as a label, which is called in a new context when the hyperlink is clicked. <span class="anchor" id="line-294" /><span class="anchor" id="line-295" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-296" /><span class="anchor" id="line-297" />
+<p class="line867" />
+<div class="documented"><a id="config.image_buttons" name="config.image_buttons" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.image_buttons</b>&#160;=</td>
+<td>{ }</td>
+</tr>
+</table>
+<span class="anchor" id="line-298" /><span class="anchor" id="line-299" />
+<p class="line862">A map from button labels to 5 tuples giving the (idle, hover, selected idle, selected hover, disabled) images used for main and game menu buttons with the given label. If a label isn't present in the dictionary, text buttons are used instead. <em>New in 5.6.5.</em> <span class="anchor" id="line-300" /><span class="anchor" id="line-301" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-302" /><span class="anchor" id="line-303" />
+<p class="line867" />
+<div class="documented"><a id="config.image_cache_size" name="config.image_cache_size" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.image_cache_size</b>&#160;=</td>
+<td>8</td>
+</tr>
+</table>
+<span class="anchor" id="line-304" /><span class="anchor" id="line-305" />
+<p class="line874">This is used to set the size of the image cache, as a multiple of the screen size. This is mostly a suggestion, as if Ren'Py ever needs to display more than this amount of images at once, it will cache them all. But it will stop predictively loading images when the cache is filled beyond this, and it will try to drop images from the cache until it shrinks below this size. If this is too small, there will be more disk access as images are loaded and re-loaded. If this is too large, memory usage will be increased as images are kept in memory. <span class="anchor" id="line-306" /><span class="anchor" id="line-307" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-308" /><span class="anchor" id="line-309" />
+<p class="line867" />
+<div class="documented"><a id="config.image_labels" name="config.image_labels" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.image_labels</b>&#160;=</td>
+<td>{ }</td>
+</tr>
+</table>
+<span class="anchor" id="line-310" /><span class="anchor" id="line-311" />
+<p class="line862">A map from a game or main menu label to an image that is used for that label. If a label isn't present here, it's rendered as text. <em>New in 5.6.5.</em> <span class="anchor" id="line-312" /><span class="anchor" id="line-313" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-314" /><span class="anchor" id="line-315" />
+<p class="line867" />
+<div class="documented"><a id="config.implicit_with_none" name="config.implicit_with_none" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.implicit_with_none</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-316" /><span class="anchor" id="line-317" />
+<p class="line862">If True, then by default the equivalent of a "with None" statement will be performed after interactions caused by dialogue (through the <a href="../reference/functions/Character.html">Character</a> object), menus (and <a href="../reference/functions/renpy.display_menu.html">renpy.display_menu</a> ), <a href="../reference/functions/renpy.input.html">renpy.input</a> , and <a href="../reference/functions/renpy.imagemap.html">renpy.imagemap</a> . <span class="anchor" id="line-318" /><span class="anchor" id="line-319" /></p>
+<p class="line862">All of the above functions take a <em>with_none</em> parameter, which will override this variable. <span class="anchor" id="line-320" /><span class="anchor" id="line-321" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-322" /><span class="anchor" id="line-323" />
+<p class="line867" />
+<div class="documented"><a id="config.interact_callbacks" name="config.interact_callbacks" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.interact_callbacks</b>&#160;=</td>
+<td>...</td>
+</tr>
+</table>
+<span class="anchor" id="line-324" /><span class="anchor" id="line-325" />
+<p class="line874">A list of functions that are called (without any arguments) when an interaction is started or restarted. <span class="anchor" id="line-326" /><span class="anchor" id="line-327" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-328" /><span class="anchor" id="line-329" />
+<p class="line867" />
+<div class="documented"><a id="config.joystick" name="config.joystick" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.joystick</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-330" /><span class="anchor" id="line-331" />
+<p class="line874">Governs if joystick support is enabled. If False, Joystick detection is disabled. <span class="anchor" id="line-332" /><span class="anchor" id="line-333" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-334" /><span class="anchor" id="line-335" />
+<p class="line867" />
+<div class="documented"><a id="config.joystick_keys" name="config.joystick_keys" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.joystick_keys</b>&#160;=</td>
+<td>[ ... ]</td>
+</tr>
+</table>
+<span class="anchor" id="line-336" /><span class="anchor" id="line-337" />
+<p class="line862">This is a listing of all the joystick synthetic keys known to Ren'Py. It's a list of visible name, keysym pairs. Ren'Py uses this to populate the joystick preferences. See <a href="../reference/Keymap.html">Customizing the Keymap</a> for more information. <span class="anchor" id="line-338" /><span class="anchor" id="line-339" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-340" /><span class="anchor" id="line-341" />
+<p class="line867" />
+<div class="documented"><a id="config.joystick_preference_positions" name="config.joystick_preference_positions" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.joystick_preference_positions</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-342" /><span class="anchor" id="line-343" />
+<p class="line862">If not None, this should be a dictionary mapping preferences to positions, similar to <a href="../reference/Configuration_Variables.html#config.preference_positions">config.preference_positions</a> . The only key that's sensible to use here is 'Joystick Configuration'. <span class="anchor" id="line-344" /><span class="anchor" id="line-345" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-346" /><span class="anchor" id="line-347" />
+<p class="line867" />
+<div class="documented"><a id="config.keymap" name="config.keymap" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.keymap</b>&#160;=</td>
+<td>dict(...)</td>
+</tr>
+</table>
+<span class="anchor" id="line-348" /><span class="anchor" id="line-349" />
+<p class="line862">This variable contains a keymap giving the keys and mouse buttons assigned to each possible operation. Please see the section on <a href="../reference/Keymap.html">Keymaps</a> for more information. <span class="anchor" id="line-350" /><span class="anchor" id="line-351" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-352" /><span class="anchor" id="line-353" />
+<p class="line867" />
+<div class="documented"><a id="config.label_properties" name="config.label_properties" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.label_properties</b>&#160;=</td>
+<td>{</td>
+</tr>
+</table>
+} <span class="anchor" id="line-354" /><span class="anchor" id="line-355" />
+<p class="line874">A map from the (untranslated) name of a label, to additional properties that will be supplied when that label is created. <span class="anchor" id="line-356" /><span class="anchor" id="line-357" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-358" /><span class="anchor" id="line-359" />
+<p class="line867" />
+<div class="documented"><a id="config.layer_clipping" name="config.layer_clipping" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.layer_clipping</b>&#160;=</td>
+<td>{</td>
+</tr>
+</table>
+} <span class="anchor" id="line-360" /><span class="anchor" id="line-361" />
+<p class="line874">Controls layer clipping. This is a map from layer names to (x, y, height, width) tuples, where x and y are the coordinates of the upper-left corner of the layer, with height and width giving the layer size. <span class="anchor" id="line-362" /><span class="anchor" id="line-363" /></p>
+<p class="line874">If a layer is not mentioned in config.layer_clipping, then it is assumed to take up the full screen. <span class="anchor" id="line-364" /><span class="anchor" id="line-365" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-366" /><span class="anchor" id="line-367" />
+<p class="line867" />
+<div class="documented"><a id="config.layers" name="config.layers" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.layers</b>&#160;=</td>
+<td>[ 'master', 'transient', 'overlay' ]</td>
+</tr>
+</table>
+<span class="anchor" id="line-368" /><span class="anchor" id="line-369" />
+<p class="line874">This variable gives a list of all of the layers that Ren'Py knows about, in the order that they will be displayed to the screen. (The lowest layer is the first entry in the list.) Ren'Py uses the layers "master", "transient", and "overlay" internally, so they should always be in this list. <span class="anchor" id="line-370" /><span class="anchor" id="line-371" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-372" /><span class="anchor" id="line-373" />
+<p class="line867" />
+<div class="documented"><a id="config.lint_hooks" name="config.lint_hooks" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.lint_hooks</b>&#160;=</td>
+<td>...</td>
+</tr>
+</table>
+<span class="anchor" id="line-374" /><span class="anchor" id="line-375" />
+<p class="line874">This is a list of functions that are called, with no arguments, when lint is run. The functions are expected to check the script data for errors, and print any they find to standard output (using the python print statement is fine in this case). <span class="anchor" id="line-376" /><span class="anchor" id="line-377" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-378" /><span class="anchor" id="line-379" />
+<p class="line867" />
+<div class="documented"><a id="config.load_before_transitions" name="config.load_before_transitions" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.load_before_transitions</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-380" /><span class="anchor" id="line-381" />
+<p class="line874">If True, the start of transitions will be delayed until the images used by said transitions have finished loading. <span class="anchor" id="line-382" /><span class="anchor" id="line-383" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-384" /><span class="anchor" id="line-385" />
+<p class="line867" />
+<div class="documented"><a id="config.log" name="config.log" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.log</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-386" /><span class="anchor" id="line-387" />
+<p class="line874">If not None, this is expected to be a filename. Much of the text shown to the user by say or menu statements will also be logged to this file. <span class="anchor" id="line-388" /><span class="anchor" id="line-389" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-390" /><span class="anchor" id="line-391" />
+<p class="line867" />
+<div class="documented"><a id="config.main_menu" name="config.main_menu" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.main_menu</b>&#160;=</td>
+<td>[ ( "Start Game", "start", "True" ), ("Continue Game", ... ), ("Preferences", ... ), ("Quit Game", ...) ]</td>
+</tr>
+</table>
+<span class="anchor" id="line-392" /><span class="anchor" id="line-393" />
+<p class="line874">This is used to give the main menu that is shown to the user when the game first starts. It is a list of tuples, where the first element of each tuple is the title of the menu button, and the second element is a label that we jump to when that button is selected. (This jump exits the context in which the start menu executes.) The second element may also be a function, in which case it is called when the item is selected, in the menu context. The third element in each tuple is an expression, which is evaluated each time the main menu is displayed. If the expression evaluates to false, the menu choice is disabled. <span class="anchor" id="line-394" /><span class="anchor" id="line-395" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-396" /><span class="anchor" id="line-397" />
+<p class="line867" />
+<div class="documented"><a id="config.main_menu_music" name="config.main_menu_music" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.main_menu_music</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-398" /><span class="anchor" id="line-399" />
+<p class="line874">If not None, a music file to play when at the main menu. <span class="anchor" id="line-400" /><span class="anchor" id="line-401" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-402" /><span class="anchor" id="line-403" />
+<p class="line867" />
+<div class="documented"><a id="config.main_menu_positions" name="config.main_menu_positions" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.main_menu_positions</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-404" /><span class="anchor" id="line-405" />
+<p class="line874">If not None, this is a map between the default label for buttons on the main menu, and a dictionary containing properties that are applied to that button. This provides a simple way of customizing the main menu by changing where buttons are located on the screen. Please note that this disables the usual button-placement algorithm, so if one button is positioned this way, all must be. <span class="anchor" id="line-406" /><span class="anchor" id="line-407" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-408" /><span class="anchor" id="line-409" />
+<p class="line867" />
+<div class="documented"><a id="config.mouse" name="config.mouse" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.mouse</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-410" /><span class="anchor" id="line-411" />
+<p class="line874">This variable controls the use of user-defined mouse cursors. If None, the system mouse is used, which is usually a black-and-white mouse cursor. Otherwise, this should be a dictionary giving the mouse animations for various mouse types. Keys used by the default library include "default", "say", "with", "menu", "prompt", "imagemap", "pause", "mainmenu", and "gamemenu". The "default" key should always be present. The values in the dictionary should be list of frames making up the mouse cursor. Each frame is an (image, x-offset, y-offset) tuple. Image is a filename of an image, while x- and y- offset are the offsets of the hotspot within the image. The frames are played back at 20hz, and the animation loops after all frames have been shown. Please note that to show a frame more than once, it must be repeated in a frame list. That is implemented efficiently. <span class="anchor" id="line-412" /><span class="anchor" id="line-413" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-414" /><span class="anchor" id="line-415" />
+<p class="line867" />
+<div class="documented"><a id="config.overlay_during_with" name="config.overlay_during_with" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.overlay_during_with</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-416" /><span class="anchor" id="line-417" />
+<p class="line874">True if we want overlays to be shown during with statements, or False if we'd prefer that they be hidden during the with statements. <span class="anchor" id="line-418" /><span class="anchor" id="line-419" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-420" /><span class="anchor" id="line-421" />
+<p class="line867" />
+<div class="documented"><a id="config.overlay_functions" name="config.overlay_functions" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.overlay_functions</b>&#160;=</td>
+<td>[ ]</td>
+</tr>
+</table>
+<span class="anchor" id="line-422" /><span class="anchor" id="line-423" />
+<p class="line874">A list of functions. When called, each function is expected to return a list of displayables, which are added to the overlay list. See the section on overlays for more. <span class="anchor" id="line-424" /><span class="anchor" id="line-425" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-426" /><span class="anchor" id="line-427" />
+<p class="line867" />
+<div class="documented"><a id="config.overlay_layers" name="config.overlay_layers" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.overlay_layers</b>&#160;=</td>
+<td>[ 'overlay' ]</td>
+</tr>
+</table>
+<span class="anchor" id="line-428" /><span class="anchor" id="line-429" />
+<p class="line874">This is a list of all of the overlay layers. Overlay layers are cleared before the overlay functions are called. "overlay" should always be in this list. <span class="anchor" id="line-430" /><span class="anchor" id="line-431" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-432" /><span class="anchor" id="line-433" />
+<p class="line867" />
+<div class="documented"><a id="config.periodic_callback" name="config.periodic_callback" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.periodic_callback</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-434" /><span class="anchor" id="line-435" />
+<p class="line874">If not None, this should be a function. The function is called, with no arguments, at around 20hz. <span class="anchor" id="line-436" /><span class="anchor" id="line-437" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-438" /><span class="anchor" id="line-439" />
+<p class="line867" />
+<div class="documented"><a id="config.predict_statements" name="config.predict_statements" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.predict_statements</b>&#160;=</td>
+<td>10</td>
+</tr>
+</table>
+<span class="anchor" id="line-440" /><span class="anchor" id="line-441" />
+<p class="line874">This is the number of statements, including the current one, to consider when doing predictive image loading. A breadth-first search from the current statement is performed until this many statements is considered, and any image referenced in those statements is potentially predictively loaded. Setting this to 0 will disable predictive loading of images. <span class="anchor" id="line-442" /><span class="anchor" id="line-443" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-444" /><span class="anchor" id="line-445" />
+<p class="line867" />
+<div class="documented"><a id="config.preferences" name="config.preferences" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.preferences</b>&#160;=</td>
+<td>dict(...)</td>
+</tr>
+</table>
+<span class="anchor" id="line-446" /><span class="anchor" id="line-447" />
+<p class="line874">This is used to customize the preferences. Please read the section on customizing the main and game menus for more details on the contents of this variable. <span class="anchor" id="line-448" /><span class="anchor" id="line-449" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-450" /><span class="anchor" id="line-451" />
+<p class="line867" />
+<div class="documented"><a id="config.preference_positions" name="config.preference_positions" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.preference_positions</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-452" /><span class="anchor" id="line-453" />
+<p class="line874">If not None, this is should be a dictionary mapping preference name to the position of that preference on the screen. <span class="anchor" id="line-454" /><span class="anchor" id="line-455" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-456" /><span class="anchor" id="line-457" />
+<p class="line867" />
+<div class="documented"><a id="config.profile" name="config.profile" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.profile</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-458" /><span class="anchor" id="line-459" />
+<p class="line874">If set to True, some profiling information will be output to stdout (wherever that may go to). <span class="anchor" id="line-460" /><span class="anchor" id="line-461" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-462" /><span class="anchor" id="line-463" />
+<p class="line867" />
+<div class="documented"><a id="config.rollback_enabled" name="config.rollback_enabled" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.rollback_enabled</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-464" /><span class="anchor" id="line-465" />
+<p class="line874">Should the user be allowed to rollback the game? If set to False, the user cannot interactively rollback. (The feature still works for loading savegames when the script changes.) <span class="anchor" id="line-466" /><span class="anchor" id="line-467" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-468" /><span class="anchor" id="line-469" />
+<p class="line867" />
+<div class="documented"><a id="config.rollback_length" name="config.rollback_length" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.rollback_length</b>&#160;=</td>
+<td>128</td>
+</tr>
+</table>
+<span class="anchor" id="line-470" /><span class="anchor" id="line-471" />
+<p class="line874">When there are more than this many statements in the rollback log, Ren'Py will consider trimming the log. <span class="anchor" id="line-472" /><span class="anchor" id="line-473" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-474" /><span class="anchor" id="line-475" />
+<p class="line867" />
+<div class="documented"><a id="config.sample_sound" name="config.sample_sound" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.sample_sound</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-476" /><span class="anchor" id="line-477" />
+<p class="line874">If not None, this variable should give a sample sound that is played when the "Test" button on the volume slider is clicked. If None, then the "Test" button is not shown. <span class="anchor" id="line-478" /><span class="anchor" id="line-479" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-480" /><span class="anchor" id="line-481" />
+<p class="line867" />
+<div class="documented"><a id="config.say_allow_dismiss" name="config.say_allow_dismiss" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.say_allow_dismiss</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-482" /><span class="anchor" id="line-483" />
+<p class="line874">If not None, this should be a function. The function is called with no arguments when the user attempts to dismiss a say statement. If this function returns true, the dismissal is allowed, otherwise it is ignored. <span class="anchor" id="line-484" /><span class="anchor" id="line-485" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-486" /><span class="anchor" id="line-487" />
+<p class="line867" />
+<div class="documented"><a id="config.say_sustain_callbacks" name="config.say_sustain_callbacks" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.say_sustain_callbacks</b>&#160;=</td>
+<td>...</td>
+</tr>
+</table>
+<span class="anchor" id="line-488" /><span class="anchor" id="line-489" />
+<p class="line874">A list of functions that are called, without arguments, before the second and later interactions caused by a line of dialogue with pauses in it. Used to sustain voice through pauses. <span class="anchor" id="line-490" /><span class="anchor" id="line-491" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-492" /><span class="anchor" id="line-493" />
+<p class="line867" />
+<div class="documented"><a id="config.screen_height" name="config.screen_height" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.screen_height</b>&#160;=</td>
+<td>600</td>
+</tr>
+</table>
+<span class="anchor" id="line-494" /><span class="anchor" id="line-495" />
+<p class="line874">This sets the height of the screen. <span class="anchor" id="line-496" /><span class="anchor" id="line-497" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-498" /><span class="anchor" id="line-499" />
+<p class="line867" />
+<div class="documented"><a id="config.screen_width" name="config.screen_width" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.screen_width</b>&#160;=</td>
+<td>800</td>
+</tr>
+</table>
+<span class="anchor" id="line-500" /><span class="anchor" id="line-501" />
+<p class="line874">This sets the width of the screen. <span class="anchor" id="line-502" /><span class="anchor" id="line-503" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-504" /><span class="anchor" id="line-505" />
+<p class="line867" />
+<div class="documented"><a id="config.script_version" name="config.script_version" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.script_version</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-506" /><span class="anchor" id="line-507" />
+<p class="line874">If not None, this is interpreted as a script version. The library will use this script version to enable some compatibility features, if necessary. If None, we assume this is a latest-version script. <span class="anchor" id="line-508" /><span class="anchor" id="line-509" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-510" /><span class="anchor" id="line-511" />
+<p class="line867" />
+<div class="documented"><a id="config.searchpath" name="config.searchpath" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.searchpath</b>&#160;=</td>
+<td>[ 'common', 'game' ]</td>
+</tr>
+</table>
+<span class="anchor" id="line-512" /><span class="anchor" id="line-513" />
+<p class="line874">A list of directories that are searched for images, music, archives, and other media, but not scripts. This is initialized to a list containing "common" and the name of the game directory, which changes depending on the name of the exe file. This variable is not used to load scripts, as scripts will be loaded before it can be set. <span class="anchor" id="line-514" /><span class="anchor" id="line-515" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-516" /><span class="anchor" id="line-517" />
+<p class="line867" />
+<div class="documented"><a id="config.skip_delay" name="config.skip_delay" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.skip_delay</b>&#160;=</td>
+<td>75</td>
+</tr>
+</table>
+<span class="anchor" id="line-518" /><span class="anchor" id="line-519" />
+<p class="line874">The amount of time that dialogue will be shown for, when skipping statements using ctrl, in milliseconds. (Although it's nowhere near that precise in practice.) <span class="anchor" id="line-520" /><span class="anchor" id="line-521" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-522" /><span class="anchor" id="line-523" />
+<p class="line867" />
+<div class="documented"><a id="config.skip_indicator" name="config.skip_indicator" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.skip_indicator</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-524" /><span class="anchor" id="line-525" />
+<p class="line874">If True, the library will display a skip indicator when skipping through the script. <span class="anchor" id="line-526" /><span class="anchor" id="line-527" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-528" /><span class="anchor" id="line-529" />
+<p class="line867" />
+<div class="documented"><a id="config.sound" name="config.sound" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.sound</b>&#160;=</td>
+<td>True</td>
+</tr>
+</table>
+<span class="anchor" id="line-530" /><span class="anchor" id="line-531" />
+<p class="line874">If True, sound works. If False, the sound/mixer subsystem is completely disabled. <span class="anchor" id="line-532" /><span class="anchor" id="line-533" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-534" /><span class="anchor" id="line-535" />
+<p class="line867" />
+<div class="documented"><a id="config.sound_sample_rate" name="config.sound_sample_rate" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.sound_sample_rate</b>&#160;=</td>
+<td>44100</td>
+</tr>
+</table>
+<span class="anchor" id="line-536" /><span class="anchor" id="line-537" />
+<p class="line874">The sample rate that the sound card will be run at. If all of your wav files are of a lower rate, changing this to that rate may make things more efficent. <span class="anchor" id="line-538" /><span class="anchor" id="line-539" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-540" /><span class="anchor" id="line-541" />
+<p class="line867" />
+<div class="documented"><a id="config.start_interact_callbacks" name="config.start_interact_callbacks" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.start_interact_callbacks</b>&#160;=</td>
+<td>...</td>
+</tr>
+</table>
+<span class="anchor" id="line-542" /><span class="anchor" id="line-543" />
+<p class="line874">A list of functions that are called (without any arguments) when an interaction is started. These callbacks are not called when an interaction is restarted. <span class="anchor" id="line-544" /><span class="anchor" id="line-545" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-546" /><span class="anchor" id="line-547" />
+<p class="line867" />
+<div class="documented"><a id="config.sticky_positions" name="config.sticky_positions" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.sticky_positions</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-548" /><span class="anchor" id="line-549" />
+<p class="line874">Sticky positions causes the at clause of a show or scene statement to be remembered for as long as that character is on the screen. Future show statements without at clauses will be given the remembered at clause. This lets us easily change the character's expression without changing their position on the screen. Sticky positions does not interact well with multiple layers, when they are used with the show, hide, and scene statements via an onlayer clause. <span class="anchor" id="line-550" /><span class="anchor" id="line-551" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-552" /><span class="anchor" id="line-553" />
+<p class="line867" />
+<div class="documented"><a id="config.text_tokenizer" name="config.text_tokenizer" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.text_tokenizer</b>&#160;=</td>
+<td>...</td>
+</tr>
+</table>
+<span class="anchor" id="line-554" /><span class="anchor" id="line-555" />
+<p class="line874">This is used to set an alternate text-tokenizing function. <span class="anchor" id="line-556" /><span class="anchor" id="line-557" /></p>
+<p class="line874">The function is called when laying out a Text widget, and is given the string that is the text of the widget, and the style associated with the widget. <span class="anchor" id="line-558" /><span class="anchor" id="line-559" /></p>
+<p class="line874">It's expected to yield some number of pairs. In each pair, the first element is the kind of token found, and the second element is the text corresponding to that token. The following token types are defined: <span class="anchor" id="line-560" /><span class="anchor" id="line-561" /></p>
+<ul>
+<li>"newline" -- A newline, which when encountered starts a new line. <span class="anchor" id="line-562" /></li>
+<li>"word" -- A word of text. A line will never be broken inside of a word. <span class="anchor" id="line-563" /></li>
+<li>"space" -- A space. Spaces are always placed on the current line, and will never be placed as the start of a line. <span class="anchor" id="line-564" /></li>
+<li>"tag" -- A text tag. If encountered, the second element should be the name of the tag, without any enclosing braces. <span class="anchor" id="line-565" /><span class="anchor" id="line-566" /></li>
+</ul>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-567" /><span class="anchor" id="line-568" />
+<p class="line867" />
+<div class="documented"><a id="config.thumbnail_height" name="config.thumbnail_height" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.thumbnail_height</b>&#160;=</td>
+<td>75</td>
+</tr>
+</table>
+<span class="anchor" id="line-569" /><span class="anchor" id="line-570" />
+<p class="line874">The height of the thumbnails that are taken when the game is saved. These thumbnails are shown when the game is loaded. Please note that the thumbnail is shown at the size it was taken at, rather than the value of this setting when the thumbnail is shown to the user. <span class="anchor" id="line-571" /><span class="anchor" id="line-572" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-573" /><span class="anchor" id="line-574" />
+<p class="line867" />
+<div class="documented"><a id="config.thumbnail_width" name="config.thumbnail_width" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.thumbnail_width</b>&#160;=</td>
+<td>100</td>
+</tr>
+</table>
+<span class="anchor" id="line-575" /><span class="anchor" id="line-576" />
+<p class="line874">The width of the thumbnails that are taken when the game is saved. These thumbnails are shown when the game is loaded. Please note that the thumbnail is shown at the size it was taken at, rather than the value of this setting when the thumbnail is shown to the user. <span class="anchor" id="line-577" /><span class="anchor" id="line-578" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-579" /><span class="anchor" id="line-580" />
+<p class="line867" />
+<div class="documented"><a id="config.top_layers" name="config.top_layers" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.top_layers</b>&#160;=</td>
+<td>[ ]</td>
+</tr>
+</table>
+<span class="anchor" id="line-581" /><span class="anchor" id="line-582" />
+<p class="line874">This is a list of names of layers that are displayed above all other layers, and do not participate in a transition that is applied to all layers. If a layer name is listed here, it should not be listed in config.layers. <span class="anchor" id="line-583" /><span class="anchor" id="line-584" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-585" /><span class="anchor" id="line-586" />
+<p class="line867" />
+<div class="documented"><a id="config.transient_layers" name="config.transient_layers" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.transient_layers</b>&#160;=</td>
+<td>[ 'transient' ]</td>
+</tr>
+</table>
+<span class="anchor" id="line-587" /><span class="anchor" id="line-588" />
+<p class="line874">This variable gives a list of all of the transient layers. Transient layers are layers that are cleared after each interaction. "transient" should always be in this list. <span class="anchor" id="line-589" /><span class="anchor" id="line-590" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-591" /><span class="anchor" id="line-592" />
+<p class="line867" />
+<div class="documented"><a id="config.translations" name="config.translations" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.translations</b>&#160;=</td>
+<td>dict(...)</td>
+</tr>
+</table>
+<span class="anchor" id="line-593" /><span class="anchor" id="line-594" />
+<p class="line862">This is a map used to translate text in the game menu into your language. See <a href="../reference/Localizing_Ren%27Py.html">Localizing Ren'Py</a> for how to use it, and <a href="../cookbook/Translations.html">/renpy/doc/cookbook/Translations</a> for a list of available translations. <span class="anchor" id="line-595" /><span class="anchor" id="line-596" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-597" /><span class="anchor" id="line-598" />
+<p class="line867" />
+<div class="documented"><a id="config.window_icon" name="config.window_icon" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.window_icon</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-599" /><span class="anchor" id="line-600" />
+<p class="line874">If not None, this is expected to be the filename of an image giving an icon that is used for the window. Any image can be used, but most systems want a smaller image around 32x32. The image can have colorkey transparency which will be passed to the system. <span class="anchor" id="line-601" /><span class="anchor" id="line-602" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-603" /><span class="anchor" id="line-604" />
+<p class="line867" />
+<div class="documented"><a id="config.with_callback" name="config.with_callback" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;config.with_callback</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-605" /><span class="anchor" id="line-606" />
+<p class="line874">If not None, this should be a function that is called when a with statement occurs. This function can be responsible for putting up transient things on the screen during the transition. The function is called with a single argument, which is the transition that is occuring. It is expected to return a transition, which may or may not be the transition supplied as its argument. <span class="anchor" id="line-607" /><span class="anchor" id="line-608" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-609" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

@@ -1,0 +1,43 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-956be1ae5a6af7d0c4d47686520fb4ff46befdd9">DynamicCharacter</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="DynamicCharacter" name="DynamicCharacter" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/DynamicCharacter.html">DynamicCharacter</a></b>(</td>
+<td>name, **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" />Equivalent to calling Character with the same arguments, and with the dynamic argument set to true. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" />
+<p class="line867" />
+</div>
+<span class="anchor" id="line-7" />
+<h2 id="head-84463abd5b007ba475e000504ab5929138740d6e">Example</h2>
+<span class="anchor" id="line-8" />
+<p class="line867"><span class="anchor" id="line-9" /><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> povname = ""
+    <span class="renpy_keyword">$</span> pov = DynamicCharacter("<span class="renpy_string">povname</span>", color=(192, 64, 64, 255))
+
+<span class="renpy_keyword">$</span> povname = renpy.input("<span class="renpy_string">What is your name?</span>")
+pov "<span class="renpy_string">My name is %(povname)s.</span>"
+</pre>
+<span class="anchor" id="line-16" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

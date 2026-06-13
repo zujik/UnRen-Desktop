@@ -1,0 +1,51 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-1dfffe7bcbb4a4ac29727268cd958fe88ab719a9">ui.text</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ui.text" name="ui.text" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/ui.text.html">ui.text</a></b>(</td>
+<td>label, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This creates a widget displaying a text label. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>label</em> - The text that will be displayed on the screen. It uses font properties. The label can also be a list containing both text strings in widgets, in the case of a widget, the widget is displayed as if it was text of the enclosing font. The height of the area allocated is that of the font, with the width being taked from a render of the widget. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>slow</em> - If True, text is displayed slowly, controlled by the appropriate preference. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>slow_speed</em> - If slow is True, then this is the number of cps the text is displayed at, overriding the preference. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>slow_done</em> - If not None and slow is True, this is a callback that is called when we're done displaying text on the screen. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-16" />
+<h2 id="head-445cb616271e7c5b095285bce96bbc338c9b29d5">Example</h2>
+<span class="anchor" id="line-17" />
+<p class="line867"><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">python</span>:
+    <span class="renpy_comment"># Single-child widget, contains the following ui.vbox</span>
+    ui.window()
+
+    <span class="renpy_comment"># Multiple-child widget - all new widgets following this will be</span>
+    <span class="renpy_comment"># added as children to it, until the next ui.close</span>
+    ui.vbox() 
+    ui.text("<span class="renpy_string">To get to the next screen, click the 'Continue' button.</span>")
+    ui.close()
+</pre>
+<span class="anchor" id="line-28" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

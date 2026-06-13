@@ -1,0 +1,123 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-2" />
+<p class="line867" />
+<h1 id="head-1d9e9e33c422766eae86c65547b8564373ea517a">Text</h1>
+<span class="anchor" id="line-3" /><span class="anchor" id="line-4" />
+<p class="line874">This section covers aspects of text in Ren'Py. It first covers interpolation, supported by the say and menu statements, which allows values to be substituted into text. It next discusses text tags, which allow the style of portions of strings of text to be customized. Finally, it covers how Ren'Py handles fonts. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" /></p>
+<p class="line867" />
+<h2 id="head-b1cf652e3e75d6d2a575ef561bf974721779d5d9">Interpolation</h2>
+<span class="anchor" id="line-7" />
+<p class="line862">Interpolation is supported by the <tt class="backtick">say</tt> and <tt class="backtick">menu</tt> statements. These statements support python string interpolation over the contents of the store. The strings used by the statements support conversion specifiers of the form <tt class="backtick">%(variable)s</tt>, where <tt class="backtick">variable</tt> is the name of a variable and <tt class="backtick">s</tt> is a conversion. Useful conversions include 's', which interpolates a string; 'd', which interpolates an integer; and 'f', which interpolates a floating point number. Conversions may also include characters that modify how the string is converted. More information about conversions can be found at the <a class="http" href="http://www.renpy.org//www.python.org/doc/2.3.5/lib/typesseq-strings.html">Python string formatting operations reference</a>. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">In strings where interpolation is supported, percent characters (%) must be duplicated (to %%) to prevent them from being interpreted as introducing interpolation. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">$</span> name = '<span class="renpy_string">Samantha</span>'
+<span class="renpy_keyword">$</span> age = 19
+<span class="renpy_keyword">$</span> withyou = 110
+
+girl "<span class="renpy_string">My name is %(name)s, and I am %(age)d years old. I'm with you %(withyou)d%%</span>"
+</pre>
+<span class="anchor" id="line-17" />
+<p class="line874">When interpolation is not supported, the effect can often be faked by formatting a string against the result of calling the globals() function. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /></p>
+<pre class="renpy">
+ui.text("<span class="renpy_string">%(name)s's Vital Statistics</span>" % globals())
+</pre>
+<span class="anchor" id="line-21" />
+<p class="line874">Text tag processing is performed after interpolation, so it's important to ensure interpolation does not introduce text tags. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><span class="anchor" id="tags" /> <span class="anchor" id="line-24" /></p>
+<h2 id="head-19f62dedb24311a00b9756a8347f40e932b25bad">Text Tags</h2>
+<span class="anchor" id="line-25" /><span class="anchor" id="line-26" />
+<p class="line874">Text displayed by Ren'Py supports text tags. While styles can only be applied to an entire Text displayable, allow only a portion of the text in the displayable to be customized. As text tags are part of the Text displayable, they may be used in any string that is displayed on the screen. However, some of the text tags will only have effect if used in the appopriate context. <span class="anchor" id="line-27" /><span class="anchor" id="line-28" /></p>
+<p class="line874">Text tags should be used fairly sparingly. If you find you're using text tags on every line of the game, it's quite possible text tags are not the right solution for the problem at hand. Investigate text styles as a possible alternative to text tags. <span class="anchor" id="line-29" /><span class="anchor" id="line-30" /></p>
+<p class="line874">Text tags start with a left brace ({), and continue to the matching right brace (}). Immediately following the left brace is the tag name. The name may be followed by an argument, which is separated from the tag name by an equals sign (=). Some tags require an argument, while others require that the argument be omitted. Text tags are sensitive to case and white space. <span class="anchor" id="line-31" /><span class="anchor" id="line-32" /></p>
+<p class="line874">Some tags require a corresponding closing tag. A closing tag is any text tag where the name begins with a slash (/). Closing tags should be properly nested: "{b}{i}this is okay{/i}{/b}", while "{b}{i}this is wrong{/b}{/i}". While improper nesting of text tags will generally not cause an error, this problem may cause undesirable rendering results. The text between a tag and the corresponding closing tag is called the enclosed text. All tags must be closed by the end of the text string. <span class="anchor" id="line-33" /><span class="anchor" id="line-34" /></p>
+<p class="line874">To include a single left brace in text, two left braces ({{) musty be included instead. <span class="anchor" id="line-35" /><span class="anchor" id="line-36" /></p>
+<p class="line874">Ren'Py supports the following text tags: <span class="anchor" id="line-37" /><span class="anchor" id="line-38" /></p>
+<ul>
+<li>
+<p class="line862">{a=<em>argument</em>} and {/a} cause their enclosed text to be rendered as a hyperlink. The enclosed text may contain text tags, but may not contain another hyperlink. A hyperlink is rendered as a button containing the enclosed text. The text in the button does not participate in line-breaking. Rather, if the text grows too big for the line it is on, the whole button is moved to the start of the next line. <span class="anchor" id="line-39" /><span class="anchor" id="line-40" /></p>
+</li>
+</ul>
+<p class="line862">When a a hyperlink is clicked, the callback function defined in <a href="../reference/Configuration_Variables.html#config.hyperlink_callback">config.hyperlink_callback</a> is called with the text of the argument of the hyperlink. The default hyperlink handler interprets argument as a label, and calls this label in a new context. This is an appropriate behavior when using hyperlinks to definitions of unfamiliar terms. Hyperlinks should not be used as a general control-flow tool, as they transfer control to a new context when clicked. If the user saves while inside that context, when he loads the game he will be returned to the screen containing the hyperlink. <span class="anchor" id="line-41" /><span class="anchor" id="line-42" /><span class="anchor" id="line-43" /><span class="anchor" id="line-44" /><span class="anchor" id="line-45" /><span class="anchor" id="line-46" /><span class="anchor" id="line-47" /><span class="anchor" id="line-48" /><span class="anchor" id="line-49" /><span class="anchor" id="line-50" /><span class="anchor" id="line-51" /><span class="anchor" id="line-52" /><span class="anchor" id="line-53" /><span class="anchor" id="line-54" /><span class="anchor" id="line-55" /><span class="anchor" id="line-56" /><span class="anchor" id="line-57" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> definition = Character(None, window_yfill=True, window_xmargin=20, 
+                             window_ymargin=20, window_background=Solid((0, 0, 0, 192)))
+
+<span class="renpy_keyword">label</span> start:
+
+    "<span class="renpy_string">A game that instructs on how to make a game? Isn't that a sort of {a=define_quine}Quine{/a}?</span>"
+
+    <span class="renpy_comment"># ...</span>
+
+<span class="renpy_keyword">label</span> define_quine:
+
+    definition "<span class="renpy_string">Quine:\n\nA program that prints itself to its output.</span>"
+
+    <span class="renpy_keyword">return</span>
+</pre>
+<span class="anchor" id="line-58" />
+<ul>
+<li>{b}text{/b} renders the enclosed text in a bold font. <span class="anchor" id="line-59" /></li>
+<li>{color=spec}text{/color} changes the color of the enclosed text. The color may be a hex triple or a hex sextuple, optionally preceded by a hash mark. (The same format that color() accepts. f00, ff0000, #f00, and #ff0000 are all valid representations of red.) <span class="anchor" id="line-60" /></li>
+<li>{fast} causes the immediated display of text before it. It can be used to specify where slow text shold begin to display from. It only has an effect if the text speed preference is not infinite. Use this if you have two lines of dialogue where the second is an extension of the first, as a variant of the pause effect that allows for changes to occur while paused. This tag does not take a closing tag. <span class="anchor" id="line-61" /></li>
+<li>{i}text{/i} makes the enclosed text in an italic font. <span class="anchor" id="line-62" /></li>
+<li>{image=filename} causes the supplied image to be loaded and included into text. The image should are treated as if they were text, and should not be taller than a single line of text. {image} does not take a closing tag. <span class="anchor" id="line-63" /></li>
+<li>{p} causes the display of text to be paused until the user clicks to continue, or until an auto-forward occurs. This allows text to be displayed incrementally. {p} does not take a closing tags, and causes a newline to be interted after the given text. The logic to handle pausing is implemented in the Character object, and may not work for other text widgets. <span class="anchor" id="line-64" /></li>
+<li>{plain}text{/plain} makes the enclosed text plain, eliminating bold, italic, and underline styles <span class="anchor" id="line-65" /></li>
+<li>{size=spec}text{/size} changes the size of the text. The supplied spec may be a number, in which case it is the number of pixels high that the text will be. If it is a number preceded by a plus (like "+10"), it means to increase the size by that number of pixels, while if it is preceded by a minus it means to decrease. <span class="anchor" id="line-66" /></li>
+<li>{u}text{/u} renders the enclosed text with an underline. <span class="anchor" id="line-67" /></li>
+<li>{w} is similar to {p}, except that it does not cause a newline. <span class="anchor" id="line-68" /><span class="anchor" id="line-69" /></li>
+</ul>
+<p class="line874">The following is an example of a say statement that uses many text tags. Use of this many text tags is not recommended in a high-quality game. <span class="anchor" id="line-70" /><span class="anchor" id="line-71" /><span class="anchor" id="line-72" /><span class="anchor" id="line-73" /><span class="anchor" id="line-74" /></p>
+<pre class="renpy">
+"<span class="renpy_string">Using text tags, we can make text {size=+12}bigger{/size} or
+ {size=-8}smaller{/size}. We can make it {b}bold{/b}, {i}italic{/i},
+ or {u}underlined{/u}. We can even change its {color=#f88}color{/color}.</span>"
+</pre>
+<span class="anchor" id="line-75" />
+<p class="line867" />
+<h2 id="head-f428c253dd6df0a442ea69008d7fb2220e1248d5">Fonts and SFonts</h2>
+<span class="anchor" id="line-76" /><span class="anchor" id="line-77" />
+<p class="line862">The <a href="../reference/functions/Text.html">Text</a> displayable attempts to find an an appropriate font using information about the font name, boldness, italics, underline and size. This information is supplied to the <a href="../reference/functions/Text.html">Text</a> displayable using style properties, but may then be modified using text tags. Ren'Py translates this into a font using the following algorithm. <span class="anchor" id="line-78" /><span class="anchor" id="line-79" /></p>
+<ul>
+<li>
+<p class="line862">A (name, boldness, italics) triple is looked up in <a href="../reference/Configuration_Variables.html#config.font_replacement_map">config.font_replacement_map</a> . If present, it is expected to map to a triple giving replacement values for name, boldness, and italics. This lookup is not recursive, so only one lookup is performed. This lookup allows specific bold or italic font shapes to be used. <span class="anchor" id="line-80" /></p>
+</li>
+<li>If a SFont has been registered with the same name, size, boldness, italics, and underline, that SFont is used. <span class="anchor" id="line-81" /></li>
+<li>Otherwise, Ren'Py interprets the font name as the filename of a truetype font. This filename is searched for in the searchpath and archives. If found, it is used as the font file. <span class="anchor" id="line-82" /></li>
+<li>Otherwise, Ren'Py searches for a font with the given filename in the system font directory. If found, that file is used. <span class="anchor" id="line-83" /></li>
+<li>Otherwise, Ren'Py interprets the filename as the name of a truetype font, which is loaded if found. <span class="anchor" id="line-84" /><span class="anchor" id="line-85" /></li>
+</ul>
+<p class="line874">The truetype font loading code will automatically scale and underline the font as required. If you have not provided bold and italic font mappings, it will also artificially thicken and slant the font when necessary. <span class="anchor" id="line-86" /><span class="anchor" id="line-87" /></p>
+<p class="line874">For best results, fonts should be truetype files that ship with the game. This ensures that required fonts are always present on the user's system. <span class="anchor" id="line-88" /><span class="anchor" id="line-89" /></p>
+<p class="line867" />
+<h2 id="head-87578ed19b87097c1e6cb9f15e7a2a9c252763ef">SFonts</h2>
+<span class="anchor" id="line-90" />
+<p class="line874">Ren'Py supports rendering text using SFonts as well as TrueType fonts. An SFont is a properly prepared image file, usually a PNG, containing images of the character in the font. Ren'Py has its own implementation of SFonts that supports an arbitrary unicode character set and kerning. <span class="anchor" id="line-91" /><span class="anchor" id="line-92" /></p>
+<p class="line874">SFonts have several advantages and several disadvantages. One of the advantages is that SFonts are bitmap-based, which means it is easy to create custom fonts and to find free examples (in contrast, the licenses of high quality TrueType fonts rarely permit redistribution). Also, as SFonts are images, it's possible to apply effects to them that Ren'Py would not otherwise support. The downsides of SFonts come from the fact that Ren'Py doesn't render them, but instead merely copies characters out of them. Because of this, one needs to supply another image to Ren'Py if one wants the font to be scaled, made bold, made italic, or underlined. Ren'Py will recolor the SFont, with white being mapped to the supplied color, and other colors interpolated on a channel-by-channel basis. <span class="anchor" id="line-93" /><span class="anchor" id="line-94" /></p>
+<p class="line862">For more information about SFonts, see <a class="http" href="http://www.renpy.org//www.linux-games.com/sfont/">http://www.linux-games.com/sfont/</a>. <span class="anchor" id="line-95" /><span class="anchor" id="line-96" /></p>
+<p class="line862">To use SFonts, they must first be registered with Ren'Py using the <a href="../reference/functions/renpy.register_sfont.html">renpy.register_sfont</a> function. They can then be used by setting the font property of a style to the name of the SFont. <span class="anchor" id="line-97" /> <span class="anchor" id="line-98" />The default character set for a SFont is: <span class="anchor" id="line-99" /><span class="anchor" id="line-100" /></p>
+<pre>
+! " # $ % &amp; ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; &lt; = &gt; ? 
+<span class="anchor" id="line-101" />@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _ 
+<span class="anchor" id="line-102" />` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~
+<span class="anchor" id="line-103" />
+</pre>
+<span class="anchor" id="line-104" />
+<p class="line874">Please note that you must register a sfont for each combination of font, size, bold, italic, and underline your game uses. <span class="anchor" id="line-105" /><span class="anchor" id="line-106" /></p>
+<p class="line862">Legal issues regarding the use of copyrighted outline fonts in creating SFonts are discussed in <a href="http://www.renpy.org/wiki/renpy/misc/Bitmap_Fonts_and_Copyright">Bitmap Fonts and Copyright</a> <span class="anchor" id="line-107" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

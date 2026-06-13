@@ -1,0 +1,46 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-220cd20ea8019bf8f84d304f2ec48b3b17540290">Pan</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Pan" name="Pan" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/Pan.html">Pan</a></b>(</td>
+<td>startpos, endpos, time, repeat=False, bounce=False, time_warp=None, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Pan, when given the appropriate arguments, gives an object that can be passed to the at clause of an image to cause the image to be panned on the screen. The parameters <em>startpos</em> and <em>endpos</em> are tuples, containing the x and y coordinates of the upper-left hand corner of the screen relative to the image. <em>time</em> is the time it will take this position to move from startpos to endpos. <em>repeat</em>, <em>bounce</em>, and <em>time_warp</em> are as for <a href="../../reference/functions/Motion.html">Motion</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">As the current implementation of Ren'Py is quite limited, there are quite a few restrictions that we put on pan. The big one is that there always must be a screen's worth of pixels to the right and below the start and end positions. Failure to ensure this may lead to inconsistent rendering. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line862">Please note that the pan will be immediately displayed, and that Ren'Py will not wait for it to complete before moving on to the next statement. This may lead to the pan being overlayed with text or dialogue. You may want to use a call to <a href="../../reference/functions/renpy.pause.html">renpy.pause</a> to delay for the time it will take to complete the pan. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">Finally, also note that when a pan is completed, the image locks into the ending position. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" />
+<h2 id="head-598f2177c5697eb086ffe675131d065aafb0694e">Example</h2>
+<span class="anchor" id="line-15" />
+<p class="line867"><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<pre class="renpy">
+"<span class="renpy_string">For this example, assume that the screen is 800 x 600, and that the image
+ marspan is 2400 x 600 pixels in size. We want to take 10 seconds to pan
+ from left to right on the image.</span>"
+
+<span class="renpy_keyword">scene</span> marspan <span class="renpy_keyword">at</span> Pan((0, 0), (1600, 0), 10.0)
+</pre>
+<span class="anchor" id="line-22" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

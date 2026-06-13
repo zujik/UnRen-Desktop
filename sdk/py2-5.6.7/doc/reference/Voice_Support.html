@@ -1,0 +1,64 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-01baaf1d7b1d5b29123cb6b9271aa0c0f65095cb">Voice Support</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line874">Ren'Py includes support for adding voice acting to a game. This is done through two additional statements. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line862">The <tt>voice</tt> <em>filename</em> statement plays the voice file given in <em>filename</em>. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">The <tt>voice&#160;sustain</tt> statement continues playing the previous voice file. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line862">A voice file is played at the start of the first interaction following a voice statement. It is terminated at the start of the next interaction, unless a statement is given that continues playing it. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">voice</span> "<span class="renpy_string">eileen1.ogg</span>"
+e "<span class="renpy_string">I'm now saying something.</span>"
+
+"<span class="renpy_string">But she stopped saying it, because this statement started.</span>"
+
+<span class="renpy_keyword">voice</span> "<span class="renpy_string">eileen2.ogg</span>"
+e "<span class="renpy_string">Now I'm saying something else...</span>"
+
+<span class="renpy_keyword">voice</span> sustain
+e "<span class="renpy_string">And I'll keep saying it!</span>"
+</pre>
+<span class="anchor" id="line-23" /><span class="anchor" id="line-24" />
+<p class="line867"><strong>Function Equivalents.</strong> There are two functions corresponding to the two voice statements. <span class="anchor" id="line-25" /><span class="anchor" id="line-26" /></p>
+<p class="line867" />
+<div class="documented"><a id="voice" name="voice" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;voice</b>(</td>
+<td>filename)</td>
+</tr>
+</table>
+<span class="anchor" id="line-27" /><span class="anchor" id="line-28" />
+<p class="line862">Plays the voice in <em>filename</em>. Equivalent to <tt>voice</tt>. <span class="anchor" id="line-29" /><span class="anchor" id="line-30" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-31" /><span class="anchor" id="line-32" />
+<p class="line867" />
+<div class="documented"><a id="voice_sustain" name="voice_sustain" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;voice_sustain</b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-33" /><span class="anchor" id="line-34" />
+<p class="line862">Continues playing the current voice file. Equivalent to <tt>voice&#160;sustain</tt>. <span class="anchor" id="line-35" /><span class="anchor" id="line-36" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-37" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

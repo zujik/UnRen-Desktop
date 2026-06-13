@@ -1,0 +1,47 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-c175efa42128a73b3b43c3ea33b4faa79890f751">renpy.pause</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.pause" name="renpy.pause" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.pause.html">renpy.pause</a></b>(</td>
+<td>delay=None, music=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">When called with no arguments, this pauses and waits for the user to click before advancing the script. If given a delay parameter, then Ren'Py will wait for that amount of time before continuing, unless a user clicks to interrupt the delay. This is useful to, for instance, show an image that will stay on screen for a certain amount of time and then proceed to the next script statement without waiting for a click forever. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>delay</em> - The number of seconds to delay. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>music</em> - If supplied, and music is playing, this takes precedence over the delay parameter. It gives a time, in seconds, into the currently playing music track. Ren'Py will pause until the music has played up to that point. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">Returns True if the pause was interrupted by the user hitting a key or clicking a mouse, or False if the pause was ended by the appointed time being reached. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" />
+<h2 id="head-cc1fb07e1fb72db6f3ae2383b80b95287eb789fe">Example</h2>
+<span class="anchor" id="line-15" />
+<p class="line867"><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">scene</span> black
+<span class="renpy_keyword">show</span> text "<span class="renpy_string">American Bishoujo Presents...</span>" <span class="renpy_keyword">with</span> dissolve
+<span class="renpy_keyword">$</span> renpy.pause(1.0)
+<span class="renpy_keyword">hide</span> text <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-21" />
+<p class="line874">TODO: music pause example. <span class="anchor" id="line-22" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

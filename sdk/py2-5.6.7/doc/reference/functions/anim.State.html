@@ -1,0 +1,65 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-d2bc2a51bc365815452b431b3213eb89d006d22f">anim.State</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="anim.State" name="anim.State" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/anim.State.html">anim.State</a></b>(</td>
+<td>name, image, *atlist, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates a state that can be used in an <a href="../../reference/functions/anim.SMAnimation.html">anim.SMAnimation</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>name</em> - A string giving the name of this state. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>image</em> - The displayable that is shown to the user while we are in (entering) this state. For convenience, this can also be a string or tuple, which is interpreted with <a href="../../reference/functions/Image.html">Image</a> . <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>image</em> should be None when this State is used with motion, to indicate that the image will be replaced with the child of the motion. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>atlist</em> - A list of functions to call on the image. (In general, if something can be used in an at clause, it can be used here as well.) <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line862">If any keyword arguments are given, they are used to construct a <a href="../../reference/functions/Position.html">Position</a> object, that modifies the position of the image. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-18" />
+<h2 id="head-5485f46515954e62ee59269c1ede4e760adc7baf">Example</h2>
+<span class="anchor" id="line-19" />
+<p class="line867"><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /><span class="anchor" id="line-40" /><span class="anchor" id="line-41" /><span class="anchor" id="line-42" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> blinking = anim.SMAnimation("<span class="renpy_string">a</span>",
+        anim.State("<span class="renpy_string">a</span>", "<span class="renpy_string">eyes_open.png</span>"),
+
+        <span class="renpy_comment"># This edge keeps us showing the eyes open for a second.</span>
+        anim.Edge("<span class="renpy_string">a</span>", 1.0, "<span class="renpy_string">a</span>", prob=60),
+
+        <span class="renpy_comment"># This edge causes the eyes to start closing...</span>
+        anim.Edge("<span class="renpy_string">a</span>", 0.25, "<span class="renpy_string">b</span>"),
+
+        <span class="renpy_comment"># ..because it brings us here.</span>
+        anim.State("<span class="renpy_string">b</span>", "<span class="renpy_string">eyes_half.png</span>"),
+
+        <span class="renpy_comment"># And so on...</span>
+        anim.Edge("<span class="renpy_string">b</span>", 0.25, "<span class="renpy_string">c</span>"),
+        anim.State("<span class="renpy_string">c</span>", "<span class="renpy_string">eyes_closed.png</span>"),
+        anim.Edge("<span class="renpy_string">c</span>", 0.25, "<span class="renpy_string">d</span>"),
+        anim.State("<span class="renpy_string">d</span>", "<span class="renpy_string">eyes_half.png</span>"),
+
+        <span class="renpy_comment"># And back to a.</span>
+        anim.Edge("<span class="renpy_string">d</span>", 0.5, "<span class="renpy_string">a</span>")
+        )
+</pre>
+<span class="anchor" id="line-43" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

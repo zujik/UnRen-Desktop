@@ -1,0 +1,367 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-c58f4d36cdea685cdf0e383dbde9c8d07a9bf7b7">Quickstart Manual</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line862">Welcome to the Ren'Py quickstart manual. The purpose of this manual is to demonstrate how you can make a Ren'Py game from scratch, in a few easy steps. We'll do this by showing how to make a simple game, <em>The Question</em>, from scratch. This manual contains a number of example, which are included as part of the demo game. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line867" />
+<div class="table-of-contents">
+<p class="table-of-contents-heading">Contents</p>
+<ol>
+<li><a href="#head-c58f4d36cdea685cdf0e383dbde9c8d07a9bf7b7">Quickstart Manual</a>
+<ol>
+<li><a href="#head-6ad637c9270a682b9daab2c21dc5f601e5be0086">The Ren'Py Launcher</a></li>
+<li><a href="#head-3d97f451f06410e67ca4eb38db9e5f59eb4b5b45">A Simple Game</a></li>
+<li><a href="#head-f59805c9401ba994e3eec2535043e420c7d782ee">Init Blocks and Characters</a></li>
+<li><a href="#head-de63f441fb2207f4ca858ba5425d2bd4f7f67f84">Images</a></li>
+<li><a href="#head-2d2ddaa08af7b81b138b0f62ae57b23800bcb24c">Transitions</a></li>
+<li><a href="#head-b0ad0515982ded4f29b6361ea573f1b1a29119ca">Positions</a></li>
+<li><a href="#head-24833c5fa47e95b35fcfe2020df982488a98a85d">Music and Sound</a></li>
+<li><a href="#head-d549d4735e78c8801494b1ca55aa1d471c3e421e">Ending the Game</a></li>
+<li><a href="#head-143fce676fc574cc13762fac374ff3373f6c7465">Menus, Labels, and Jumps</a></li>
+<li><a href="#head-96689d7de78b5b44b311ee2626cb771b9d655a12">Python and If Statements</a></li>
+<li><a href="#head-24afd262d40a6eeed0f5219636d9aa82bf3d0e57">Releasing Your Game</a></li>
+<li><a href="#head-561a3b8d46ec925677e794b08f56be4cbffb0e69">Script of The Question</a></li>
+<li><a href="#head-b5dd2409f99a52f96ae132139ec14bdb9e95fdaa">Where do we go from here?</a></li>
+</ol>
+</li>
+</ol>
+</div>
+<span class="anchor" id="line-6" /><span class="anchor" id="line-7" />
+<p class="line867" />
+<h2 id="head-6ad637c9270a682b9daab2c21dc5f601e5be0086">The Ren'Py Launcher</h2>
+<span class="anchor" id="line-8" /><span class="anchor" id="line-9" />
+<p class="line874">Before you being making a game, you should first take some time to learn how the Ren'Py launcher works. The launcher lets you create, manage, edit, and run Ren'Py projects. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><strong>Choosing a Project.</strong> You should first see what the completed <em>The Question</em> game looks like. To do this, start the Ren'Py launcher, and choose "Select Project". A menu of projects will come up, choose "the_question" from it. You'll be returned to the main menu, and you can now choose "Launch" to start <em>The Question</em>. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">You can get back to the Ren'Py demo by doing the same thing, but choosing "demo" instead of "the_question". <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><strong>Creating a new Project.</strong> Create a new project by choosing "New Project" from the launcher. The launcher will ask you to choose a template, choose "template". The launcher will then ask you for a project name. Since "the_question" is already taken, you should enter something different, like "my_question". The launcher will then ask you to choose a color theme for the project. It doesn't matter what you pick at this point, just choose something that appeals to you. You'll be returned to the top menu of the launcher with your new game chosen. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+<h2 id="head-3d97f451f06410e67ca4eb38db9e5f59eb4b5b45">A Simple Game</h2>
+<span class="anchor" id="line-18" /><span class="anchor" id="line-19" />
+<p class="line867"><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">label</span> start:
+    "<span class="renpy_string">I'll ask her...</span>"
+
+    "<span class="renpy_string">Me</span>" "<span class="renpy_string">Um... will you...</span>"
+    "<span class="renpy_string">Me</span>" "<span class="renpy_string">Will you be my artist for a visual novel?</span>"
+
+    "<span class="renpy_string">Silence.</span>"
+    "<span class="renpy_string">She is shocked, and then...</span>"
+
+    "<span class="renpy_string">Sylvie</span>" "<span class="renpy_string">Sure, but what is a \"visual novel?\"</span>"
+</pre>
+<span class="anchor" id="line-31" /><span class="anchor" id="line-32" />
+<p class="line874">This is perhaps one of the simplest Ren'Py games. It doesn't include any pictures or anything like that, but it does show a conversation between the two characters. <span class="anchor" id="line-33" /><span class="anchor" id="line-34" /></p>
+<p class="line874">To try this out, go into the launcher, change to the "My Question" project, and pick "Edit Script". This will open the script files in a text editor. Choose the script.rpy file, and erase everything in it. We're starting from scratch, so you don't need what's there. Copy the example above into script.rpy, and save it. <span class="anchor" id="line-35" /><span class="anchor" id="line-36" /></p>
+<p class="line874">You're now ready to run this example. Go back to the launcher, and click Run. Ren'Py will start up. Notice how, without any extra work, Ren'Py has given you menus that let you load and save the game, and change various preferences. When ready, click "Start Game", and play through this example game. <span class="anchor" id="line-37" /><span class="anchor" id="line-38" /></p>
+<p class="line874">This example shows some of the commonly-used Ren'Py statements. <span class="anchor" id="line-39" /><span class="anchor" id="line-40" /></p>
+<p class="line874">The first line is a label statement. The label statement is used to give a name to a place in the program. In this case, we create a label named "start". The start label is special, as it's where Ren'Py scripts begin running when the user clicks "Start Game" on the main menu. <span class="anchor" id="line-41" /><span class="anchor" id="line-42" /></p>
+<p class="line874">The other lines are say statements. There are two forms of the say statement. The first is a string (beginning with a double-quote, containing characters, and ending with a double-quote) on a line by itself, which is used for narration, and the thoughts of the main character. The second form consists of two strings. It's used for dialogue, with the first string being a character name and the second being what that character is saying. <span class="anchor" id="line-43" /><span class="anchor" id="line-44" /></p>
+<p class="line874">Note that all the say statements are indented by four spaces. This is because they are a block underneath the label statement. In Ren'Py, blocks must be indented relative to the prior statement, and all of the statements in a block must be indented by the same amount. <span class="anchor" id="line-45" /><span class="anchor" id="line-46" /></p>
+<p class="line874">When strings contain double-quote characters, those characters need to be preceded by a backslash. This is done in the last line of our example. <span class="anchor" id="line-47" /><span class="anchor" id="line-48" /></p>
+<p class="line874">While this simple game isn't much to look at, it's an example of how easy it is to get something working in Ren'Py. We'll add the pictures in a little bit, but first, let's see how to declare characters. <span class="anchor" id="line-49" /><span class="anchor" id="line-50" /></p>
+<p class="line867" />
+<h2 id="head-f59805c9401ba994e3eec2535043e420c7d782ee">Init Blocks and Characters</h2>
+<span class="anchor" id="line-51" /><span class="anchor" id="line-52" />
+<p class="line874">One problem with the first example is that it requires you to repeatedly type the name of a character each time they speak. In a dialogue-heavy game, this might be alot of typing. Also, both character names are displayed in the same way, in fairly boring white text. To fix this, Ren'Py lets you define characters in advance. This lets you associate a short name with a character, and to change the color of the character's name. <span class="anchor" id="line-53" /><span class="anchor" id="line-54" /></p>
+<p class="line867"><span class="anchor" id="line-55" /><span class="anchor" id="line-56" /><span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /><span class="anchor" id="line-60" /><span class="anchor" id="line-61" /><span class="anchor" id="line-62" /><span class="anchor" id="line-63" /><span class="anchor" id="line-64" /><span class="anchor" id="line-65" /><span class="anchor" id="line-66" /><span class="anchor" id="line-67" /><span class="anchor" id="line-68" /><span class="anchor" id="line-69" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> s = Character('<span class="renpy_string">Sylvie</span>', color="<span class="renpy_string">#c8ffc8</span>")
+    <span class="renpy_keyword">$</span> m = Character('<span class="renpy_string">Me</span>', color="<span class="renpy_string">#c8c8ff</span>")
+
+<span class="renpy_keyword">label</span> start:
+    "<span class="renpy_string">I'll ask her...</span>"
+
+    m "<span class="renpy_string">Um... will you...</span>"
+    m "<span class="renpy_string">Will you be my artist for a visual novel?</span>"
+
+    "<span class="renpy_string">Silence.</span>"
+    "<span class="renpy_string">She is shocked, and then...</span>"
+
+    s "<span class="renpy_string">Sure, but what is a \"visual novel?\"</span>"
+</pre>
+<span class="anchor" id="line-70" /><span class="anchor" id="line-71" />
+<p class="line874">The first line is an init statement, which is used to introduce an init block. The two indented lines after the init statement are run when the game first starts up. The init block is used for declaring characters, variables, and images. Code that interacts with the user (like say statements) is not allowed in an init block. <span class="anchor" id="line-72" /><span class="anchor" id="line-73" /></p>
+<p class="line874">The second and third lines define characters. The second line defines a character with the short name of "s", the long name "Sylvie", with a name that is shown in a greenish color. (The colors a red-green-blue hex triples, as used in web pages.) <span class="anchor" id="line-74" /><span class="anchor" id="line-75" /></p>
+<p class="line874">The third line creates a character with a short name "m", a long name "Me", with the name shown in a reddish color. Other characters can be defined by copying one of the character lines, and changing the short name, long name, and color. <span class="anchor" id="line-76" /><span class="anchor" id="line-77" /></p>
+<p class="line874">We've also changed the say statements to use character objects instead of a character name string. This tells Ren'Py to use the characters we defined in the init block. <span class="anchor" id="line-78" /><span class="anchor" id="line-79" /></p>
+<p class="line867" />
+<h2 id="head-de63f441fb2207f4ca858ba5425d2bd4f7f67f84">Images</h2>
+<span class="anchor" id="line-80" /><span class="anchor" id="line-81" />
+<p class="line874">A visual novel isn't much of a visual novel without pictures. Let's add some pictures to our game. <span class="anchor" id="line-82" /><span class="anchor" id="line-83" /></p>
+<p class="line867"><span class="anchor" id="line-84" /><span class="anchor" id="line-85" /><span class="anchor" id="line-86" /><span class="anchor" id="line-87" /><span class="anchor" id="line-88" /><span class="anchor" id="line-89" /><span class="anchor" id="line-90" /><span class="anchor" id="line-91" /><span class="anchor" id="line-92" /><span class="anchor" id="line-93" /><span class="anchor" id="line-94" /><span class="anchor" id="line-95" /><span class="anchor" id="line-96" /><span class="anchor" id="line-97" /><span class="anchor" id="line-98" /><span class="anchor" id="line-99" /><span class="anchor" id="line-100" /><span class="anchor" id="line-101" /><span class="anchor" id="line-102" /><span class="anchor" id="line-103" /><span class="anchor" id="line-104" /><span class="anchor" id="line-105" /><span class="anchor" id="line-106" /><span class="anchor" id="line-107" /><span class="anchor" id="line-108" /><span class="anchor" id="line-109" /><span class="anchor" id="line-110" /><span class="anchor" id="line-111" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> bg meadow = "<span class="renpy_string">meadow.jpg</span>"
+    <span class="renpy_keyword">image</span> bg uni = "<span class="renpy_string">uni.jpg</span>"
+
+    <span class="renpy_keyword">image</span> sylvie smile = "<span class="renpy_string">sylvie_smile.png</span>"
+    <span class="renpy_keyword">image</span> sylvie surprised = "<span class="renpy_string">sylvie_surprised.png</span>"    
+
+    <span class="renpy_keyword">$</span> s = Character('<span class="renpy_string">Sylvie</span>', color="<span class="renpy_string">#c8ffc8</span>")
+    <span class="renpy_keyword">$</span> m = Character('<span class="renpy_string">Me</span>', color="<span class="renpy_string">#c8c8ff</span>")
+
+<span class="renpy_keyword">label</span> start:
+    <span class="renpy_keyword">scene</span> bg meadow
+    <span class="renpy_keyword">show</span> sylvie smile
+
+    "<span class="renpy_string">I'll ask her...</span>"
+
+    m "<span class="renpy_string">Um... will you...</span>"
+    m "<span class="renpy_string">Will you be my artist for a visual novel?</span>"
+
+    <span class="renpy_keyword">show</span> sylvie surprised
+
+    "<span class="renpy_string">Silence.</span>"
+    "<span class="renpy_string">She is shocked, and then...</span>"
+
+    <span class="renpy_keyword">show</span> sylvie smile
+
+    s "<span class="renpy_string">Sure, but what is a \"visual novel?\"</span>"
+</pre>
+<span class="anchor" id="line-112" /><span class="anchor" id="line-113" />
+<p class="line874">The first new thing we needed to do was to declare the images, using image statements on lines 2, 3, 5, and 6, inside the init block. These image statements give an image name, and the filename the image is found in. <span class="anchor" id="line-114" /><span class="anchor" id="line-115" /></p>
+<p class="line874">For example, line 5 declares an image named "sylvie smile", found in the filename "sylvie_smile.png", with the tag "sylvie". <span class="anchor" id="line-116" /><span class="anchor" id="line-117" /></p>
+<p class="line874">We have a scene statement on line 12. This statement clears out the screen, and shows the "bg meadow" image. The next line is a show statement, which shows the "sylvie smile" image on the screen. <span class="anchor" id="line-118" /><span class="anchor" id="line-119" /></p>
+<p class="line874">The first part of an image name is the image tag. If an image is being shown, and another image with the same tag is on the screen, then the image that's on the screen is replaced with the one being shown. This happens on line 19, the second show statement. Before line 19 is run, the image "sylvie smile" is on the screen. When line 19 is run, that image is replaces with "sylvie surprised", since they share the "sylvie" tag. <span class="anchor" id="line-120" /><span class="anchor" id="line-121" /></p>
+<p class="line862">For Ren'Py to find the image files, they need to be placed in the game directory of the current project. The game directory can be found at "&lt;Project-Name&gt;/game/", or by clicking the "Game Directory" button in the launcher. You'll probably want to copy the image files from the "the_question/game/" directory into the "my_question/game/" directory, so you can run this example. <span class="anchor" id="line-122" /><span class="anchor" id="line-123" /></p>
+<p class="line874">Ren'Py does not make any distinction between character and background art, as they're both treated as images. In general, character art needs to be transparent, which means it should be a PNG file. Background art can be JPEG or PNG files. By convention, background images start with the "bg" tag. <span class="anchor" id="line-124" /><span class="anchor" id="line-125" /></p>
+<p class="line867"><strong>Hide Statement.</strong> Ren'Py also supports a hide statement, which hides the given image. <span class="anchor" id="line-126" /><span class="anchor" id="line-127" /></p>
+<p class="line867"><span class="anchor" id="line-128" /><span class="anchor" id="line-129" /><span class="anchor" id="line-130" /><span class="anchor" id="line-131" /><span class="anchor" id="line-132" /><span class="anchor" id="line-133" /><span class="anchor" id="line-134" /><span class="anchor" id="line-135" /></p>
+<pre class="renpy">
+    s "<span class="renpy_string">I'll get right on it!</span>"
+
+    <span class="renpy_keyword">hide</span> sylvie
+
+    "<span class="renpy_string">...</span>"
+
+    m "<span class="renpy_string">That wasn't what I meant!</span>"
+</pre>
+<span class="anchor" id="line-136" /><span class="anchor" id="line-137" />
+<p class="line874">It's actually pretty rare that you'll need to use hide. Show can be used when a character is changing emotions, while scene is used when everyone leaves. You only need to use hide when a character leaves and the scene stays the same. <span class="anchor" id="line-138" /><span class="anchor" id="line-139" /></p>
+<p class="line867" />
+<h2 id="head-2d2ddaa08af7b81b138b0f62ae57b23800bcb24c">Transitions</h2>
+<span class="anchor" id="line-140" /><span class="anchor" id="line-141" />
+<p class="line874">Simply having pictures pop in and out is boring, so Ren'Py implements transitions that can make changes to the screen more interesting. Transitions <span class="anchor" id="line-142" />change the screen from what it looked like at the end of the last interaction (dialogue, menu, or transition), to what it looks like after any scene, show, and hide statements. <span class="anchor" id="line-143" /><span class="anchor" id="line-144" /></p>
+<p class="line867"><span class="anchor" id="line-145" /><span class="anchor" id="line-146" /><span class="anchor" id="line-147" /><span class="anchor" id="line-148" /><span class="anchor" id="line-149" /><span class="anchor" id="line-150" /><span class="anchor" id="line-151" /><span class="anchor" id="line-152" /><span class="anchor" id="line-153" /><span class="anchor" id="line-154" /><span class="anchor" id="line-155" /><span class="anchor" id="line-156" /><span class="anchor" id="line-157" /><span class="anchor" id="line-158" /><span class="anchor" id="line-159" /><span class="anchor" id="line-160" /><span class="anchor" id="line-161" /><span class="anchor" id="line-162" /><span class="anchor" id="line-163" /><span class="anchor" id="line-164" /><span class="anchor" id="line-165" /><span class="anchor" id="line-166" /><span class="anchor" id="line-167" /><span class="anchor" id="line-168" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">label</span> start:
+    <span class="renpy_keyword">scene</span> bg uni
+    <span class="renpy_keyword">show</span> sylvie smile
+
+    s "<span class="renpy_string">Oh, hi, do we walk home together?</span>"
+    m "<span class="renpy_string">Yes...</span>"
+    "<span class="renpy_string">I said and my voice was already shaking.</span>"
+
+    <span class="renpy_keyword">scene</span> bg meadow
+    <span class="renpy_keyword">with</span> fade
+    
+    "<span class="renpy_string">We reached the meadows just outside our hometown.</span>"
+    "<span class="renpy_string">Autumn was so beautiful here.</span>"
+    "<span class="renpy_string">When we were children, we often played here.</span>"
+     m "<span class="renpy_string">Hey... ummm...</span>"
+
+    <span class="renpy_keyword">show</span> sylvie smile
+    <span class="renpy_keyword">with</span> dissolve
+    
+    "<span class="renpy_string">She turned to me and smiled.</span>"
+    "<span class="renpy_string">I'll ask her...</span>"
+    m "<span class="renpy_string">Ummm... will you...</span>"
+    m "<span class="renpy_string">Will you be my artist for a visual novel?</span>"
+</pre>
+<span class="anchor" id="line-169" /><span class="anchor" id="line-170" />
+<p class="line862">The with statement takes the name of a transition to use. The most common one is <tt>dissolve</tt> which dissolves from one screen to the next. Another useful transition is <tt>fade</tt> which fades the screen to black, and then fades in the new screen. <span class="anchor" id="line-171" /><span class="anchor" id="line-172" /></p>
+<p class="line874">When a transition is placed after multiple scene, show, or hide statements, it applies to them all at once. If you were to write: <span class="anchor" id="line-173" /><span class="anchor" id="line-174" /></p>
+<p class="line867"><span class="anchor" id="line-175" /><span class="anchor" id="line-176" /><span class="anchor" id="line-177" /><span class="anchor" id="line-178" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">scene</span> bg meadow
+    <span class="renpy_keyword">show</span> sylvie smile
+    <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-179" /><span class="anchor" id="line-180" />
+<p class="line874">Both the "bg meadow" and "sylvie smiles" would be dissolved in at the same time. To dissolve them in one at a time, you need to write two with statements: <span class="anchor" id="line-181" /><span class="anchor" id="line-182" /></p>
+<p class="line867"><span class="anchor" id="line-183" /><span class="anchor" id="line-184" /><span class="anchor" id="line-185" /><span class="anchor" id="line-186" /><span class="anchor" id="line-187" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">scene</span> bg meadow
+    <span class="renpy_keyword">with</span> dissolve
+    <span class="renpy_keyword">show</span> sylvie smile
+    <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-188" /><span class="anchor" id="line-189" />
+<p class="line874">This first dissolves in the meadow, and then dissolves in sylvie. If you wanted to instantly show the menu, and then show sylvie, you could write: <span class="anchor" id="line-190" /><span class="anchor" id="line-191" /></p>
+<p class="line867"><span class="anchor" id="line-192" /><span class="anchor" id="line-193" /><span class="anchor" id="line-194" /><span class="anchor" id="line-195" /><span class="anchor" id="line-196" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">scene</span> bg meadow
+    <span class="renpy_keyword">with</span> None
+    <span class="renpy_keyword">show</span> sylvie smile
+    <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-197" /><span class="anchor" id="line-198" />
+<p class="line874">Here, None is used to indicate a special transition that updates Ren'Py's idea of what the prior screen was, without actually showing anything to the user. <span class="anchor" id="line-199" /><span class="anchor" id="line-200" /></p>
+<p class="line867" />
+<h2 id="head-b0ad0515982ded4f29b6361ea573f1b1a29119ca">Positions</h2>
+<span class="anchor" id="line-201" /><span class="anchor" id="line-202" />
+<p class="line874">By default, images are shown centered horizontally, and with their bottom edge touching the bottom of the screen. This is usually okay for backgrounds and single characters, but when showing more than one character on the screen it probably makes sense to do it at another position. It also might make sense to reposition a character for story purposes. <span class="anchor" id="line-203" /><span class="anchor" id="line-204" /></p>
+<p class="line867"><span class="anchor" id="line-205" /><span class="anchor" id="line-206" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">show</span> sylvie smile <span class="renpy_keyword">at</span> right
+</pre>
+<span class="anchor" id="line-207" /><span class="anchor" id="line-208" />
+<p class="line862">To do this repositioning, add an at-clause to a show statement. The at clause takes a position, and shows the image at that position. Ren'Py includes several pre-defined positions: <em>left</em> for the right side of the screen, <em>right</em> for the right side, <em>center</em> for centered horizontally (the default), and <em>truecenter</em> for centered horizontally and vertically. <span class="anchor" id="line-209" /><span class="anchor" id="line-210" /></p>
+<p class="line874">A user can define their own positions, but that's outside of the scope of this quickstart. <span class="anchor" id="line-211" /><span class="anchor" id="line-212" /></p>
+<p class="line867" />
+<h2 id="head-24833c5fa47e95b35fcfe2020df982488a98a85d">Music and Sound</h2>
+<span class="anchor" id="line-213" /><span class="anchor" id="line-214" />
+<p class="line874">Most games play music in the background. In Ren'Py, music files automatically loop until they are stopped by the user. Music is played with the play music statement. <span class="anchor" id="line-215" /><span class="anchor" id="line-216" /></p>
+<p class="line867"><span class="anchor" id="line-217" /><span class="anchor" id="line-218" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">play</span> <span class="renpy_keyword">music</span> "<span class="renpy_string">illurock.ogg</span>"
+</pre>
+<span class="anchor" id="line-219" /><span class="anchor" id="line-220" />
+<p class="line874">When changing music, one can supply a fadeout clause, which is used to fade out the old music when new music is played. <span class="anchor" id="line-221" /><span class="anchor" id="line-222" /></p>
+<p class="line867"><span class="anchor" id="line-223" /><span class="anchor" id="line-224" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">play</span> <span class="renpy_keyword">music</span> "<span class="renpy_string">illurock.ogg</span>" <span class="renpy_keyword">fadeout</span> 1.0
+</pre>
+<span class="anchor" id="line-225" /><span class="anchor" id="line-226" />
+<p class="line874">Music can be stopped with the stop music statement, which can also optionally take a fadeout clause. <span class="anchor" id="line-227" /><span class="anchor" id="line-228" /></p>
+<p class="line867"><span class="anchor" id="line-229" /><span class="anchor" id="line-230" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">stop</span> <span class="renpy_keyword">music</span>
+</pre>
+<span class="anchor" id="line-231" /><span class="anchor" id="line-232" />
+<p class="line874">Sound effects can be played with the play sound statement: <span class="anchor" id="line-233" /><span class="anchor" id="line-234" /></p>
+<p class="line867"><span class="anchor" id="line-235" /><span class="anchor" id="line-236" /></p>
+<pre class="renpy">
+    <span class="renpy_keyword">play</span> <span class="renpy_keyword">sound</span> "<span class="renpy_string">effect.ogg</span>"
+</pre>
+<span class="anchor" id="line-237" /><span class="anchor" id="line-238" />
+<p class="line874">Ren'Py support many formats for sound and music, but OGG Vorbis is preferred. Like image files, sound and music files must be placed in the game directory. <span class="anchor" id="line-239" /><span class="anchor" id="line-240" /></p>
+<p class="line867" />
+<h2 id="head-d549d4735e78c8801494b1ca55aa1d471c3e421e">Ending the Game</h2>
+<span class="anchor" id="line-241" /><span class="anchor" id="line-242" />
+<p class="line874">You can end the game by running the return statement, without having called anything. Before doing this, it's best to put something in the game that indicates that the game is ending, and perhaps giving the user an ending number or ending name. <span class="anchor" id="line-243" /><span class="anchor" id="line-244" /></p>
+<p class="line867"><span class="anchor" id="line-245" /><span class="anchor" id="line-246" /><span class="anchor" id="line-247" /><span class="anchor" id="line-248" /></p>
+<pre class="renpy">
+    "<span class="renpy_string">.:. Good Ending.</span>"
+
+    <span class="renpy_keyword">return</span>
+</pre>
+<span class="anchor" id="line-249" /><span class="anchor" id="line-250" />
+<p class="line874">That's all you need to make a kinetic novel, a game without any choices in it. Now, we'll look at what it takes to make a game that presents menus to the user. <span class="anchor" id="line-251" /><span class="anchor" id="line-252" /></p>
+<p class="line867" />
+<h2 id="head-143fce676fc574cc13762fac374ff3373f6c7465">Menus, Labels, and Jumps</h2>
+<span class="anchor" id="line-253" /><span class="anchor" id="line-254" />
+<p class="line874">The menu statement lets you present a choice to the user. <span class="anchor" id="line-255" /><span class="anchor" id="line-256" /></p>
+<p class="line867"><span class="anchor" id="line-257" /><span class="anchor" id="line-258" /><span class="anchor" id="line-259" /><span class="anchor" id="line-260" /><span class="anchor" id="line-261" /><span class="anchor" id="line-262" /><span class="anchor" id="line-263" /><span class="anchor" id="line-264" /><span class="anchor" id="line-265" /><span class="anchor" id="line-266" /><span class="anchor" id="line-267" /><span class="anchor" id="line-268" /><span class="anchor" id="line-269" /><span class="anchor" id="line-270" /><span class="anchor" id="line-271" /><span class="anchor" id="line-272" /><span class="anchor" id="line-273" /><span class="anchor" id="line-274" /><span class="anchor" id="line-275" /><span class="anchor" id="line-276" /><span class="anchor" id="line-277" /><span class="anchor" id="line-278" /><span class="anchor" id="line-279" /></p>
+<pre class="renpy">
+    s "<span class="renpy_string">Sure, but what's a \"visual novel?\"</span>"
+
+<span class="renpy_keyword">menu</span>:
+    "<span class="renpy_string">It's a story with pictures.</span>":
+         <span class="renpy_keyword">jump</span> vn
+
+    "<span class="renpy_string">It's a hentai game.</span>":
+         <span class="renpy_keyword">jump</span> hentai
+
+<span class="renpy_keyword">label</span> vn:    
+    m "<span class="renpy_string">It's a story with pictures and music.</span>"
+    <span class="renpy_keyword">jump</span> marry
+
+<span class="renpy_keyword">label</span> hentai:
+    m "<span class="renpy_string">Why it's a game with lots of sex.</span>"
+    <span class="renpy_keyword">jump</span> marry
+
+<span class="renpy_keyword">label</span> marry:
+    <span class="renpy_keyword">scene</span> black
+    <span class="renpy_keyword">with</span> dissolve
+
+    "<span class="renpy_string">--- years later ---</span>"
+</pre>
+<span class="anchor" id="line-280" /><span class="anchor" id="line-281" />
+<p class="line874">This example shows how menus are used with Ren'Py. The menu statement introduces an in-game-menu. The menu statement takes a block of lines, each consisting of a string followed by a colon. These are the menu choices which are presented to the user. Each menu choice should be followed by a block of one or more Ren'Py statements. When a choice is chosen, the statements following it are run. <span class="anchor" id="line-282" /><span class="anchor" id="line-283" /></p>
+<p class="line874">In our example, each menu choice runs a jump statement. The jump statement transfers control to a label defined using the label statement. The code following that label is run. <span class="anchor" id="line-284" /><span class="anchor" id="line-285" /></p>
+<p class="line874">In our example above, after Sylvie asks her question, the user is presented with a menu containing two choices. If the user picks "It's a story with pictures.", the first jump statement is run, and control is transferred to the vn label. This will cause the pov character to say "It's a story with pictures and music.", after which control is transferred to the marry label. <span class="anchor" id="line-286" /><span class="anchor" id="line-287" /></p>
+<p class="line874">Labels may be defined in any file that is in the game directory, and ends with .rpy. The filename doesn't matter to Ren'Py, only the labels contained within it. A label may only appear in a single file. <span class="anchor" id="line-288" /><span class="anchor" id="line-289" /></p>
+<p class="line867" />
+<h2 id="head-96689d7de78b5b44b311ee2626cb771b9d655a12">Python and If Statements</h2>
+<span class="anchor" id="line-290" /><span class="anchor" id="line-291" />
+<p class="line874">While simple (and even fairly complex) games can be made using only using menus and jump statements, after a point it becomes necessary to store the user's choices in variables, and access them again later. This is what Ren'Py's python support is for. <span class="anchor" id="line-292" /><span class="anchor" id="line-293" /></p>
+<p class="line874">Python support can be accessed in two ways. A line beginning with a dollar-sign is a single-line python statement, while the keyword "python:" is used to introduce a block of python statements. <span class="anchor" id="line-294" /><span class="anchor" id="line-295" /></p>
+<p class="line874">Python makes it easy to store flags in response to user input. Just initialize the flag at the start of the game: <span class="anchor" id="line-296" /><span class="anchor" id="line-297" /></p>
+<p class="line867"><span class="anchor" id="line-298" /><span class="anchor" id="line-299" /><span class="anchor" id="line-300" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">label</span> start:
+    <span class="renpy_keyword">$</span> bl_game = False
+</pre>
+<span class="anchor" id="line-301" /><span class="anchor" id="line-302" />
+<p class="line874">You can then change the flag in code that is chosen by menus: <span class="anchor" id="line-303" /><span class="anchor" id="line-304" /></p>
+<p class="line867"><span class="anchor" id="line-305" /><span class="anchor" id="line-306" /><span class="anchor" id="line-307" /><span class="anchor" id="line-308" /><span class="anchor" id="line-309" /><span class="anchor" id="line-310" /><span class="anchor" id="line-311" /><span class="anchor" id="line-312" /><span class="anchor" id="line-313" /><span class="anchor" id="line-314" /><span class="anchor" id="line-315" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">label</span> hentai:
+
+    <span class="renpy_keyword">$</span> bl_game = True
+
+    m "<span class="renpy_string">Why it's a game with lots of sex.</span>"
+    s "<span class="renpy_string">You mean, like a boy's love game?</span>"
+    s "<span class="renpy_string">I've always wanted to make one of those.</span>"
+    s "<span class="renpy_string">I'll get right on it!</span>"
+
+    <span class="renpy_keyword">jump</span> marry
+</pre>
+<span class="anchor" id="line-316" /><span class="anchor" id="line-317" />
+<p class="line874">And check it later: <span class="anchor" id="line-318" /><span class="anchor" id="line-319" /></p>
+<p class="line867"><span class="anchor" id="line-320" /><span class="anchor" id="line-321" /><span class="anchor" id="line-322" /><span class="anchor" id="line-323" /><span class="anchor" id="line-324" /><span class="anchor" id="line-325" /><span class="anchor" id="line-326" /><span class="anchor" id="line-327" /></p>
+<pre class="renpy">
+    "<span class="renpy_string">And so, we became a visual novel creating team.</span>"
+    "<span class="renpy_string">We made games and had a lot of fun making them.</span>"
+
+    <span class="renpy_keyword">if</span> bl_game:
+        "<span class="renpy_string">Well, apart from that boy's love game she insisted on making.</span>"
+
+    "<span class="renpy_string">And one day...</span>"
+</pre>
+<span class="anchor" id="line-328" /><span class="anchor" id="line-329" />
+<p class="line874">Of course, python variables need not be simple True/False values. They can be arbitrary python values. They can be used to store the player's name, to store a points score, or for any other purpose. Since Ren'Py includes the ability to use the full Python programming language, many things are possible. <span class="anchor" id="line-330" /><span class="anchor" id="line-331" /></p>
+<p class="line867" />
+<h2 id="head-24afd262d40a6eeed0f5219636d9aa82bf3d0e57">Releasing Your Game</h2>
+<span class="anchor" id="line-332" /><span class="anchor" id="line-333" />
+<p class="line874">Once you've made a game, there are a number of things you should do before releasing it: <span class="anchor" id="line-334" /><span class="anchor" id="line-335" /></p>
+<p class="line867"><strong>Edit options.rpy.</strong> The options.rpy file, created when you create a new game, contains a number of settings that you may want to customize. Some of them, like the screen height and screen width, should probably be set before making the game. Others, like the window title, can be set any time. <span class="anchor" id="line-336" /><span class="anchor" id="line-337" /></p>
+<p class="line867"><strong>Add a plug for Ren'Py.</strong> This step is completely optional, but we do ask that if you have credits in your game, you mention Ren'Py in them. We suggest using something like "Made with the Ren'Py visual novel engine.", but that's just a suggestion, and what you write is up to you. <span class="anchor" id="line-338" /><span class="anchor" id="line-339" /></p>
+<p class="line874">We think that the games people make are the best advertising for Ren'Py, and we hope that by including this, you'll help more people learn how to make visual novels in Ren'Py. <span class="anchor" id="line-340" /><span class="anchor" id="line-341" /></p>
+<p class="line867"><strong>Create a README File.</strong> You'll probably want to include a README.txt file in the base directory of your project (that is, the directory above the game directory). We include a sample file with Ren'Py, which you can customize as necessary. You should also consider choosing a license for your game, one that determines how people may distribute it. <span class="anchor" id="line-342" /><span class="anchor" id="line-343" /></p>
+<p class="line867"><strong>Check for a new version of Ren'Py.</strong> New versions of Ren'Py are released on a regular basis, to fix bugs and add new features. You should check the <a class="http" href="http://www.renpy.org//www.renpy.org/wiki/renpy/Download_Ren&apos;Py">download page</a> to see if a new version has come out. You may also want to see if any bug-fixes are available on that page. <span class="anchor" id="line-344" /><span class="anchor" id="line-345" /></p>
+<p class="line867"><strong>Check the Script.</strong> In the Launcher, you should go to the Tools page, and pick "Check Script (Lint)". This will check your games for errors that may affect some users. These errors can affect users on the Mac and Linux platforms, so it's important to fix them all, even if you don't see them on your computer. <span class="anchor" id="line-346" /><span class="anchor" id="line-347" /></p>
+<p class="line867"><strong>Build Distributions.</strong> From the Tools page, click distribute. The launcher will check your script again, ask you a few questions, and then build the distribution of your game. <span class="anchor" id="line-348" /><span class="anchor" id="line-349" /></p>
+<p class="line867"><strong>Test.</strong> Lint is not a substitute for thorough testing. It's your responsibility to check your game before it is released. <span class="anchor" id="line-350" /><span class="anchor" id="line-351" /></p>
+<p class="line867"><strong>Release.</strong> You should post the generated files (for Windows, Mac, and Linux) up on the web somewhere, and tell people where to download them from. Congratulations, you've released a game! <span class="anchor" id="line-352" /><span class="anchor" id="line-353" /></p>
+<p class="line862">If you want, you can tell us about it at the <a class="http" href="http://www.renpy.org//lemmasoft.renai.us/forums/">Lemma Soft forums</a>. <span class="anchor" id="line-354" /><span class="anchor" id="line-355" /></p>
+<p class="line867" />
+<h2 id="head-561a3b8d46ec925677e794b08f56be4cbffb0e69">Script of The Question</h2>
+<span class="anchor" id="line-356" /><span class="anchor" id="line-357" />
+<p class="line862">You can view the full script of <em>The Question</em> <a href="../tutorials/TheQuestionScript.html">here</a>. <span class="anchor" id="line-358" /><span class="anchor" id="line-359" /></p>
+<p class="line867" />
+<h2 id="head-b5dd2409f99a52f96ae132139ec14bdb9e95fdaa">Where do we go from here?</h2>
+<span class="anchor" id="line-360" /><span class="anchor" id="line-361" />
+<p class="line874">This Quickstart has barely scratched the surface of what Ren'Py is capable of. For simplicity's sake, we've omitted many features Ren'Py supports. To get a feel for what Ren'Py is capable of, we suggest playing through the demo, and having Eileen demonstrate these features to you. <span class="anchor" id="line-362" /><span class="anchor" id="line-363" /></p>
+<p class="line862">To learn more about Ren'Py, we suggest starting with the <a class="http" href="http://www.renpy.org//www.renpy.org/wiki/renpy/doc/tutorials/Ren%27Py_Web_Tutorial">Ren'Py Web Tutorial</a>. The <a class="http" href="http://www.renpy.org//www.renpy.org/wiki/renpy/doc/cookbook/Cookbook">Cookbook</a> contains recipes that show how to do accomplish various tasks with Ren'Py, from the fairly simple to the complex. The <a class="nonexistent" href="../tutorials/../reference/Reference_Manual.html">Reference Manual</a> is complex, but contains quite a bit of information on how to do things with Ren'Py. <span class="anchor" id="line-364" /><span class="anchor" id="line-365" /></p>
+<p class="line862">If you have questions, we suggest asking them at the <a class="http" href="http://www.renpy.org//lemmasoft.renai.us/forums/">Lemma Soft forums</a>, the official forum of Ren'Py. This is the central hub of the Ren'Py community, and we welcome new users, and the questions they bring. <span class="anchor" id="line-366" /><span class="anchor" id="line-367" /></p>
+<p class="line874">Thank you for choosing the Ren'Py visual movel engine. We look forward to seeing what you can create with it! <span class="anchor" id="line-368" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

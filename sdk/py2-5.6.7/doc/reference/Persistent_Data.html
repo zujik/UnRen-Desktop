@@ -1,0 +1,111 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" />
+<p class="line867" />
+<h1 id="head-b0535c46bd4dc96e48a5697421da7995ee4a4f44">Persistent Data</h1>
+<span class="anchor" id="line-3" /><span class="anchor" id="line-4" />
+<p class="line874">Ren'Py also supports persistent data, which is saved data that is not associated with a particular point in a game. Persistent data is data that is accessed through the fields of the persistent object, which is bound to the variable persistent. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" /></p>
+<p class="line867" />
+<div class="documented"><a id="persistent" name="persistent" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;persistent</b>&#160;=</td>
+<td>...</td>
+</tr>
+</table>
+<span class="anchor" id="line-7" /><span class="anchor" id="line-8" />
+<p class="line874">The persistent variable is bound to the special persistent object. All data reachable through fields on persistent is saved whenver Ren'Py terminates, and loaded when Ren'Py resumes. The persistent object is special in that an access to an undefined field on it will have a None value, rather than causing an exception. <span class="anchor" id="line-9" /><span class="anchor" id="line-10" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-11" /><span class="anchor" id="line-12" />
+<p class="line874">An example use of persistent is the creation of an unlockable image gallery. This is done by storing a flag in persistent that determines if the gallery has been unlocked, as in: <span class="anchor" id="line-13" /><span class="anchor" id="line-14" /></p>
+<p class="line867"><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">label</span> gallery:
+
+    <span class="renpy_keyword">if</span> not persistent.gallery_unlocked:
+        <span class="renpy_keyword">show</span> background
+        centered "<span class="renpy_string">You haven't unlocked this gallery yet.</span>"
+        <span class="renpy_keyword">$</span> renpy.full_restart()
+
+    <span class="renpy_comment"># Actually show the gallery here.</span>
+</pre>
+<span class="anchor" id="line-24" /><span class="anchor" id="line-25" />
+<p class="line874">When the user gets an ending that causes the gallery to be unlocked, the flag must be set to True: <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<p class="line867"><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">$</span> persistent.gallery_unlocked = True
+</pre>
+<span class="anchor" id="line-30" /><span class="anchor" id="line-31" />
+<p class="line867" />
+<h2 id="head-7246956c7bbd6de8634b32b54564d2a01ba4d53a">Multi-Game Persistence</h2>
+<span class="anchor" id="line-32" /><span class="anchor" id="line-33" />
+<p class="line874">Multi-Game persistence is a feature that lets you share information between Ren'Py games. This may be useful if you plan to make a series of games, and want to have them share information. <span class="anchor" id="line-34" /><span class="anchor" id="line-35" /></p>
+<p class="line874">To use multipersistent data, a MultiPersistent object must be created inside an init block. The user can then update this object, and save it to disk by calling its save method. Undefined fields default to None. To ensure the object can be loaded again, we suggest not assigning the object instances of user-defined types. <span class="anchor" id="line-36" /><span class="anchor" id="line-37" /></p>
+<p class="line867" />
+<div class="documented"><a id="MultiPersistent" name="MultiPersistent" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/MultiPersistent.html">MultiPersistent</a></b>(</td>
+<td>key)</td>
+</tr>
+</table>
+<span class="anchor" id="line-38" /><span class="anchor" id="line-39" />
+<p class="line874">Creates a new MultiPersistent object. This should only be called inside an init block, and it returns a new MultiPersistent object corresponding to key. <span class="anchor" id="line-40" /><span class="anchor" id="line-41" /></p>
+<p class="line867"><em>key</em> a key that is used to access the multipersistent data. To prevent conflicts, we suggest that the key be suffixed by a domain you own... so if you owned renpy.org, you could use the key "demo.renpy.org". <span class="anchor" id="line-42" /><span class="anchor" id="line-43" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-44" /><span class="anchor" id="line-45" />
+<p class="line867"><a id="MultiPersistent.save" name="MultiPersistent.save" /> Method: <b>MultiPersistent.save</b>()</p>
+<div style="margin-left: 2em;"><span class="anchor" id="line-46" /><span class="anchor" id="line-47" />
+<p class="line874">Saves a MultiPersistent object to disk. Changes are not persisted until this method is called. <span class="anchor" id="line-48" /><span class="anchor" id="line-49" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-50" /><span class="anchor" id="line-51" />
+<p class="line867"><strong>Example.</strong> Part 1 of a multi-part game: <span class="anchor" id="line-52" /><span class="anchor" id="line-53" /></p>
+<p class="line867"><span class="anchor" id="line-54" /><span class="anchor" id="line-55" /><span class="anchor" id="line-56" /><span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /><span class="anchor" id="line-60" /><span class="anchor" id="line-61" /><span class="anchor" id="line-62" /><span class="anchor" id="line-63" /><span class="anchor" id="line-64" /><span class="anchor" id="line-65" /><span class="anchor" id="line-66" /><span class="anchor" id="line-67" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> mp = MultiPersistent("<span class="renpy_string">demo.renpy.org</span>")
+
+<span class="renpy_keyword">label</span> start:
+
+    <span class="renpy_comment"># ... </span>
+
+    <span class="renpy_comment"># Record the fact that the user beat part 1.</span>
+    
+    <span class="renpy_keyword">$</span> mp.beat_part_1 = True
+    <span class="renpy_keyword">$</span> mp.save() 
+
+    e "<span class="renpy_string">You beat part 1. See you in part 2!</span>"
+</pre>
+<span class="anchor" id="line-68" /><span class="anchor" id="line-69" />
+<p class="line874">And the code for part 2: <span class="anchor" id="line-70" /><span class="anchor" id="line-71" /></p>
+<p class="line867"><span class="anchor" id="line-72" /><span class="anchor" id="line-73" /><span class="anchor" id="line-74" /><span class="anchor" id="line-75" /><span class="anchor" id="line-76" /><span class="anchor" id="line-77" /><span class="anchor" id="line-78" /><span class="anchor" id="line-79" /><span class="anchor" id="line-80" /><span class="anchor" id="line-81" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> mp = MultiPersistent("<span class="renpy_string">demo.renpy.org</span>")
+
+<span class="renpy_keyword">label</span> start:
+    
+    <span class="renpy_keyword">if</span> mp.beat_part_1:
+         e "<span class="renpy_string">I see you've beaten part 1, so welcome back!</span>"
+    <span class="renpy_keyword">else</span>:
+         e "<span class="renpy_string">Hmm, you haven't played part 1, why not try it first?</span>"
+</pre>
+<span class="anchor" id="line-82" /><span class="anchor" id="line-83" />
+<p class="line867"><strong>Data Locations.</strong> On windows, the data is stored in "~/RenPy/persistent", while on other platforms, it's stored under "~/.renpy/persistent", with ~ being the user's home directory. On Windows, this may be "C:/Documents and Settings/Username". <span class="anchor" id="line-84" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

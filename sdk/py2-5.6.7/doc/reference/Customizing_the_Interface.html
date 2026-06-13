@@ -1,0 +1,281 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-6e888750f1f0164e32853aea73e68c32816c3f2b">Customizing the Interface</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line874">Ren'Py is extremely customizable. Below is information on the many ways available to customize Ren'Py. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/Themes" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/Themes" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h2 id="head-34fa6e4b20907b9505280d89ff6645629a6e7f9d">Themes</h2>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line874">Themes provide a simple way of changing the look of the main and game menus. A single function call applies styles to many of the elements of the main and game menus, giving a consistent look to the interface. These colors, and the background images used, can be changed by supplying parameters to the theme functions. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line874">Theme functions should be called after the config.screen_width, config.screen_height, and library.script_version variables have been set. They should be called before any style is changed by hand. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/theme.roundrect" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/theme.roundrect" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="theme.roundrect" name="theme.roundrect" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/theme.roundrect.html">theme.roundrect</a></b>(</td>
+<td>widget="#003c78", widget_hover="#0050a0", widget_text="#c8e1ff", widget_selected="#ffffc8", disabled="#404040", disabled_text="#c8c8c8", label=,"#ffffff" frame="#6496c8", window="#000000c0", mm_root=..., gm_root=..., centered=False, button_menu=True)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This enables the use of the roundrect theme. By default, this theme styles the game in a blue color scheme. However, by supplying one or more of the parameters given below, the color scheme can be changed. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>widget</em> - The background color of non-focued buttons and sliders. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>widget_hover</em> - The background color of focused buttons and sliders. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>widget_text</em> - The text color of non-selected buttons. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>widget_selected</em> - The text color of selected buttons. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>disabled</em> - The background color of disabled buttons. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>disabled_text</em> - The text color of disabled buttons. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>label</em> - The text color of non-selected labels. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>frame</em> - The background color of frames. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>mm_root</em> - A displayable (such as an Image or Solid) that will be used as the background for the main menu. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867"><em>gm_root</em> - A displayable (such as an Image or Solid) that will be used as the background for the game menu. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<p class="line867"><em>centered</em> - If True, the buttons and sliders will be centered in the frames or windows that contain them. If False, the default, they will be pushed to the right side. <span class="anchor" id="line-28" /><span class="anchor" id="line-29" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/theme.roundrect" /></div>
+<span class="anchor" id="line-8" /><span class="anchor" id="line-9" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/theme.roundrect_red" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/theme.roundrect_red" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="theme.roundrect_red" name="theme.roundrect_red" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/theme.roundrect_red.html">theme.roundrect_red</a></b>(</td>
+<td>**params)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This sets up a red/pink variant of the roundrect theme. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">The arguments are the same as for <a href="../reference/functions/theme.roundrect.html">theme.roundrect</a> . <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/theme.roundrect_red" /></div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/Themes" /></div>
+<span class="anchor" id="line-6" /><span class="anchor" id="line-7" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/Keymap" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/Keymap" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h2 id="head-3cf403de962934d00f95ca0594e65ac2ef43baa7">Customizing the Keymap</h2>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line862">The variable <a href="../reference/Configuration_Variables.html#config.keymap">config.keymap</a> contains a map from functions that can be performed by the various user-interface elements of Ren'Py to a list of keysyms (a keysym is a <strong>key</strong> <strong>sym</strong>bol) that actually perform those functions. Modifying the contents of the keymap can change the keys and mouse buttons that cause things to happen. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line874">While this functionality has been added to Ren'Py at a user's request (and because it simplifies the Ren'Py code), it's not altogether clear that it should be used. Having a common set of keybindings makes games easier to play by reducing the learning curve of users. It's probably better to build consensus around a change in keybindings, rather than unilaterally making one game different from every other game. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Anyway, in Ren'Py keysyms are strings. The first kind of keysym is of the form 'mouseup_#' or 'mousedown_#', for a number between 1 and 5. These keysyms are generated by mouse button presses, releases, or turns of the mouse wheel. For example, "mousedown_1" is generally a press of the left mouse button, "mouseup_1" is a release of that button, and "mousedown_4" is a turn of the the mouse wheel to the top. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line862">A second kind of keysym is a joystick keysym. These begin with joy_. They are defined in <a href="../reference/Configuration_Variables.html#config.joystick_keys">config.joystick_keys</a> , and mapped to actual joystick events by the user. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">A third kind of keysym is a string containing a character that is generated when a key is pressed. This is useful for binding alphabetic keys and numbers. Examples of these keysyms include "a", "A", and "7". <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">The final kind of keysym is the symbolic name for the key. This can be any of the K_ constants taken from pygame.constants This type of keysym looks like "K_BACKSPACE", "K_RETURN", and "K_TAB". <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line862">To change a binding, update the appropriate list in <a href="../reference/Configuration_Variables.html#config.keymap">config.keymap</a> . The following code adds the 't' key to the list of keys that dismiss a say statement, and removes the space key from that list. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> config.keymap['<span class="renpy_string">dismiss</span>'].append('<span class="renpy_string">t</span>')
+    <span class="renpy_keyword">$</span> config.keymap['<span class="renpy_string">dismiss</span>'].remove('<span class="renpy_string">K_SPACE</span>')
+</pre>
+<span class="anchor" id="line-22" /><span class="anchor" id="line-23" />
+<p class="line874">The default keymap is contained inside the python code implementing Ren'Py, and as of version 5.6.4 is as follows: <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867"><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /><span class="anchor" id="line-40" /><span class="anchor" id="line-41" /><span class="anchor" id="line-42" /><span class="anchor" id="line-43" /><span class="anchor" id="line-44" /><span class="anchor" id="line-45" /><span class="anchor" id="line-46" /><span class="anchor" id="line-47" /><span class="anchor" id="line-48" /><span class="anchor" id="line-49" /><span class="anchor" id="line-50" /><span class="anchor" id="line-51" /><span class="anchor" id="line-52" /><span class="anchor" id="line-53" /><span class="anchor" id="line-54" /><span class="anchor" id="line-55" /><span class="anchor" id="line-56" /><span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /><span class="anchor" id="line-60" /><span class="anchor" id="line-61" /><span class="anchor" id="line-62" /><span class="anchor" id="line-63" /><span class="anchor" id="line-64" /><span class="anchor" id="line-65" /><span class="anchor" id="line-66" /><span class="anchor" id="line-67" /><span class="anchor" id="line-68" /></p>
+<pre class="renpy">
+config.keymap = dict(
+    
+    <span class="renpy_comment"># Bindings present almost everywhere, unless explicitly</span>
+    <span class="renpy_comment"># disabled.</span>
+    rollback = [ '<span class="renpy_string">K_PAGEUP</span>', '<span class="renpy_string">mousedown_4</span>', '<span class="renpy_string">joy_rollback</span>' ],
+    screenshot = [ '<span class="renpy_string">s</span>' ],
+    toggle_fullscreen = [ '<span class="renpy_string">f</span>' ],
+    toggle_music = [ '<span class="renpy_string">m</span>' ],
+    game_menu = [ '<span class="renpy_string">K_ESCAPE</span>', '<span class="renpy_string">mouseup_3</span>', '<span class="renpy_string">joy_menu</span>' ],
+    hide_windows = [ '<span class="renpy_string">mouseup_2</span>', '<span class="renpy_string">h</span>' ],
+    launch_editor = [ '<span class="renpy_string">E</span>' ],
+    dump_styles = [ '<span class="renpy_string">Y</span>' ],
+
+
+    <span class="renpy_comment"># Say.</span>
+    rollforward = [ '<span class="renpy_string">mousedown_5</span>', '<span class="renpy_string">K_PAGEDOWN</span>' ],
+    dismiss = [ '<span class="renpy_string">mouseup_1</span>', '<span class="renpy_string">K_RETURN</span>', '<span class="renpy_string">K_SPACE</span>', '<span class="renpy_string">K_KP_ENTER</span>', '<span class="renpy_string">joy_dismiss</span>' ],
+
+    <span class="renpy_comment"># Focus.</span>
+    focus_left = [ '<span class="renpy_string">K_LEFT</span>', '<span class="renpy_string">K_KP_LEFT</span>', '<span class="renpy_string">joy_left</span>' ],
+    focus_right = [ '<span class="renpy_string">K_RIGHT</span>', '<span class="renpy_string">K_KP_RIGHT</span>', '<span class="renpy_string">joy_right</span>' ],
+    focus_up = [ '<span class="renpy_string">K_UP</span>', '<span class="renpy_string">K_KP_UP</span>', '<span class="renpy_string">joy_up</span>' ],
+    focus_down = [ '<span class="renpy_string">K_DOWN</span>', '<span class="renpy_string">K_KP_DOWN</span>', '<span class="renpy_string">joy_down</span>' ],
+        
+    <span class="renpy_comment"># Button.</span>
+    button_select = [ '<span class="renpy_string">mouseup_1</span>', '<span class="renpy_string">K_RETURN</span>', '<span class="renpy_string">K_KP_ENTER</span>', '<span class="renpy_string">joy_dismiss</span>' ],
+
+    <span class="renpy_comment"># Input.</span>
+    input_backspace = [ '<span class="renpy_string">K_BACKSPACE</span>' ],
+    input_enter = [ '<span class="renpy_string">K_RETURN</span>', '<span class="renpy_string">K_KP_ENTER</span>' ],
+
+    <span class="renpy_comment"># These keys control skipping.</span>
+    skip = [ '<span class="renpy_string">K_LCTRL</span>', '<span class="renpy_string">K_RCTRL</span>' ],
+    toggle_skip = [ '<span class="renpy_string">K_TAB</span>', '<span class="renpy_string">joy_skip</span>' ],
+    fast_skip = [ '<span class="renpy_string">&gt;</span>' ],
+
+    <span class="renpy_comment"># These control the bar.</span>
+    bar_activate = [ '<span class="renpy_string">mousedown_1</span>', '<span class="renpy_string">K_RETURN</span>', '<span class="renpy_string">K_KP_ENTER</span>', '<span class="renpy_string">joy_dismiss</span>' ],
+    bar_deactivate = [ '<span class="renpy_string">mouseup_1</span>', '<span class="renpy_string">K_RETURN</span>', '<span class="renpy_string">K_KP_ENTER</span>', '<span class="renpy_string">joy_dismiss</span>' ],
+    bar_decrease = [ '<span class="renpy_string">K_LEFT</span>', '<span class="renpy_string">joy_left</span>' ],
+    bar_increase = [ '<span class="renpy_string">K_RIGHT</span>', '<span class="renpy_string">joy_right</span>' ],
+    )
+</pre>
+<span class="anchor" id="line-69" /><span class="anchor" id="bottom_Include_renpy/doc/reference/Keymap" /></div>
+<span class="anchor" id="line-8" /><span class="anchor" id="line-9" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/Customizing_the_Main_and_Game_Menus" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/Customizing_the_Main_and_Game_Menus" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h2 id="head-d365c421b6a7a9d9b051b0a60f1ec3594a8158d0">Customizing the Main and Game Menus</h2>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line862">This section describes how the content of the various menus can be customized. If you just want to change the look of the menus (to the extent made possible by the style system), use styles. To change just the text of menu items, consider using <a href="../reference/Configuration_Variables.html#config.translations">config.translations</a> . To change just the position of buttons in a menu, use <a href="../reference/Configuration_Variables.html#config.game_menu_positions">config.game_menu_positions</a> and <a href="../reference/Configuration_Variables.html#config.main_menu_positions">config.main_menu_positions</a> . <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line867" />
+<h3 id="head-4fb423ba4fd399974f441facff6779947ac17f72">Main Menu</h3>
+<span class="anchor" id="line-6" /><span class="anchor" id="line-7" />
+<p class="line862">The main menu can be customized by setting the <a href="../reference/Configuration_Variables.html#config.main_menu">config.main_menu</a> variable. This variable should be a list of pairs. The first element of each pair is the name of the button on the main menu. The second item can be one of three things. It can be a string, in which case it is a label at which the game execution starts (after a jump out of the menu context). It can be a function, in which case the function is called when the button is clicked. Finally, it can be None, which causes the button to be insensitive. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">If one wants to change the main menu each time it is invoked, but keep the look of it the same, then the thing to do is to provide a main_menu label. The code after this main_menu label should set config.main_menu, and then jump to _library_main_menu. This is useful, for example, if there are some items in the main menu that should be absent or disabled until some condition is met. (Say, the user reaching an ending for the first time.) <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><strong>From Scratch.</strong> Finally, it may be desirable to write your own menu from scratch. This is done by creating the menu using ui functions called from code invoked through the <tt>main_menu</tt> label. To start the game, the code should jump out of the context, using <a href="../reference/functions/ui.jumpsoutofcontext.html">ui.jumpsoutofcontext</a> or <a href="../reference/functions/renpy.jump_out_of_context.html">renpy.jump_out_of_context</a> . The code can jump to game menu screens, using the jump statement, <a href="../reference/functions/renpy.jump.html">renpy.jump</a> , or <a href="../reference/functions/ui.jumps.html">ui.jumps</a> . When interacting with the user, <a href="../reference/functions/ui.interact.html">ui.interact</a> should be called with suppress_overlay=True, suppress_underlay=True, and perhaps mouse="mainmenu". <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line862">The functions that are used to make a game menu screen, _game_nav() and _game_interact(), should also work with the main menu screen. When necessary, renpy.context().main_menu can be checked to see if we are in the main menu (it is True) or game menu (it is False). (see <a href="../reference/functions/renpy.context.html">renpy.context</a> ) <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+<h3 id="head-3c96d916fc79e8babd22041c1590489d77cce980">Game Menu</h3>
+<span class="anchor" id="line-18" /><span class="anchor" id="line-19" />
+<p class="line862">The first thing one may wish to do when modifying the game menu is to add a screen to it. This is done in two steps. The first is to create the screen, and the second is to add it to the <a href="../reference/Configuration_Variables.html#config.game_menu">config.game_menu</a> list so that it can be reached from the game menu. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line862">Each screen is represented in the code as a label that is jumped to to display the screen. There are five steps that this label should do in order to display the screen. First, it should call _game_nav(screen), where screen is the name of the screen (the first component of the tuples in config.game_menu, described below). Second, it should call the ui functions to actually draw the screen. Third, it should call _game_interact, instead of <a href="../reference/functions/ui.interact.html">ui.interact</a> , to interact with the user. This ensures that the game menu interaction is handled properly. Fourth, it should examine the results of _game_interact, and react appropriately. Finally, it should jump back up to the screen label, showing the screen again after each interaction. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line862">So that the user can see it, the screen should be added to config.game_menu. This is a list of four-component tuples. The first is the name of the screen. It's used to determine if the button used to reach that screen should be indicated as selected. The second component is the text used for that button. The third component is a function that executes when the button is clicked. Normally, an appropriate function is <a href="../reference/functions/ui.jumps.html">ui.jumps</a> ('label'), where label is the name of the label under which your screen was defined above. Finally, the fourth parameter is a string containing a python expression. If the expression is not true, the button is insensitive. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line874">To customize the game menu navigation buttons, one can replace the _game_nav() function. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<p class="line867" />
+<div class="documented"><a name="_game_nav" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;_game_nav</b>(</td>
+<td>screen)</td>
+</tr>
+</table>
+<span class="anchor" id="line-28" /><span class="anchor" id="line-29" />
+<p class="line874">Called by Ren'Py to display navigation for a game menu screen. <span class="anchor" id="line-30" /><span class="anchor" id="line-31" /></p>
+<p class="line867"><em>screen</em>- the screen we're at. Default parameters for this are "restart", "load", "save", "prefs", "quit", or None. When None, navigation buttons should't be shown. <span class="anchor" id="line-32" /><span class="anchor" id="line-33" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-34" /><span class="anchor" id="line-35" />
+<p class="line867" />
+<div class="documented"><a name="_game_menu_screen" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;_game_menu_screen</b>&#160;=</td>
+<td>"_load_screen"</td>
+</tr>
+</table>
+<span class="anchor" id="line-36" /><span class="anchor" id="line-37" />
+<p class="line874">One can customize the screen the game menu jumps to by default by changing the value of _game_menu_screen. For example, one could set this to "_load_screen" for the first few interactions, and then set it to "_save_screen" for the rest of the game. This is especially useful for a game with no main menu. <span class="anchor" id="line-38" /><span class="anchor" id="line-39" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-40" /><span class="anchor" id="line-41" />
+<p class="line874">There is a convenience function for prompting the user for their response to a yes and no question. <span class="anchor" id="line-42" /><span class="anchor" id="line-43" /></p>
+<p class="line867" />
+<div class="documented"><a name="_yesno_prompt" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;_yesno_prompt</b>(</td>
+<td>screen, message)</td>
+</tr>
+</table>
+<span class="anchor" id="line-44" /><span class="anchor" id="line-45" />
+<p class="line867"><em>screen</em> - The screen button that should be highlighted when this prompt is shown. If None, then no game menu navigation is shown. <span class="anchor" id="line-46" /><span class="anchor" id="line-47" /></p>
+<p class="line867"><em>message</em> - The message that is shown to the user to prompt them to answer yes or no. <span class="anchor" id="line-48" /><span class="anchor" id="line-49" /></p>
+<p class="line874">This function returns True if the user clicks Yes, or False if the user clicks No. <span class="anchor" id="line-50" /><span class="anchor" id="line-51" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-52" /><span class="anchor" id="line-53" />
+<p class="line867"><strong>Pre-defined Screens.</strong> The load screen, save screen, and preferences screen are define at the <tt>_load_screen</tt>, <span class="anchor" id="line-54" /><tt>_save_screen</tt> and <tt>_prefs_screen</tt> labels, respectively. <span class="anchor" id="line-55" /><span class="anchor" id="line-56" /></p>
+<p class="line867"><strong>From scratch.</strong> To write your own game menu entirely from scratch, set _game_menu_screen to point to the screen you would like to access when the user right-clicks. You can then jump between game menu screens using the jump statement, <a href="../reference/functions/renpy.jump.html">renpy.jump</a> or <a href="../reference/functions/ui.jumps.html">ui.jumps</a> . Jump to <tt>_return</tt> to return to the game or the main menu, as appropriate. <span class="anchor" id="line-57" /><span class="anchor" id="bottom_Include_renpy/doc/reference/Customizing_the_Main_and_Game_Menus" /></p>
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="line-11" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/Preference_Screen" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/Preference_Screen" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h2 id="head-a2c5ca3586b2511e30e4fe0132cb651d1dd5a442">Customizing the Preferences Screen</h2>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line862">Customizing the preferences screen is accomplished by modifying <a href="../reference/Configuration_Variables.html#config.preferences">config.preferences</a>, which is a dictionary mapping from vbox style to a list of preferences to be placed in that vbox. Modifying this dictionary and lists can move preferences around, and eliminate preferences entirely. It may be desirable to create new vbox styles, by using <a href="../reference/functions/style.create.html">style.create</a> . <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line862">Alternative, one can position preferences using <a href="../reference/Configuration_Variables.html#config.preference_positions">config.preference_positions</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">To create an entirely new preference, create it with _Preference, _SliderPreference, or _VolumePreference, and then add it to an appropriate list in config.preferences. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+<div class="documented"><a name="_Preference" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;_Preference</b>(</td>
+<td>name, field, values, base=...)</td>
+</tr>
+</table>
+<span class="anchor" id="line-10" /><span class="anchor" id="line-11" />
+<p class="line874">This is a class that's used to represent a multiple-choice preference. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>name</em> - The name of this preference. It will be displayed to the user. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>variable</em> - The field on the base object that will be assigned the selected value. This field must exist. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>values</em> - A list of value name, value, condition triples. The value name is the name of this value that will be shown to the user. The value is the literal python value that will be assigned if this value is selected. The condition is a condition that will be evaluated to determine if this is a legal value. If no conditions are true, this preference will not be displayed to the user. A condition of None is always considered to be True. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>base</em> - The base object on which the variable is read from and set. This defaults to _preferences, the user preferences object. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" />
+<p class="line867" />
+<div class="documented"><a name="_SliderPreference" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;_SliderPreference</b>(</td>
+<td>name, range, get, set, enable='True')</td>
+</tr>
+</table>
+<span class="anchor" id="line-25" /><span class="anchor" id="line-26" />
+<p class="line874">A class that represents a preference that is controlled by a slider. <span class="anchor" id="line-27" /><span class="anchor" id="line-28" /></p>
+<p class="line867"><em>set</em> - The name of this preference, that is shown to the user. <span class="anchor" id="line-29" /><span class="anchor" id="line-30" /></p>
+<p class="line867"><em>range</em> - An integer giving the maximum value of this slider. The slider goes from 0 to range. <span class="anchor" id="line-31" /><span class="anchor" id="line-32" /></p>
+<p class="line867"><em>get</em> - A function that's called to get the initial value of the slider. It's called with no arguments, and should return an integet between 0 and range, inclusive. <span class="anchor" id="line-33" /><span class="anchor" id="line-34" /></p>
+<p class="line867"><em>set</em> - A function that's called when the value of the slider is set by the user. It is called with a single integer, in the range 0 to range, inclusive. <span class="anchor" id="line-35" /><span class="anchor" id="line-36" /></p>
+<p class="line867"><em>enable</em> - A string giving a python expression. If the expression is evaluates to false, this preference is not shown. <span class="anchor" id="line-37" /><span class="anchor" id="line-38" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-39" /><span class="anchor" id="line-40" />
+<p class="line867" />
+<div class="documented"><a name="_VolumePreference" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;_VolumePreference</b>(</td>
+<td>name, mixer, enable='True', sound='None', channel=0)</td>
+</tr>
+</table>
+<span class="anchor" id="line-41" /><span class="anchor" id="line-42" />
+<p class="line874">This represents a preference that controls one of the volumes in the system. It is represented as a slider bar, and a button that can be pushed to play a sample sound on a channel. <span class="anchor" id="line-43" /><span class="anchor" id="line-44" /></p>
+<p class="line867"><em>name</em> - The name of this preference, as shown to the user. <span class="anchor" id="line-45" /><span class="anchor" id="line-46" /></p>
+<p class="line867"><em>mixer</em> - The mixer this preference controls. <span class="anchor" id="line-47" /><span class="anchor" id="line-48" /></p>
+<p class="line867"><em>enable</em> - A string giving a python expression. If the expression is evaluates to false, this preference is not shown. <span class="anchor" id="line-49" /><span class="anchor" id="line-50" /></p>
+<p class="line867"><em>sound</em> - A string that is evaluated to yield another string. The yielded string is expected to give a sound file, which is played as the sample sound. (We apologize for the convolution of this.) <span class="anchor" id="line-51" /><span class="anchor" id="line-52" /></p>
+<p class="line867"><em>channel</em> - The number of the channel the sample sound is played on. <span class="anchor" id="line-53" /><span class="anchor" id="line-54" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-55" /><span class="anchor" id="line-56" />
+<p class="line867" />
+<div class="documented"><a name="_remove_preference" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;_remove_preference</b>(</td>
+<td>name)</td>
+</tr>
+</table>
+<span class="anchor" id="line-57" /><span class="anchor" id="line-58" />
+<p class="line874">Removes the preference with the given name from the preferences menu. <span class="anchor" id="line-59" /><span class="anchor" id="line-60" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-61" /><span class="anchor" id="bottom_Include_renpy/doc/reference/Preference_Screen" /></div>
+<span class="anchor" id="line-12" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

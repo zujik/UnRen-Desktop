@@ -1,0 +1,679 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-2" />
+<p class="line867" />
+<h1 id="head-f71028ee842c11a2086b0e1e93f3603f32af48b4">Interaction Functions</h1>
+<span class="anchor" id="line-3" /><span class="anchor" id="line-4" />
+<p class="line874">The Ren'Py interaction functions are available so that you can customize interactions with the user taking advantage of the same code which the normal interactions use. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" /></p>
+<p class="line867" />
+<h4 id="head-7a68525b795b79836ea5fa1f0c48d10230b6942c">Statement Helper Functions</h4>
+<span class="anchor" id="line-7" /><span class="anchor" id="line-8" />
+<p class="line874">The following functions either implement new game behavior that didn't merit its own statement, or complement the behavior of statements. <span class="anchor" id="line-9" /><span class="anchor" id="line-10" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.display_say" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.display_say" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.display_say" name="renpy.display_say" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.display_say.html">renpy.display_say</a></b>(</td>
+<td>who, what, ...)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Called by <a href="../reference/functions/Character.html">Character</a> to implement the say statement. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.display_say" /></div>
+<span class="anchor" id="line-11" /><span class="anchor" id="line-12" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.show_display_say" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.show_display_say" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.show_display_say" name="renpy.show_display_say" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.show_display_say.html">renpy.show_display_say</a></b>(</td>
+<td>who, what, who_args={}, what_args={}, window_args={}, image=False, **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This is called (by default) by <a href="../reference/functions/renpy.display_say.html">renpy.display_say</a> to add the widgets corresponding to a screen of dialogue to the user. It is not expected to be called by the user, but instead to be called by <a href="../reference/functions/renpy.display_say.html">renpy.display_say</a> , or by a function passed as the <em>show_function argument</em> to <a href="../reference/functions/Character.html">Character</a> or <a href="../reference/functions/renpy.display_say.html">renpy.display_say</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>who</em> - The name of the character that is speaking, or None to not show this name to the user. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>what</em> - What that character is saying. Please note that this may not be a string, as it can also be a list containing both text and displayables, suitable for use as the first argument of <a href="../reference/functions/ui.text.html">ui.text</a> . <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>who_args</em> - Additional keyword arguments intended to be supplied to the <a href="../reference/functions/ui.text.html">ui.text</a> that creates the who widget of this dialogue. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>what_args</em> - Additional keyword arguments intended to be supplied to the <a href="../reference/functions/ui.text.html">ui.text</a> that creates the what widget of this dialogue. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>window_args</em> - Additional keyword arguments intended to be supplied to the <a href="../reference/functions/ui.window.html">ui.window</a> that creates the who widget of this dialogue. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>image</em> - If True, then who should be interpreted as an image or displayable rather than a text string. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>callback</em> - If not None, a function that should be called with no arguments before each time something is shown. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>kwargs</em> - Additional keyword arguments should be ignored. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line862">This function is required to return the <a href="../reference/functions/ui.text.html">ui.text</a> widget displaying the what text. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-26" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.show_display_say" /></div>
+<span class="anchor" id="line-13" /><span class="anchor" id="line-14" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.predict_display_say" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.predict_display_say" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.predict_display_say" name="renpy.predict_display_say" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.predict_display_say.html">renpy.predict_display_say</a></b>(</td>
+<td>who, what, ...)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This is the default function used by <a href="../reference/functions/Character.html">Character</a> to predict images that will be used by <a href="../reference/functions/renpy.display_say.html">renpy.display_say</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.predict_display_say" /></div>
+<span class="anchor" id="line-15" /><span class="anchor" id="line-16" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.display_menu" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.display_menu" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.display_menu" name="renpy.display_menu" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.display_menu.html">renpy.display_menu</a></b>(</td>
+<td>items, window_style='menu_window', interact=True, with_none=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Displays a menu containing the given items, returning the value of the item the user selects. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>items</em> - A list of tuples that are the items to be added to this menu. The first element of a tuple is a string that is used for this menuitem. The second element is the value to be returned if this item is selected, or None if this item is a non-selectable caption. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>interact</em> - If True, then an interaction occurs. If False, no such interaction occurs, and the user should call <a href="../reference/functions/ui.interact.html">ui.interact</a> manually. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>with_none</em> - If True, causes a "with None" statement to be run after each interaction. If None (the default), checks config.implicit_with_none to determine if a "with None" should be run. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.display_menu" /></div>
+<span class="anchor" id="line-17" /><span class="anchor" id="line-18" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.predict" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.predict" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.predict" name="renpy.predict" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.predict.html">renpy.predict</a></b>(</td>
+<td>img)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Forces prediction of the supplied image or displayable. This will cause it to be loaded into the image cache during the next (and only the next) interaction, if there's any free time. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.predict" /></div>
+<span class="anchor" id="line-19" /><span class="anchor" id="line-20" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.pause" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.pause" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.pause" name="renpy.pause" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.pause.html">renpy.pause</a></b>(</td>
+<td>delay=None, music=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">When called with no arguments, this pauses and waits for the user to click before advancing the script. If given a delay parameter, then Ren'Py will wait for that amount of time before continuing, unless a user clicks to interrupt the delay. This is useful to, for instance, show an image that will stay on screen for a certain amount of time and then proceed to the next script statement without waiting for a click forever. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>delay</em> - The number of seconds to delay. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>music</em> - If supplied, and music is playing, this takes precedence over the delay parameter. It gives a time, in seconds, into the currently playing music track. Ren'Py will pause until the music has played up to that point. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">Returns True if the pause was interrupted by the user hitting a key or clicking a mouse, or False if the pause was ended by the appointed time being reached. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.pause" /></div>
+<span class="anchor" id="line-21" /><span class="anchor" id="line-22" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.input" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.input" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.input" name="renpy.input" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.input.html">renpy.input</a></b>(</td>
+<td>prompt, default='', allow=None, exclude='{}', length=None, with_none=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This pops up a window requesting that the user enter in some text. It returns the entered text. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>prompt</em> - A prompt that is used to ask the user for the text. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>default</em> - A default for the text that this input can return. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>length</em> - If given, a limit to the amount of text that this function will return. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>allow</em> - If not None, then if an input character is not in this string, it is ignored. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>exclude</em> - If not None, then if an input character is in this set, it is ignored. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>with_none</em> - If True, causes a "with None" statement to be run after each interaction. If None (the default), checks config.implicit_with_none to determine if a "with None" should be run. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-20" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.input" /></div>
+<span class="anchor" id="line-23" /><span class="anchor" id="line-24" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.imagemap" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.imagemap" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.imagemap" name="renpy.imagemap" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.imagemap.html">renpy.imagemap</a></b>(</td>
+<td>ground, selected, hotspots, unselected=None, overlays=False, style='imagemap', with_none=None, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Displays an imagemap. An image map consists of two images and a list of hotspots that are defined on that image. When the user clicks on a hotspot, the value associated with that hotspot is returned. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>ground</em> - The name of the file containing the ground image. The ground image is displayed for areas that are not part of any hotspots. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>selected</em> - The name of the file containing the selected image. This image is displayed in hotspots when the mouse is over them. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>hotspots</em> - A list of tuples defining the hotspots in this image map. Each tuple has the format (x0, y0, x1, y1, result). (x0, y0) gives the coordinates of the upper-left corner of the hotspot, (x1, y1) gives the lower-right corner, and result gives the value returned from this function if the mouse is clicked in the hotspot. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>unselected</em> - If provided, then it is the name of a file containing the image that's used to fill in hotspots that are not selected as part of any image. If not provided, the ground image is used instead. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>overlays</em> - If True, overlays are displayed when this imagemap is active. If False, the overlays are suppressed. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>with_none</em> - If True, causes a "with None" statement to be run after each interaction. If None (the default), checks config.implicit_with_none to determine if a "with None" should be run. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-20" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.imagemap" /></div>
+<span class="anchor" id="line-25" /><span class="anchor" id="line-26" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.transition" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.transition" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.transition" name="renpy.transition" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.transition.html">renpy.transition</a></b>(</td>
+<td>trans, layer=None, always=False)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Sets the transition that will be used for the next interaction. This is useful when the next interaction doesn't take a with clause, as is the case with interactions in the <a href="../reference/functions/renpy.pause.html">renpy.pause</a> , <a href="../reference/functions/renpy.input.html">renpy.input</a> , and <a href="../reference/functions/renpy.imagemap.html">renpy.imagemap</a> functions. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>layer</em> - If the layer setting is not None, then the transition will be applied only to the layer named. Please note that only some transitions can be applied to specific layers. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>always</em> - If True, forces the transition to be used, potentially overriding the game preference setting for showing all or no transitions. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.transition" /></div>
+<span class="anchor" id="line-27" /><span class="anchor" id="line-28" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.checkpoint" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.checkpoint" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.checkpoint" name="renpy.checkpoint" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.checkpoint.html">renpy.checkpoint</a></b>(</td>
+<td>data=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This creates a checkpoint that the user can rollback to. The checkpoint is placed at the statement after the last statement that interacted with the user. Once this function has been called, there should be no more interaction with the user in the current Python block. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>data</em> - If not None, this contains data that can be accessed using <a href="../reference/functions/renpy.roll_forward_info.html">renpy.roll_forward_info</a> if and when the current statement is re-executed due to the user rolling back and then rolling forward again. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line862">renpy.checkpoint should be called after <a href="../reference/functions/ui.interact.html">ui.interact</a> . <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.checkpoint" /></div>
+<span class="anchor" id="line-29" /><span class="anchor" id="line-30" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.roll_forward_info" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.roll_forward_info" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.roll_forward_info" name="renpy.roll_forward_info" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.roll_forward_info.html">renpy.roll_forward_info</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">When re-executing a statement after rollback, this returns the data stored using <a href="../reference/functions/renpy.checkpoint.html">renpy.checkpoint</a> the last time this statement was executed. If this statement is not being re-executed due to a rollback, this returns None. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">Often, this data is passed as the roll_forward parameter of <a href="../reference/functions/ui.interact.html">ui.interact</a> . It's important to check to ensure that the value is valid before using it in this way. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.roll_forward_info" /></div>
+<span class="anchor" id="line-31" /><span class="anchor" id="line-32" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.block_rollback" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.block_rollback" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.block_rollback" name="renpy.block_rollback" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.block_rollback.html">renpy.block_rollback</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Prevents the game from rolling back to before the current statement. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.block_rollback" /></div>
+<span class="anchor" id="line-33" /><span class="anchor" id="line-34" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.restart_interaction" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.restart_interaction" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.restart_interaction" name="renpy.restart_interaction" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.restart_interaction.html">renpy.restart_interaction</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Calling this restarts the current interaction. This will immediately end any ongoing transition, and will call all of the overlay functions again. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">This should be called whenever widgets are added or removed over the course of an interaction, or when the information used to construct the overlay changes. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.restart_interaction" /></div>
+<span class="anchor" id="line-35" /><span class="anchor" id="line-36" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.full_restart" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.full_restart" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.full_restart" name="renpy.full_restart" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.full_restart.html">renpy.full_restart</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This causes a full restart of Ren'Py. This clears the store and configuration, and re-runs init blocks before branching off to the start label. It's very close to what happens when we quit out and re-run the interpreter, except for some caches not being cleared. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.full_restart" /></div>
+<span class="anchor" id="line-37" /><span class="anchor" id="line-38" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.quit" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.quit" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.quit" name="renpy.quit" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.quit.html">renpy.quit</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This causes Ren'Py to exit entirely. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.quit" /></div>
+<span class="anchor" id="line-39" /><span class="anchor" id="line-40" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.loadable" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.loadable" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.loadable" name="renpy.loadable" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.loadable.html">renpy.loadable</a></b>(</td>
+<td>filename)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns True if the given filename is loadable, meaning that it can be loaded from the disk or from inside an archive. Returns False if this is not the case. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.loadable" /></div>
+<span class="anchor" id="line-41" /><span class="anchor" id="line-42" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.exists" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.exists" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.exists" name="renpy.exists" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.exists.html">renpy.exists</a></b>(</td>
+<td>filename)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns true if the given filename can be found in the searchpath. This only works if a physical file exists on disk. It won't find the file if it's inside of an archive. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.exists" /></div>
+<span class="anchor" id="line-43" /><span class="anchor" id="line-44" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.clear_game_runtime" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.clear_game_runtime" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.clear_game_runtime" name="renpy.clear_game_runtime" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.clear_game_runtime.html">renpy.clear_game_runtime</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Resets the game runtime timer down to 0. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">The game runtime counter counts the number of seconds that have elapsed while waiting for user input in the current context. (So it doesn't count time spent in the game menu.) <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.clear_game_runtime" /></div>
+<span class="anchor" id="line-45" /><span class="anchor" id="line-46" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.get_game_runtime" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.get_game_runtime" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.get_game_runtime" name="renpy.get_game_runtime" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.get_game_runtime.html">renpy.get_game_runtime</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns the number of seconds that have elapsed in gameplay since the last call to clear_game_timer, as a float. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">The game runtime counter counts the number of seconds that have elapsed while waiting for user input in the current context. (So it doesn't count time spent in the game menu.) <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.get_game_runtime" /></div>
+<span class="anchor" id="line-47" /><span class="anchor" id="line-48" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.choice_for_skipping" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.choice_for_skipping" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.choice_for_skipping" name="renpy.choice_for_skipping" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.choice_for_skipping.html">renpy.choice_for_skipping</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This is called to indicate to the skipping code that we have reached a choice. If we're skipping, and if the skip after choices preference is not True, then this disables skipping. This should only be needed in a custom interaction function. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.choice_for_skipping" /></div>
+<span class="anchor" id="line-49" /><span class="anchor" id="line-50" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/color" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/color" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="color" name="color" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/color.html">color</a></b>(</td>
+<td>s)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This function converts hexcode string <em>s</em> into a color/alpha tuple. Leading # marks are ignored. Colors can be rgb or rgba, with each element having either one or two digits. (So the strings can be 3, 4, 6, or 8 digits long, not including the optional #.) A missing alpha is interpreted as 255, fully opaque. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">For example, color('#123a') returns (17, 34, 51, 170), while color('c0c0c0') returns (192, 192, 192, 255). <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">Note that as of Ren'Py 5.6.0, functions requiring a color accept the hex string form of specification directly, with no need to use this color function. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/color" /></div>
+<span class="anchor" id="line-51" /><span class="anchor" id="line-52" />
+<p class="line867" />
+<h4 id="head-9b45e47ab547eccad3ca3d0269f22d106665c418">Context Functions</h4>
+<span class="anchor" id="line-53" /><span class="anchor" id="line-54" />
+<p class="line874">Contexts store the current scene lists and execution location. Ren'Py supports a stack of contexts, but only the top-level context is saved to the save file. <span class="anchor" id="line-55" /><span class="anchor" id="line-56" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.context" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.context" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.context" name="renpy.context" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.context.html">renpy.context</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns an object that is unique to the current context, that participates in rollback and the like. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="line-9" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.context" /></div>
+<span class="anchor" id="line-57" /><span class="anchor" id="line-58" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.call_in_new_context" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.call_in_new_context" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.call_in_new_context" name="renpy.call_in_new_context" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.call_in_new_context.html">renpy.call_in_new_context</a></b>(</td>
+<td>label)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This code creates a new context, and starts executing code from that label in the new context. Rollback is disabled in the new context. (Actually, it will just bring you back to the real context.) <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Use this to begin a second interaction with the user while inside an interaction. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.call_in_new_context" /></div>
+<span class="anchor" id="line-59" /><span class="anchor" id="line-60" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.invoke_in_new_context" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.invoke_in_new_context" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.invoke_in_new_context" name="renpy.invoke_in_new_context" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.invoke_in_new_context.html">renpy.invoke_in_new_context</a></b>(</td>
+<td>callable, *args, **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This pushes the current context, and invokes the given python function in a new context. When that function returns or raises an exception, it removes the new context, and restores the current context. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Additional arguments and keyword arguments are passed to the callable. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line862">Please note that the context so created cannot execute renpy code. So exceptions that change the flow of renpy code (like the one created by <a href="../reference/functions/renpy.jump.html">renpy.jump</a> ) cause this context to terminate, and are handled by the next higher context. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line862">If you want to execute renpy code from the function, you can call it with <a href="../reference/functions/renpy.call_in_new_context.html">renpy.call_in_new_context</a> . <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">Use this to begin a second interaction with the user while inside an interaction. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-16" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.invoke_in_new_context" /></div>
+<span class="anchor" id="line-61" /><span class="anchor" id="line-62" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.jump_out_of_context" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.jump_out_of_context" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.jump_out_of_context" name="renpy.jump_out_of_context" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.jump_out_of_context.html">renpy.jump_out_of_context</a></b>(</td>
+<td>label)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Causes control to leave the current context, and then to be transferred in the parent context to the given label. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.jump_out_of_context" /></div>
+<span class="anchor" id="line-63" /><span class="anchor" id="line-64" />
+<p class="line867" />
+<h4 id="head-a7c0befb2b936639d84c9ec0b8892ddd9dfceee3">Debugging Functions</h4>
+<span class="anchor" id="line-65" /><span class="anchor" id="line-66" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.log" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.log" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.log" name="renpy.log" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.log.html">renpy.log</a></b>(</td>
+<td>msg)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">If <a href="../reference/Configuration_Variables.html#config.log">config.log</a> is not set, this does nothing. Otherwise, it opens the logfile (if not already open), formats the message to 70 columns, and prints it to the logfile. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.log" /></div>
+<span class="anchor" id="line-67" /><span class="anchor" id="line-68" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.watch" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.watch" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.watch" name="renpy.watch" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.watch.html">renpy.watch</a></b>(</td>
+<td>expression, style='default', **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This watches the given python expression, by displaying it in the upper-left corner of the screen (although position properties can change that). The expression should always be defined, never throwing an exception. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">A watch will not persist through a save or restart. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.watch" /></div>
+<span class="anchor" id="line-69" /><span class="anchor" id="line-70" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.get_filename_line" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.get_filename_line" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.get_filename_line" name="renpy.get_filename_line" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.get_filename_line.html">renpy.get_filename_line</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns a pair giving the filename and line number of the current statement. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.get_filename_line" /></div>
+<span class="anchor" id="line-71" /><span class="anchor" id="line-72" />
+<p class="line867" />
+<h4 id="head-a737308253e3d64feb8a41ab963d16cc5ef33c2b">Ren'Py Statement Functions</h4>
+<span class="anchor" id="line-73" /><span class="anchor" id="line-74" />
+<p class="line874">These functions correspond to the equivalent core Ren'Py language statements. <span class="anchor" id="line-75" /><span class="anchor" id="line-76" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.image" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.image" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.image" name="renpy.image" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.image.html">renpy.image</a></b>(</td>
+<td>name, img)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This is used to execute the image statment. It takes as arguments an image name and an image object, and associates the image name with the image object. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Like the image statment, this function should only be executed in init blocks. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>name</em> - The image name, a tuple of strings. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>img</em> - The displayable that is associated with that name. If this is a string or tuple, it is interpreted as an argument to Image. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.image" /></div>
+<span class="anchor" id="line-77" /><span class="anchor" id="line-78" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.scene" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.scene" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.scene" name="renpy.scene" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.scene.html">renpy.scene</a></b>(</td>
+<td>layer='master')</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This clears out the specified layer, or 'master' by default. This is used in the execution of the <tt class="backtick">scene</tt> statement, but only to clear out the layer. If you want to then add something new, like the <tt class="backtick">scene</tt> statement would normally do when an image parameter is given, call <a href="../reference/functions/renpy.show.html">renpy.show</a> after this. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.scene" /></div>
+<span class="anchor" id="line-79" /><span class="anchor" id="line-80" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.show" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.show" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.show" name="renpy.show" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.show.html">renpy.show</a></b>(</td>
+<td>name, at_list=[], layer='master', what=None, zorder=0, tag=None, behind=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This is used to execute the show statement, adding the named image to the screen. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>name</em> - The name of the image to add to the screen. This may be a tuple of strings, or a single string. In the latter case, it is split on whitespace to make a tuple. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>at_list</em> - The at list, a list of functions that are applied to the image when shown. The members of the at list need to be pickleable if sticky_positions is True. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>layer</em> - The layer the image will be shown on. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>what</em> - If not None, this is expected to be a displayable. That displayable is shown, instead of going through the normal lookup process. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>zorder</em> - The zorder of this image. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>tag</em> - The tag of this image. If None, the tag is taken from name. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>behind</em> - A list of tags this image will be shown behind, if they are present on the same layer at the same zorder, and an image with the same tag is not already present on the layer. <em>5.6.5</em> <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-22" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.show" /></div>
+<span class="anchor" id="line-81" /><span class="anchor" id="line-82" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.hide" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.hide" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.hide" name="renpy.hide" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.hide.html">renpy.hide</a></b>(</td>
+<td>name, layer='master')</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This finds items in the given layer (or 'master' if no layer is given) that have the same name as the first component of the given name, and removes them from the layer. This is used to execute the hide statement. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>name</em> - The name of the image to hide from the screen. This may be a tuple of strings, or a single string. In the latter case, it is split on whitespace to make a tuple. Only the first element of the tuple is used. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>layer</em> - The layer this operates on. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.hide" /></div>
+<span class="anchor" id="line-83" /><span class="anchor" id="line-84" />
+<p class="line867" />
+<h4 id="head-1695d6a96892faff987e0e03d7e85ac06b48f67d">Miscellaneous Utility Functions</h4>
+<span class="anchor" id="line-85" /><span class="anchor" id="line-86" />
+<p class="line867" />
+<div class="documented"><a id="renpy.random" name="renpy.random" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;renpy.random</b>&#160;=</td>
+<td>...</td>
+</tr>
+</table>
+<span class="anchor" id="line-87" /><span class="anchor" id="line-88" />
+<p class="line862">This object is a random number generator that implements the <a class="http" href="http://www.renpy.org//www.python.org/doc/2.3.4/lib/module-random.html">Python random number generation interface</a>. Randomness can be generated by calling the the various methods this object exposes. See the Python documentation for the full list, but the most useful are: <span class="anchor" id="line-89" /><span class="anchor" id="line-90" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.random.random" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.random.random" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.random.random" name="renpy.random.random" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/renpy.random.random.html">renpy.random.random</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Return the next random floating point number in the range (0.0, 1.0). <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.random.random" /></div>
+<span class="anchor" id="line-91" /><span class="anchor" id="line-92" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.random.randint" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.random.randint" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.random.randint" name="renpy.random.randint" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/renpy.random.randint.html">renpy.random.randint</a></b>(</td>
+<td>a, b)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Return a random integer such that <em>a</em> &lt;= <em>N</em> &lt;= <em>b</em>. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.random.randint" /></div>
+<span class="anchor" id="line-93" /><span class="anchor" id="line-94" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.random.choice" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.random.choice" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.random.choice" name="renpy.random.choice" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/renpy.random.choice.html">renpy.random.choice</a></b>(</td>
+<td>seq)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Return a random element from the non-empty sequence <em>seq</em>. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.random.choice" /></div>
+<span class="anchor" id="line-95" /><span class="anchor" id="line-96" />
+<p class="line874">Unlike the standard Python random number generator, this object cooperates with rollback, generating the same numbers regardless of how many times we rollback. It should be used instead of the standard Python random module. <span class="anchor" id="line-97" /><span class="anchor" id="line-98" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-99" /><span class="anchor" id="line-100" />
+<p class="line867"><span class="anchor" id="line-101" /><span class="anchor" id="line-102" /><span class="anchor" id="line-103" /><span class="anchor" id="line-104" /><span class="anchor" id="line-105" /><span class="anchor" id="line-106" /><span class="anchor" id="line-107" /><span class="anchor" id="line-108" /><span class="anchor" id="line-109" /></p>
+<pre class="renpy">
+<span class="renpy_comment"># return a random float between 0 and 1</span>
+<span class="renpy_keyword">$</span> randfloat = renpy.random.random()
+
+<span class="renpy_comment"># return a random integer between 1 and 20</span>
+<span class="renpy_keyword">$</span> d20roll = renpy.random.randint(1, 20)
+
+<span class="renpy_comment"># return a random element from a list</span>
+<span class="renpy_keyword">$</span> randfruit = renpy.random.choice(['<span class="renpy_string">apple</span>', '<span class="renpy_string">orange</span>', '<span class="renpy_string">plum</span>'])
+</pre>
+<span class="anchor" id="line-110" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

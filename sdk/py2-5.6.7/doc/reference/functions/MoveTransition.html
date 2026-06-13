@@ -1,0 +1,138 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-bc84fbdcdff39d193867fc98983b8ef74af3fac8">MoveTransition</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="MoveTransition" name="MoveTransition" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/MoveTransition.html">MoveTransition</a></b>(</td>
+<td>delay, factory=None, enter_factory=None, leave_factory=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This transition attempts to find images that have changed position, and moves them from the old position to the new transition, taking <em>delay</em> seconds to complete the move. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">If <em>factory</em> is given, it is expected to be a function that takes as arguments: an old position, a new position, the delay, and a displayable, and to return a displayable as an argument. If not given, the default behavior is to move the displayable from the starting to the ending positions. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line862">If <em>enter_factory</em> or <em>leave_factory</em> are given, they are expected to be functions that take as arguments a position, a delay, and a displayable, and return a displayable. They are applied to displayables that are entering or leaving the scene, respectively. The default is to show in place displayables that are entering, and not to show those that are leaving. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">Images are considered to be the same if they have the same tag, in the same way that the tag is used to determine which image to replace or to hide. They are also considered to be the same if they are the same displayable. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">If you use this transition to slide an image off the side of the screen, remember to hide it when you are done. (Or just use it with a leave_factory.) <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line874">There are several constructors that create functions for use with enter_factory and leave_factory: <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+<div class="documented"><a id="MoveIn" name="MoveIn" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;MoveIn</b>(</td>
+<td>pos)</td>
+</tr>
+</table>
+<span class="anchor" id="line-18" /><span class="anchor" id="line-19" />
+<p class="line874">Can be used with enter_factory to move in entering elements. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>pos</em> - An (xpos, ypos, xanchor, yanchor) tuple, giving the position to move from. Any component can be None, to take the corresponding component of the final position. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-24" /><span class="anchor" id="line-25" />
+<p class="line867" />
+<div class="documented"><a id="MoveIn" name="MoveIn" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;MoveIn</b>(</td>
+<td>pos)</td>
+</tr>
+</table>
+<span class="anchor" id="line-26" /><span class="anchor" id="line-27" />
+<p class="line874">Can be used with leave_factory to move in entering elements. <span class="anchor" id="line-28" /><span class="anchor" id="line-29" /></p>
+<p class="line867"><em>pos</em> - An (xpos, ypos, xanchor, yanchor) tuple, giving the position to move to. Any component can be None, to take the corresponding component of the original position. <span class="anchor" id="line-30" /><span class="anchor" id="line-31" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-32" /><span class="anchor" id="line-33" />
+<p class="line867" />
+<div class="documented"><a id="ZoomInOut" name="ZoomInOut" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;ZoomInOut</b>(</td>
+<td>start, end)</td>
+</tr>
+</table>
+<span class="anchor" id="line-34" /><span class="anchor" id="line-35" />
+<p class="line874">Can be used with enter_factory or leave_factory. Used to zoom in or out entering or leaving displayables. <span class="anchor" id="line-36" /><span class="anchor" id="line-37" /></p>
+<p class="line867"><em>start</em> - The zoom factor at the start of the transition. <span class="anchor" id="line-38" /><span class="anchor" id="line-39" /></p>
+<p class="line867"><em>end</em> - The zoom factor at the end of the transition. <span class="anchor" id="line-40" /><span class="anchor" id="line-41" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-42" /><span class="anchor" id="line-43" />
+<p class="line867" />
+<div class="documented"><a id="RemoveInOut" name="RemoveInOut" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;RemoveInOut</b>(</td>
+<td>start, end, **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-44" /><span class="anchor" id="line-45" />
+<p class="line874">Can be used with enter_factory or leave_factory. Used to revolve in or out entering or leaving displayables. <span class="anchor" id="line-46" /><span class="anchor" id="line-47" /></p>
+<p class="line867"><em>start</em> - The clockwise revolution at the start of the transition. <span class="anchor" id="line-48" /><span class="anchor" id="line-49" /></p>
+<p class="line867"><em>end</em> - The clockwise revolution at the end of the transition. <span class="anchor" id="line-50" /><span class="anchor" id="line-51" /></p>
+<p class="line862">Additional keyword arguments are passed to <a href="../../reference/functions/Revolve.html">Revolve</a> . <span class="anchor" id="line-52" /><span class="anchor" id="line-53" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-54" /><span class="anchor" id="line-55" /><span class="anchor" id="line-56" />
+<p class="line867" />
+</div>
+<span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /><span class="anchor" id="line-60" />
+<p class="line867" />
+<h2 id="head-6916242c2e425aac916385df8a9bf1970a4ad6e6">Example</h2>
+<span class="anchor" id="line-61" />
+<p class="line867"><span class="anchor" id="line-62" /><span class="anchor" id="line-63" /><span class="anchor" id="line-64" /><span class="anchor" id="line-65" /><span class="anchor" id="line-66" /><span class="anchor" id="line-67" /><span class="anchor" id="line-68" /><span class="anchor" id="line-69" /><span class="anchor" id="line-70" /><span class="anchor" id="line-71" /><span class="anchor" id="line-72" /><span class="anchor" id="line-73" /><span class="anchor" id="line-74" /><span class="anchor" id="line-75" /><span class="anchor" id="line-76" /><span class="anchor" id="line-77" /><span class="anchor" id="line-78" /><span class="anchor" id="line-79" /><span class="anchor" id="line-80" /><span class="anchor" id="line-81" /><span class="anchor" id="line-82" /><span class="anchor" id="line-83" /><span class="anchor" id="line-84" /><span class="anchor" id="line-85" /><span class="anchor" id="line-86" /><span class="anchor" id="line-87" /><span class="anchor" id="line-88" /><span class="anchor" id="line-89" /><span class="anchor" id="line-90" /><span class="anchor" id="line-91" /><span class="anchor" id="line-92" /><span class="anchor" id="line-93" /><span class="anchor" id="line-94" /><span class="anchor" id="line-95" /><span class="anchor" id="line-96" /><span class="anchor" id="line-97" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> move = MoveTransition(0.5)
+
+e "<span class="renpy_string">The move transition moves around images that have
+   changed position.</span>"
+
+e "<span class="renpy_string">For example...</span>"
+
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">at</span> offscreenleft <span class="renpy_keyword">with</span> move
+
+e "<span class="renpy_string">I can move over to the offscreenleft position, just off
+   the left side of the screen.</span>"
+
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">at</span> left <span class="renpy_keyword">with</span> move
+
+e "<span class="renpy_string">The left position has my left side border the left
+   margin of the screen.</span>"
+
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">at</span> center <span class="renpy_keyword">with</span> move
+
+e "<span class="renpy_string">I can also move to the center...</span>"
+
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">at</span> right <span class="renpy_keyword">with</span> move
+
+e "<span class="renpy_string">... the right ...</span>"
+
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">at</span> offscreenright <span class="renpy_keyword">with</span> move
+
+e "<span class="renpy_string">... or even to offscreenright, off the right-hand side
+   of the screen.</span>"
+
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">at</span> right <span class="renpy_keyword">with</span> move
+
+e "<span class="renpy_string">We don't limit you to these five positions either. You
+   can always create your own Position objects.</span>"
+</pre>
+<span class="anchor" id="line-98" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

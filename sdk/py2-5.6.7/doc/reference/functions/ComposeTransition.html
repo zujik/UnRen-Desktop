@@ -1,0 +1,43 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-ec450c2427ad54aa5d25d9ce67015284954be896">ComposeTransition</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ComposeTransition" name="ComposeTransition" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/ComposeTransition.html">ComposeTransition</a></b>(</td>
+<td>trans, before=None, after=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This allows transitions to be composed before they are applied. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>trans</em> - The top-level transition. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>before</em> - If not None, a transition that is applied to the old and new screens, and used as the old screen for <em>trans</em>. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>after</em> - If not None, a transitions that is applied to the old and new screens, and used as the old screen for <span class="anchor" id="line-12" /><em>trans</em>. <span class="anchor" id="line-13" /><span class="anchor" id="line-14" /></p>
+<p class="line874">This may not work with all transitions. <span class="anchor" id="line-15" /><span class="anchor" id="line-16" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-17" />
+<h2 id="head-9a6fa6f2b60072e0d1f1251161d5770026d8e73b">Example</h2>
+<span class="anchor" id="line-18" />
+<p class="line867"><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">$</span> moveinoutdissolve = ComposeTransition(dissolve, before=moveoutleft, after=moveinright)
+</pre>
+<span class="anchor" id="line-21" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

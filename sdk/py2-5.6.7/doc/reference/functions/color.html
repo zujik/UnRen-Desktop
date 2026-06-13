@@ -1,0 +1,42 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-1748e10a3e771bf04a1c4e88208608b3e601288b">color</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="color" name="color" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/color.html">color</a></b>(</td>
+<td>s)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This function converts hexcode string <em>s</em> into a color/alpha tuple. Leading # marks are ignored. Colors can be rgb or rgba, with each element having either one or two digits. (So the strings can be 3, 4, 6, or 8 digits long, not including the optional #.) A missing alpha is interpreted as 255, fully opaque. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">For example, color('#123a') returns (17, 34, 51, 170), while color('c0c0c0') returns (192, 192, 192, 255). <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">Note that as of Ren'Py 5.6.0, functions requiring a color accept the hex string form of specification directly, with no need to use this color function. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" />
+<h2 id="head-9d7846a16bd97f5e7db1434b4a2bbf21f20fc9a5">Example</h2>
+<span class="anchor" id="line-13" />
+<p class="line867"><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> PaleVioletRed = Solid(color("<span class="renpy_string">#DB7093</span>"))
+</pre>
+<span class="anchor" id="line-17" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

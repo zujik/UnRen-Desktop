@@ -1,0 +1,62 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-ae7f3ab2e8c7e0c8a08cddb1f8e24fe88a91d768">renpy.scene</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.scene" name="renpy.scene" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.scene.html">renpy.scene</a></b>(</td>
+<td>layer='master')</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This clears out the specified layer, or 'master' by default. This is used in the execution of the <tt class="backtick">scene</tt> statement, but only to clear out the layer. If you want to then add something new, like the <tt class="backtick">scene</tt> statement would normally do when an image parameter is given, call <a href="../../reference/functions/renpy.show.html">renpy.show</a> after this. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" />
+<h2 id="head-9c190ae29674bd5c2861cafd323d85608af32474">Example</h2>
+<span class="anchor" id="line-9" />
+<p class="line867"><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">python</span>:
+        for slideindex in range(10):
+            <span class="renpy_comment"># images are named slide0.png...slide9.png</span>
+            renpy.<span class="renpy_keyword">image</span>('<span class="renpy_string">slide%d</span>' % slideindex,
+                        '<span class="renpy_string">slide%d.png</span>' % slideindex)
+
+"<span class="renpy_string">And now, a slideshow</span>"
+<span class="renpy_keyword">python</span>:
+    for slideindex in range(10):
+        <span class="renpy_comment"># clear all images</span>
+        renpy.<span class="renpy_keyword">scene</span>()
+        
+        renpy.<span class="renpy_keyword">show</span>('<span class="renpy_string">slide%d</span>' % slideindex)
+
+        <span class="renpy_comment"># set the transition for the pause interaction</span>
+        renpy.transition(dissolve)
+
+        renpy.pause(3.0)
+
+<span class="renpy_keyword">scene</span> bg washington
+"<span class="renpy_string">Wasn't that nice?</span>"
+</pre>
+<span class="anchor" id="line-33" />
+<p class="line867"><em>Note: in 5.5.4, the renpy.image line should be: renpy.image(('slide%d' % slideindex,), 'slide%d.jpg' % slideindex)</em> <span class="anchor" id="line-34" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>
