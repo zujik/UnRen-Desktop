@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - Renamed project to **UnRen-Desktop** (Linux + macOS).
 - `UnRen.command` macOS Finder wrapper.
-- Modular `lib/` bash modules, plain `tools/` and `patches/` (no base64).
+- Modular `unren/` bash modules (renamed from `lib/` to avoid collision with Ren'Py's `lib/`), plain `tools/` and `patches/` (no base64).
 - Trimmed Ren'Py SDK layout under `sdk/` with **Git LFS** for `lib/` and `renpy/` binaries.
 - `manifest.json`, `THIRD_PARTY_LICENSES.md`, `scripts/populate-sdk.sh`, `scripts/build-release.sh`.
 - Python 3 unrpyc v2 and updated rpatool from UnRen 0.9.0 fork.
@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Bash modules moved from `lib/` to `unren/` so flat copies into game roots do not collide with Ren'Py's `lib/` Python folder.
 - `UnRen.sh` is now a thin entry point; removed broken apt/brew auto-install block.
 - README rewritten for GitHub distribution.
 
