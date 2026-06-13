@@ -8,8 +8,8 @@
 # Display overrides (set before running GameName.sh):
 #   SDL_VIDEODRIVER=x11      force X11 / XWayland (useful on Wayland desktops)
 #   SDL_VIDEODRIVER=wayland  try native Wayland (modern py3 Linux builds)
-#   UNREN_SDL_VIDEODRIVER=…  same as SDL_VIDEODRIVER when SDL_VIDEODRIVER is unset
+#   UNREN_SDL_VIDEODRIVER=...  same as SDL_VIDEODRIVER when SDL_VIDEODRIVER is unset
 #
 # Legacy py2 / SDK-fallback games auto-set SDL_VIDEODRIVER=x11 on Wayland sessions
 # inside GameName.sh to avoid "wayland not available" startup crashes.
-# py3 games: no override — SDL autodetects Wayland or X11.
+# py3 games: no override - SDL autodetects Wayland or X11.
