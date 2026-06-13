@@ -3,6 +3,7 @@
 # https://github.com/zujik/UnRen-Desktop
 
 set -euo pipefail
+set +H
 
 UNREN_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export UNREN_ROOT
