@@ -55,7 +55,7 @@ unren_menu() {
                 ;;
             8)
                 unren_extract
-                unren_decompile --clobber
+                unren_decompile
                 unren_console
                 unren_quick
                 unren_skip
@@ -66,7 +66,7 @@ unren_menu() {
                 ;;
             9)
                 unren_extract
-                unren_decompile --clobber --try-harder
+                unren_decompile --try-harder
                 unren_console
                 unren_quick
                 unren_skip
