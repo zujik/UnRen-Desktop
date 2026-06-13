@@ -41,6 +41,8 @@ source "${UNREN_ROOT}/unren/runtime.sh"
 source "${UNREN_ROOT}/unren/python-resolve.sh"
 # shellcheck source=unren/patches.sh
 source "${UNREN_ROOT}/unren/patches.sh"
+# shellcheck source=unren/forall.sh
+source "${UNREN_ROOT}/unren/forall.sh"
 # shellcheck source=unren/extract.sh
 source "${UNREN_ROOT}/unren/extract.sh"
 # shellcheck source=unren/decompile.sh

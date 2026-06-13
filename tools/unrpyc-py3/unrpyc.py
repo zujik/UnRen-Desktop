@@ -22,7 +22,7 @@
 
 
 __title__ = "Unrpyc"
-__version__ = 'v2.0.3'
+__version__ = 'v2.0.4'
 __url__ = "https://github.com/CensoredUsername/unrpyc"
 
 
