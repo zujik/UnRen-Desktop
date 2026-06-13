@@ -1,0 +1,48 @@
+{
+  "name": "UnRen-Desktop",
+  "version": "2.0.0-alpha.1",
+  "runtimes": {
+    "py3": {
+      "renpy_version": "8.5.3",
+      "sdk_dir": "sdk/py3-8.5.3",
+      "download_url": "https://www.renpy.org/dl/8.5.3/renpy-8.5.3-sdk.tar.bz2",
+      "components": [
+        "renpy.sh",
+        "renpy.py",
+        "renpy/",
+        "lib/python3.12/",
+        "lib/py3-linux-x86_64/",
+        "lib/py3-linux-i686/",
+        "lib/py3-darwin-x86_64/",
+        "lib/py3-darwin-arm64/"
+      ],
+      "sha256": "placeholder-run-scripts-populate-sdk-sh"
+    },
+    "py2": {
+      "renpy_version": "7.8.7",
+      "sdk_dir": "sdk/py2-7.8.7",
+      "download_url": "https://www.renpy.org/dl/7.8.7/renpy-7.8.7-sdk.tar.bz2",
+      "components": [
+        "renpy.sh",
+        "renpy.py",
+        "renpy/",
+        "lib/python2.7/",
+        "lib/py2-linux-x86_64/",
+        "lib/py2-linux-i686/",
+        "lib/py2-darwin-x86_64/"
+      ],
+      "sha256": "placeholder-run-scripts-populate-sdk-sh"
+    }
+  },
+  "tools": {
+    "unrpyc": {
+      "path": "tools/unrpyc-py3",
+      "version": "v2.0.3",
+      "source": "https://github.com/CensoredUsername/unrpyc"
+    },
+    "rpatool": {
+      "path": "tools/rpatool-py3/rpatool.py",
+      "source": "https://codeberg.org/shiz/rpatool"
+    }
+  }
+}

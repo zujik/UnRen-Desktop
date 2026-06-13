@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0-alpha.1] - 2026-06-13
+
+### Added
+
+- Renamed project to **UnRen-Desktop** (Linux + macOS).
+- `UnRen.command` macOS Finder wrapper.
+- Modular `lib/` bash modules, plain `tools/` and `patches/` (no base64).
+- Trimmed Ren'Py SDK layout under `sdk/py3-8.5.3` and `sdk/py2-7.8.7`.
+- `manifest.json`, `THIRD_PARTY_LICENSES.md`, `scripts/populate-sdk.sh`, `scripts/build-release.sh`.
+- Python 3 unrpyc v2 and updated rpatool from UnRen 0.9.0 fork.
+- Game-first Python resolution with bundled SDK fallback (dikau-style game detection).
+
+### Changed
+
+- `UnRen.sh` is now a thin entry point; removed broken apt/brew auto-install block.
+- README rewritten for GitHub distribution.
+
+### Removed
+
+- `b64.file` embedded tool encoding (tools are plain files now).
+
 ## [1.0.9.9.1] - 2022-10-06
 
 ### Changed

@@ -18,6 +18,17 @@ coverage/
 # Ignore the original Windows script
 UnRen.bat
 
+# Legacy base64 bundle (replaced by tools/ and patches/)
+b64.file
+
+# Generated / local SDK download cache
+.cache/
+
+# Large SDK runtimes — commit via Git LFS or run scripts/populate-sdk.sh locally
+# Uncomment the next line if you prefer not to commit sdk binaries:
+# sdk/*/lib/
+# sdk/*/renpy/
+
 # Linux and macOS specific files
 # Ignore hidden backup files created by editors
 *~
