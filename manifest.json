@@ -55,6 +55,21 @@
     "rpatool": {
       "path": "tools/rpatool-py3/rpatool.py",
       "source": "https://codeberg.org/shiz/rpatool"
+    },
+    "altrpatool": {
+      "path": "tools/altrpatool-py3/altrpatool.py",
+      "author": "JoeLurmel @ f95zone",
+      "source": "UnRen-forall-la (embedded)"
+    },
+    "rpyccorrect": {
+      "path": "tools/rpyccorrect-py3/rpyccorrect.py",
+      "version": "1.04",
+      "author": "AON/SC4X",
+      "source": "_archive/unren-legacy/misc/rpycCorrector_1.04"
+    },
+    "detect_renpy_version": {
+      "path": "tools/detect-renpy-version/detect_renpy_version.py",
+      "source": "UnRen-forall-la (embedded)"
     }
   }
 }

@@ -1,19 +1,39 @@
-# Port candidates from UnRen-forall (Windows)
+# Port / merge audit
 
-Reference: `../../UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80/`
+Reference Windows spec (archived): `../../_archive/unren-legacy/UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80/`
 
-High value for UnRen-Desktop (not yet implemented):
+## Ported (2026-06-13)
 
-| Feature | Windows option | Notes |
-|---------|----------------|-------|
-| RPA rename `.org` not subfolder | current/legacy | Avoid duplicate labels; we use `.rpa.bak` |
-| Encrypted / modified RPA headers | 7, altrpatool | WOS, JASON, SVAC — needs Python port |
-| rpycCorrector pre-pass | before decompile | `misc/rpycCorrector_1.04` in archive |
-| Ren'Py sync folder cleanup | n | `%APPDATA%/renpy/<game>/` |
-| `detect_renpy_version.py` | auto | When `script_version` missing |
-| Multi-option menu chains | e.g. `72k1` | Single-run pipeline strings |
-| `.rpy.org` backup on decompile | 9.x | Compare decompile vs shipped `.rpy` |
-| MC rename patch | forall launcher | Universal MC name change |
-| Registry / drag-drop | Windows-only | Skip on Linux |
+| Feature | Menu | Implementation |
+|---------|------|----------------|
+| rpycCorrector | **c**, option **9** pre-step | `tools/rpyccorrect-py3/` — from AON/SC4X v1.04, **not** in forall |
+| altrpatool (JAS/RWA/SVAC) | option **1** fallback | `tools/altrpatool-py3/` — JoeLurmel / forall embed |
+| detect_renpy_version | automatic | `tools/detect-renpy-version/` + `sdk-resolve.sh` |
+| Sync folder cleanup | **n** | `unren/extras.sh` → `unren-nsync.rpy` |
+| `.org` restore | **r** | `unren/extras.sh` |
+| macOS quarantine | **m** (macOS only, opt-in) | `unren/mac.sh` — removed from auto-resolve |
+| SDK download helper | `scripts/download-sdk.sh` | borrows F.Rvv3 / rpmac patterns |
+| rpmac reference | — | `scripts/reference/rpmac.sh` (attributed, not merged) |
 
-Lower priority: auto-update, 7z path, Chinese chcp, Windows Terminal hints.
+## Skipped / later
+
+| Feature | Notes |
+|---------|-------|
+| UnRen 0.9.0 (huchukato) | Behind UnRen-Desktop; deobfuscate identical |
+| dikau-UnRen-sh | Ancestor only; keep at `../../dikau-UnRen-sh/` |
+| `.org` delete | Windows opt **s** — low priority |
+| Multi-option chains (`72k1`) | Power-user; 8/9 cover most |
+| MC rename patch | forall launcher |
+| Full rpmac Mac repackaging | Different job than Linux play-in-place |
+
+## rpycCorrector source
+
+Use **`rpycCorrector_1.04`** from `_archive/unren-legacy/misc/` — forall `.bat` does not embed it.
+
+## Attribution
+
+- **F.Rvv3** — `rpmac.sh` version detect + SDK download (f95zone thread 287097)
+- **JoeLurmel** — altrpatool, unren-nsync patch
+- **AON/SC4X** — rpycCorrector 1.04
+
+See `tools/SOURCES.md` for paths.

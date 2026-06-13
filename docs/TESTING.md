@@ -2,6 +2,8 @@
 
 Run after toolchain or launcher changes. Copy flat UnRen-Desktop into each game root, then `./UnRen.sh`.
 
+Ports merged 2026-06-13 (rpycCorrector, altrpatool, detect_renpy_version, sync/org, mac quarantine opt-in). See `docs/PORT_FROM_WINDOWS.md`.
+
 | # | Game | `script_version` | Layout | Options | Launch | Notes |
 |---|------|------------------|--------|---------|--------|-------|
 | 1 | Magic Shop 1.03 | 6.18 | Win-only, SDK py2-6.99 | 8/9, 0, 1 | g | py2, RPA, Wayland/SDL — **pass** |

@@ -10,6 +10,9 @@ QUICK_LOAD_KEY="${QUICK_LOAD_KEY:-K_F9}"
 MIN_GAME_PYVER=2007018
 
 RPATOOL="${UNREN_ROOT}/tools/rpatool-py3/rpatool.py"
+ALTRPATOOL="${UNREN_ROOT}/tools/altrpatool-py3/altrpatool.py"
+RPYCCORRECT="${UNREN_ROOT}/tools/rpyccorrect-py3/rpyccorrect.py"
+DETECT_RENPY_VERSION="${UNREN_ROOT}/tools/detect-renpy-version/detect_renpy_version.py"
 UNRPYC="${UNREN_ROOT}/tools/unrpyc-py3/unrpyc.py"
 PATCHES_DIR="${UNREN_ROOT}/patches"
 LAUNCHER_SH_TEMPLATE="${UNREN_ROOT}/unren/templates/renpy-desktop.sh"

@@ -73,13 +73,17 @@ Double-click `UnRen.command`, or use Option A/B above.
 
 | Option | Action |
 |--------|--------|
-| 1 | Extract RPA archives (renames `.rpa` → `.rpa.bak` after extraction) |
+| 1 | Extract RPA/JAS/RPC (rpatool + altrpatool fallback; renames to `.bak`) |
 | 2 | Decompile `.rpyc` → `.rpy` |
 | 3–6 | Console, quick save/load, skip, rollback patches |
 | 7 | Options 3–6 (patches only) |
 | 8 | Options 1–6 + install `GameName.sh` launcher |
-| 9 | Options 1–6 + deobfuscate + install launcher |
-| 0 | Decompile and overwrite existing `.rpy` files |
+| 9 | Options 1–6 + rpycCorrector + deobfuscate + install launcher |
+| 0 | Decompile and overwrite stub/missing `.rpy` only |
+| c | rpycCorrector only (mangled RPYC signatures) |
+| n | Disable Ren'Py cloud sync (`unren-nsync.rpy`) |
+| r | Restore `.org` backups (`.rpa.org`, `.rpy.org`, …) |
+| m | macOS only: remove Gatekeeper quarantine (opt-in) |
 | g | Install / launch game (`GameName.sh` from `unren/templates/renpy-desktop.sh`, `lib/` then `sdk/`) |
 
 ## Launching games (Linux display)
