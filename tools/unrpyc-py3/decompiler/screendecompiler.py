@@ -404,14 +404,14 @@ class SLDecompiler(DecompilerBase):
             len(nodes[0].targets) == 1 and
             isinstance(nodes[0].targets[0], ast.Name) and
             re.match(r"_[0-9]+$", nodes[0].targets[0].id) and
-            isinstance(nodes[0].value, ast.Num) and nodes[0].value.n == 0 and
+            codegen._legacy_ast_type(nodes[0].value, 'Num') and nodes[0].value.n == 0 and
             isinstance(nodes[1], ast.For) and not nodes[1].orelse and
             nodes[1].body and self.parse_header(nodes[1].body[0]) and
             isinstance(nodes[1].body[-1], ast.AugAssign) and
             isinstance(nodes[1].body[-1].op, ast.Add) and
             isinstance(nodes[1].body[-1].target, ast.Name) and
             re.match(r"_[0-9]+$", nodes[1].body[-1].target.id) and
-            isinstance(nodes[1].body[-1].value, ast.Num) and
+            codegen._legacy_ast_type(nodes[1].body[-1].value, 'Num') and
             nodes[1].body[-1].value.n == 1)
 
     def strip_parens(self, text):
@@ -664,7 +664,7 @@ class SLDecompiler(DecompilerBase):
             parent_id = header.value.elts[0].id
             index = header.value.elts[1]
             if re.match(r"_([0-9]+|name)$", parent_id) and (
-                    isinstance(index, ast.Num) or
+                    codegen._legacy_ast_type(index, 'Num') or
                     (isinstance(index, ast.Name) and
                     re.match(r"_[0-9]+$", index.id))):
                 return parent_id

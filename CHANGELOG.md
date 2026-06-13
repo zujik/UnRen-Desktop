@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Renamed project to **UnRen-Desktop** (Linux + macOS).
+- Legacy SDK slices `py2-6.99.14.3`, `py2-5.6.7`, `py2-4.8.10` with version-aware runtime selection (`unren/sdk-resolve.sh`).
 - `UnRen.command` macOS Finder wrapper.
 - Modular `unren/` bash modules (renamed from `lib/` to avoid collision with Ren'Py's `lib/`), plain `tools/` and `patches/` (no base64).
 - Trimmed Ren'Py SDK layout under `sdk/` with **Git LFS** for `lib/` and `renpy/` binaries.
@@ -17,7 +17,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Decompile skips `.rpyc`/`.rpymc` when a matching `.rpy`/`.rpym` already exists (default for options 2, 8, 9). Option 0 overwrites only stub/missing sources; `UNREN_DECOMPILE_FORCE_ALL=1` forces full overwrite.
-- `codegen.py`: legacy Ren'Py 6 AST nodes without `_fields` (fixes SL1 screen decompile on Python 3.12+).
+- Decompile scans `game/` when present (avoids bundled `sdk/`/`renpy/` in flat copies).
+- `codegen.py` / `screendecompiler.py`: legacy Ren'Py 6 `_ast` nodes on Python 3.12+ (`_fields`, `Num`, `_ast.Add`, etc.).
 - `UnRen.sh` is now a thin entry point; removed broken apt/brew auto-install block.
 - README rewritten for GitHub distribution.
 

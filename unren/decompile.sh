@@ -2,9 +2,30 @@
 
 _unren_script_version_major() {
     local sv
-    sv="$(grep -rh 'config\.script_version' "${UNREN_GAME}/script_version.rpy" "${UNREN_GAME}/script_version.txt" 2>/dev/null \
+    sv="$(grep -rh 'config\.script_version' \
+        "${UNREN_GAME}/game/script_version.rpy" "${UNREN_GAME}/game/script_version.txt" \
+        "${UNREN_GAME}/script_version.rpy" "${UNREN_GAME}/script_version.txt" 2>/dev/null \
         | head -1 | sed -n 's/.*([[:space:]]*\([0-9][0-9]*\).*/\1/p')"
     [[ -n "$sv" ]] && printf '%s\n' "$sv" || printf '0\n'
+}
+
+_unren_decompile_search_paths() {
+    local -n _paths=$1
+    _paths=()
+    if [[ -d "${UNREN_GAME}/game" ]]; then
+        _paths=("${UNREN_GAME}/game")
+    else
+        _paths=("$UNREN_GAME")
+    fi
+}
+
+_unren_decompile_find() {
+    local -a roots=()
+    local root
+    _unren_decompile_search_paths roots
+    for root in "${roots[@]}"; do
+        find "$root" \( -name '*.rpyc' -o -name '*.rpymc' \) -type f -print0 2>/dev/null
+    done
 }
 
 _unren_decompile_source_path() {
@@ -69,7 +90,7 @@ _unren_decompile_targets() {
             _out+=("$rel")
             continue
         fi
-    done < <(find "$UNREN_GAME" \( -name '*.rpyc' -o -name '*.rpymc' \) -type f -print0 2>/dev/null)
+    done < <(_unren_decompile_find)
 }
 
 unren_decompile() {
@@ -88,7 +109,7 @@ unren_decompile() {
     [[ "${UNREN_DECOMPILE_FORCE_ALL:-0}" == "1" ]] && force_all=1
     (( want_clobber )) && opts+=(--clobber)
 
-    if ! find "$UNREN_GAME" \( -name '*.rpyc' -o -name '*.rpymc' \) -type f -print -quit 2>/dev/null | grep -q .; then
+    if ! _unren_decompile_find | grep -qz .; then
         echo "No .rpyc files found in ${UNREN_GAME}!"
         echo
         return 0
@@ -103,7 +124,7 @@ unren_decompile() {
             else
                 (( skipped++ )) || true
             fi
-        done < <(find "$UNREN_GAME" \( -name '*.rpyc' -o -name '*.rpymc' \) -type f -print0 2>/dev/null)
+        done < <(_unren_decompile_find)
     fi
 
     _unren_decompile_targets "$want_clobber" "$force_all" targets

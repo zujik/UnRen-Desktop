@@ -85,10 +85,15 @@ Double-click `UnRen.command`, or use Option A/B above.
 ## Python runtime strategy
 
 1. **Game-bundled Python** (preferred) — uses the game's own `lib/…/python` when present.
-2. **Bundled SDK** (`sdk/py3-8.5.3`, `sdk/py2-7.8.7`) — trimmed Ren'Py runtimes for Windows-only game folders.
-3. **Download fallback** — `scripts/populate-sdk.sh` can fetch from renpy.org if local SDK folders are missing.
+2. **Bundled SDK** — version picked from `script_version` (see `sdk/README.md`):
+   - `py3-8.5.3` (Ren'Py 8+)
+   - `py2-7.8.7` (Ren'Py 7)
+   - `py2-6.99.14.3` (Ren'Py 6)
+   - `py2-5.6.7` (Ren'Py 5, 32-bit Linux)
+   - `py2-4.8.10` (Ren'Py 4, Windows reference only)
+3. **Download fallback** — `scripts/populate-sdk.sh` can fetch modern slices from renpy.org if missing.
 
-Pinned SDK versions: **Ren'Py 8.5.3** (Python 3) and **7.8.7** (Python 2).
+Legacy slices are copied manually from [renpy.org](https://www.renpy.org/) archives.
 
 ## Project layout
 

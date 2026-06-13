@@ -42,6 +42,17 @@ Try = TryExcept = TryFinally = YieldFrom = MatMult = Await = type(None)
 
 from ast import *
 
+def _legacy_ast_type(node, *names):
+    return type(node).__name__ in names
+
+# Stdlib removed these node types; keep names for older isinstance patterns.
+if 'Num' not in globals():
+    Num = type('Num', (), {})  # noqa: A001
+if 'Str' not in globals():
+    Str = type('Str', (), {})  # noqa: A001
+if 'NameConstant' not in globals():
+    NameConstant = type('NameConstant', (), {})  # noqa: A001
+
 class Sep(object):
     # Performs the common pattern of returning a different symbol the first
     # time the object is called
@@ -137,6 +148,18 @@ class SourceGenerator(NodeVisitor):
 
     BLOCK_NODES = (If, For, While, With, Try, TryExcept, TryFinally,
                    FunctionDef, ClassDef)
+
+    @staticmethod
+    def _symbol_for_op(op, table):
+        op_type = type(op)
+        hit = table.get(op_type)
+        if hit is not None:
+            return hit
+        name = op_type.__name__
+        for key, value in table.items():
+            if isinstance(key, type) and key.__name__ == name:
+                return value
+        raise KeyError(op_type)
 
     def __init__(self, indent_with, add_line_information=False, correct_line_numbers=False, line_number=1):
         self.result = []
@@ -369,7 +392,7 @@ class SourceGenerator(NodeVisitor):
     def visit_AugAssign(self, node):
         self.newline(node)
         self.visit_bare(node.target)
-        self.write(self.BINOP_SYMBOLS[type(node.op)][0].rstrip() + self.ASSIGN.lstrip())
+        self.write(self._symbol_for_op(node.op, self.BINOP_SYMBOLS)[0].rstrip() + self.ASSIGN.lstrip())
         self.visit_bareyield(node.value)
 
     def visit_Await(self, node):
@@ -743,7 +766,7 @@ class SourceGenerator(NodeVisitor):
         self.maybe_break(node)
         # Edge case: due to the use of \d*[.]\d* for floats \d*[.]\w*, you have
         # to put parenthesis around an integer literal do get an attribute from it
-        if isinstance(node.value, Num):
+        if _legacy_ast_type(node.value, 'Num'):
             self.paren_start()
             self.visit(node.value)
             self.paren_end()
@@ -756,7 +779,7 @@ class SourceGenerator(NodeVisitor):
     def visit_Call(self, node):
         self.maybe_break(node)
         #need to put parenthesis around numbers being called (this makes no sense)
-        if isinstance(node.func, Num):
+        if _legacy_ast_type(node.func, 'Num'):
             self.paren_start()
             self.visit_Num(node.func)
             self.paren_end()
@@ -906,11 +929,11 @@ class SourceGenerator(NodeVisitor):
 
     def visit_BinOp(self, node):
         self.maybe_break(node)
-        symbol, precedence = self.BINOP_SYMBOLS[type(node.op)]
-        self.prec_start(precedence, type(node.op) != Pow)
+        symbol, precedence = self._symbol_for_op(node.op, self.BINOP_SYMBOLS)
+        self.prec_start(precedence, type(node.op).__name__ != 'Pow')
 
         # work around python's negative integer literal optimization
-        if isinstance(node.op, Pow):
+        if type(node.op).__name__ == 'Pow':
             self.visit(node.left)
             self.prec_middle(14)
         else:
@@ -922,7 +945,7 @@ class SourceGenerator(NodeVisitor):
 
     def visit_BoolOp(self, node):
         self.maybe_break(node)
-        symbol, precedence = self.BOOLOP_SYMBOLS[type(node.op)]
+        symbol, precedence = self._symbol_for_op(node.op, self.BOOLOP_SYMBOLS)
         self.prec_start(precedence, True)
         self.prec_middle()
         sep = Sep(symbol)
@@ -937,18 +960,18 @@ class SourceGenerator(NodeVisitor):
         self.prec_middle()
         self.visit(node.left)
         for op, right in zip(node.ops, node.comparators):
-            self.write(self.CMPOP_SYMBOLS[type(op)][0])
+            self.write(self._symbol_for_op(op, self.CMPOP_SYMBOLS)[0])
             self.visit(right)
         self.prec_end()
 
     def visit_UnaryOp(self, node):
         self.maybe_break(node)
-        symbol, precedence = self.UNARYOP_SYMBOLS[type(node.op)]
+        symbol, precedence = self._symbol_for_op(node.op, self.UNARYOP_SYMBOLS)
         self.prec_start(precedence)
         self.write(symbol)
         # workaround: in python 2, an explicit USub node around a number literal
         # indicates the literal was surrounded by parenthesis
-        if (not PY3 and isinstance(node.op, USub) and isinstance(node.operand, Num) 
+        if (not PY3 and type(node.op).__name__ == 'USub' and _legacy_ast_type(node.operand, 'Num')
                 and (node.operand.n.real or node.operand.n.imag) >= 0):
             self.paren_start()
             self.visit(node.operand)
@@ -960,7 +983,7 @@ class SourceGenerator(NodeVisitor):
     def visit_Subscript(self, node):
         self.maybe_break(node)
         # have to surround literals by parenthesis (at least in Py2)
-        if isinstance(node.value, Num):
+        if _legacy_ast_type(node.value, 'Num'):
             self.paren_start()
             self.visit_Num(node.value)
             self.paren_end()

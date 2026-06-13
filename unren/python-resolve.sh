@@ -154,29 +154,26 @@ resolve_game_and_python() {
     fi
 
     # Fallback: bundled SDK runtimes shipped with UnRen-Desktop
-    local py_major sdk_root sdk_py platform
+    local py_major sdk_root sdk_py platform sdk_lib
+
     platform="$(_unren_renpy_platform)"
     py_major="$(_unren_guess_python_major "$UNREN_APP" "$platform")"
 
-    if [[ "$py_major" == 3 && -d "${SDK_PY3_DIR}/renpy" ]]; then
-        sdk_root="${SDK_PY3_DIR}"
-    elif [[ -d "${SDK_PY2_DIR}/renpy" ]]; then
-        py_major=2
-        sdk_root="${SDK_PY2_DIR}"
-    elif [[ -d "${SDK_PY3_DIR}/renpy" ]]; then
-        sdk_root="${SDK_PY3_DIR}"
-    else
-        unren_die "No game Python found and no bundled SDK runtime in sdk/. Run scripts/populate-sdk.sh"
+    if _unren_resolve_sdk_runtime "$UNREN_APP" "$py_major" "$platform" sdk_root sdk_lib; then
+        sdk_py="$(_unren_sdk_python_runner "$sdk_lib" "$sdk_root")"
+        if [[ -z "$sdk_py" || ! -x "$sdk_py" ]]; then
+            sdk_py="${sdk_lib}/python"
+        fi
+        if [[ ! -x "$sdk_py" ]]; then
+            unren_die "Bundled SDK Python missing under ${sdk_lib}"
+        fi
+        UNREN_SDK_ROOT="${sdk_root}"
+        UNREN_PYTHON="${sdk_py}"
+        _unren_configure_python_env "$UNREN_PYTHON" "${sdk_root}" "${sdk_root}/renpy"
+        return 0
     fi
 
-    sdk_py="$(_unren_sdk_platform_dir "$py_major" "$sdk_root")/python"
-    if [[ ! -x "$sdk_py" ]]; then
-        unren_die "Bundled SDK Python missing: ${sdk_py}"
-    fi
-
-    UNREN_SDK_ROOT="${sdk_root}"
-    UNREN_PYTHON="${sdk_py}"
-    _unren_configure_python_env "$UNREN_PYTHON" "${sdk_root}" "${sdk_root}/renpy"
+    unren_die "No game Python found and no usable bundled SDK runtime in sdk/. See sdk/README.md"
 }
 
 _unren_python_has_multiprocessing() {
