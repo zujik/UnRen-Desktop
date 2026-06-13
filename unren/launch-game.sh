@@ -104,8 +104,59 @@ _unren_launcher_sdk_elif_block() {
     done < <(_unren_sdk_fallback_chain "$app")
 }
 
+# Legacy py2 / SDK pygame_sdl2 has no native Wayland — use XWayland on Wayland sessions.
+_unren_runtime_needs_xwayland() {
+    local py_major="$1" lib_dir="$2"
+    [[ "$py_major" == 2 ]] && return 0
+    [[ "$lib_dir" != "${UNREN_APP}/lib/"* ]] && return 0
+    return 1
+}
+
+_unren_configure_sdl_video() {
+    local py_major="$1" lib_dir="$2"
+
+    if [[ -n "${SDL_VIDEODRIVER:-}" ]]; then
+        return 0
+    fi
+    if [[ -n "${UNREN_SDL_VIDEODRIVER:-}" ]]; then
+        export SDL_VIDEODRIVER="$UNREN_SDL_VIDEODRIVER"
+        return 0
+    fi
+    if ! is_linux || ! unren_session_uses_wayland; then
+        return 0
+    fi
+    if _unren_runtime_needs_xwayland "$py_major" "$lib_dir"; then
+        export SDL_VIDEODRIVER=x11
+    fi
+}
+
+_unren_launcher_sdl_block() {
+    local sdl_legacy="$1"
+    if [[ "$sdl_legacy" == 1 ]]; then
+        cat <<'SDL'
+case "$(uname -s)" in
+    Linux)
+        if [ -z "$SDL_VIDEODRIVER" ]; then
+            if [ -n "$UNREN_SDL_VIDEODRIVER" ]; then
+                export SDL_VIDEODRIVER="$UNREN_SDL_VIDEODRIVER"
+            else
+                case "${XDG_SESSION_TYPE:-}" in
+                    wayland) export SDL_VIDEODRIVER=x11 ;;
+                esac
+                if [ -z "$SDL_VIDEODRIVER" ] && [ -n "$WAYLAND_DISPLAY" ]; then
+                    export SDL_VIDEODRIVER=x11
+                fi
+            fi
+        fi
+        ;;
+esac
+
+SDL
+    fi
+}
+
 unren_install_launcher() {
-    local basename="${1-}" sh_path py_path sdk_elifs
+    local basename="${1-}" sh_path py_path sdk_elifs sdl_block sdl_legacy=0
     local platform py_major lib_dir sdk_root
 
     if [[ -z "$basename" ]]; then
@@ -123,6 +174,11 @@ unren_install_launcher() {
         echo "  Copy UnRen-Desktop with sdk/, or use a Linux/macOS game build."
         return 0
     fi
+
+    if _unren_runtime_needs_xwayland "$py_major" "$lib_dir"; then
+        sdl_legacy=1
+    fi
+    sdl_block="$(_unren_launcher_sdl_block "$sdl_legacy")"
 
     cat >"$sh_path" <<LAUNCHER
 #!/bin/sh
@@ -169,7 +225,7 @@ fi
 
 cd "\$ROOT" || exit 1
 
-if [ -d "\$ROOT/lib/python3.12" ]; then
+${sdl_block}if [ -d "\$ROOT/lib/python3.12" ]; then
     export PYTHONHOME="\$ROOT/lib/python3.12"
 elif [ -d "\$ROOT/lib/python3.9" ]; then
     export PYTHONHOME="\$ROOT/lib/python3.9"
@@ -248,7 +304,7 @@ LAUNCHER
 }
 
 unren_launch_game() {
-    local basename sh_path
+    local basename sh_path platform py_major lib_dir
 
     basename="$(_unren_detect_game_basename "$UNREN_APP")"
     sh_path="${UNREN_APP}/${basename}.sh"
@@ -260,8 +316,13 @@ unren_launch_game() {
         echo
     fi
 
+    platform="$(_unren_renpy_platform)"
+    py_major="$(_unren_guess_python_major "$UNREN_APP" "$platform")"
+    lib_dir="$(_unren_launch_lib_dir "$UNREN_APP" "$py_major" "$platform")" || return 1
+
     echo "  Launching ${basename} ..."
     echo
+    _unren_configure_sdl_video "$py_major" "$lib_dir"
     set +e
     exec "${sh_path}"
     local rc=$?

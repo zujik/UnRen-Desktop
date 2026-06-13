@@ -4,8 +4,8 @@ is_osx() {
     [[ "$(uname -s)" == "Darwin" ]]
 }
 
-is_linux() {
-    [[ "$(uname -s)" == "Linux" ]]
+unren_session_uses_wayland() {
+    [[ "${XDG_SESSION_TYPE:-}" == "wayland" ]] || [[ -n "${WAYLAND_DISPLAY:-}" ]]
 }
 
 unren_base64_decode() {
