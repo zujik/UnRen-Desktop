@@ -98,12 +98,15 @@ unren_splash() {
 
 unren_resolve_target_path() {
     local raw="$1"
+    local dir base
     raw="${raw%\'}"
     raw="${raw#\'}"
     if [[ -d "$raw" ]]; then
         (cd -P -- "$raw" && pwd)
     elif [[ -d "$(dirname -- "$raw")" ]]; then
-        (cd -P -- "$(dirname -- "$raw")" && pwd)/$(basename -- "$raw")
+        dir="$(cd -P -- "$(dirname -- "$raw")" && pwd)"
+        base="$(basename -- "$raw")"
+        echo "${dir}/${base}"
     else
         echo "$raw"
     fi
@@ -117,6 +120,15 @@ unren_main() {
     if [[ $# -ge 1 ]]; then
         UNREN_TARGET="$(unren_resolve_target_path "$1")"
         echo "Working with: ${UNREN_TARGET}"
+    elif [[ -e "./Contents/Resources/autorun/game" ]]; then
+        UNREN_TARGET="$(pwd)"
+        echo "Working with (macOS bundle): ${UNREN_TARGET}"
+    elif [[ -e "./renpy" && -e "./game" ]]; then
+        UNREN_TARGET="$(pwd)"
+        echo "Working with (game root): ${UNREN_TARGET}"
+    elif [[ -e "../renpy" && -e "../game" ]]; then
+        UNREN_TARGET="$(cd .. && pwd)"
+        echo "Working with (parent game root): ${UNREN_TARGET}"
     else
         echo "Drag-and-drop the game folder or .app here, then press ENTER:"
         read -r input_path
