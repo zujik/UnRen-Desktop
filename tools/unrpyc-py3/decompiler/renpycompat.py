@@ -27,6 +27,7 @@ magic.fake_package("renpy")
 import renpy  # noqa
 
 import pickletools
+import types
 
 
 # these named classes need some special handling for us to be able to reconstruct ren'py ASTs from
@@ -61,6 +62,18 @@ class oldfrozenset(frozenset):
 
 oldfrozenset.__name__ = "frozenset"
 SPECIAL_CLASSES.append(oldfrozenset)
+
+
+# Ren'Py 8.x may pickle type hints (e.g. tuple[str, str]) as types.GenericAlias.
+@SPECIAL_CLASSES.append
+class GenericAlias(magic.FakeIgnore):
+    __module__ = "types"
+
+
+if hasattr(types, "UnionType"):
+    @SPECIAL_CLASSES.append
+    class UnionType(magic.FakeIgnore):
+        __module__ = "types"
 
 
 @SPECIAL_CLASSES.append
@@ -476,9 +489,26 @@ class TranslateEarlyBlock(magic.FakeStrict):
     language = None
 
 
+# Game-specific types (Innocent Witches and similar custom Ren'Py games).
+@SPECIAL_CLASSES.append
+class _SpecialConditionType(magic.FakeIgnore):
+    __module__ = "parse_utilities.conditions"
+
+
+@SPECIAL_CLASSES.append
+class NothingType(magic.FakeIgnore):
+    __module__ = "parse_utilities.conditions"
+
+
+@SPECIAL_CLASSES.append
+class LanguageCases(magic.FakeIgnore):
+    __module__ = "store.persons"
+
+
 # end of the declarative data section
 
-CLASS_FACTORY = magic.FakeClassFactory(SPECIAL_CLASSES, magic.FakeStrict)
+# FakeIgnore default: tolerate game-specific pickled classes not listed above.
+CLASS_FACTORY = magic.FakeClassFactory(SPECIAL_CLASSES, magic.FakeIgnore)
 
 
 def pickle_safe_loads(buffer: bytes):

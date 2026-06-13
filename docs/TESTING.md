@@ -136,7 +136,16 @@ You do **not** need 5× everything before first upload to yourself; hit **Tier A
 ```
 Date       Game                 Bucket  Result   Issue / fix
 2026-06-13 Magic Shop 1.03      A1      PASS     rpatool py3, SDL x11, PYTHONHOME SDK-first
+2026-06-13 Innocent Witches     B2      PASS     6121 rpyc decompiled; custom store.* AST = warnings only. Launch blocked by truncated ATL in credits.rpy + others — fixed via fix-atl-tails.py + innocent-witches hook (auto on decompile/launch).
 ```
+
+### Decompile warning noise
+
+During decompile, UnRen **summarizes** repeated `Unknown AST node` and custom-displayable lines instead of printing each one. That is not a failure — check the summary count and the decompile results line (`N files were successfully decompiled`).
+
+Custom games (e.g. Innocent Witches) register dozens of `store.*` statement types unrpyc cannot reconstruct. Dialogue and standard Ren'Py still decompile; custom lines become `pass # <<<COULD NOT DECOMPILE>>>` comments.
+
+After decompile, UnRen runs **post-fixes** (`patches/decompile-fixes/`) for empty trailing `at transform:` blocks and known broken files. Re-run option **g** to apply fixes before launch without re-decompiling.
 
 ## Quick commands
 

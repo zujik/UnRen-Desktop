@@ -197,6 +197,16 @@ Download full SDKs from [renpy.org](https://www.renpy.org/) into `sdk-sources/` 
 - [rpatool](https://codeberg.org/shiz/rpatool) — WTFPL
 - Ren'Py SDK components — MIT / LGPL (see `THIRD_PARTY_LICENSES.md`)
 
+## Decompile limits
+
+unrpyc recovers most Ren'Py scripts, but **heavily customized games** (custom statements, layered images, game-specific pickles) may show:
+
+- **Unknown AST node** warnings — custom `store.*` statements decompile as `pass # <<<COULD NOT DECOMPILE>>>` placeholders
+- **Truncated screens** — empty `at transform:` blocks at end of file (UnRen auto-appends `pass` after decompile; see `patches/decompile-fixes/`)
+- **Launch errors** after full decompile — broken `.rpy` takes precedence over `.rpyc`; run option **g** (applies fixes) or delete specific bad `.rpy` to fall back to bytecode
+
+Game test notes and known titles: **`docs/TESTING.md`**.
+
 ## License
 
 MIT — see `LICENSE`.

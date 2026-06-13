@@ -7,6 +7,7 @@ Base: upstream **unrpyc 2.0.4** (see `manifest.json`). Archived reference:
 
 | File | Change |
 |------|--------|
+| `decompiler/renpycompat.py` | `types.GenericAlias` / `types.UnionType` as `FakeIgnore` (Ren'Py 8 type hints in pickles) |
 | `decompiler/codegen.py` | Added — legacy Ren'Py 6 `_ast` helpers (`_legacy_ast_type`, `Num`, etc.) for Python 3.12+ |
 | `decompiler/screendecompiler.py` | Added — screen decompiler using codegen legacy helpers |
 | `decompiler/__init__.py` | Minor diffs vs upstream |
