@@ -34,10 +34,7 @@ if [ -z "$RENPY_PLATFORM" ]; then
 fi
 
 PYTHON="py@@UNREN_PY_MAJOR@@"
-GAME_LIB="$ROOT/lib/$PYTHON-$RENPY_PLATFORM"
-
-if [ -d "$GAME_LIB" ] && { [ -x "$GAME_LIB/renpy" ] || [ -x "$GAME_LIB/python" ]; }; then
-    LIB="$GAME_LIB"
+@@UNREN_GAME_LIB_IF@@
 @@UNREN_SDK_ELIFS@@
 else
     echo "Ren'Py platform files not found for $RENPY_PLATFORM in:"
@@ -49,21 +46,90 @@ fi
 cd "$ROOT" || exit 1
 
 @@UNREN_SDL_BLOCK@@
+GAME_PYHOME=""
+GAME_PY_ARGS=""
+GAME_LD_PATH=""
+if [ -f "$LIB/lib/python2.7/site.py" ]; then
+    GAME_PYHOME="$LIB/lib/python2.7"
+    GAME_PY_ARGS="-EO"
+    GAME_LD_PATH="$LIB:$LIB/lib"
+elif [ -f "$ROOT/lib/python2.7/site.py" ]; then
+    GAME_PYHOME="$ROOT/lib/python2.7"
+    GAME_PY_ARGS="-EO"
+    GAME_LD_PATH="$LIB"
+elif [ -f "$LIB/lib/python2.3/site.py" ]; then
+    GAME_PYHOME="$LIB/lib/python2.3"
+    GAME_PY_ARGS="-EO"
+    GAME_LD_PATH="$LIB:$LIB/lib"
+elif [ -f "$LIB/lib/python3.12/site.py" ] || [ -f "$LIB/lib/python3.12/site.pyc" ] || [ -d "$LIB/lib/python3.12/encodings" ]; then
+    GAME_PYHOME="$LIB/lib/python3.12"
+    GAME_LD_PATH="$LIB"
+elif [ -f "$ROOT/lib/python3.12/site.py" ] || [ -f "$ROOT/lib/python3.12/site.pyc" ] || [ -d "$ROOT/lib/python3.12/encodings" ]; then
+    GAME_PYHOME="$ROOT/lib/python3.12"
+    GAME_LD_PATH="$LIB"
+elif [ -f "$LIB/lib/python3.9/site.py" ]; then
+    GAME_PYHOME="$LIB/lib/python3.9"
+    GAME_LD_PATH="$LIB"
+elif [ -f "$ROOT/lib/python3.9/site.py" ]; then
+    GAME_PYHOME="$ROOT/lib/python3.9"
+    GAME_LD_PATH="$LIB"
+elif [ -f "$ROOT/lib/pythonlib2.7/site.py" ]; then
+    GAME_PYHOME="$ROOT/lib/pythonlib2.7"
+    GAME_PY_ARGS="-EO"
+    GAME_LD_PATH="$LIB"
+fi
+
 if [ -n "$SDK_PYHOME" ] && [ -d "$SDK_PYHOME" ]; then
-    export PYTHONHOME="$SDK_PYHOME"
-elif [ -d "$ROOT/lib/python3.12" ]; then
-    export PYTHONHOME="$ROOT/lib/python3.12"
-elif [ -d "$ROOT/lib/python3.9" ]; then
-    export PYTHONHOME="$ROOT/lib/python3.9"
-elif [ -d "$ROOT/lib/python2.7" ]; then
-    export PYTHONHOME="$ROOT/lib/python2.7"
-elif [ -d "$ROOT/lib/pythonlib2.7" ]; then
-    export PYTHONHOME="$ROOT/lib/pythonlib2.7"
+    if [ -f "$SDK_PYHOME/site.py" ] || [ -f "$SDK_PYHOME/site.pyc" ] || [ -d "$SDK_PYHOME/encodings" ]; then
+        export PYTHONHOME="$SDK_PYHOME"
+    fi
+elif [ -n "$GAME_PYHOME" ] && [ -d "$GAME_PYHOME" ]; then
+    if [ -f "$GAME_PYHOME/site.py" ] || [ -f "$GAME_PYHOME/site.pyc" ] || [ -d "$GAME_PYHOME/encodings" ]; then
+        export PYTHONHOME="$GAME_PYHOME"
+    fi
 fi
 unset PYTHONPATH
 
+PYARGS=""
+if [ -n "$SDK_PY_ARGS" ]; then
+    PYARGS="$SDK_PY_ARGS"
+elif [ -n "$GAME_PY_ARGS" ]; then
+    PYARGS="$GAME_PY_ARGS"
+fi
+
 if [ -n "$SDK_LD_PATH" ]; then
     export LD_LIBRARY_PATH="$SDK_LD_PATH${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+elif [ -n "$GAME_LD_PATH" ]; then
+    export LD_LIBRARY_PATH="$GAME_LD_PATH${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+fi
+
+# SDK python + game native renpy/*.so (Windows PC builds): add game lib/ to loader path.
+case "$LIB" in
+    */sdk/*)
+        for _glib in \
+            "$ROOT/lib/linux-x86_64" \
+            "$ROOT/lib/linux-i686" \
+            "$ROOT/lib/py2-linux-x86_64" \
+            "$ROOT/lib/py2-linux-i686"; do
+            if [ -f "$_glib/lib/python2.7/renpy/parsersupport.so" ]; then
+                export LD_LIBRARY_PATH="$_glib:$_glib/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+                break
+            fi
+        done
+        ;;
+esac
+
+if [ -z "${PYTHONHOME:-}" ]; then
+    case "$LIB" in
+        */py3-*|*/sdk/py3-*|*/py2-*|*/sdk/py2-*|*/linux-x86_64|*/linux-i686)
+            ;;
+        *)
+            echo "Python stdlib missing for runtime in:"
+            echo "  $LIB"
+            echo "Re-run UnRen option g after: ./scripts/ensure-sdk-runtime.sh"
+            exit 1
+            ;;
+    esac
 fi
 
 if [ -e "$LIB/$BASEFILE" ]; then
@@ -74,14 +140,14 @@ fi
 if [ -n "$SDK_RENPY_PY" ] && [ -f "$SDK_RENPY_PY" ] && { [ -x "$LIB/python" ] || [ -x "$LIB/python.real" ]; }; then
     PYBIN="python"
     [ -x "$LIB/python.real" ] && PYBIN="python.real"
-    exec ${RENPY_GDB} "$LIB/$PYBIN" $SDK_PY_ARGS "$SDK_RENPY_PY" "$ROOT" run "$@"
+    exec ${RENPY_GDB} "$LIB/$PYBIN" $PYARGS "$SDK_RENPY_PY" "$ROOT" run "$@"
 fi
 
 # Modern SDK / native lib: game .py uses the game's bundled renpy/ tree.
 if [ -f "$ROOT/${BASEFILE}.py" ] && { [ -x "$LIB/python" ] || [ -x "$LIB/python.real" ]; }; then
     PYBIN="python"
     [ -x "$LIB/python.real" ] && PYBIN="python.real"
-    exec ${RENPY_GDB} "$LIB/$PYBIN" $SDK_PY_ARGS "$ROOT/${BASEFILE}.py" "$ROOT" run "$@"
+    exec ${RENPY_GDB} "$LIB/$PYBIN" $PYARGS "$ROOT/${BASEFILE}.py" "$ROOT" run "$@"
 fi
 
 if [ -z "$SDK_RENPY_PY" ] && [ -e "$LIB/renpy" ]; then
@@ -91,7 +157,7 @@ fi
 if { [ -x "$LIB/python" ] || [ -x "$LIB/python.real" ]; } && [ -f "$ROOT/renpy.py" ]; then
     PYBIN="python"
     [ -x "$LIB/python.real" ] && PYBIN="python.real"
-    exec ${RENPY_GDB} "$LIB/$PYBIN" $SDK_PY_ARGS "$ROOT/renpy.py" "$ROOT" run "$@"
+    exec ${RENPY_GDB} "$LIB/$PYBIN" $PYARGS "$ROOT/renpy.py" "$ROOT" run "$@"
 fi
 
 echo "Could not launch game from $LIB"
