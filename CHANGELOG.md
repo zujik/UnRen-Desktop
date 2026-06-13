@@ -16,7 +16,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Decompile skips `.rpyc`/`.rpymc` when a matching `.rpy`/`.rpym` already exists (default for options 2, 8, 9). Option 0, `--clobber`, or `UNREN_DECOMPILE_CLOBBER=1` overwrites.
+- Decompile skips `.rpyc`/`.rpymc` when a matching `.rpy`/`.rpym` already exists (default for options 2, 8, 9). Option 0 overwrites only stub/missing sources; `UNREN_DECOMPILE_FORCE_ALL=1` forces full overwrite.
+- `codegen.py`: legacy Ren'Py 6 AST nodes without `_fields` (fixes SL1 screen decompile on Python 3.12+).
 - `UnRen.sh` is now a thin entry point; removed broken apt/brew auto-install block.
 - README rewritten for GitHub distribution.
 

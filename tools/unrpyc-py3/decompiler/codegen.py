@@ -173,6 +173,14 @@ class SourceGenerator(NodeVisitor):
         self.result = []
         return result
 
+    def generic_visit(self, node):
+        # Ren'Py 6 / py2 rpyc stores AST nodes without stdlib _fields metadata.
+        if not hasattr(node, '_fields'):
+            for stmt in getattr(node, 'body', ()) or ():
+                self.visit(stmt)
+            return
+        return NodeVisitor.generic_visit(self, node)
+
     # Precedence management
 
     def prec_start(self, value, ltr=None):
