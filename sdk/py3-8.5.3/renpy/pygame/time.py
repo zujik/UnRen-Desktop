@@ -1,23 +1,3 @@
-# Copyright 2014 Tom Rothamel <tom@rothamel.us>
-#
-# This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
-# arising from the use of this software.
-#
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
-# freely, subject to the following restrictions:
-#
-# 1. The origin of this software must not be misrepresented; you must not
-#    claim that you wrote the original software. If you use this software
-#    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
-
-# This file exists because this file must be python, and not cython. That's
-# because the init function time.pyx is inittime, which conflicts with the
-# built-in inittime function (used by the time module) when everything is
-# statically linked, as it is on iOS.
-from renpy.pygame.pygame_time import *
+version https://git-lfs.github.com/spec/v1
+oid sha256:6cb18f5b8ba92ba608ad865623a07076efd24cfccf0918a26245b7dc37a84a19
+size 1200

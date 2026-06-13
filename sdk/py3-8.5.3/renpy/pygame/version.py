@@ -1,23 +1,3 @@
-# Copyright 2014 Tom Rothamel <tom@rothamel.us>
-#
-# This software is provided 'as-is', without any express or implied
-# warranty.  In no event will the authors be held liable for any damages
-# arising from the use of this software.
-#
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
-# freely, subject to the following restrictions:
-#
-# 1. The origin of this software must not be misrepresented; you must not
-#    claim that you wrote the original software. If you use this software
-#    in a product, an acknowledgment in the product documentation would be
-#    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
-# 3. This notice may not be removed or altered from any source distribution.
-
-import renpy.pygame
-
-vernum = (2, 1, 0)
-ver = ".".join(str(i) for i in vernum)
-rev = "not-tracked"
+version https://git-lfs.github.com/spec/v1
+oid sha256:86a24740ac91e67911b00613f74df192ec7aef61fbecc51945ab33b0d1723bf8
+size 997
