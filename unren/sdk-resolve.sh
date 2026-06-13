@@ -1,7 +1,32 @@
 # Pick bundled Ren'Py SDK slice by game era (2005–present)
 
+_unren_read_script_version_txt() {
+    local f content major
+    for f in "$@"; do
+        [[ -f "$f" ]] || continue
+        content="$(head -1 "$f" 2>/dev/null | tr -d '\r')"
+        [[ -n "$content" ]] || continue
+        if [[ "$content" =~ \([[:space:]]*([0-9]+) ]]; then
+            printf '%s\n' "${BASH_REMATCH[1]}"
+            return 0
+        fi
+        if [[ "$content" =~ ^[[:space:]]*([0-9]+) ]]; then
+            printf '%s\n' "${BASH_REMATCH[1]}"
+            return 0
+        fi
+    done
+    return 1
+}
+
 _unren_script_version_major_from_app() {
     local app="$1" sv detected
+
+    if sv="$(_unren_read_script_version_txt \
+        "${app}/game/script_version.txt" \
+        "${app}/script_version.txt")"; then
+        printf '%s\n' "$sv"
+        return 0
+    fi
 
     sv="$(grep -rh 'config\.script_version' \
         "${app}/game/script_version.rpy" "${app}/game/script_version.txt" \
@@ -43,6 +68,40 @@ _unren_script_version_major_from_app() {
 
 _unren_sdk_slice_dir() {
     printf '%s\n' "${UNREN_ROOT}/sdk/${1}"
+}
+
+_unren_sdk_slice_py_major() {
+    local slice="$1"
+    case "$slice" in
+        py3-*) printf '3\n' ;;
+        py2-*) printf '2\n' ;;
+        *) printf '2\n' ;;
+    esac
+}
+
+_unren_pythonhome_has_stdlib() {
+    local pyhome="$1"
+    [[ -n "$pyhome" && -d "$pyhome" ]] && {
+        [[ -f "${pyhome}/site.py" || -f "${pyhome}/site.pyc" || -d "${pyhome}/encodings" ]]
+    }
+}
+
+_unren_sdk_runtime_usable() {
+    local slice="$1" sdk_root="$2" lib_dir="$3"
+    local phome
+
+    _unren_sdk_lib_usable "$lib_dir" || return 1
+    phome="$(_unren_sdk_pythonhome "$sdk_root" "$lib_dir")"
+    if _unren_pythonhome_has_stdlib "$phome"; then
+        return 0
+    fi
+    # Ren'Py 7/8 SDK: embedded python carries stdlib; do not require PYTHONHOME.
+    case "$slice" in
+        py3-*|py2-*)
+            [[ -x "${lib_dir}/python" || -x "${lib_dir}/python.real" || -x "${lib_dir}/renpy" ]]
+            ;;
+        *) return 1 ;;
+    esac
 }
 
 _unren_sdk_slice_exists() {
@@ -129,10 +188,10 @@ _unren_sdk_pythonhome() {
     layout="$(_unren_sdk_layout "$sdk_root")"
     case "$layout" in
         modern)
+            # py3: optional PYTHONHOME for extras. py2: embedded python — never set
+            # PYTHONHOME to sdk/lib/python2.7 (breaks fake-site bootstrap).
             if [[ -d "${sdk_root}/lib/python3.12" ]]; then
                 printf '%s\n' "${sdk_root}/lib/python3.12"
-            elif [[ -d "${sdk_root}/lib/python2.7" ]]; then
-                printf '%s\n' "${sdk_root}/lib/python2.7"
             fi
             ;;
         renpy6)
@@ -194,10 +253,10 @@ _unren_sdk_fallback_chain() {
             wanted=(py3-8.5.3 py2-7.8.7)
             ;;
         7)
-            wanted=(py2-7.8.7 py2-6.99.14.3)
+            wanted=(py2-7.8.7 py2-6.99.14.3 py3-8.5.3)
             ;;
         6)
-            wanted=(py2-6.99.14.3 py2-7.8.7)
+            wanted=(py2-6.99.14.3 py2-7.8.7 py3-8.5.3)
             ;;
         5)
             wanted=(py2-5.6.7 py2-6.99.14.3 py2-7.8.7)
@@ -226,9 +285,12 @@ _unren_resolve_sdk_runtime() {
 
     while IFS= read -r slice; do
         [[ -n "$slice" ]] || continue
+        local slice_py phome
         resolved_root="$(_unren_sdk_slice_dir "$slice")"
-        resolved_lib="$(_unren_sdk_lib_dir "$resolved_root" "$py_major" "$platform")" || continue
+        slice_py="$(_unren_sdk_slice_py_major "$slice")"
+        resolved_lib="$(_unren_sdk_lib_dir "$resolved_root" "$slice_py" "$platform")" || continue
         _unren_sdk_lib_usable "$resolved_lib" || continue
+        _unren_sdk_runtime_usable "$slice" "$resolved_root" "$resolved_lib" || continue
         _root_out="$resolved_root"
         _lib_out="$resolved_lib"
         return 0

@@ -25,29 +25,66 @@ _unren_sdk_platform_dir() {
 
 _unren_find_encodings_dir() {
     local root="$1"
-    find "$root" -type d -name encodings ! -path "*/sdk/*" 2>/dev/null | head -1
+    find "$root" -type d -name encodings \
+        ! -path "*/sdk/*" \
+        ! -path "*/.sdk-sources-cache/*" \
+        ! -path "*/pythonlib2.7/*" \
+        2>/dev/null | head -1
+}
+
+_unren_encodings_dir_usable() {
+    local py_bin="$1" enc_dir="$2" pyhome
+    [[ -n "$py_bin" && -n "$enc_dir" && -d "$enc_dir" ]] || return 1
+    pyhome="${enc_dir%/encodings}"
+    env -u PYTHONHOME -u PYTHONPATH PYTHONHOME="$pyhome" \
+        "$py_bin" -c "import encodings" >/dev/null 2>&1
 }
 
 _unren_find_game_encodings_dir() {
     local py_bin="$1" app="$2" enc_dir candidate
     local -a candidates=()
+    local py_dir
+    py_dir="$(dirname "$py_bin")"
 
+    # Stdlib beside the runtime binary (Ren'Py 6/7 Linux/mac layout).
+    candidates+=("${py_dir}/lib/python2.7")
+    candidates+=("${py_dir}")
+    candidates+=("${app}/lib/linux-x86_64/lib/python2.7")
+    candidates+=("${app}/lib/linux-i686/lib/python2.7")
+    candidates+=("${app}/lib/darwin-x86_64/lib/python2.7")
+    candidates+=("${app}/lib/darwin-arm64/lib/python2.7")
     candidates+=("${app}/lib/python3.12")
     candidates+=("${app}/lib/python3.11")
     candidates+=("${app}/lib/python3.9")
     candidates+=("${app}/lib/python2.7")
-    candidates+=("${app}/lib/pythonlib2.7")
-    candidates+=("$(dirname "$py_bin")")
+    # pythonlib2.7 is for Ren'Py 5/6 SDK trees, not PC lib/linux-x86_64 runtimes.
+    case "$py_bin" in
+        */pythonlib2.7/*|*/sdk/py2-6.99.14.3/*)
+            candidates+=("${app}/lib/pythonlib2.7")
+            ;;
+    esac
 
     for candidate in "${candidates[@]}"; do
         [[ -d "${candidate}/encodings" ]] || continue
-        printf '%s\n' "${candidate}/encodings"
-        return 0
+        if _unren_encodings_dir_usable "$py_bin" "${candidate}/encodings"; then
+            printf '%s\n' "${candidate}/encodings"
+            return 0
+        fi
     done
 
-    enc_dir="$(_unren_find_encodings_dir "$(dirname "$py_bin")")"
-    [[ -n "$enc_dir" ]] && printf '%s\n' "$enc_dir" && return 0
-    _unren_find_encodings_dir "$app"
+    enc_dir="$(_unren_find_encodings_dir "$py_dir")"
+    if [[ -n "$enc_dir" ]] && _unren_encodings_dir_usable "$py_bin" "$enc_dir"; then
+        printf '%s\n' "$enc_dir"
+        return 0
+    fi
+
+    enc_dir="$(_unren_find_encodings_dir "$app")"
+    if [[ -n "$enc_dir" ]] && _unren_encodings_dir_usable "$py_bin" "$enc_dir"; then
+        printf '%s\n' "$enc_dir"
+        return 0
+    fi
+
+    return 1
 }
 
 _unren_configure_python_env() {
@@ -58,16 +95,20 @@ _unren_configure_python_env() {
     enc_dir="$(_unren_find_game_encodings_dir "$py_bin" "${UNREN_APP}")"
 
     if [[ -n "$enc_dir" ]]; then
-        PYTHONHOME="$(dirname "$enc_dir")"
-        PYTHONPATH="$(dirname "$enc_dir")"
-        for p in "${extra_paths[@]}"; do
-            [[ -n "$p" ]] && PYTHONPATH="${PYTHONPATH}:${p}"
-        done
-        export PYTHONHOME PYTHONPATH
+        local pyhome="${enc_dir%/encodings}"
+        if env -u PYTHONHOME -u PYTHONPATH PYTHONHOME="$pyhome" \
+            "$py_bin" -c "import encodings" >/dev/null 2>&1; then
+            PYTHONHOME="$pyhome"
+            PYTHONPATH="$pyhome"
+            for p in "${extra_paths[@]}"; do
+                [[ -n "$p" ]] && PYTHONPATH="${PYTHONPATH}:${p}"
+            done
+            export PYTHONHOME PYTHONPATH
+        fi
     fi
 
     local gamepyver
-    gamepyver=$("$py_bin" --version 2>&1 | awk '{gsub(/[^[:digit:]]+/, " "); printf("%d%03d%03d\n", $1, $2, $3)}')
+    gamepyver=$("$py_bin" --version 2>&1 | awk '{gsub(/[^[:digit:]]+/, " "); printf("%d%03d%03d\n", $1, $2, $3)}') || gamepyver=0
     PYARGS=()
     if [[ ${gamepyver::1} == 3 ]] && ((gamepyver < MIN_GAME_PYVER)); then
         PYARGS=(-EO)
@@ -134,15 +175,15 @@ _unren_guess_python_major() {
         return 0
     fi
 
+    if (( renpy_major >= 1 && renpy_major < 8 )); then
+        printf '2\n'
+        return 0
+    fi
+
     if compgen -G "${app}/lib/py3-${platform}" >/dev/null ||
        compgen -G "${app}/lib/py3-*" >/dev/null ||
        [[ -d "${app}/lib/python3.12" || -d "${app}/lib/python3.9" || -d "${app}/lib/python3.11" ]]; then
         printf '3\n'
-        return 0
-    fi
-
-    if (( renpy_major == 7 )); then
-        printf '2\n'
         return 0
     fi
 
@@ -203,8 +244,11 @@ resolve_game_and_python() {
     fi
 
     if [[ -n "$UNREN_PYTHON" && -x "$UNREN_PYTHON" ]]; then
-        _unren_configure_python_env "$UNREN_PYTHON" "${UNREN_APP}"
-        return 0
+        if env -u PYTHONHOME -u PYTHONPATH "$UNREN_PYTHON" -c "import encodings" >/dev/null 2>&1; then
+            _unren_configure_python_env "$UNREN_PYTHON" "${UNREN_APP}"
+            return 0
+        fi
+        UNREN_PYTHON=""
     fi
 
     # Fallback: bundled SDK runtimes shipped with UnRen-Desktop
@@ -250,7 +294,7 @@ unren_resolve_rpatool_python() {
 
 _unren_python_has_multiprocessing() {
     local py="$1"
-    PYTHONHOME="${PYTHONHOME-}" PYTHONPATH="${PYTHONPATH-}" \
+    env -u PYTHONHOME -u PYTHONPATH \
         "$py" -c "import _multiprocessing" 2>/dev/null
 }
 

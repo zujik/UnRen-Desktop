@@ -59,6 +59,40 @@ detect_version_from_game() {
     die "Could not detect Ren'Py version in ${app}"
 }
 
+sdk_download_complete() {
+    local ver="$1" dest="$2"
+    local py_tag plat stdlib
+
+    case "$(uname -s)" in
+        Darwin)
+            if [[ -d "${dest}/lib/py3-darwin-arm64" ]]; then
+                plat="darwin-arm64"
+            else
+                plat="darwin-x86_64"
+            fi
+            ;;
+        Linux)
+            case "$(uname -m)" in
+                i686|i386) plat="linux-i686" ;;
+                *) plat="linux-x86_64" ;;
+            esac
+            ;;
+        *) return 0 ;;  # Windows or unknown: any tree is fine
+    esac
+
+    case "$ver" in
+        8.*|9.*|10.*)
+            py_tag="py3"
+            [[ -x "${dest}/lib/${py_tag}-${plat}/python" || -x "${dest}/lib/${py_tag}-${plat}/python.real" ]]
+            ;;
+        *)
+            py_tag="py2"
+            stdlib="${dest}/lib/python2.7/site.py"
+            [[ -f "$stdlib" && -x "${dest}/lib/${py_tag}-${plat}/python" ]]
+            ;;
+    esac
+}
+
 download_sdk() {
     local ver="$1"
     local url="https://www.renpy.org/dl/${ver}/renpy-${ver}-sdk.tar.bz2"
@@ -67,8 +101,18 @@ download_sdk() {
 
     mkdir -p "${SDK_SOURCES}"
     if [[ -d "$dest" ]]; then
-        echo "Already present: ${dest}"
-        return 0
+        if sdk_download_complete "$ver" "$dest"; then
+            echo "Already present (Linux/macOS runtime OK): ${dest}"
+            return 0
+        fi
+        if [[ "${FORCE_SDK_DOWNLOAD:-}" != 1 ]]; then
+            echo "Incomplete SDK at ${dest} (Windows-only or missing lib/)."
+            echo "  Not deleting. Re-download with: FORCE_SDK_DOWNLOAD=1 $0 ${ver}"
+            return 1
+        fi
+        echo "Incomplete SDK (Windows-only or missing lib/): ${dest}"
+        echo "  FORCE_SDK_DOWNLOAD=1 — replacing from renpy.org ..."
+        rm -rf "$dest"
     fi
 
     echo "Downloading ${url}"

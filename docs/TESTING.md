@@ -142,7 +142,9 @@ Date       Game                 Bucket  Result   Issue / fix
 
 ### Decompile warning noise
 
-During decompile, UnRen **summarizes** repeated `Unknown AST node` and custom-displayable lines instead of printing each one. That is not a failure — check the summary count and the decompile results line (`N files were successfully decompiled`).
+During decompile, UnRen **summarizes** repeated `Unknown AST node`, custom-displayable, and **Ren'Py 6/7 vs unrpyc-8 version** notices instead of printing each one. Real errors (tracebacks, failed decompile, non-zero exit) are still shown. Game Ren'Py version is read from `game/script_version.txt` when present.
+
+Ren'Py **7** games on a **py3 SDK fallback** (no populated `py2-7.8.7` lib) need `fix-py2-print.py` after decompile (`print x` → `print(x)`). Run **g** to apply fixes and regenerate the launcher with correct `py2` SDK order.
 
 Custom games (e.g. Innocent Witches) register dozens of `store.*` statement types unrpyc cannot reconstruct. Dialogue and standard Ren'Py still decompile; custom lines become `pass # <<<COULD NOT DECOMPILE>>>` comments.
 

@@ -13,3 +13,6 @@
 # Legacy py2 / SDK-fallback games auto-set SDL_VIDEODRIVER=x11 on Wayland sessions
 # inside GameName.sh to avoid "wayland not available" startup crashes.
 # py3 games: no override - SDL autodetects Wayland or X11.
+#
+# Native renpy/*.so path injection is added to GameName.py at install time
+# (see _unren_patch_launcher_native_renpy in unren/launch-game.sh).
