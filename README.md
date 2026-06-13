@@ -76,7 +76,9 @@ Double-click `UnRen.command`, or use Option A/B above.
 | 1 | Extract RPA archives (renames `.rpa` → `.rpa.bak` after extraction) |
 | 2 | Decompile `.rpyc` → `.rpy` |
 | 3–6 | Console, quick save/load, skip, rollback patches |
-| 7–9 | Combinations of the above |
+| 7 | Options 3–6 (patches only) |
+| 8 | Options 1–6 + install `GameName.sh` launcher |
+| 9 | Options 1–6 + deobfuscate + install launcher |
 | 0 | Decompile and overwrite existing `.rpy` files |
 | g | Install / launch game (`GameName.sh` from `.exe` or `build.name`, `lib/` then `sdk/`) |
 

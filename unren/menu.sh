@@ -27,8 +27,8 @@ unren_menu() {
         echo "   5) Force enable skipping of unseen content"
         echo "   6) Force enable rollback (scroll wheel)"
         echo "   7) Options 3-6"
-        echo "   8) Options 1-6"
-        echo "   9) Options 1-6 + Deobfuscate rpyc"
+        echo "   8) Options 1-6 + install game launcher"
+        echo "   9) Options 1-6 + deobfuscate + install game launcher"
         echo "   0) Decompile rpyc and overwrite existing rpy files"
         echo "   g) Install / launch game (creates GameName.sh from .exe if needed)"
         echo "   q) Quit"
@@ -55,19 +55,25 @@ unren_menu() {
                 ;;
             8)
                 unren_extract
-                unren_decompile
+                unren_decompile --clobber
                 unren_console
                 unren_quick
                 unren_skip
                 unren_rollback
+                echo
+                echo " Installing game launcher ..."
+                unren_install_launcher
                 ;;
             9)
                 unren_extract
-                unren_decompile --try-harder
+                unren_decompile --clobber --try-harder
                 unren_console
                 unren_quick
                 unren_skip
                 unren_rollback
+                echo
+                echo " Installing game launcher ..."
+                unren_install_launcher
                 ;;
             q|Q)
                 echo "Bye..."
