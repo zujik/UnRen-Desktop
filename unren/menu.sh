@@ -29,7 +29,7 @@ unren_menu() {
         echo "   7) Options 3-6"
         echo "   8) Options 1-6 + install game launcher"
         echo "   9) Options 1-6 + deobfuscate + install game launcher"
-        echo "   0) Decompile rpyc and overwrite existing rpy files"
+        echo "   0) Decompile rpyc (overwrite stub/missing .rpy only)"
         echo "   g) Install / launch game (creates GameName.sh from .exe if needed)"
         echo "   q) Quit"
         echo

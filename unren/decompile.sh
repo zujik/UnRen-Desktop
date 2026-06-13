@@ -7,6 +7,24 @@ _unren_script_version_major() {
     [[ -n "$sv" ]] && printf '%s\n' "$sv" || printf '0\n'
 }
 
+_unren_decompile_source_path() {
+    local compiled=$1
+    case "$compiled" in
+        *.rpyc) printf '%s\n' "${compiled%.rpyc}.rpy" ;;
+        *.rpymc) printf '%s\n' "${compiled%.rpymc}.rpym" ;;
+    esac
+}
+
+_unren_rpy_is_stub() {
+    local rpy=$1
+    local bytes
+    [[ -f "$rpy" ]] || return 1
+    bytes=$(wc -c < "$rpy" 2>/dev/null | tr -d ' ')
+    (( bytes < 10 )) && return 0
+    grep -qiE '^(# )?(unrpyc|ERROR|failed to decompile)' "$rpy" 2>/dev/null && return 0
+    return 1
+}
+
 _unren_decompile_auto_opts() {
     local -n _opts=$1
     local major py_major has_sl1=0 opt
@@ -27,36 +45,36 @@ _unren_decompile_auto_opts() {
 }
 
 _unren_decompile_targets() {
-    local force_clobber=$1
-    local -n _out=$2
-    local rpyc rel
+    local want_clobber=$1
+    local force_all=$2
+    local -n _out=$3
+    local rpyc rel source
 
     _out=()
-    if (( force_clobber )); then
-        _out=(.)
-        return 0
-    fi
 
     while IFS= read -r -d '' rpyc; do
-        case "$rpyc" in
-            *.rpyc)
-                [[ -f "${rpyc%.rpyc}.rpy" ]] && continue
-                ;;
-            *.rpymc)
-                [[ -f "${rpyc%.rpymc}.rpym" ]] && continue
-                ;;
-            *)
-                continue
-                ;;
-        esac
-        rel="${rpyc#$UNREN_GAME/}"
-        _out+=("$rel")
+        source="$(_unren_decompile_source_path "$rpyc")"
+        if [[ ! -f "$source" ]]; then
+            rel="${rpyc#$UNREN_GAME/}"
+            _out+=("$rel")
+            continue
+        fi
+        if (( force_all )); then
+            rel="${rpyc#$UNREN_GAME/}"
+            _out+=("$rel")
+            continue
+        fi
+        if (( want_clobber )) && _unren_rpy_is_stub "$source"; then
+            rel="${rpyc#$UNREN_GAME/}"
+            _out+=("$rel")
+            continue
+        fi
     done < <(find "$UNREN_GAME" \( -name '*.rpyc' -o -name '*.rpymc' \) -type f -print0 2>/dev/null)
 }
 
 unren_decompile() {
     local -a opts=() targets=()
-    local unrpyc_py py_runner=() rc want_clobber=0
+    local unrpyc_py py_runner=() rc want_clobber=0 force_all=0 skipped=0
     while [[ $# -gt 0 ]]; do
         if [[ "$1" == "--clobber" ]]; then
             want_clobber=1
@@ -67,6 +85,7 @@ unren_decompile() {
     done
 
     [[ "${UNREN_DECOMPILE_CLOBBER:-0}" == "1" ]] && want_clobber=1
+    [[ "${UNREN_DECOMPILE_FORCE_ALL:-0}" == "1" ]] && force_all=1
     (( want_clobber )) && opts+=(--clobber)
 
     if ! find "$UNREN_GAME" \( -name '*.rpyc' -o -name '*.rpymc' \) -type f -print -quit 2>/dev/null | grep -q .; then
@@ -75,15 +94,34 @@ unren_decompile() {
         return 0
     fi
 
-    _unren_decompile_targets "$want_clobber" targets
+    if (( ! force_all )); then
+        while IFS= read -r -d '' rpyc; do
+            source="$(_unren_decompile_source_path "$rpyc")"
+            [[ -f "$source" ]] || continue
+            if (( want_clobber )); then
+                _unren_rpy_is_stub "$source" || (( skipped++ )) || true
+            else
+                (( skipped++ )) || true
+            fi
+        done < <(find "$UNREN_GAME" \( -name '*.rpyc' -o -name '*.rpymc' \) -type f -print0 2>/dev/null)
+    fi
+
+    _unren_decompile_targets "$want_clobber" "$force_all" targets
     if [[ ${#targets[@]} -eq 0 ]]; then
-        echo "  All compiled scripts already have matching .rpy/.rpym — skipping decompile."
-        echo "  Use option 0, --clobber, or UNREN_DECOMPILE_CLOBBER=1 to overwrite."
+        if (( skipped > 0 )); then
+            echo "  All compiled scripts already have matching .rpy/.rpym — skipping decompile (${skipped} file(s))."
+            echo "  Use UNREN_DECOMPILE_FORCE_ALL=1 to overwrite existing sources."
+        else
+            echo "  No compiled scripts to decompile."
+        fi
         echo
         return 0
     fi
 
-    if (( ! want_clobber )); then
+    if (( skipped > 0 )); then
+        echo "  Keeping ${skipped} existing .rpy/.rpym file(s); decompiling ${#targets[@]} file(s)"
+        echo
+    elif (( ! want_clobber )); then
         echo "  Skipping .rpyc/.rpymc with existing .rpy/.rpym (${#targets[@]} file(s) to decompile)"
         echo
     fi
@@ -113,7 +151,9 @@ unren_decompile() {
     elif grep -q "failed to decompile" "$errortemp" 2>/dev/null; then
         echo
         echo "  Decompile finished with some file failures (see summary above)."
-        echo "  Pre-existing .rpy files are kept when a file fails under --clobber."
+        if (( force_all )); then
+            echo "  Existing .rpy files are kept when a file fails under --clobber."
+        fi
         echo
     fi
     rm -f "$errortemp"
