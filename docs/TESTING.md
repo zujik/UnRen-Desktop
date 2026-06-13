@@ -146,6 +146,8 @@ During decompile, UnRen **summarizes** repeated `Unknown AST node` and custom-di
 
 Custom games (e.g. Innocent Witches) register dozens of `store.*` statement types unrpyc cannot reconstruct. Dialogue and standard Ren'Py still decompile; custom lines become `pass # <<<COULD NOT DECOMPILE>>>` comments.
 
+unrpyc may also substitute **style names** for custom screen keywords (`imagetext_button` instead of `imagetextbutton`). UnRen fixes that via `fix-sl-keywords.py` on decompile/launch.
+
 After decompile, UnRen runs **post-fixes** (`patches/decompile-fixes/`) for empty trailing `at transform:` blocks and known broken files. Re-run option **g** to apply fixes before launch without re-decompiling.
 
 ## Quick commands

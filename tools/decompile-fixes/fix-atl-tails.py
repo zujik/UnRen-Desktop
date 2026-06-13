@@ -39,6 +39,11 @@ _BLOCK_HEADS = (
     "key",
     "hotspot",
     "hotbar",
+    "show ",
+    "scene ",
+    "menu",
+    "elif ",
+    "else",
 )
 
 _TAIL_LINE = re.compile(r"^(?P<indent>\s*)(?P<body>.+?):\s*$")

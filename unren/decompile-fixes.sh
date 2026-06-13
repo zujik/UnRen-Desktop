@@ -1,31 +1,25 @@
-# Post-decompile repairs for known unrpyc gaps (generic + per-game hooks).
-
-_unren_game_is_innocent_witches() {
-    local f base
-    for f in "${UNREN_APP}/Innocent Witches.exe" "${UNREN_APP}/Innocent_Witches.exe"; do
-        [[ -f "$f" ]] && return 0
-    done
-    for f in "${UNREN_APP}"/*.exe; do
-        [[ -f "$f" ]] || continue
-        base="$(basename "$f" .exe)"
-        [[ "$base" == *Innocent*Witches* || "$base" == *innocent*witches* ]] && return 0
-    done
-    return 1
-}
+# Post-decompile repairs for known unrpyc gaps (bash entry; launcher uses tools/decompile-fixes/run-all.sh).
 
 unren_decompile_fixes() {
-    local -a roots=() root fix_py
-    _unren_decompile_roots roots
-    [[ ${#roots[@]} -gt 0 ]] || roots=("${UNREN_GAME}")
-
-    fix_py="${UNREN_ROOT}/tools/decompile-fixes/fix-atl-tails.py"
-    if [[ -f "$fix_py" ]]; then
-        "${UNREN_PYTHON:-python3}" "$fix_py" "${roots[@]}" || true
+    local -a roots=() root
+    if declare -F _unren_decompile_roots >/dev/null 2>&1; then
+        _unren_decompile_roots roots
     fi
 
-    if _unren_game_is_innocent_witches; then
-        # shellcheck source=patches/decompile-fixes/innocent-witches.sh
-        source "${UNREN_ROOT}/patches/decompile-fixes/innocent-witches.sh"
-        unren_decompile_fix_innocent_witches
+    if [[ -f "${UNREN_ROOT}/tools/decompile-fixes/run-all.sh" ]]; then
+        env -u PYTHONHOME -u PYTHONPATH -u UNREN_PYTHON \
+            sh "${UNREN_ROOT}/tools/decompile-fixes/run-all.sh" "${UNREN_ROOT}"
+        return 0
     fi
+
+    for root in "${roots[@]}"; do
+        case "$root" in
+            */game) app="${root%/game}" ;;
+            *) app="${UNREN_ROOT}" ;;
+        esac
+        if [[ -f "${UNREN_ROOT}/tools/decompile-fixes/run-all.sh" ]]; then
+            env -u PYTHONHOME -u PYTHONPATH -u UNREN_PYTHON \
+                sh "${UNREN_ROOT}/tools/decompile-fixes/run-all.sh" "$app"
+        fi
+    done
 }
