@@ -55,6 +55,70 @@ _unren_configure_python_env() {
     fi
 }
 
+_unren_renpy_platform() {
+    if [[ -n "${RENPY_PLATFORM:-}" ]]; then
+        printf '%s\n' "$RENPY_PLATFORM"
+        return 0
+    fi
+
+    local raw
+    raw="$(uname -s)-$(uname -m)"
+    case "$raw" in
+        Darwin-*|mac-*)
+            printf '%s\n' "mac-universal"
+            ;;
+        *-x86_64|amd64)
+            printf '%s\n' "linux-x86_64"
+            ;;
+        *-i*86)
+            printf '%s\n' "linux-i686"
+            ;;
+        Linux-*)
+            printf '%s\n' "linux-$(uname -m)"
+            ;;
+        *)
+            printf '%s\n' "$raw"
+            ;;
+    esac
+}
+
+_unren_guess_python_major() {
+    local app="$1" platform="$2" sv
+
+    if compgen -G "${app}/lib/py3-${platform}" >/dev/null ||
+       compgen -G "${app}/lib/py3-*" >/dev/null ||
+       [[ -d "${app}/lib/python3.12" || -d "${app}/lib/python3.9" || -d "${app}/lib/python3.11" ]]; then
+        printf '3\n'
+        return 0
+    fi
+
+    if compgen -G "${app}/lib/py2-${platform}" >/dev/null ||
+       compgen -G "${app}/lib/py2-*" >/dev/null ||
+       [[ -d "${app}/lib/python2.7" || -d "${app}/lib/pythonlib2.7" ]] ||
+       compgen -G "${app}/lib/windows-*" >/dev/null; then
+        printf '2\n'
+        return 0
+    fi
+
+    sv="$(grep -rh 'config\.script_version' "${app}/game/script_version.rpy" "${app}/game/script_version.txt" 2>/dev/null \
+        | head -1 | sed -n 's/.*([[:space:]]*\([0-9][0-9]*\).*/\1/p')"
+    if [[ -n "$sv" ]]; then
+        if (( sv >= 8 )); then
+            printf '3\n'
+        else
+            printf '2\n'
+        fi
+        return 0
+    fi
+
+    if [[ -d "${SDK_PY3_DIR}/renpy" ]]; then
+        printf '3\n'
+        return 0
+    fi
+
+    printf '2\n'
+}
+
 resolve_game_and_python() {
     UNREN_APP=""
     UNREN_GAME=""
@@ -80,20 +144,27 @@ resolve_game_and_python() {
         unren_die "Unable to determine Ren'Py game layout in: ${UNREN_TARGET}"
     fi
 
+    if [[ -n "$UNREN_PYTHON" ]]; then
+        chmod -f +x "$UNREN_PYTHON" 2>/dev/null || true
+    fi
+
     if [[ -n "$UNREN_PYTHON" && -x "$UNREN_PYTHON" ]]; then
         _unren_configure_python_env "$UNREN_PYTHON" "${UNREN_APP}"
-        chmod -f +x "$UNREN_PYTHON" 2>/dev/null || true
         return 0
     fi
 
     # Fallback: bundled SDK runtimes shipped with UnRen-Desktop
-    local py_major sdk_root sdk_py
-    if [[ -d "${SDK_PY3_DIR}/renpy" ]]; then
-        py_major=3
+    local py_major sdk_root sdk_py platform
+    platform="$(_unren_renpy_platform)"
+    py_major="$(_unren_guess_python_major "$UNREN_APP" "$platform")"
+
+    if [[ "$py_major" == 3 && -d "${SDK_PY3_DIR}/renpy" ]]; then
         sdk_root="${SDK_PY3_DIR}"
     elif [[ -d "${SDK_PY2_DIR}/renpy" ]]; then
         py_major=2
         sdk_root="${SDK_PY2_DIR}"
+    elif [[ -d "${SDK_PY3_DIR}/renpy" ]]; then
+        sdk_root="${SDK_PY3_DIR}"
     else
         unren_die "No game Python found and no bundled SDK runtime in sdk/. Run scripts/populate-sdk.sh"
     fi

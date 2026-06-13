@@ -1,32 +1,5 @@
 # Install and launch Ren'Py games on Linux/macOS (lib/ first, sdk/ fallback)
 
-_unren_renpy_platform() {
-    if [[ -n "${RENPY_PLATFORM:-}" ]]; then
-        printf '%s\n' "$RENPY_PLATFORM"
-        return 0
-    fi
-
-    local raw
-    raw="$(uname -s)-$(uname -m)"
-    case "$raw" in
-        Darwin-*|mac-*)
-            printf '%s\n' "mac-universal"
-            ;;
-        *-x86_64|amd64)
-            printf '%s\n' "linux-x86_64"
-            ;;
-        *-i*86)
-            printf '%s\n' "linux-i686"
-            ;;
-        Linux-*)
-            printf '%s\n' "linux-$(uname -m)"
-            ;;
-        *)
-            printf '%s\n' "$raw"
-            ;;
-    esac
-}
-
 _unren_detect_game_basename() {
     local app="$1" f base
 
@@ -50,6 +23,16 @@ _unren_detect_game_basename() {
         return 0
     done
 
+    for f in "$app"/*.py; do
+        [[ -f "$f" ]] || continue
+        base="$(basename "$f" .py)"
+        case "$base" in
+            renpy|renpy3|renpy2) continue ;;
+        esac
+        printf '%s\n' "$base"
+        return 0
+    done
+
     if [[ -f "${UNREN_GAME}/options.rpy" ]]; then
         base="$(grep -m1 'define build\.name' "${UNREN_GAME}/options.rpy" 2>/dev/null \
             | sed -n 's/.*"\([^"]*\)".*/\1/p')"
@@ -62,36 +45,14 @@ _unren_detect_game_basename() {
     printf '%s\n' "$(basename "$app")"
 }
 
-_unren_guess_python_major() {
-    local app="$1" platform="$2"
-
-    if compgen -G "${app}/lib/py3-${platform}" >/dev/null ||
-       compgen -G "${app}/lib/py3-*" >/dev/null ||
-       [[ -d "${app}/lib/python3.12" || -d "${app}/lib/python3.9" || -d "${app}/lib/python3.11" ]]; then
-        printf '3\n'
-        return 0
-    fi
-
-    if compgen -G "${app}/lib/py2-${platform}" >/dev/null ||
-       compgen -G "${app}/lib/py2-*" >/dev/null ||
-       [[ -d "${app}/lib/python2.7" ]]; then
-        printf '2\n'
-        return 0
-    fi
-
-    if [[ -d "${SDK_PY3_DIR}/renpy" ]]; then
-        printf '3\n'
-        return 0
-    fi
-
-    printf '2\n'
-}
-
 _unren_launch_lib_dir() {
     local app="$1" py_major="$2" platform="$3"
     local game_lib sdk_root sdk_lib
 
     game_lib="${app}/lib/py${py_major}-${platform}"
+    if [[ -d "$game_lib" ]]; then
+        chmod -f +x "${game_lib}/python" "${game_lib}/renpy" "${game_lib}/"* 2>/dev/null || true
+    fi
     if [[ -d "$game_lib" ]] && {
         [[ -x "${game_lib}/renpy" || -x "${game_lib}/python" ]]
     }; then
@@ -117,10 +78,12 @@ _unren_launch_lib_dir() {
 }
 
 unren_install_launcher() {
-    local basename="$1" sh_path py_path sdk_py
+    local basename="${1-}" sh_path py_path
     local platform py_major lib_dir
 
-    basename="${1:-$(_unren_detect_game_basename "$UNREN_APP")}"
+    if [[ -z "$basename" ]]; then
+        basename="$(_unren_detect_game_basename "$UNREN_APP")"
+    fi
     sh_path="${UNREN_APP}/${basename}.sh"
     py_path="${UNREN_APP}/${basename}.py"
 
@@ -130,7 +93,7 @@ unren_install_launcher() {
     if ! lib_dir="$(_unren_launch_lib_dir "$UNREN_APP" "$py_major" "$platform")"; then
         echo "  No Ren'Py runtime for ${platform} in lib/ or sdk/."
         echo "  Copy UnRen-Desktop with sdk/, or use a Linux/macOS game build."
-        return 1
+        return 0
     fi
 
     cat >"$sh_path" <<'LAUNCHER'
@@ -164,6 +127,10 @@ GAME_LIB="$ROOT/lib/$PYTHON-$RENPY_PLATFORM"
 
 if [ -d "$GAME_LIB" ] && { [ -x "$GAME_LIB/renpy" ] || [ -x "$GAME_LIB/python" ]; }; then
     LIB="$GAME_LIB"
+elif [ "__PY_MAJOR__" = "py2" ] && [ -d "$ROOT/sdk/py2-7.8.7/lib/py2-$RENPY_PLATFORM" ] && \
+     { [ -x "$ROOT/sdk/py2-7.8.7/lib/py2-$RENPY_PLATFORM/renpy" ] || \
+       [ -x "$ROOT/sdk/py2-7.8.7/lib/py2-$RENPY_PLATFORM/python" ]; }; then
+    LIB="$ROOT/sdk/py2-7.8.7/lib/py2-$RENPY_PLATFORM"
 elif [ -d "$ROOT/sdk/py3-8.5.3/lib/py3-$RENPY_PLATFORM" ] && \
      { [ -x "$ROOT/sdk/py3-8.5.3/lib/py3-$RENPY_PLATFORM/renpy" ] || \
        [ -x "$ROOT/sdk/py3-8.5.3/lib/py3-$RENPY_PLATFORM/python" ]; }; then
@@ -184,8 +151,12 @@ cd "$ROOT" || exit 1
 # Prefer native stubs; set PYTHONHOME when falling back to sdk python + .py bootstrap.
 if [ -d "$ROOT/lib/python3.12" ]; then
     export PYTHONHOME="$ROOT/lib/python3.12"
+elif [ -d "$ROOT/lib/python3.9" ]; then
+    export PYTHONHOME="$ROOT/lib/python3.9"
 elif [ -d "$ROOT/lib/python2.7" ]; then
     export PYTHONHOME="$ROOT/lib/python2.7"
+elif [ -d "$ROOT/lib/pythonlib2.7" ]; then
+    export PYTHONHOME="$ROOT/lib/pythonlib2.7"
 elif [ -d "$ROOT/sdk/py3-8.5.3/lib/python3.12" ]; then
     export PYTHONHOME="$ROOT/sdk/py3-8.5.3/lib/python3.12"
 elif [ -d "$ROOT/sdk/py2-7.8.7/lib/python2.7" ]; then
@@ -258,7 +229,7 @@ unren_launch_game() {
     echo "  Launching ${basename} ..."
     echo
     set +e
-    (cd "$UNREN_APP" && exec "./${basename}.sh")
+    exec "${sh_path}"
     local rc=$?
     set -e
     if (( rc != 0 )); then
