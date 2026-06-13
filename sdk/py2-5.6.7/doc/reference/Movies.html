@@ -1,0 +1,119 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-2" />
+<p class="line867" />
+<h1 id="head-4d553f71e6c9fab33c78b84cdf0e8c2482c8615a">Movies</h1>
+<span class="anchor" id="line-3" /><span class="anchor" id="line-4" />
+<p class="line862">Ren'Py is capable of playing <a class="http" href="http://www.renpy.org//en.wikipedia.org/wiki/MPEG-1">MPEG-1</a> movies. This allows you to include video as part of your game. There are two ways that this can be done. Displaying video in fullscreen mode allows video to be scaled up to very large sizes, while displaying video in a displayable allows it to be blended with images and text. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" /></p>
+<p class="line874">Displaying a video fullscreen allows it to take advantage of hardware decode and scaling support. The downside of fullscreen mode is that nothing else can be displayed while the movie is being displayed. <span class="anchor" id="line-7" /><span class="anchor" id="line-8" /></p>
+<p class="line874">Whenever a movie is playing, it is expected to provide all sound that the user hears. Ren'Py disables sound hardware for the duration of the movie. <span class="anchor" id="line-9" /><span class="anchor" id="line-10" /></p>
+<p class="line862">The easiest way to display a movie fullscreen is to display it using the <a href="../reference/functions/renpy.movie_cutscene.html">renpy.movie_cutscene</a> function. This function displays a movie for a specified length of time. When that time has elapsed, or when the user clicks to dismiss the movie, the movie ends and the function returns. <span class="anchor" id="line-11" /><span class="anchor" id="line-12" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.movie_cutscene" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.movie_cutscene" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.movie_cutscene" name="renpy.movie_cutscene" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.movie_cutscene.html">renpy.movie_cutscene</a></b>(</td>
+<td>filename, delay, loops=0)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This displays an MPEG-1 cutscene for the specified number of seconds. The user can click to interrupt the cutscene. Overlays and Underlays are disabled for the duration of the cutscene. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>filename</em> - The name of a file containing an MPEG-1 movie. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>delay</em> - The number of seconds to wait before ending the cutscene. Normally the length of the movie, in seconds. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>loops</em> - The number of extra loops to show, -1 to loop forever. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">Returns True if the movie was terminated by the user, or False if the given delay elapsed uninterrupted. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-16" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.movie_cutscene" /></div>
+<span class="anchor" id="line-13" /><span class="anchor" id="line-14" />
+<p class="line867"><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">$</span> renpy.movie_cutscene("<span class="renpy_string">On_Your_Mark.mpg</span>", 394)
+</pre>
+<span class="anchor" id="line-17" /><span class="anchor" id="line-18" />
+<p class="line874">Displaying a movie in a displayable is more difficult, but it allows the movie to be mixed with rendered text and graphics. A downside of this method is that the screen needs to be re-rendered with each frame, a process that may be unacceptibly slow when the screen is large. We don't recommend this when the game window is larger that 640x480. <span class="anchor" id="line-19" /><span class="anchor" id="line-20" /></p>
+<p class="line862">To display a movie in a displayable, we must start the movie and show a <a href="../reference/functions/Movie.html">Movie</a> displayable on the screen. The movie is then displayed on the screen along with any other widget. When we no longer want to show it, we need to stop the decoding of the movie and hide the displayable. <span class="anchor" id="line-21" /><span class="anchor" id="line-22" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Movie" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Movie" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Movie" name="Movie" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Movie.html">Movie</a></b>(</td>
+<td>fps=24, style='default', **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This is a displayable that displays the current movie. In general, a movie should be playing whenever this is on the screen. That movie should have been started using <a href="../reference/functions/renpy.movie_start_displayable.html">renpy.movie_start_displayable</a> before this is shown on the screen, and hidden before this is removed. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>fps</em> - The framerate that the movie should be shown at. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Movie" /></div>
+<span class="anchor" id="line-23" /><span class="anchor" id="line-24" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.movie_start_displayable" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.movie_start_displayable" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.movie_start_displayable" name="renpy.movie_start_displayable" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.movie_start_displayable.html">renpy.movie_start_displayable</a></b>(</td>
+<td>filename, size, loops=0)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This starts a MPEG-1 movie playing in displayable mode. One or more <a href="../reference/functions/Movie.html">Movie</a> widgets must be displayed if the movie is to be shown to the user. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>filename</em> - The filename of the MPEG-1 move that we're playing. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>size</em> - A tuple containing the size of the movie on the screen. For example, (640, 480). <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>loops</em> - The number of additional times the movie should be looped. -1 to loop it forever. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.movie_start_displayable" /></div>
+<span class="anchor" id="line-25" /><span class="anchor" id="line-26" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.movie_stop" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.movie_stop" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.movie_stop" name="renpy.movie_stop" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.movie_stop.html">renpy.movie_stop</a></b>(</td>
+<td>clear=True)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This stops the currently playing movie. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.movie_stop" /></div>
+<span class="anchor" id="line-27" /><span class="anchor" id="line-28" />
+<p class="line867"><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /><span class="anchor" id="line-40" /><span class="anchor" id="line-41" /><span class="anchor" id="line-42" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> movie = Movie()
+
+<span class="renpy_keyword">$</span> renpy.movie_start_displayable("<span class="renpy_string">bg.mpg</span>", (640, 480), -1)
+<span class="renpy_keyword">scene</span> movie
+<span class="renpy_keyword">show</span> eileen happy
+
+e "<span class="renpy_string">I'm standing in front of a movie.</span>"
+
+e "<span class="renpy_string">Isn't that keen?</span>"
+
+<span class="renpy_keyword">hide</span> movie
+<span class="renpy_keyword">$</span> renpy.movie_stop()
+</pre>
+<span class="anchor" id="line-43" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

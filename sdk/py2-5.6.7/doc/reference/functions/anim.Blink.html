@@ -1,0 +1,49 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-c640af0fe04b21810bcaf6a6622932440567cc1d">anim.Blink</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="anim.Blink" name="anim.Blink" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/anim.Blink.html">anim.Blink</a></b>(</td>
+<td>image, on=0.5, off=0.5, rise=0.5, set=0.5, high=1.0, low=0.0, offset=0.0, anim_timebase=False, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This takes as an argument an image or widget, and blinks that image by varying its alpha. The sequence of phases is on - set - off - rise - on - ... All times are given in seconds, all alphas are fractions between 0 and 1. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>image</em> - The image or widget that will be blinked. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>on</em> - The amount of time the widget spends on, at high alpha. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>off</em> - The amount of time the widget spends off, at low alpha. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>rise</em> - The amount time the widget takes to ramp from low to high alpha. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>set</em> - The amount of time the widget takes to ram from high to low. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>high</em> - The high alpha. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>low</em> - The low alpha. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>offset</em> - A time offset, in seconds. Use this to have a blink that does not start at the start of the on phase. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>anim_timebase</em> - If True, use the animation timebase, if false, the displayable timebase. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-26" />
+<h2 id="head-3579f45e0ff014466e075df2b6570678c1f48824">Example</h2>
+<span class="anchor" id="line-27" />
+<p class="line867"><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> ctc = anim.Blink("<span class="renpy_string">arrow.png</span>"))
+</pre>
+<span class="anchor" id="line-31" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

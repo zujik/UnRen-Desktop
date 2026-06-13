@@ -1,0 +1,1279 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h2 id="head-f83655f67c34cbc5149e233d10f6da2a51c25837">List of Styles</h2>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="animation" name="animation" />
+<table class="sig">
+<tr>
+<td><b>Style: animation</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This is the default style of animations. Don't change this, change image_placement instead. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="line-9" /><span class="anchor" id="line-10" />
+<p class="line867" />
+<div class="documented"><a id="bar" name="bar" />
+<table class="sig">
+<tr>
+<td><b>Style: bar</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-11" /><span class="anchor" id="line-12" />
+<p class="line874">(bar) The style that is used by default for bars. <span class="anchor" id="line-13" /><span class="anchor" id="line-14" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" />
+<p class="line867" />
+<div class="documented"><a id="button" name="button" />
+<table class="sig">
+<tr>
+<td><b>Style: button</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-18" /><span class="anchor" id="line-19" />
+<p class="line874">(window) The default style used for buttons in the main and game menus. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" />
+<p class="line867" />
+<div class="documented"><a id="button_text" name="button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: button_text</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-25" /><span class="anchor" id="line-26" />
+<p class="line874">(text) The default style used for the label of a button. <span class="anchor" id="line-27" /><span class="anchor" id="line-28" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" />
+<p class="line867" />
+<div class="documented"><a id="centered_text" name="centered_text" />
+<table class="sig">
+<tr>
+<td><b>Style: centered_text</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-32" /><span class="anchor" id="line-33" />
+<p class="line874">(text) The style used for text spoken by the "centered" character. <span class="anchor" id="line-34" /><span class="anchor" id="line-35" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" />
+<p class="line867" />
+<div class="documented"><a id="centered_window" name="centered_window" />
+<table class="sig">
+<tr>
+<td><b>Style: centered_window</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-39" /><span class="anchor" id="line-40" />
+<p class="line874">(window) The style that is used for a "window" containing centered text. <span class="anchor" id="line-41" /><span class="anchor" id="line-42" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-43" /><span class="anchor" id="line-44" /><span class="anchor" id="line-45" />
+<p class="line867" />
+<div class="documented"><a id="default" name="default" />
+<table class="sig">
+<tr>
+<td><b>Style: default</b> (inherits from <a href="#None">None</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-46" /><span class="anchor" id="line-47" />
+<p class="line874">The default style that all styles inherit from. (This style does not inherit from another style.) <span class="anchor" id="line-48" /><span class="anchor" id="line-49" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-50" /><span class="anchor" id="line-51" /><span class="anchor" id="line-52" />
+<p class="line867" />
+<div class="documented"><a id="error_body" name="error_body" />
+<table class="sig">
+<tr>
+<td><b>Style: error_body</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-53" /><span class="anchor" id="line-54" />
+<p class="line874">(text) The style of the body of error messages generated by Ren'Py. <span class="anchor" id="line-55" /><span class="anchor" id="line-56" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" />
+<p class="line867" />
+<div class="documented"><a id="error_root" name="error_root" />
+<table class="sig">
+<tr>
+<td><b>Style: error_root</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-60" /><span class="anchor" id="line-61" />
+<p class="line874">(window) The style of the window containing error messages generated by Ren'Py. <span class="anchor" id="line-62" /><span class="anchor" id="line-63" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-64" /><span class="anchor" id="line-65" /><span class="anchor" id="line-66" />
+<p class="line867" />
+<div class="documented"><a id="error_title" name="error_title" />
+<table class="sig">
+<tr>
+<td><b>Style: error_title</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-67" /><span class="anchor" id="line-68" />
+<p class="line874">(text) The style of the text containing the title of error messages generated by Ren'Py. <span class="anchor" id="line-69" /><span class="anchor" id="line-70" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-71" /><span class="anchor" id="line-72" /><span class="anchor" id="line-73" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_empty_slot" name="file_picker_empty_slot" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_empty_slot</b> (inherits from <a href="#file_picker_text">file_picker_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-74" /><span class="anchor" id="line-75" />
+<p class="line874">(text) The style that is used for the empty slot indicator in the file picker. <span class="anchor" id="line-76" /><span class="anchor" id="line-77" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-78" /><span class="anchor" id="line-79" /><span class="anchor" id="line-80" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_entry" name="file_picker_entry" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_entry</b> (inherits from <a href="#menu_button">menu_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-81" /><span class="anchor" id="line-82" />
+<p class="line874">(window) The style that is used for each of the slots in the file picker. <span class="anchor" id="line-83" /><span class="anchor" id="line-84" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-85" /><span class="anchor" id="line-86" /><span class="anchor" id="line-87" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_entry_box" name="file_picker_entry_box" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_entry_box</b> (inherits from <a href="#thin_hbox">thin_hbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-88" /><span class="anchor" id="line-89" />
+<p class="line874">(box) The style that is used for the hbox inside of a file picker entry. <span class="anchor" id="line-90" /><span class="anchor" id="line-91" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-92" /><span class="anchor" id="line-93" /><span class="anchor" id="line-94" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_extra_info" name="file_picker_extra_info" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_extra_info</b> (inherits from <a href="#file_picker_text">file_picker_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-95" /><span class="anchor" id="line-96" />
+<p class="line874">(text) The style that is applied to extra info in the file picker. The extra info is the save time, and the save_name if one exists. <span class="anchor" id="line-97" /><span class="anchor" id="line-98" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-99" /><span class="anchor" id="line-100" /><span class="anchor" id="line-101" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_frame" name="file_picker_frame" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_frame</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-102" /><span class="anchor" id="line-103" />
+<p class="line874">(window) A window containing the file picker that is used to choose slots for loading and saving. <span class="anchor" id="line-104" /><span class="anchor" id="line-105" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-106" /><span class="anchor" id="line-107" /><span class="anchor" id="line-108" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_frame_vbox" name="file_picker_frame_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_frame_vbox</b> (inherits from <a href="#thin_vbox">thin_vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-109" /><span class="anchor" id="line-110" />
+<p class="line874">(box) The vbox containing both the nav and the grid in the file picker. <span class="anchor" id="line-111" /><span class="anchor" id="line-112" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-113" /><span class="anchor" id="line-114" /><span class="anchor" id="line-115" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_grid" name="file_picker_grid" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_grid</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-116" /><span class="anchor" id="line-117" />
+<p class="line874">The style of the grid containing the file picker entries. <span class="anchor" id="line-118" /><span class="anchor" id="line-119" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-120" /><span class="anchor" id="line-121" /><span class="anchor" id="line-122" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_nav_button" name="file_picker_nav_button" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_nav_button</b> (inherits from <a href="#menu_button">menu_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-123" /><span class="anchor" id="line-124" />
+<p class="line874">(window) The style that is used for file picker navigation buttons. (The buttons that let the user select the file picker page.) <span class="anchor" id="line-125" /><span class="anchor" id="line-126" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-127" /><span class="anchor" id="line-128" /><span class="anchor" id="line-129" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_nav_button_text" name="file_picker_nav_button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_nav_button_text</b> (inherits from <a href="#menu_button_text">menu_button_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-130" /><span class="anchor" id="line-131" />
+<p class="line874">(text) The style that is used for the label of file picker navigation buttons. <span class="anchor" id="line-132" /><span class="anchor" id="line-133" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-134" /><span class="anchor" id="line-135" /><span class="anchor" id="line-136" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_navbox" name="file_picker_navbox" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_navbox</b> (inherits from <a href="#thick_hbox">thick_hbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-137" /><span class="anchor" id="line-138" />
+<p class="line874">(box) The box containing the naviation (next/previous) buttons in the file picker. <span class="anchor" id="line-139" /><span class="anchor" id="line-140" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-141" /><span class="anchor" id="line-142" /><span class="anchor" id="line-143" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_new" name="file_picker_new" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_new</b> (inherits from <a href="#file_picker_text">file_picker_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-144" /><span class="anchor" id="line-145" />
+<p class="line874">(text) The style that is applied to the number of the new slot in the file picker. <span class="anchor" id="line-146" /><span class="anchor" id="line-147" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-148" /><span class="anchor" id="line-149" /><span class="anchor" id="line-150" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_old" name="file_picker_old" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_old</b> (inherits from <a href="#file_picker_text">file_picker_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-151" /><span class="anchor" id="line-152" />
+<p class="line874">(text) The style that is applied to the number of the old slots in the file picker. <span class="anchor" id="line-153" /><span class="anchor" id="line-154" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-155" /><span class="anchor" id="line-156" /><span class="anchor" id="line-157" />
+<p class="line867" />
+<div class="documented"><a id="file_picker_text" name="file_picker_text" />
+<table class="sig">
+<tr>
+<td><b>Style: file_picker_text</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-158" /><span class="anchor" id="line-159" />
+<p class="line874">(text) A base style for all text that is displayed in the file picker. <span class="anchor" id="line-160" /><span class="anchor" id="line-161" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-162" /><span class="anchor" id="line-163" /><span class="anchor" id="line-164" />
+<p class="line867" />
+<div class="documented"><a id="frame" name="frame" />
+<table class="sig">
+<tr>
+<td><b>Style: frame</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-165" /><span class="anchor" id="line-166" />
+<p class="line862">(window) The base style for frames created with <a href="../reference/functions/ui.frame.html">ui.frame</a> <span class="anchor" id="line-167" /><span class="anchor" id="line-168" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-169" /><span class="anchor" id="line-170" /><span class="anchor" id="line-171" />
+<p class="line867" />
+<div class="documented"><a id="gm_nav_button" name="gm_nav_button" />
+<table class="sig">
+<tr>
+<td><b>Style: gm_nav_button</b> (inherits from <a href="#menu_button">menu_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-172" /><span class="anchor" id="line-173" />
+<p class="line874">(window) The style of a game menu navigation button. <span class="anchor" id="line-174" /><span class="anchor" id="line-175" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-176" /><span class="anchor" id="line-177" /><span class="anchor" id="line-178" />
+<p class="line867" />
+<div class="documented"><a id="gm_nav_button_text" name="gm_nav_button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: gm_nav_button_text</b> (inherits from <a href="#menu_button_text">menu_button_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-179" /><span class="anchor" id="line-180" />
+<p class="line874">(text, hover) The style of the text of a game menu navigation button. <span class="anchor" id="line-181" /><span class="anchor" id="line-182" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-183" /><span class="anchor" id="line-184" /><span class="anchor" id="line-185" />
+<p class="line867" />
+<div class="documented"><a id="gm_nav_frame" name="gm_nav_frame" />
+<table class="sig">
+<tr>
+<td><b>Style: gm_nav_frame</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-186" /><span class="anchor" id="line-187" />
+<p class="line874">(window) The style used by a window containing buttons that allow the user to navigate through the different screens of the game menu. <span class="anchor" id="line-188" /><span class="anchor" id="line-189" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-190" /><span class="anchor" id="line-191" /><span class="anchor" id="line-192" />
+<p class="line867" />
+<div class="documented"><a id="gm_nav_vbox" name="gm_nav_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: gm_nav_vbox</b> (inherits from <a href="#thin_vbox">thin_vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-193" /><span class="anchor" id="line-194" />
+<p class="line874">(box) The style that is used by the box inside the gm_nav_frame. <span class="anchor" id="line-195" /><span class="anchor" id="line-196" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-197" /><span class="anchor" id="line-198" /><span class="anchor" id="line-199" />
+<p class="line867" />
+<div class="documented"><a id="gm_root" name="gm_root" />
+<table class="sig">
+<tr>
+<td><b>Style: gm_root</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-200" /><span class="anchor" id="line-201" />
+<p class="line874">(window) The style used for the root window of the game menu. This is primarily used to change the background of the game menu. <span class="anchor" id="line-202" /><span class="anchor" id="line-203" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-204" /><span class="anchor" id="line-205" /><span class="anchor" id="line-206" />
+<p class="line867" />
+<div class="documented"><a id="hbox" name="hbox" />
+<table class="sig">
+<tr>
+<td><b>Style: hbox</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-207" /><span class="anchor" id="line-208" />
+<p class="line862">(box) The base style for <a href="../reference/functions/ui.hbox.html">ui.hbox</a> es. <span class="anchor" id="line-209" /><span class="anchor" id="line-210" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-211" /><span class="anchor" id="line-212" /><span class="anchor" id="line-213" />
+<p class="line867" />
+<div class="documented"><a id="hyperlink" name="hyperlink" />
+<table class="sig">
+<tr>
+<td><b>Style: hyperlink</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-214" /><span class="anchor" id="line-215" />
+<p class="line874">(window) The style of a hyperlink button, created with the {a} text tag. <span class="anchor" id="line-216" /><span class="anchor" id="line-217" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-218" /><span class="anchor" id="line-219" /><span class="anchor" id="line-220" />
+<p class="line867" />
+<div class="documented"><a id="hyperlink_text" name="hyperlink_text" />
+<table class="sig">
+<tr>
+<td><b>Style: hyperlink_text</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-221" /><span class="anchor" id="line-222" />
+<p class="line874">(window) The stylee of hyperlink button text, created with the {a} text tag. <span class="anchor" id="line-223" /><span class="anchor" id="line-224" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-225" /><span class="anchor" id="line-226" /><span class="anchor" id="line-227" />
+<p class="line867" />
+<div class="documented"><a id="image" name="image" />
+<table class="sig">
+<tr>
+<td><b>Style: image</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-228" /><span class="anchor" id="line-229" />
+<p class="line874">This is the style of images themselves. Don't change this, change image_placement instead. <span class="anchor" id="line-230" /><span class="anchor" id="line-231" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-232" /><span class="anchor" id="line-233" /><span class="anchor" id="line-234" />
+<p class="line867" />
+<div class="documented"><a id="image_button" name="image_button" />
+<table class="sig">
+<tr>
+<td><b>Style: image_button</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-235" /><span class="anchor" id="line-236" />
+<p class="line874">(window) The default style used for image buttons. <span class="anchor" id="line-237" /><span class="anchor" id="line-238" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-239" /><span class="anchor" id="line-240" /><span class="anchor" id="line-241" />
+<p class="line867" />
+<div class="documented"><a id="image_button_image" name="image_button_image" />
+<table class="sig">
+<tr>
+<td><b>Style: image_button_image</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-242" /><span class="anchor" id="line-243" />
+<p class="line874">The default style used for images inside image buttons. <span class="anchor" id="line-244" /><span class="anchor" id="line-245" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-246" /><span class="anchor" id="line-247" /><span class="anchor" id="line-248" />
+<p class="line867" />
+<div class="documented"><a id="image_placement" name="image_placement" />
+<table class="sig">
+<tr>
+<td><b>Style: image_placement</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-249" /><span class="anchor" id="line-250" />
+<p class="line874">This style is used to control the default placement of images on the screen. <span class="anchor" id="line-251" /><span class="anchor" id="line-252" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-253" /><span class="anchor" id="line-254" /><span class="anchor" id="line-255" />
+<p class="line867" />
+<div class="documented"><a id="imagemap" name="imagemap" />
+<table class="sig">
+<tr>
+<td><b>Style: imagemap</b> (inherits from <a href="#image_placement">image_placement</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-256" /><span class="anchor" id="line-257" />
+<p class="line874">The style that is used for imagemaps. <span class="anchor" id="line-258" /><span class="anchor" id="line-259" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-260" /><span class="anchor" id="line-261" /><span class="anchor" id="line-262" />
+<p class="line867" />
+<div class="documented"><a id="imagemap_button" name="imagemap_button" />
+<table class="sig">
+<tr>
+<td><b>Style: imagemap_button</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-263" /><span class="anchor" id="line-264" />
+<p class="line874">(window) The style that is used for buttons inside imagemaps. <span class="anchor" id="line-265" /><span class="anchor" id="line-266" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-267" /><span class="anchor" id="line-268" /><span class="anchor" id="line-269" />
+<p class="line867" />
+<div class="documented"><a id="input_prompt" name="input_prompt" />
+<table class="sig">
+<tr>
+<td><b>Style: input_prompt</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-270" /><span class="anchor" id="line-271" />
+<p class="line874">(text) The style used for the prompt of an input box. <span class="anchor" id="line-272" /><span class="anchor" id="line-273" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-274" /><span class="anchor" id="line-275" /><span class="anchor" id="line-276" />
+<p class="line867" />
+<div class="documented"><a id="input_text" name="input_text" />
+<table class="sig">
+<tr>
+<td><b>Style: input_text</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-277" /><span class="anchor" id="line-278" />
+<p class="line874">(text) The style used for the text of an input box. <span class="anchor" id="line-279" /><span class="anchor" id="line-280" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-281" /><span class="anchor" id="line-282" /><span class="anchor" id="line-283" />
+<p class="line867" />
+<div class="documented"><a id="input_window" name="input_window" />
+<table class="sig">
+<tr>
+<td><b>Style: input_window</b> (inherits from <a href="#window">window</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-284" /><span class="anchor" id="line-285" />
+<p class="line874">(window) The style used for the window of an input box. <span class="anchor" id="line-286" /><span class="anchor" id="line-287" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-288" /><span class="anchor" id="line-289" /><span class="anchor" id="line-290" />
+<p class="line867" />
+<div class="documented"><a id="js_frame" name="js_frame" />
+<table class="sig">
+<tr>
+<td><b>Style: js_frame</b> (inherits from <a href="#prefs_frame">prefs_frame</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-291" /><span class="anchor" id="line-292" />
+<p class="line874">(window) The window containing the joystick mapping message. <span class="anchor" id="line-293" /><span class="anchor" id="line-294" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-295" /><span class="anchor" id="line-296" /><span class="anchor" id="line-297" />
+<p class="line867" />
+<div class="documented"><a id="js_frame_vbox" name="js_frame_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: js_frame_vbox</b> (inherits from <a href="#thick_vbox">thick_vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-298" /><span class="anchor" id="line-299" />
+<p class="line874">(window) The vbox containing the joistick mapping message. <span class="anchor" id="line-300" /><span class="anchor" id="line-301" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-302" /><span class="anchor" id="line-303" /><span class="anchor" id="line-304" />
+<p class="line867" />
+<div class="documented"><a id="js_function_label" name="js_function_label" />
+<table class="sig">
+<tr>
+<td><b>Style: js_function_label</b> (inherits from <a href="#prefs_label">prefs_label</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-305" /><span class="anchor" id="line-306" />
+<p class="line874">(text, position) The style of the joystick mapping function name. <span class="anchor" id="line-307" /><span class="anchor" id="line-308" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-309" /><span class="anchor" id="line-310" /><span class="anchor" id="line-311" />
+<p class="line867" />
+<div class="documented"><a id="js_prompt_label" name="js_prompt_label" />
+<table class="sig">
+<tr>
+<td><b>Style: js_prompt_label</b> (inherits from <a href="#prefs_label">prefs_label</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-312" /><span class="anchor" id="line-313" />
+<p class="line874">(text) The style of the joystick mapping prompt message. <span class="anchor" id="line-314" /><span class="anchor" id="line-315" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-316" /><span class="anchor" id="line-317" /><span class="anchor" id="line-318" />
+<p class="line867" />
+<div class="documented"><a id="menu" name="menu" />
+<table class="sig">
+<tr>
+<td><b>Style: menu</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-319" /><span class="anchor" id="line-320" />
+<p class="line874">(position) The style that is used for the vbox containing a menu. <span class="anchor" id="line-321" /><span class="anchor" id="line-322" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-323" /><span class="anchor" id="line-324" /><span class="anchor" id="line-325" />
+<p class="line867" />
+<div class="documented"><a id="menu_button" name="menu_button" />
+<table class="sig">
+<tr>
+<td><b>Style: menu_button</b> (inherits from <a href="#button">button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-326" /><span class="anchor" id="line-327" />
+<p class="line874">(window) The base style for buttons that are part of the main or game menus. <span class="anchor" id="line-328" /><span class="anchor" id="line-329" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-330" /><span class="anchor" id="line-331" /><span class="anchor" id="line-332" />
+<p class="line867" />
+<div class="documented"><a id="menu_button_text" name="menu_button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: menu_button_text</b> (inherits from <a href="#button_text">button_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-333" /><span class="anchor" id="line-334" />
+<p class="line874">(text) The base style for the label of buttons that are part of the main or game menus. <span class="anchor" id="line-335" /><span class="anchor" id="line-336" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-337" /><span class="anchor" id="line-338" /><span class="anchor" id="line-339" />
+<p class="line867" />
+<div class="documented"><a id="menu_caption" name="menu_caption" />
+<table class="sig">
+<tr>
+<td><b>Style: menu_caption</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-340" /><span class="anchor" id="line-341" />
+<p class="line874">(text) The style that is used to render a menu caption. (This isn't used in button_menu mode.) <span class="anchor" id="line-342" /><span class="anchor" id="line-343" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-344" /><span class="anchor" id="line-345" /><span class="anchor" id="line-346" />
+<p class="line867" />
+<div class="documented"><a id="menu_choice" name="menu_choice" />
+<table class="sig">
+<tr>
+<td><b>Style: menu_choice</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-347" /><span class="anchor" id="line-348" />
+<p class="line874">(text) The style that is used to render the text of a menu choice. <span class="anchor" id="line-349" /><span class="anchor" id="line-350" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-351" /><span class="anchor" id="line-352" /><span class="anchor" id="line-353" />
+<p class="line867" />
+<div class="documented"><a id="menu_choice_button" name="menu_choice_button" />
+<table class="sig">
+<tr>
+<td><b>Style: menu_choice_button</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-354" /><span class="anchor" id="line-355" />
+<p class="line874">(window) The style that is used to render the button containing a menu choice. <span class="anchor" id="line-356" /><span class="anchor" id="line-357" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-358" /><span class="anchor" id="line-359" /><span class="anchor" id="line-360" />
+<p class="line867" />
+<div class="documented"><a id="menu_choice_chosen" name="menu_choice_chosen" />
+<table class="sig">
+<tr>
+<td><b>Style: menu_choice_chosen</b> (inherits from <a href="#menu_choice">menu_choice</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-361" /><span class="anchor" id="line-362" />
+<p class="line874">(text) The style that is used to render the text of a menu choice that has been chosen by the user sometime in the past. <span class="anchor" id="line-363" /><span class="anchor" id="line-364" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-365" /><span class="anchor" id="line-366" /><span class="anchor" id="line-367" />
+<p class="line867" />
+<div class="documented"><a id="menu_choice_chosen_button" name="menu_choice_chosen_button" />
+<table class="sig">
+<tr>
+<td><b>Style: menu_choice_chosen_button</b> (inherits from <a href="#menu_choice_button">menu_choice_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-368" /><span class="anchor" id="line-369" />
+<p class="line874">(window) The style that is used to render the button containing a menu choice that has been chosen by the user sometime in the past. <span class="anchor" id="line-370" /><span class="anchor" id="line-371" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-372" /><span class="anchor" id="line-373" /><span class="anchor" id="line-374" />
+<p class="line867" />
+<div class="documented"><a id="menu_window" name="menu_window" />
+<table class="sig">
+<tr>
+<td><b>Style: menu_window</b> (inherits from <a href="#window">window</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-375" /><span class="anchor" id="line-376" />
+<p class="line874">(window) The default style for windows containing a choice menu. <span class="anchor" id="line-377" /><span class="anchor" id="line-378" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-379" /><span class="anchor" id="line-380" /><span class="anchor" id="line-381" />
+<p class="line867" />
+<div class="documented"><a id="mm_button" name="mm_button" />
+<table class="sig">
+<tr>
+<td><b>Style: mm_button</b> (inherits from <a href="#menu_button">menu_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-382" /><span class="anchor" id="line-383" />
+<p class="line874">(window) The style that is used for buttons that are part of the main menu. <span class="anchor" id="line-384" /><span class="anchor" id="line-385" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-386" /><span class="anchor" id="line-387" /><span class="anchor" id="line-388" />
+<p class="line867" />
+<div class="documented"><a id="mm_button_text" name="mm_button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: mm_button_text</b> (inherits from <a href="#menu_button_text">menu_button_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-389" /><span class="anchor" id="line-390" />
+<p class="line874">(text) The style that is used for the labels of buttons that are part of the main menu. <span class="anchor" id="line-391" /><span class="anchor" id="line-392" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-393" /><span class="anchor" id="line-394" /><span class="anchor" id="line-395" />
+<p class="line867" />
+<div class="documented"><a id="mm_menu_frame" name="mm_menu_frame" />
+<table class="sig">
+<tr>
+<td><b>Style: mm_menu_frame</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-396" /><span class="anchor" id="line-397" />
+<p class="line874">(window) A window that contains the choices in the main menu. Change this to change the placement of these choices on the main menu screen. <span class="anchor" id="line-398" /><span class="anchor" id="line-399" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-400" /><span class="anchor" id="line-401" /><span class="anchor" id="line-402" />
+<p class="line867" />
+<div class="documented"><a id="mm_menu_frame_vbox" name="mm_menu_frame_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: mm_menu_frame_vbox</b> (inherits from <a href="#thin_vbox">thin_vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-403" /><span class="anchor" id="line-404" />
+<p class="line874">(box) The vbox containing the main menu choices. <span class="anchor" id="line-405" /><span class="anchor" id="line-406" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-407" /><span class="anchor" id="line-408" /><span class="anchor" id="line-409" />
+<p class="line867" />
+<div class="documented"><a id="mm_root" name="mm_root" />
+<table class="sig">
+<tr>
+<td><b>Style: mm_root</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-410" /><span class="anchor" id="line-411" />
+<p class="line874">(window) The style used for the root window of the main menu. This is primarily used to set a background for the main menu. <span class="anchor" id="line-412" /><span class="anchor" id="line-413" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-414" /><span class="anchor" id="line-415" /><span class="anchor" id="line-416" />
+<p class="line867" />
+<div class="documented"><a id="prefs_button" name="prefs_button" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_button</b> (inherits from <a href="#menu_button">menu_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-417" /><span class="anchor" id="line-418" />
+<p class="line874">(window) The style of an preference button. <span class="anchor" id="line-419" /><span class="anchor" id="line-420" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-421" /><span class="anchor" id="line-422" /><span class="anchor" id="line-423" />
+<p class="line867" />
+<div class="documented"><a id="prefs_button_text" name="prefs_button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_button_text</b> (inherits from <a href="#menu_button_text">menu_button_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-424" /><span class="anchor" id="line-425" />
+<p class="line874">(text, hover) The style of the text of a preference button. <span class="anchor" id="line-426" /><span class="anchor" id="line-427" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-428" /><span class="anchor" id="line-429" /><span class="anchor" id="line-430" />
+<p class="line867" />
+<div class="documented"><a id="prefs_center" name="prefs_center" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_center</b> (inherits from <a href="#prefs_column">prefs_column</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-431" /><span class="anchor" id="line-432" />
+<p class="line874">The position of the center column of preferences. <span class="anchor" id="line-433" /><span class="anchor" id="line-434" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-435" /><span class="anchor" id="line-436" /><span class="anchor" id="line-437" />
+<p class="line867" />
+<div class="documented"><a id="prefs_column" name="prefs_column" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_column</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-438" /><span class="anchor" id="line-439" />
+<p class="line874">The style of a vbox containing a column of preferences. <span class="anchor" id="line-440" /><span class="anchor" id="line-441" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-442" /><span class="anchor" id="line-443" /><span class="anchor" id="line-444" />
+<p class="line867" />
+<div class="documented"><a id="prefs_frame" name="prefs_frame" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_frame</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-445" /><span class="anchor" id="line-446" />
+<p class="line874">(window) A window containing all preferences. <span class="anchor" id="line-447" /><span class="anchor" id="line-448" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-449" /><span class="anchor" id="line-450" /><span class="anchor" id="line-451" />
+<p class="line867" />
+<div class="documented"><a id="prefs_hbox" name="prefs_hbox" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_hbox</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-452" /><span class="anchor" id="line-453" />
+<p class="line874">If config.hbox_pref_choices is True, the style of the hbox containing the choices. <span class="anchor" id="line-454" /><span class="anchor" id="line-455" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-456" /><span class="anchor" id="line-457" /><span class="anchor" id="line-458" />
+<p class="line867" />
+<div class="documented"><a id="prefs_joystick" name="prefs_joystick" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_joystick</b> (inherits from <a href="#prefs_center">prefs_center</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-459" /><span class="anchor" id="line-460" />
+<p class="line874">The position of the column of joystick preferences. <span class="anchor" id="line-461" /><span class="anchor" id="line-462" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-463" /><span class="anchor" id="line-464" /><span class="anchor" id="line-465" />
+<p class="line867" />
+<div class="documented"><a id="prefs_js_button" name="prefs_js_button" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_js_button</b> (inherits from <a href="#prefs_button">prefs_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-466" /><span class="anchor" id="line-467" />
+<p class="line874">(window, hover) The style of buttons giving a joystick mapping. <span class="anchor" id="line-468" /><span class="anchor" id="line-469" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-470" /><span class="anchor" id="line-471" /><span class="anchor" id="line-472" />
+<p class="line867" />
+<div class="documented"><a id="prefs_js_button_text" name="prefs_js_button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_js_button_text</b> (inherits from <a href="#prefs_button_text">prefs_button_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-473" /><span class="anchor" id="line-474" />
+<p class="line874">(text) The style of the text in buttons giving a joystick mapping. <span class="anchor" id="line-475" /><span class="anchor" id="line-476" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-477" /><span class="anchor" id="line-478" /><span class="anchor" id="line-479" />
+<p class="line867" />
+<div class="documented"><a id="prefs_js_frame" name="prefs_js_frame" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_js_frame</b> (inherits from <a href="#prefs_pref_frame">prefs_pref_frame</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-480" /><span class="anchor" id="line-481" />
+<p class="line874">(window) The window containing a joystick mapping preference. <span class="anchor" id="line-482" /><span class="anchor" id="line-483" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-484" /><span class="anchor" id="line-485" /><span class="anchor" id="line-486" />
+<p class="line867" />
+<div class="documented"><a id="prefs_js_vbox" name="prefs_js_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_js_vbox</b> (inherits from <a href="#prefs_pref_vbox">prefs_pref_vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-487" /><span class="anchor" id="line-488" />
+<p class="line874">(box) A vbox containing a joystick mapping preference. <span class="anchor" id="line-489" /><span class="anchor" id="line-490" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-491" /><span class="anchor" id="line-492" /><span class="anchor" id="line-493" />
+<p class="line867" />
+<div class="documented"><a id="prefs_jump" name="prefs_jump" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_jump</b> (inherits from <a href="#prefs_pref_frame">prefs_pref_frame</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-494" /><span class="anchor" id="line-495" />
+<p class="line874">(window) The style of a window containing a jump preference. <span class="anchor" id="line-496" /><span class="anchor" id="line-497" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-498" /><span class="anchor" id="line-499" /><span class="anchor" id="line-500" />
+<p class="line867" />
+<div class="documented"><a id="prefs_jump_button" name="prefs_jump_button" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_jump_button</b> (inherits from <a href="#prefs_button">prefs_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-501" /><span class="anchor" id="line-502" />
+<p class="line874">(window) The style of a jump preference button. <span class="anchor" id="line-503" /><span class="anchor" id="line-504" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-505" /><span class="anchor" id="line-506" /><span class="anchor" id="line-507" />
+<p class="line867" />
+<div class="documented"><a id="prefs_jump_button_text" name="prefs_jump_button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_jump_button_text</b> (inherits from <a href="#prefs_button_text">prefs_button_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-508" /><span class="anchor" id="line-509" />
+<p class="line874">(text) The style of jump preference button text. <span class="anchor" id="line-510" /><span class="anchor" id="line-511" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-512" /><span class="anchor" id="line-513" /><span class="anchor" id="line-514" />
+<p class="line867" />
+<div class="documented"><a id="prefs_label" name="prefs_label" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_label</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-515" /><span class="anchor" id="line-516" />
+<p class="line874">(text) The style that is applied to the label of a block of preferences. <span class="anchor" id="line-517" /><span class="anchor" id="line-518" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-519" /><span class="anchor" id="line-520" /><span class="anchor" id="line-521" />
+<p class="line867" />
+<div class="documented"><a id="prefs_left" name="prefs_left" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_left</b> (inherits from <a href="#prefs_column">prefs_column</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-522" /><span class="anchor" id="line-523" />
+<p class="line874">The position of the left column of preferences. <span class="anchor" id="line-524" /><span class="anchor" id="line-525" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-526" /><span class="anchor" id="line-527" /><span class="anchor" id="line-528" />
+<p class="line867" />
+<div class="documented"><a id="prefs_pref_frame" name="prefs_pref_frame" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_pref_frame</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-529" /><span class="anchor" id="line-530" />
+<p class="line874">(window) A window containing a single preference. <span class="anchor" id="line-531" /><span class="anchor" id="line-532" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-533" /><span class="anchor" id="line-534" /><span class="anchor" id="line-535" />
+<p class="line867" />
+<div class="documented"><a id="prefs_pref_vbox" name="prefs_pref_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_pref_vbox</b> (inherits from <a href="#thin_vbox">thin_vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-536" /><span class="anchor" id="line-537" />
+<p class="line874">(box) The style of the vbox containing a preference. <span class="anchor" id="line-538" /><span class="anchor" id="line-539" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-540" /><span class="anchor" id="line-541" /><span class="anchor" id="line-542" />
+<p class="line867" />
+<div class="documented"><a id="prefs_right" name="prefs_right" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_right</b> (inherits from <a href="#prefs_column">prefs_column</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-543" /><span class="anchor" id="line-544" />
+<p class="line874">The position of the right column of preferences. <span class="anchor" id="line-545" /><span class="anchor" id="line-546" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-547" /><span class="anchor" id="line-548" /><span class="anchor" id="line-549" />
+<p class="line867" />
+<div class="documented"><a id="prefs_slider" name="prefs_slider" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_slider</b> (inherits from <a href="#bar">bar</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-550" /><span class="anchor" id="line-551" />
+<p class="line874">(bar) The style that is applied to preference sliders. <span class="anchor" id="line-552" /><span class="anchor" id="line-553" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-554" /><span class="anchor" id="line-555" /><span class="anchor" id="line-556" />
+<p class="line867" />
+<div class="documented"><a id="prefs_spinner" name="prefs_spinner" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_spinner</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-557" /><span class="anchor" id="line-558" />
+<p class="line874">The position of the prefs spinner. (Note that preference spinners are not used in modern versions of Ren'Py.) <span class="anchor" id="line-559" /><span class="anchor" id="line-560" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-561" /><span class="anchor" id="line-562" /><span class="anchor" id="line-563" />
+<p class="line867" />
+<div class="documented"><a id="prefs_spinner_button" name="prefs_spinner_button" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_spinner_button</b> (inherits from <a href="#prefs_button">prefs_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-564" /><span class="anchor" id="line-565" />
+<p class="line874">(window, hover) The style of the + or - buttons in a preference spinner. <span class="anchor" id="line-566" /><span class="anchor" id="line-567" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-568" /><span class="anchor" id="line-569" /><span class="anchor" id="line-570" />
+<p class="line867" />
+<div class="documented"><a id="prefs_spinner_button_text" name="prefs_spinner_button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_spinner_button_text</b> (inherits from <a href="#prefs_button_text">prefs_button_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-571" /><span class="anchor" id="line-572" />
+<p class="line874">(text, hover) The style of the text of the + and - buttons in a preference spinner. <span class="anchor" id="line-573" /><span class="anchor" id="line-574" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-575" /><span class="anchor" id="line-576" /><span class="anchor" id="line-577" />
+<p class="line867" />
+<div class="documented"><a id="prefs_spinner_label" name="prefs_spinner_label" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_spinner_label</b> (inherits from <a href="#prefs_label">prefs_label</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-578" /><span class="anchor" id="line-579" />
+<p class="line874">(text) This is the style that displays the value of a preference spinner. <span class="anchor" id="line-580" /><span class="anchor" id="line-581" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-582" /><span class="anchor" id="line-583" /><span class="anchor" id="line-584" />
+<p class="line867" />
+<div class="documented"><a id="prefs_volume_slider" name="prefs_volume_slider" />
+<table class="sig">
+<tr>
+<td><b>Style: prefs_volume_slider</b> (inherits from <a href="#prefs_slider">prefs_slider</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-585" /><span class="anchor" id="line-586" />
+<p class="line874">(bar) The style that is applied to volume sliders. <span class="anchor" id="line-587" /><span class="anchor" id="line-588" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-589" /><span class="anchor" id="line-590" /><span class="anchor" id="line-591" />
+<p class="line867" />
+<div class="documented"><a id="say_dialogue" name="say_dialogue" />
+<table class="sig">
+<tr>
+<td><b>Style: say_dialogue</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-592" /><span class="anchor" id="line-593" />
+<p class="line874">(text) The style that is used by default for the text of dialogue. <span class="anchor" id="line-594" /><span class="anchor" id="line-595" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-596" /><span class="anchor" id="line-597" /><span class="anchor" id="line-598" />
+<p class="line867" />
+<div class="documented"><a id="say_label" name="say_label" />
+<table class="sig">
+<tr>
+<td><b>Style: say_label</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-599" /><span class="anchor" id="line-600" />
+<p class="line874">(text) The style that is used by default for the label of dialogue. The label is used to indicate who is saying something. <span class="anchor" id="line-601" /><span class="anchor" id="line-602" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-603" /><span class="anchor" id="line-604" /><span class="anchor" id="line-605" />
+<p class="line867" />
+<div class="documented"><a id="say_thought" name="say_thought" />
+<table class="sig">
+<tr>
+<td><b>Style: say_thought</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-606" /><span class="anchor" id="line-607" />
+<p class="line874">(text) The label that is used by default for the text of thoughts or narration, when no speaker is given. <span class="anchor" id="line-608" /><span class="anchor" id="line-609" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-610" /><span class="anchor" id="line-611" /><span class="anchor" id="line-612" />
+<p class="line867" />
+<div class="documented"><a id="say_two_window_vbox" name="say_two_window_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: say_two_window_vbox</b> (inherits from <a href="#vbox">vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-613" /><span class="anchor" id="line-614" />
+<p class="line874">(window) The style used for the containing vbox in dialogue for a character with two_window set. <span class="anchor" id="line-615" /><span class="anchor" id="line-616" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-617" /><span class="anchor" id="line-618" /><span class="anchor" id="line-619" />
+<p class="line867" />
+<div class="documented"><a id="say_vbox" name="say_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: say_vbox</b> (inherits from <a href="#vbox">vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-620" /><span class="anchor" id="line-621" />
+<p class="line874">(box) The vbox containing the label (if present) and the body of dialogue and thoughts. <span class="anchor" id="line-622" /><span class="anchor" id="line-623" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-624" /><span class="anchor" id="line-625" /><span class="anchor" id="line-626" />
+<p class="line867" />
+<div class="documented"><a id="say_who_window" name="say_who_window" />
+<table class="sig">
+<tr>
+<td><b>Style: say_who_window</b> (inherits from <a href="#window">window</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-627" /><span class="anchor" id="line-628" />
+<p class="line874">(window) The style used for the window containing the label, of a character with show_two_window set. <span class="anchor" id="line-629" /><span class="anchor" id="line-630" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-631" /><span class="anchor" id="line-632" /><span class="anchor" id="line-633" />
+<p class="line867" />
+<div class="documented"><a id="say_window" name="say_window" />
+<table class="sig">
+<tr>
+<td><b>Style: say_window</b> (inherits from <a href="#window">window</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-634" /><span class="anchor" id="line-635" />
+<p class="line874">(window) The default style for windows containing dialogue and thoughts. <span class="anchor" id="line-636" /><span class="anchor" id="line-637" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-638" /><span class="anchor" id="line-639" /><span class="anchor" id="line-640" />
+<p class="line867" />
+<div class="documented"><a id="skip_indicator" name="skip_indicator" />
+<table class="sig">
+<tr>
+<td><b>Style: skip_indicator</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-641" /><span class="anchor" id="line-642" />
+<p class="line874">(text) The style and placement of the skip indicator. <span class="anchor" id="line-643" /><span class="anchor" id="line-644" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-645" /><span class="anchor" id="line-646" /><span class="anchor" id="line-647" />
+<p class="line867" />
+<div class="documented"><a id="soundtest_button" name="soundtest_button" />
+<table class="sig">
+<tr>
+<td><b>Style: soundtest_button</b> (inherits from <a href="#prefs_button">prefs_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-648" /><span class="anchor" id="line-649" />
+<p class="line874">(window) The style of a sound test button. <span class="anchor" id="line-650" /><span class="anchor" id="line-651" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-652" /><span class="anchor" id="line-653" /><span class="anchor" id="line-654" />
+<p class="line867" />
+<div class="documented"><a id="soundtest_button_text" name="soundtest_button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: soundtest_button_text</b> (inherits from <a href="#prefs_button_text">prefs_button_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-655" /><span class="anchor" id="line-656" />
+<p class="line874">(text) The style of the text of a sound test button. <span class="anchor" id="line-657" /><span class="anchor" id="line-658" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-659" /><span class="anchor" id="line-660" /><span class="anchor" id="line-661" />
+<p class="line867" />
+<div class="documented"><a id="thick_hbox" name="thick_hbox" />
+<table class="sig">
+<tr>
+<td><b>Style: thick_hbox</b> (inherits from <a href="#hbox">hbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-662" /><span class="anchor" id="line-663" />
+<p class="line874">(box) A hbox with a large amount of spacing. <span class="anchor" id="line-664" /><span class="anchor" id="line-665" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-666" /><span class="anchor" id="line-667" /><span class="anchor" id="line-668" />
+<p class="line867" />
+<div class="documented"><a id="thick_vbox" name="thick_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: thick_vbox</b> (inherits from <a href="#vbox">vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-669" /><span class="anchor" id="line-670" />
+<p class="line874">(box) A vbox with a large amount of spacing. <span class="anchor" id="line-671" /><span class="anchor" id="line-672" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-673" /><span class="anchor" id="line-674" /><span class="anchor" id="line-675" />
+<p class="line867" />
+<div class="documented"><a id="thin_hbox" name="thin_hbox" />
+<table class="sig">
+<tr>
+<td><b>Style: thin_hbox</b> (inherits from <a href="#hbox">hbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-676" /><span class="anchor" id="line-677" />
+<p class="line874">(box) A hbox with a small amount of spacing. <span class="anchor" id="line-678" /><span class="anchor" id="line-679" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-680" /><span class="anchor" id="line-681" /><span class="anchor" id="line-682" />
+<p class="line867" />
+<div class="documented"><a id="thin_vbox" name="thin_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: thin_vbox</b> (inherits from <a href="#vbox">vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-683" /><span class="anchor" id="line-684" />
+<p class="line874">(box) A vbox with a small amount of spacing. <span class="anchor" id="line-685" /><span class="anchor" id="line-686" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-687" /><span class="anchor" id="line-688" /><span class="anchor" id="line-689" />
+<p class="line867" />
+<div class="documented"><a id="vbox" name="vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: vbox</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-690" /><span class="anchor" id="line-691" />
+<p class="line862">(box) The base style for <a href="../reference/functions/ui.vbox.html">ui.vbox</a> en. <span class="anchor" id="line-692" /><span class="anchor" id="line-693" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-694" /><span class="anchor" id="line-695" /><span class="anchor" id="line-696" />
+<p class="line867" />
+<div class="documented"><a id="window" name="window" />
+<table class="sig">
+<tr>
+<td><b>Style: window</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-697" /><span class="anchor" id="line-698" />
+<p class="line874">(window) The base style for the windows that contain dialogue, thoughts, and menus. <span class="anchor" id="line-699" /><span class="anchor" id="line-700" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-701" /><span class="anchor" id="line-702" /><span class="anchor" id="line-703" />
+<p class="line867" />
+<div class="documented"><a id="yesno_button" name="yesno_button" />
+<table class="sig">
+<tr>
+<td><b>Style: yesno_button</b> (inherits from <a href="#menu_button">menu_button</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-704" /><span class="anchor" id="line-705" />
+<p class="line874">(window) The style of yes/no buttons. <span class="anchor" id="line-706" /><span class="anchor" id="line-707" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-708" /><span class="anchor" id="line-709" /><span class="anchor" id="line-710" />
+<p class="line867" />
+<div class="documented"><a id="yesno_button_text" name="yesno_button_text" />
+<table class="sig">
+<tr>
+<td><b>Style: yesno_button_text</b> (inherits from <a href="#menu_button_text">menu_button_text</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-711" /><span class="anchor" id="line-712" />
+<p class="line874">(window) The style of yes/no button text. <span class="anchor" id="line-713" /><span class="anchor" id="line-714" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-715" /><span class="anchor" id="line-716" /><span class="anchor" id="line-717" />
+<p class="line867" />
+<div class="documented"><a id="yesno_frame" name="yesno_frame" />
+<table class="sig">
+<tr>
+<td><b>Style: yesno_frame</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-718" /><span class="anchor" id="line-719" />
+<p class="line874">(window) The style of a window containing a yes/no prompt. <span class="anchor" id="line-720" /><span class="anchor" id="line-721" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-722" /><span class="anchor" id="line-723" /><span class="anchor" id="line-724" />
+<p class="line867" />
+<div class="documented"><a id="yesno_frame_vbox" name="yesno_frame_vbox" />
+<table class="sig">
+<tr>
+<td><b>Style: yesno_frame_vbox</b> (inherits from <a href="#thick_vbox">thick_vbox</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-725" /><span class="anchor" id="line-726" />
+<p class="line874">(box) The style of a box containing the widgets in a yes/no prompt. <span class="anchor" id="line-727" /><span class="anchor" id="line-728" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-729" /><span class="anchor" id="line-730" /><span class="anchor" id="line-731" />
+<p class="line867" />
+<div class="documented"><a id="yesno_label" name="yesno_label" />
+<table class="sig">
+<tr>
+<td><b>Style: yesno_label</b> (inherits from <a href="#default">default</a>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-732" /><span class="anchor" id="line-733" />
+<p class="line874">(text) The style used for the prompt in a yes/no dialog. <span class="anchor" id="line-734" /><span class="anchor" id="line-735" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-736" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

@@ -1,0 +1,46 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-52706a2537378d6ff8b194d80d95289898f48e69">renpy.register_sfont</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.register_sfont" name="renpy.register_sfont" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.register_sfont.html">renpy.register_sfont</a></b>(</td>
+<td>name=None, size=None, bold=False, italics=False, underline=False, filename=None, spacewidth=10, default_kern=0, kerns={}, charset=u'!"#$%&amp;\'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~')</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" />This registers an SFont with the given details. Please note that size, bold, italic, and underline are all advisory (used for matching), and do not change the appearance of the font. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" />
+<p class="line867"><em>name</em> - The name of the font being registered <span class="anchor" id="line-7" /><em>size</em> - The size of the font being registered <span class="anchor" id="line-8" /><em>bold</em> - The boldness of the font being registered <span class="anchor" id="line-9" /><em>italics</em> - The italicness of the font being registered <span class="anchor" id="line-10" /><em>underline</em> - The underline of the font being registered <span class="anchor" id="line-11" /><span class="anchor" id="line-12" /></p>
+<p class="line867"><em>filename</em> - The file containing the sfont image <span class="anchor" id="line-13" /><em>spacewidth</em> - The width of a space character <span class="anchor" id="line-14" /><em>default_kern</em> - The default kern spacing between characters <span class="anchor" id="line-15" /><em>kerns</em> - A map from two-character strings to the kern that should be used between those characters <span class="anchor" id="line-16" /><em>charset</em> - The character set of the font. A string containing characters in the order in which they are found in the image. <span class="anchor" id="line-17" /><span class="anchor" id="line-18" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-19" />
+<h2 id="head-f5b5ff0b83ce0b47dfdd7ffdcc31083b88ac70ff">Example</h2>
+<span class="anchor" id="line-20" />
+<p class="line867"><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> renpy.register_sfont("<span class="renpy_string">skyfont</span>", 22, filename="<span class="renpy_string">skyfont.png</span>", default_kern=-1)
+    <span class="renpy_keyword">$</span> esf = Character('<span class="renpy_string">Eileen</span>', color=(200, 255, 200, 255),
+                      what_font="<span class="renpy_string">skyfont</span>", what_size=22,
+                      what_drop_shadow=(1, 1))
+
+esf "<span class="renpy_string">For even more control, Ren'Py supports SFonts.</span>"
+</pre>
+<span class="anchor" id="line-29" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

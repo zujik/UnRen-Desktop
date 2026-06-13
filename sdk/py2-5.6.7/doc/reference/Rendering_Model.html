@@ -1,0 +1,87 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867"><em><strong>This page is a work in progress, and should not be considered authoritative.</strong></em> <span class="anchor" id="line-2" /><span class="anchor" id="line-3" /></p>
+<p class="line867" />
+<h1 id="head-6b624ff79147bbacb210505fb8b13bf8b2600e00">Rendering Model</h1>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">There are three main entities in the Ren'Py rendering model: the current scene list, the old scene list, and the screen. The first two need a bit of explanation, but the screen is just the thing rendered on the user's monitor. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+<h2 id="head-3f68e53e7716587539d23fe15202c0b067b0f14c">Interactions</h2>
+<span class="anchor" id="line-8" /><span class="anchor" id="line-9" />
+<p class="line874">Throughout this document, we'll refer to "interactions" with the user. An interaction is any contiguous time period, including of length zero, in which we either show something to the user, wait for and get the user's input, or both. Thus renpy.pause(0) causes a zero-length interaction in which we only show something to the user, while a say statement (a line of dialogue) starts an interaction that starts with drawing the dialogue to the screen and continues until the user clicks his mouse, which is potentially forever (excluding how the universe will eventually either go "Crunch!" or cool down asymptotically approaching 0 Kelvin, both being conditions in which the user's computer will no longer run). <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+<h2 id="head-e489474d2546cb65491a95c570c6548382c497b6">Scene Lists</h2>
+<span class="anchor" id="line-12" /><span class="anchor" id="line-13" />
+<p class="line874">Scene lists are data structures with all of the information necessary to draw a scene to the screen. In particular, they have layers, each of which has an ordered list of images to display. There can be any number of layers, but by default there are two layers: the master layer and the transient layer. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867" />
+<h3 id="head-d4caf34c25e8bb24239dfb3ced89c8ffe4f461ef">Master Layer</h3>
+<span class="anchor" id="line-16" /><span class="anchor" id="line-17" />
+<p class="line874">The master layer contains all of the images which typically span multiple interactions. The background image and character graphics will go on the master layer, for example. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867" />
+<h3 id="head-d3603ed3b27e0653eaa381e2e0d787974e4cd2e8">Transient Layer</h3>
+<span class="anchor" id="line-20" /><span class="anchor" id="line-21" />
+<p class="line874">The transient layer contains images which span only a single interaction with the user. The most common thing on the transient layer is rendered dialogue and narration. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867" />
+<h2 id="head-bd5fa5fb1487a6fe2a9ee7562b7ef525b3db5ed6">Ordering</h2>
+<span class="anchor" id="line-24" /><span class="anchor" id="line-25" />
+<p class="line874">For each layer, the images on it have a z-ordering. The user can explicitly specify the z-ordering of images, but more commonly they just get the implicit z-ordering of incrementing the z-order for every new image placed on the layer. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<p class="line867" />
+<h2 id="head-756a71529709447cfc9ecd5ce48a64752c6f98e1">Drawing</h2>
+<span class="anchor" id="line-28" /><span class="anchor" id="line-29" />
+<p class="line874">Drawing to the screen is performed during an interaction with the user, and only then. <span class="anchor" id="line-30" /><span class="anchor" id="line-31" /></p>
+<p class="line874">As the interaction begins, if there is no transition specified, Ren'Py simply draws the current scene list to the screen. <span class="anchor" id="line-32" /><span class="anchor" id="line-33" /></p>
+<p class="line874">If a transition is specified, Ren'Py starts the transition at the beginning of the interaction and goes until the transition is finished. Animations, by contrast, start at the beginning of the interaction and continue until the end of the interaction. <span class="anchor" id="line-34" /><span class="anchor" id="line-35" /></p>
+<p class="line874">Once an interaction is finished, the current scene list is copied to the old scene list. <span class="anchor" id="line-36" /><span class="anchor" id="line-37" /></p>
+<p class="line867" />
+<h2 id="head-69e35f7fa697db977650f8269047543fca59a531">Statements and Their Behaviors</h2>
+<span class="anchor" id="line-38" /><span class="anchor" id="line-39" />
+<p class="line867" />
+<h3 id="head-2d9b655ca0086094063a736486afc5e20ab711de">Scene and Show</h3>
+<span class="anchor" id="line-40" /><span class="anchor" id="line-41" />
+<p class="line862">The <a href="../reference/The_Ren%27Py_Language.html#scene">scene statement</a> (if used to specify an image) and <a href="../reference/The_Ren%27Py_Language.html#show">show statement</a> both (by default) place images on the <span class="anchor" id="line-42" />master layer of the current scene list, but do not trigger an interaction. Thus you can think of them as queuing up images to display. <span class="anchor" id="line-43" /><span class="anchor" id="line-44" /></p>
+<p class="line867" />
+<h3 id="head-ee499f77060de1ee3c5a2453e8532ee0732477e7">with</h3>
+<span class="anchor" id="line-45" />
+<p class="line862">The <a href="../reference/The_Ren%27Py_Language.html#with">with statement</a> specifies a transition and causes an interaction. Technically, the user can click to prematurely terminate the transition, but otherwise the interaction caused by a with statement does not take user input. <span class="anchor" id="line-46" /><span class="anchor" id="line-47" /></p>
+<p class="line867" />
+<h3 id="head-173330520f847b1509872b4f055cbdbcb2740aa8">with None</h3>
+<span class="anchor" id="line-48" /><span class="anchor" id="line-49" />
+<p class="line862">The <a href="../reference/The_Ren%27Py_Language.html#with">with statement</a> when given the argument of None is a special case. It does not cause an interaction, neither does it specify a transition. It merely copies the current scene list onto the old scene list and returns. (This can be used to transition from things that were never drawn into the screen.) <span class="anchor" id="line-50" /><span class="anchor" id="line-51" /></p>
+<p class="line867" />
+<h3 id="head-0a5ef894abf6a7a3deced7e17a3aea02bda85f9b">with clause</h3>
+<span class="anchor" id="line-52" /><span class="anchor" id="line-53" />
+<p class="line874">A statement that has a with clause: <span class="anchor" id="line-54" /><span class="anchor" id="line-55" /><span class="anchor" id="line-56" /></p>
+<pre class="renpy">
+statement args <span class="renpy_keyword">with</span> transition
+</pre>
+<span class="anchor" id="line-57" />
+<ul>
+<li style="list-style-type:none">is equivalent to: <span class="anchor" id="line-58" /></li>
+</ul>
+<p class="line867"><span class="anchor" id="line-59" /><span class="anchor" id="line-60" /><span class="anchor" id="line-61" /><span class="anchor" id="line-62" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">with</span> None
+statement args
+<span class="renpy_keyword">with</span> transition
+</pre>
+<span class="anchor" id="line-63" /><span class="anchor" id="line-64" />
+<p class="line874">And behaves exactly like that. <span class="anchor" id="line-65" /><span class="anchor" id="line-66" /></p>
+<p class="line867" />
+<h3 id="head-fcf7bb79016696758cdd1b72bd487463848b05a3">say</h3>
+<span class="anchor" id="line-67" /><span class="anchor" id="line-68" />
+<p class="line862">The <a href="../reference/The_Ren%27Py_Language.html#say">say statement</a> causes an interaction which last until the user terminates it (with the keyboard or mouse), except if auto-reading is enabled, in which case the interaction lasts for the auto-read duration. In particular, anything which was shown prior to a say statement will be displayed at the start of the say statement. <span class="anchor" id="line-69" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

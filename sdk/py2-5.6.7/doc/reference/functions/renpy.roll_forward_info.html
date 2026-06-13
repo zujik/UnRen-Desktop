@@ -1,0 +1,53 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-d7362db6c6e2a6101dbba14dc8fa92ca1c567824">renpy.roll_forward_info</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.roll_forward_info" name="renpy.roll_forward_info" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.roll_forward_info.html">renpy.roll_forward_info</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">When re-executing a statement after rollback, this returns the data stored using <a href="../../reference/functions/renpy.checkpoint.html">renpy.checkpoint</a> the last time this statement was executed. If this statement is not being re-executed due to a rollback, this returns None. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">Often, this data is passed as the roll_forward parameter of <a href="../../reference/functions/ui.interact.html">ui.interact</a> . It's important to check to ensure that the value is valid before using it in this way. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="line-11" />
+<p class="line867" />
+<h2 id="head-38fac3a20e62d68d059e20bf6a1916aa7f638bcf">Example</h2>
+<span class="anchor" id="line-12" />
+<p class="line867"><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">python</span>:
+    roll_forward = renpy.roll_forward_info()
+    <span class="renpy_keyword">if</span> roll_forward not in ("<span class="renpy_string">rock</span>", "<span class="renpy_string">paper</span>", "<span class="renpy_string">scissors</span>"):
+        roll_forward = None
+
+    ui.hbox()
+    ui.imagebutton("<span class="renpy_string">rock.png</span>", "<span class="renpy_string">rock_hover.png</span>", clicked=ui.returns("<span class="renpy_string">rock</span>"))
+    ui.imagebutton("<span class="renpy_string">paper.png</span>", "<span class="renpy_string">paper_hover.png</span>", clicked=ui.returns("<span class="renpy_string">paper</span>"))
+    ui.imagebutton("<span class="renpy_string">scissors.png</span>", "<span class="renpy_string">scissors_hover.png</span>", clicked=ui.returns("<span class="renpy_string">scissors</span>"))
+    ui.close()
+
+    choice = ui.interact(roll_forward=roll_forward)
+    renpy.checkpoint(choice)
+</pre>
+<span class="anchor" id="line-27" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

@@ -1,0 +1,48 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-94031db33e4e08209accda005e240e09738aa36a">Pixellate</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Pixellate" name="Pixellate" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/Pixellate.html">Pixellate</a></b>(</td>
+<td>time, steps, old_widget=None, new_widget=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This pixellates out the old scene, and then pixellates in the new scene, taking the given amount of time and the given number of pixellate steps in each direction. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" />
+<h2 id="head-c211b1f0d900bbbbc2864c966e26cd5b9ff349d5">Example</h2>
+<span class="anchor" id="line-9" />
+<p class="line867"><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> pixellate = Pixellate(1.0, 5)
+
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">scene</span> bg washington
+<span class="renpy_keyword">show</span> eileen happy
+<span class="renpy_keyword">with</span> pixellate
+
+e "<span class="renpy_string">The pixellate transition pixellates out the old scene,
+   switches to the new scene, and then unpixellates that.</span>"
+</pre>
+<span class="anchor" id="line-21" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

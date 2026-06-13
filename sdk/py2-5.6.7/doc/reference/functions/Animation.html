@@ -1,0 +1,44 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-ab6c693981b66e2bf4b9d0fc4e3cccbaf93e7274">Animation</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Animation" name="Animation" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/Animation.html">Animation</a></b>(</td>
+<td>*args, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">A Displayable that draws an animation, which is a series of images that are displayed with time delays between them. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Odd (first, third, fifth, etc.) arguments to Animation are interpreted as image filenames, while even arguments are the time to delay between each image. If the number of arguments is odd, the animation will stop with the last image (well, actually delay for a year before looping). Otherwise, the animation will restart after the final delay time. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>anim_timebase</em> - If True, the default, use the animation timebase. Otherwise, use the displayable timebase. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" />
+<h2 id="head-5e7d7d33825fb91379adb7861ef802b962d8c644">Example</h2>
+<span class="anchor" id="line-13" />
+<p class="line867"><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> animation = Animation("<span class="renpy_string">frame_1.png</span>", 0.25,
+                                "<span class="renpy_string">frame_2.png</span>", 0.25,
+                                "<span class="renpy_string">frame_3.png</span>", 0.25)
+</pre>
+<span class="anchor" id="line-19" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

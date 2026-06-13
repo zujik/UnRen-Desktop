@@ -1,0 +1,45 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-635f8c5ac6094957887897ef6875d26a960dd04c">Frame</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Frame" name="Frame" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/Frame.html">Frame</a></b>(</td>
+<td>image, xborder, yborder, tile=False)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns a displayable that is a frame, based on the supplied image filename. A frame is an image that is automatically rescaled to the size allocated to it. The image has borders that are only scaled in one axis. The region within xborder pixels of the left and right borders is only scaled in the y direction, while the region within yborder pixels of the top and bottom axis is scaled only in the x direction. The corners are not scaled at all, while the center of the image is scaled in both x and y directions. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>image</em> - The image (which may be a filename or image object) that will be scaled. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>xborder</em> - The number of pixels in the x direction to use as a border. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>yborder</em> - The number of pixels in the y direction to use as a border. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>tile</em> - If true, then tiling is performed rather then scaling. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line874">For better performance, have the image share a dimension length in common with the size the frame will be rendered at. We detect this and avoid scaling if possible. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-18" />
+<h2 id="head-64f4581fc179b41a90d619c83ebb6132065cc0aa">Example</h2>
+<span class="anchor" id="line-19" />
+<p class="line867"><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> style.frame.background = Frame("<span class="renpy_string">frame.png</span>", 12, 12)
+</pre>
+<span class="anchor" id="line-23" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

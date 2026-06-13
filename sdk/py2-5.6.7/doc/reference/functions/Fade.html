@@ -1,0 +1,48 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-21212860c0642a2a15b3cbff88ba30f79e80dec7">Fade</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Fade" name="Fade" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/Fade.html">Fade</a></b>(</td>
+<td>out_time, hold_time, in_time, old_widget=None, new_widget=None, color=None, widget=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This returns an object that can be used as an argument to a with statement to fade the old scene into a solid color, waits for a given amount of time, and then fades from the solid color into the new scene. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>out_time</em> - The amount of time that will be spent fading from the old scene to the solid color. A float, given as seconds. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>hold_time</em> - The amount of time that will be spent displaying the solid color. A float, given as seconds. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>in_time</em> - The amount of time that will be spent fading from the solid color to the new scene. A float, given as seconds. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>color</em> - The solid color that will be fade to. A tuple containing three components, each between 0 or 255. This can also be <tt class="backtick">None</tt>. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>widget</em> - This is a widget that will be faded to, if color is <tt class="backtick">None</tt>. This allows a fade to be to an image rather than just a solid color. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line862">If both <em>color</em> and <em>widget</em> are <tt class="backtick">None</tt>, then the fade is to black. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-20" />
+<h2 id="head-b4e4d5c57fe616e97052ff532591387a2b282791">Example</h2>
+<span class="anchor" id="line-21" />
+<p class="line867"><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> fade = Fade(.5, 0, .5) <span class="renpy_comment"># Fade to black and back.</span>
+
+<span class="renpy_keyword">scene</span> bg washington <span class="renpy_keyword">with</span> fade
+</pre>
+<span class="anchor" id="line-27" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

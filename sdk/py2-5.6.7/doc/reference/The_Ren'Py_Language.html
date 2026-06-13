@@ -1,0 +1,590 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-e1774436da85e44dd73487fddc645f901f817c10">The Ren'Py Language</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line874">This section describes the Ren'Py language, and the functions found in that language. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line867" />
+<div class="table-of-contents">
+<p class="table-of-contents-heading">Contents</p>
+<ol>
+<li><a href="#head-e1774436da85e44dd73487fddc645f901f817c10">The Ren'Py Language</a>
+<ol>
+<li><a href="#head-6cff61597f9a98e5f989d9c16fa0e36bb62092ec">Script, Line, and Block Structure</a></li>
+<li><a href="#head-a34a0457ffbdae8847e5808b40f058ab85619167">Syntax Constructs</a></li>
+<li><a href="#head-94a446593a7830013d275c8d84bf9a08e5e548fd">Statements</a>
+<ol>
+<li><a href="#head-e7b9b59862aae7353488e045ee5f0f6f2be574ec">Call Statement</a></li>
+<li><a href="#head-ce6bda47ae2fa8dabe8d3f8eb7fdeb12a753601a">Hide Statement</a></li>
+<li><a href="#head-b12cb4c697cb93db67bbe01fb1a62f27d3289228">If Statement</a></li>
+<li><a href="#head-ee923a5fe88d705141ba040ce8121d653f92f5ff">Image Statement</a></li>
+<li><a href="#head-8a264ac6672829c992cdd9c8916e3b14f800a90d">Init Statement</a></li>
+<li><a href="#head-aa5ca6639c3c2b74e37af359d9d48bfdc6977711">Jump Statement</a></li>
+<li><a href="#head-edef30ed78bc04c50539c87713f9683f92e3572c">Label Statement</a></li>
+<li><a href="#head-dae9e3be8bf5999125d4291c60b57e5006f4c5f6">Menu Statement</a></li>
+<li><a href="#head-f723e457ff82ada90672aedf8db8bd2cfcab4278">Play Statement</a></li>
+<li><a href="#head-61f536438488fed4f24dac0eb699979ac2633462">Pass Statement</a></li>
+<li><a href="#head-904bd30fd0f1eac66e944ba73ff6e130d36ca9e3">Python Statement</a></li>
+<li><a href="#head-d8c446570281a18f575fa4008cc8d11da8dde996">Queue Statement</a></li>
+<li><a href="#head-741d1b4ec55ca4567ea2895110e987897df621d5">Return Statement</a></li>
+<li><a href="#head-848368206bfb6ceccb529b803b1ed7e70cc2ec18">Say Statement</a></li>
+<li><a href="#head-46bb932d2d76a6703dc0bc9fd09444bf2bbadf15">Scene Statement</a></li>
+<li><a href="#head-b9c4d3d24b12c97609bd98de6f38456bf4c431ac">Show Statement</a></li>
+<li><a href="#head-d72812ed284994c4b2fcf1a743880368f9b20e79">Stop Statement</a></li>
+<li><a href="#head-a29d84f02a9c75dff569b680be22a19fdb88e5ae">With Statement and Clauses</a></li>
+<li><a href="#head-e8bee6a8518eea357f79234962c526d3c18d0506">While Statement</a></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<span class="anchor" id="line-6" /><span class="anchor" id="line-7" />
+<p class="line867"><span class="anchor" id="Script_Line_and_Block_Structure" /> <span class="anchor" id="line-8" /></p>
+<h2 id="head-6cff61597f9a98e5f989d9c16fa0e36bb62092ec">Script, Line, and Block Structure</h2>
+<span class="anchor" id="line-9" />
+<p class="line862">Ren'Py scripts consist of one or more .rpy files. These script files may be read in any order, and all of them together make up a Ren'Py script. Please see <a class="nonexistent" href="../reference/The_Ren%27Py_Runtime_Environment.html">The Ren'Py Runtime Environment</a> for information about where Ren'Py searches for .rpy files. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line862">Each of these files is divided into a series of <strong>logical lines</strong>. The first logical line of a file begins at the start of a file, and another logical line begins after each logical line ends, until the end of the file is reached. By default, a logical line is terminated by the first newline encountered. However, a line will not terminate if any of the following are true: <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<ul>
+<li>The newline is immediately preceded by a backslash. In this case, the backslash is removed, and the newline is ignored. <span class="anchor" id="line-14" /></li>
+<li>An opening parenthesis, bracket, or brace has been encountered without encountering the corresponding closing character. <span class="anchor" id="line-15" /></li>
+<li>The newline occurs within a string. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></li>
+</ul>
+<p class="line862">Ren'Py script files also can include <strong>comments</strong>. A comment begins with a hash mark that is not contained within a string, and continues to, but does not include, the next newline character. Some examples are: <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<pre class="renpy">
+<span class="renpy_comment"># This line contains only a comment.</span>
+<span class="renpy_keyword">scene</span> bg whitehouse  <span class="renpy_comment"># This line contains a statement as well.</span>
+</pre>
+<span class="anchor" id="line-22" />
+<p class="line874">If, after eliminating comments, a logical line is empty, that logical line is ignored. <span class="anchor" id="line-23" /><span class="anchor" id="line-24" /></p>
+<p class="line862">Logical lines are then combined into <strong>blocks</strong>. Two logical lines are in the same block if the lines have the same indentation preceding them, and no logical line with a lesser amount of indentation occurs between the two lines. Indentation may only consist of spaces, not tabs. In the following example: <span class="anchor" id="line-25" /><span class="anchor" id="line-26" /></p>
+<pre>
+line 1
+<span class="anchor" id="line-27" />    line a
+<span class="anchor" id="line-28" />    line b
+<span class="anchor" id="line-29" />line 2
+<span class="anchor" id="line-30" />    line c
+<span class="anchor" id="line-31" />    line d
+<span class="anchor" id="line-32" />
+</pre>
+<span class="anchor" id="line-33" />
+<p class="line862">In this example, here are three blocks. One block contains lines 1 and 2, another lines a and b, and the third contains lines c and d. This example can also serve to illustrate the concept of a <em>block associated with a line</em>. A block is associated with a line if the block starts on the next logical line following the line. For example, the block containing lines a and b is associated with line 1. <span class="anchor" id="line-34" /><span class="anchor" id="line-35" /></p>
+<p class="line874">There are three kinds of blocks in an Ren'Py program. The most common is a block containing Ren'Py statements. Blocks may also contain menuitems or python code. The top-level block (the one that contains the first line of a file) is always a block of Ren'Py statements. <span class="anchor" id="line-36" /><span class="anchor" id="line-37" /></p>
+<p class="line867"><span class="anchor" id="Syntax_Constructs" /> <span class="anchor" id="line-38" /></p>
+<h2 id="head-a34a0457ffbdae8847e5808b40f058ab85619167">Syntax Constructs</h2>
+<span class="anchor" id="line-39" />
+<p class="line874">Before we can describe Ren'Py statements, we must first describe a number of syntactic constructs those statements are built out of. In this subsection, we describe such constructs. <span class="anchor" id="line-40" /><span class="anchor" id="line-41" /></p>
+<p class="line867"><strong>Keywords</strong> are words that must literally appear in the source code. They're used ito introduce statements, or to delimit parts of statements. You'll see keywords throughout the descriptions of statements. In grammar rules, keywords are in quotes. The keywords used by Ren'Py are: <span class="anchor" id="line-42" /><span class="anchor" id="line-43" /></p>
+<pre>
+at
+<span class="anchor" id="line-44" />behind
+<span class="anchor" id="line-45" />call
+<span class="anchor" id="line-46" />elif
+<span class="anchor" id="line-47" />else
+<span class="anchor" id="line-48" />expression
+<span class="anchor" id="line-49" />hide
+<span class="anchor" id="line-50" />if
+<span class="anchor" id="line-51" />image
+<span class="anchor" id="line-52" />init
+<span class="anchor" id="line-53" />jump
+<span class="anchor" id="line-54" />label
+<span class="anchor" id="line-55" />menu
+<span class="anchor" id="line-56" />onlayer
+<span class="anchor" id="line-57" />pass
+<span class="anchor" id="line-58" />python
+<span class="anchor" id="line-59" />return
+<span class="anchor" id="line-60" />scene
+<span class="anchor" id="line-61" />set
+<span class="anchor" id="line-62" />show
+<span class="anchor" id="line-63" />while
+<span class="anchor" id="line-64" />with
+<span class="anchor" id="line-65" />zorder
+<span class="anchor" id="line-66" />
+</pre>
+<span class="anchor" id="line-67" /><span class="anchor" id="line-68" />
+<p class="line867"><span class="anchor" id="name" /> <span class="anchor" id="line-69" />A <strong>name</strong> consists of a letter or underscore (_) followed by zero or more letters, numbers, or underscores. For this purpose, unicode characters between U+00a0 and U+fffd are considered to be letters. A name may not be a keyword. <span class="anchor" id="line-70" /><span class="anchor" id="line-71" /></p>
+<p class="line867"><span class="anchor" id="simple_expression" /> <span class="anchor" id="line-72" />A <strong>simple_expression</strong> is a Python expression that starts with a name, a string, or any Python expression in parenthesis. This may be followed by any number of the following: <span class="anchor" id="line-73" /><span class="anchor" id="line-74" /></p>
+<ul>
+<li>A dot followed by a name. <span class="anchor" id="line-75" /></li>
+<li>A parenthesized python expression. <span class="anchor" id="line-76" /><span class="anchor" id="line-77" /></li>
+</ul>
+<p class="line867"><span class="anchor" id="python_expression" /> <span class="anchor" id="line-78" />A <strong>python_expression</strong> is an arbitrary python expression that may not include a colon. These expressions are generally used to express the conditions in the if and while statements. <span class="anchor" id="line-79" /><span class="anchor" id="line-80" /></p>
+<p class="line867"><span class="anchor" id="image_name" /> <span class="anchor" id="line-81" />An <strong>image_name</strong> consists of one or more names, separated by spaces. The first name in an image_name is known as the <strong>image_tag</strong>. <span class="anchor" id="line-82" /><span class="anchor" id="line-83" /></p>
+<pre>
+image_spec -&gt; image_name ("as" name)? ( "onlayer" name)? ( "at" transform_list )? ( "with" simple_expression )? ("behind" name_list)?
+<span class="anchor" id="line-84" />
+</pre>
+<span class="anchor" id="line-85" />
+<p class="line862">An <strong>image_spec</strong> consists of an image name, followed by zer or more of the following clauses (in any order, provided each clause is only given once). <span class="anchor" id="line-86" /><span class="anchor" id="line-87" /></p>
+<ul>
+<li>
+<p class="line862">an <tt class="backtick">as</tt> clause giving an alternative tag for the image. <span class="anchor" id="line-88" /></p>
+</li>
+<li>
+<p class="line862">an <tt class="backtick">onlayer</tt> clause, followed by a name giving the layer this image is on. <span class="anchor" id="line-89" /></p>
+</li>
+<li>
+<p class="line862">an <tt class="backtick">at</tt> clause with a comma-separated list of simple_expressions that evaluate to functions that transform displayables to displayables, <span class="anchor" id="line-90" /></p>
+</li>
+<li>
+<p class="line862">a <tt class="backtick">with</tt> clause. (see the <a href="../reference/The_Ren%27Py_Language.html#with">with statement</a> for details.) <span class="anchor" id="line-91" /></p>
+</li>
+<li>
+<p class="line862">a <tt class="backtick">behind</tt> clause, with a comma-separated list of names, which are interpreted as image tags the image will be displayed behind. <span class="anchor" id="line-92" /><span class="anchor" id="line-93" /></p>
+</li>
+</ul>
+<p class="line867"><span class="anchor" id="line-94" /></p>
+<pre>
+image_spec -&gt; ("image | "expression") simple_expression ("as" name)? ( "onlayer" name)? ( "at" transform_list )? ( "with" simple_expression )? ("behind" name_list)? 
+<span class="anchor" id="line-95" />
+</pre>
+<span class="anchor" id="line-96" /><span class="anchor" id="line-97" />
+<p class="line874">Alternatively, an image may be specified as the keyword "image" followed by a simple expression that is interpreted as a displayable. This allows images to be defined inline. Note that an "as" clause is recommended if it is desired to hide the image. All clauses are interpreted in the same way. "expression" may be used as a synonym for "image" here. <span class="anchor" id="line-98" /><span class="anchor" id="line-99" /><span class="anchor" id="line-100" /></p>
+<p class="line867" />
+<h4 id="head-cd6df3ed3b7c23e86ced59a2e79b0fb3a8d9ccf1">Grammar Rules</h4>
+<span class="anchor" id="line-101" />
+<p class="line874">We will be giving grammar rules for some of the statements. In these rules, a word in quotes means that that word is literally expected in the script. Parenthesis are used to group things together, but they don't correspond to anything in the script. Star, question mark, and plus are used to indicate that the token or group they are to the right of can occur zero or more, zero or one, or one or more times, respectively. <span class="anchor" id="line-102" /><span class="anchor" id="line-103" /></p>
+<p class="line862">If we give a name for the rule, it will be separated from the body of the rule with a crude ascii-art arrow (-&gt;). <span class="anchor" id="line-104" /><span class="anchor" id="line-105" /></p>
+<p class="line867" />
+<h2 id="head-94a446593a7830013d275c8d84bf9a08e5e548fd">Statements</h2>
+<span class="anchor" id="line-106" /><span class="anchor" id="line-107" /><span class="anchor" id="line-108" />
+<p class="line867"><span class="anchor" id="Call_Statement" /> <span class="anchor" id="line-109" /><span class="anchor" id="call" /> <span class="anchor" id="line-110" /></p>
+<h3 id="head-e7b9b59862aae7353488e045ee5f0f6f2be574ec">Call Statement</h3>
+<span class="anchor" id="line-111" /><span class="anchor" id="line-112" />
+<p class="line862">The <tt class="backtick">call</tt> statement is used to transfer control to the statement with the given name. It also pushes the name of the statement following this one onto the call stack, allowing the return statement to return control to the statement following this one. <span class="anchor" id="line-113" /><span class="anchor" id="line-114" /></p>
+<pre>
+call_statement -&gt; "call" name ( "from" name )?
+<span class="anchor" id="line-115" />call_statement -&gt; "call" "expression" simple_expression ( "from" name )?
+<span class="anchor" id="line-116" />
+</pre>
+<span class="anchor" id="line-117" />
+<p class="line862">If the <tt class="backtick">expression</tt> keyword is present, the expression is evaluated, and the string so computed is used as the name of the statement to call. If the <tt class="backtick">expression</tt> keyword is not present, the name of the statement to call must be explicitly given. <span class="anchor" id="line-118" /><span class="anchor" id="line-119" /></p>
+<p class="line862">If the optional <tt class="backtick">from</tt> clause is present, it has the effect of including a label statement with the given name as the statement immediately following the call statement. An explicit label is required here to ensure that saved games with return stacks can return to the proper place when loaded on a changed script. From clauses should be included for all calls in released games. <span class="anchor" id="line-120" /><span class="anchor" id="line-121" /></p>
+<p class="line862">As from clauses may be distracting when a game is still under development, we provide with Ren'Py a program, called <tt class="backtick">add_from</tt>, that adds from clauses to all bare calls in any game directory. It can be found in <tt class="backtick">tools/add_from</tt>, although it needs to be run from the base directory. The easiest way to do this on windows is by running <tt class="backtick">tools/game_add_from.bat</tt>. It should be run before a final release of your game is made. Be sure to make a backup of your game directories before running add_from. Also note that <tt class="backtick">add_from</tt> produces .bak files for all files it can change, so delete them when you're satisfied that everything worked. <span class="anchor" id="line-122" /><span class="anchor" id="line-123" /><span class="anchor" id="line-124" /><span class="anchor" id="line-125" /><span class="anchor" id="line-126" /><span class="anchor" id="line-127" /><span class="anchor" id="line-128" /><span class="anchor" id="line-129" /><span class="anchor" id="line-130" /><span class="anchor" id="line-131" /><span class="anchor" id="line-132" /><span class="anchor" id="line-133" /><span class="anchor" id="line-134" /></p>
+<pre class="renpy">
+e "<span class="renpy_string">First, we will call a subroutine.</span>"
+
+<span class="renpy_keyword">call</span> subroutine <span class="renpy_keyword">from</span> _call_site_1
+
+<span class="renpy_comment"># ...</span>
+
+<span class="renpy_keyword">label</span> subroutine:
+
+    e "<span class="renpy_string">Next, we will return from the subroutine.</span>"
+
+    <span class="renpy_keyword">return</span>
+</pre>
+<span class="anchor" id="line-135" /><span class="anchor" id="line-136" />
+<p class="line867"><span class="anchor" id="Hide_Statement" /> <span class="anchor" id="line-137" /><span class="anchor" id="hide" /> <span class="anchor" id="line-138" /></p>
+<h3 id="head-ce6bda47ae2fa8dabe8d3f8eb7fdeb12a753601a">Hide Statement</h3>
+<span class="anchor" id="line-139" />
+<p class="line862">The <tt class="backtick">hide</tt> statement is used to hide an image from the screen, based on a supplied <em>image_spec</em>. <span class="anchor" id="line-140" /><span class="anchor" id="line-141" /></p>
+<pre>
+hide_statement -&gt; "hide" image_spec
+<span class="anchor" id="line-142" />
+</pre>
+<span class="anchor" id="line-143" />
+<p class="line862">A <tt class="backtick">hide</tt> statement operates on the layer supplied in the <tt class="backtick">onlayer</tt> clause of the <em>image_spec</em>, defaulting to "master" if no such clause has been supplied. It finds an image beginning with the image tag of the image name in the <em>image_spec</em>, and removes it from that layer. <span class="anchor" id="line-144" /><span class="anchor" id="line-145" /></p>
+<p class="line862">Please note that the <tt class="backtick">hide</tt> statement is rarely used in practice. Show can be used by itself when a character is changing emotion, while <tt class="backtick">scene</tt> is used to remove all images at the end of a scene. Hide is only necessary when a character leaves before the end of a scene. <span class="anchor" id="line-146" /><span class="anchor" id="line-147" /></p>
+<p class="line867"><span class="anchor" id="If_Statement" /> <span class="anchor" id="line-148" /><span class="anchor" id="if" /> <span class="anchor" id="line-149" /></p>
+<h3 id="head-b12cb4c697cb93db67bbe01fb1a62f27d3289228">If Statement</h3>
+<span class="anchor" id="line-150" />
+<p class="line862">The <tt class="backtick">if</tt> statement is used to conditionally execute a block of statements. <span class="anchor" id="line-151" /><span class="anchor" id="line-152" /></p>
+<pre>
+if_statement -&gt; "if" python_expression ":"
+<span class="anchor" id="line-153" />elif_clause -&gt; "elif" python_expression ":"
+<span class="anchor" id="line-154" />else_clause -&gt; "else" ":"
+<span class="anchor" id="line-155" />
+</pre>
+<span class="anchor" id="line-156" />
+<p class="line862">The <tt class="backtick">if</tt> statement is the only statement which consists of more than one logical line in the same block. The initial <tt class="backtick">if</tt> statement may be followed by zero or more <tt class="backtick">elif</tt> clauses, concluded with an optional <tt class="backtick">else</tt> clause. The expression is evaluated for each clause in turn, and if it evaluates to a true value, then the block associated with that clause is executed. If no expression evaluates to true, then the block associated with the <tt class="backtick">else</tt> clause is executed. (If an <tt class="backtick">else</tt> clause exists, execution immediately continues with the next statement.) In any case, at the end of the block, control is transferred to the statement following the if statement. <span class="anchor" id="line-157" /><span class="anchor" id="line-158" /><span class="anchor" id="line-159" /><span class="anchor" id="line-160" /><span class="anchor" id="line-161" /><span class="anchor" id="line-162" /><span class="anchor" id="line-163" /><span class="anchor" id="line-164" /><span class="anchor" id="line-165" /><span class="anchor" id="line-166" /><span class="anchor" id="line-167" /><span class="anchor" id="line-168" /><span class="anchor" id="line-169" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">if</span> points &gt;= 10:
+
+   e "<span class="renpy_string">Congratulations! You're getting the best ending!</span>"
+
+<span class="renpy_keyword">elif</span> points &gt;= 5:
+
+   e "<span class="renpy_string">It's the good ending for you.</span>"
+
+<span class="renpy_keyword">else</span>:
+
+   e "<span class="renpy_string">Sorry, you're about to get the bad ending.</span>"
+</pre>
+<span class="anchor" id="line-170" /><span class="anchor" id="line-171" />
+<p class="line867"><span class="anchor" id="Image_Statement" /> <span class="anchor" id="line-172" /><span class="anchor" id="image" /> <span class="anchor" id="line-173" /></p>
+<h3 id="head-ee923a5fe88d705141ba040ce8121d653f92f5ff">Image Statement</h3>
+<span class="anchor" id="line-174" />
+<p class="line862">The <tt class="backtick">image</tt> statement is used to declare images to Ren'Py. Image statements can only appear in init blocks. <span class="anchor" id="line-175" /><span class="anchor" id="line-176" /></p>
+<pre>
+image_statement -&gt; "image" image_name "=" python_expression
+<span class="anchor" id="line-177" />
+</pre>
+<span class="anchor" id="line-178" />
+<p class="line862">An <tt class="backtick">image</tt> statement binds an <a href="../reference/The_Ren%27Py_Language.html#image_name">image name</a> to a displayable. The displayable is computed by the supplied python expression, with the result of the expression being passed to the <a href="../reference/functions/im.Image.html">im.Image</a> function in loose mode. This means that if the assignment is a single string, it is interpreted as an image filename. Displayables are passed through unmolested. Once an image has been defined using an <tt class="backtick">image</tt> statement, it can be used by the <tt class="backtick">scene</tt>, <tt class="backtick">show</tt>, and <tt class="backtick">hide</tt> statements. <span class="anchor" id="line-179" /><span class="anchor" id="line-180" /><span class="anchor" id="line-181" /><span class="anchor" id="line-182" /><span class="anchor" id="line-183" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> eileen happy = "<span class="renpy_string">eileen/happy.png</span>"
+    <span class="renpy_keyword">image</span> eileen upset = "<span class="renpy_string">eileen/upset.png</span>"
+</pre>
+<span class="anchor" id="line-184" /><span class="anchor" id="line-185" />
+<p class="line867"><span class="anchor" id="Init_Statement" /> <span class="anchor" id="line-186" /><span class="anchor" id="init" /> <span class="anchor" id="line-187" /></p>
+<h3 id="head-8a264ac6672829c992cdd9c8916e3b14f800a90d">Init Statement</h3>
+<span class="anchor" id="line-188" />
+<p class="line862">The <tt class="backtick">init</tt> statement is used to execute blocks of Ren'Py statements before the script executes. Init blocks are used to define images and characters, to set up unchanging game data structures, and to customize Ren'Py. Code inside init blocks should not interact with the user or change any of the layers, and so should not contain <tt class="backtick">say</tt>, <tt class="backtick">menu</tt>, <tt class="backtick">scene</tt>, <tt class="backtick">show</tt>, or <tt class="backtick">hide</tt> statements, as well as calls to any function that can do these things. <span class="anchor" id="line-189" /><span class="anchor" id="line-190" /></p>
+<pre>
+init_statement -&gt; "init" (number)? ":"
+<span class="anchor" id="line-191" />
+</pre>
+<span class="anchor" id="line-192" />
+<p class="line862">An <tt class="backtick">init</tt> statement is introduced with the keyword <tt class="backtick">init</tt>, followed by an optional priority number, and a mandatory colon. If the priority is not given, it defaults to 0. <span class="anchor" id="line-193" /><span class="anchor" id="line-194" /></p>
+<p class="line874">The priority number is used to determine when the code inside the init block executes. Init blocks are executed in priority order from low to high. Within a file, init blocks with the same priority are run in order from the top of the file to the bottom. The order of evaluation of priority blocks with the same priority between files is undefined. <span class="anchor" id="line-195" /><span class="anchor" id="line-196" /></p>
+<p class="line874">The init blocks are all run once, during a special init phase. When control reaches the end of an init block during normal execution, execution of that block ends. If an init statement is encountered during normal execution, the init block is not run. Instead, control passes to the next statement. <span class="anchor" id="line-197" /><span class="anchor" id="line-198" /></p>
+<p class="line867"><span class="anchor" id="Jump_Statement" /> <span class="anchor" id="line-199" /><span class="anchor" id="jump" /> <span class="anchor" id="line-200" /></p>
+<h3 id="head-aa5ca6639c3c2b74e37af359d9d48bfdc6977711">Jump Statement</h3>
+<span class="anchor" id="line-201" />
+<p class="line862">The <tt class="backtick">jump</tt> statement is used to transfer control to the statement with the given name. <span class="anchor" id="line-202" /><span class="anchor" id="line-203" /></p>
+<pre>
+jump_statement -&gt; "jump" name 
+<span class="anchor" id="line-204" />jump_statement -&gt; "jump" "expression" simple_expression 
+<span class="anchor" id="line-205" />
+</pre>
+<span class="anchor" id="line-206" />
+<p class="line862">If the <tt class="backtick">expression</tt> keyword is present, the expression is evaluated, and the string so computed is used as the name of the statement to jump to. If the <tt class="backtick">expression</tt> keyword is not present, the name of the statement to jump to must be explicitly given. <span class="anchor" id="line-207" /><span class="anchor" id="line-208" /></p>
+<p class="line862">Unlike <tt class="backtick">call</tt>, <tt class="backtick">jump</tt> does not push the target onto any stack. As a result, there's no way to return to where you've jumped from. <span class="anchor" id="line-209" /><span class="anchor" id="line-210" /><span class="anchor" id="line-211" /><span class="anchor" id="line-212" /><span class="anchor" id="line-213" /><span class="anchor" id="line-214" /><span class="anchor" id="line-215" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">label</span> loop_start:
+
+e "<span class="renpy_string">Oh no! It looks like we're trapped in an infinite loop.</span>"
+
+<span class="renpy_keyword">jump</span> loop_start
+</pre>
+<span class="anchor" id="line-216" /><span class="anchor" id="line-217" />
+<p class="line867"><span class="anchor" id="Label_Statement" /> <span class="anchor" id="line-218" /><span class="anchor" id="label" /> <span class="anchor" id="line-219" /></p>
+<h3 id="head-edef30ed78bc04c50539c87713f9683f92e3572c">Label Statement</h3>
+<span class="anchor" id="line-220" />
+<p class="line874">Label statements allow a name to be assigned to a program point. They exist solely to be called or jumped to, whether by script code or the Ren'Py config. <span class="anchor" id="line-221" /><span class="anchor" id="line-222" /></p>
+<pre>
+label_statement -&gt; "label" name ":"
+<span class="anchor" id="line-223" />
+</pre>
+<span class="anchor" id="line-224" />
+<p class="line862">A <tt class="backtick">label</tt> statement may have a block associated with it. In that case, control enters the block whenever the label statement is reached, and proceeds with the statement after the label statement whenever the end of the block is reached. <span class="anchor" id="line-225" /><span class="anchor" id="line-226" /></p>
+<p class="line867"><span class="anchor" id="Menu_Statement" /> <span class="anchor" id="line-227" /><span class="anchor" id="menu" /> <span class="anchor" id="line-228" /></p>
+<h3 id="head-dae9e3be8bf5999125d4291c60b57e5006f4c5f6">Menu Statement</h3>
+<span class="anchor" id="line-229" />
+<p class="line874">Menus are used to present the user with a list of choices that can be made. In a visual novel, menus are the primary means by which the user can influence the story. <span class="anchor" id="line-230" /><span class="anchor" id="line-231" /></p>
+<pre>
+menu_statement -&gt; "menu" ( name )? ":"
+<span class="anchor" id="line-232" />
+</pre>
+<span class="anchor" id="line-233" />
+<p class="line862">A <tt class="backtick">menu</tt> statement is introduced by the keyword <tt class="backtick">menu</tt>, an optional name, and a colon. If the name is supplied, it is treated as a label for this <tt class="backtick">menu</tt> statement, as if the menu statement was preceded by a label statement. <span class="anchor" id="line-234" /><span class="anchor" id="line-235" /></p>
+<p class="line862">A <tt class="backtick">menu</tt> statement must have a block associated with it. This is a menuitem block that must contain one or more menuitems in it. There are several kinds of menuitems that can be contained in a menuitem block. <span class="anchor" id="line-236" /><span class="anchor" id="line-237" /></p>
+<pre>
+caption_menuitem -&gt; string
+<span class="anchor" id="line-238" />
+</pre>
+<span class="anchor" id="line-239" />
+<p class="line874">The first kind of menuitem is a string. This string is placed into a menu as a caption that cannot be selected. In general, captions are used to indicate what the menu is for, especially when it is not clear from the choices. <span class="anchor" id="line-240" /><span class="anchor" id="line-241" /></p>
+<pre>
+choice_menuitem -&gt; string ( "if" python_expression )? ":"
+<span class="anchor" id="line-242" />
+</pre>
+<span class="anchor" id="line-243" />
+<p class="line862">The second kind of menuitem gives a choice the user can make. Each choice must have a block of Ren'Py statements associated with it. If the choice is selected by the user, then block of statements associated with the choice is executed. A choice may also have an optional <tt class="backtick">if</tt> clause that includes a Python expression. This clause gives a condition that must be satisfied for the choice to be presented to the user. A terminating colon is used to indicate that this menuitem is a choice. <span class="anchor" id="line-244" /><span class="anchor" id="line-245" /></p>
+<pre>
+with_menuitem -&gt; "with" simple_expression
+<span class="anchor" id="line-246" />
+</pre>
+<span class="anchor" id="line-247" />
+<p class="line862">The final kind of menuitem is a <tt class="backtick">with</tt> clause. Please see <a href="../reference/Transitions.html">Transitions</a> for more information on <tt class="backtick">with</tt> clauses. <span class="anchor" id="line-248" /><span class="anchor" id="line-249" /><span class="anchor" id="line-250" /><span class="anchor" id="line-251" /><span class="anchor" id="line-252" /><span class="anchor" id="line-253" /><span class="anchor" id="line-254" /><span class="anchor" id="line-255" /><span class="anchor" id="line-256" /><span class="anchor" id="line-257" /><span class="anchor" id="line-258" /><span class="anchor" id="line-259" /><span class="anchor" id="line-260" /><span class="anchor" id="line-261" /><span class="anchor" id="line-262" /><span class="anchor" id="line-263" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">menu</span> what_to_do:
+
+    "<span class="renpy_string">What should we do today?</span>"
+
+    "<span class="renpy_string">Go to the movies.</span>":
+        "<span class="renpy_string">We went to the movies.</span>"
+
+    "<span class="renpy_string">Go shopping.</span>":
+        "<span class="renpy_string">We went shopping, and the girls bought swimsuits.</span>"
+        <span class="renpy_keyword">$</span> have_swimsuits = True
+
+    "<span class="renpy_string">Go to the beach.</span>" <span class="renpy_keyword">if</span> have_swimsuits:
+        "<span class="renpy_string">We went to the beach together. I got to see the girls in their
+         new swimsuits.</span>"
+</pre>
+<span class="anchor" id="line-264" />
+<p class="line867" />
+<h4 id="head-066a72753c04c49d99669bae934c251407921a63">Details</h4>
+<span class="anchor" id="line-265" />
+<p class="line862">When a menu is to be shown to the user, the first thing that happens is that a list of captions and choices is built up from the menuitems associated with the menu. Each of the choices that has an expression associated with it has that expression evaluated, and if not true, that choice is removed from the list. If no choices survive this process, the menu is not displayed and execution continues with the next statement. Otherwise, the <tt class="backtick">menu</tt> function is called with the list of choices, displays the menu to the user, and returns a chosen choice. Execution continues with the block corresponding to the chosen choice. If execution reaches the end of that block, it continues with the the statement after the menu. <span class="anchor" id="line-266" /><span class="anchor" id="line-267" /></p>
+<p class="line867"><span class="anchor" id="Play_Statement" /> <span class="anchor" id="line-268" /></p>
+<h3 id="head-f723e457ff82ada90672aedf8db8bd2cfcab4278">Play Statement</h3>
+<span class="anchor" id="line-269" /><span class="anchor" id="line-270" />
+<p class="line874">The play statement is used to play sound and music. If a file is currently playing, it is interrupted and replaced with the new file. <span class="anchor" id="line-271" /><span class="anchor" id="line-272" /></p>
+<p class="line867"><span class="anchor" id="line-273" /></p>
+<pre>
+play_statement -&gt; "play" ( "sound" | "music" ) simple_expression 
+<span class="anchor" id="line-274" />                       ( "fadeout" simple_expression )?
+<span class="anchor" id="line-275" />                       ( "fadein" simple_expression )?
+<span class="anchor" id="line-276" />                       ( "channel" simple_expression )?
+<span class="anchor" id="line-277" />
+</pre>
+<span class="anchor" id="line-278" /><span class="anchor" id="line-279" />
+<p class="line862">The first simple_expression in the play statement is expected to evaluate to either a string containing a filename, or a list of filenames to be played. The file is played using <a href="../reference/functions/renpy.sound.play.html">renpy.sound.play</a> or <a href="../reference/functions/renpy.music.play.html">renpy.music.play</a> }, depending on the second keyword in the statement. The other clauses are all optional. Fadeout and fadein expect times in seconds, while channel expects a channel number. The channel number defaults to 0 for sound and 7 for music. <span class="anchor" id="line-280" /><span class="anchor" id="line-281" /></p>
+<p class="line867"><span class="anchor" id="line-282" /><span class="anchor" id="line-283" /><span class="anchor" id="line-284" /><span class="anchor" id="line-285" /><span class="anchor" id="line-286" /><span class="anchor" id="line-287" /><span class="anchor" id="line-288" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">play</span> <span class="renpy_keyword">music</span> "<span class="renpy_string">mozart.ogg</span>"
+<span class="renpy_keyword">play</span> <span class="renpy_keyword">sound</span> "<span class="renpy_string">woof.ogg</span>"
+
+"<span class="renpy_string">Let's try something more complicated.</span>"
+
+<span class="renpy_keyword">play</span> <span class="renpy_keyword">music</span> [ "<span class="renpy_string">a.ogg</span>", "<span class="renpy_string">b.ogg</span>" ] <span class="renpy_keyword">fadeout</span> 1.0 <span class="renpy_keyword">fadein</span> 1.0
+</pre>
+<span class="anchor" id="line-289" /><span class="anchor" id="line-290" />
+<p class="line867"><span class="anchor" id="Pass_Statement" /> <span class="anchor" id="line-291" /><span class="anchor" id="pass" /> <span class="anchor" id="line-292" /></p>
+<h3 id="head-61f536438488fed4f24dac0eb699979ac2633462">Pass Statement</h3>
+<span class="anchor" id="line-293" />
+<p class="line862">The <tt class="backtick">pass</tt> statement does not perform an action. It exists because blocks of Ren'Py statements require at least one statement in them, and it's not always sensible to perform an action in those blocks. <span class="anchor" id="line-294" /><span class="anchor" id="line-295" /></p>
+<pre>
+pass_statement -&gt; "pass"
+<span class="anchor" id="line-296" />
+</pre>
+<span class="anchor" id="line-297" />
+<p class="line867"><span class="anchor" id="line-298" /><span class="anchor" id="line-299" /><span class="anchor" id="line-300" /><span class="anchor" id="line-301" /><span class="anchor" id="line-302" /><span class="anchor" id="line-303" /><span class="anchor" id="line-304" /><span class="anchor" id="line-305" /><span class="anchor" id="line-306" /><span class="anchor" id="line-307" /><span class="anchor" id="line-308" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">menu</span>:
+    "<span class="renpy_string">Should I go to the movies?</span>"
+
+    "<span class="renpy_string">Yes</span>":
+        <span class="renpy_keyword">call</span> go_see_movie
+
+    "<span class="renpy_string">No</span>":
+        <span class="renpy_keyword">pass</span>
+
+"<span class="renpy_string">Now it's getting close to dinner time, and I'm starving.</span>"
+</pre>
+<span class="anchor" id="line-309" /><span class="anchor" id="line-310" />
+<p class="line867"><span class="anchor" id="Python_Statement" /> <span class="anchor" id="line-311" /><span class="anchor" id="python" /> <span class="anchor" id="line-312" /></p>
+<h3 id="head-904bd30fd0f1eac66e944ba73ff6e130d36ca9e3">Python Statement</h3>
+<span class="anchor" id="line-313" /><span class="anchor" id="line-314" />
+<p class="line862">The <tt class="backtick">python</tt> statement allows one to execute Python code in a Ren'Py script. This allows one to use Python code to declare things to Ren'Py, to invoke much of Ren'Py's functionality, and to store data in variables that can be accessed by user code. There are two forms of the <tt class="backtick">python</tt> statement: <span class="anchor" id="line-315" /><span class="anchor" id="line-316" /></p>
+<pre>
+python_statement -&gt; "$" python_code
+<span class="anchor" id="line-317" />python_statement -&gt; "python" ( "hide" )? ":"
+<span class="anchor" id="line-318" />
+</pre>
+<span class="anchor" id="line-319" />
+<p class="line862">The first form of a python consists of a dollar sign (<tt class="backtick">$</tt>) followed by Python code extending to the end of the line. This form is used to execute a single Python statement. <span class="anchor" id="line-320" /><span class="anchor" id="line-321" /></p>
+<p class="line862">A second form consists of the keyword <tt class="backtick">python</tt>, optionally the keyword <tt class="backtick">hide</tt>, and a colon. This is used to execute a block of Python code, supplied after the statement. Normally, Python code executes in a script-global namespace, but if the <tt class="backtick">hide</tt> keyword is given, a new namespace is created for this block. (The script-global namespace can be accessed from the block, but not assigned to.) <span class="anchor" id="line-322" /><span class="anchor" id="line-323" /><span class="anchor" id="line-324" /><span class="anchor" id="line-325" /><span class="anchor" id="line-326" /><span class="anchor" id="line-327" /><span class="anchor" id="line-328" /><span class="anchor" id="line-329" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">$</span> score += 1
+
+<span class="renpy_keyword">python</span>:
+    ui.text("<span class="renpy_string">This is text on the screen.</span>")
+    ui.saybehavior()
+    ui.interact()
+</pre>
+<span class="anchor" id="line-330" /><span class="anchor" id="line-331" />
+<p class="line867"><strong>Init Python Statement.</strong> For convenience, we have created the init pythons statement. This statement combines an init statement and a python statement into a single statement, to reduce the indentation required for python-heavy files. <span class="anchor" id="line-332" /><span class="anchor" id="line-333" /></p>
+<p class="line867"><span class="anchor" id="line-334" /></p>
+<pre>
+init python_statement -&gt; "init" ( number )? "python" ( "hide" )? ":"
+<span class="anchor" id="line-335" />
+</pre>
+<span class="anchor" id="line-336" /><span class="anchor" id="line-337" />
+<p class="line867"><span class="anchor" id="Queue_Statement" /> <span class="anchor" id="line-338" /></p>
+<h3 id="head-d8c446570281a18f575fa4008cc8d11da8dde996">Queue Statement</h3>
+<span class="anchor" id="line-339" /><span class="anchor" id="line-340" />
+<p class="line874">The queue statement is used to queue up sound and music files. They will be played when the current track finishes playing. <span class="anchor" id="line-341" /><span class="anchor" id="line-342" /></p>
+<p class="line867"><span class="anchor" id="line-343" /></p>
+<pre>
+queue_statement -&gt; "queue" ( "sound" | "music" ) simple_expression 
+<span class="anchor" id="line-344" />                       ( "channel" simple_expression )?
+<span class="anchor" id="line-345" />
+</pre>
+<span class="anchor" id="line-346" /><span class="anchor" id="line-347" />
+<p class="line862">The first simple_expression in the queue statement is expected to evaluate to either a string containing a filename, or a list of filenames to be queued up. The files are queued using <a href="../reference/functions/renpy.sound.queue.html">renpy.sound.queue</a> or <a href="../reference/functions/renpy.music.queue.html">renpy.music.queue</a> }, depending on the second keyword in the statement. The channel number defaults to 0 for sound and 7 for music, if not given. <span class="anchor" id="line-348" /><span class="anchor" id="line-349" /></p>
+<p class="line867"><span class="anchor" id="line-350" /><span class="anchor" id="line-351" /><span class="anchor" id="line-352" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">queue</span> <span class="renpy_keyword">sound</span> "<span class="renpy_string">woof.ogg</span>"
+<span class="renpy_keyword">queue</span> <span class="renpy_keyword">music</span> [ "<span class="renpy_string">a.ogg</span>", "<span class="renpy_string">b.ogg</span>" ]
+</pre>
+<span class="anchor" id="line-353" /><span class="anchor" id="line-354" />
+<p class="line867"><span class="anchor" id="Return_Statement" /> <span class="anchor" id="line-355" /></p>
+<h3 id="head-741d1b4ec55ca4567ea2895110e987897df621d5">Return Statement</h3>
+<span class="anchor" id="line-356" />
+<p class="line862">The <tt class="backtick">return</tt> statement pops the top location off of the call stack, and transfers control to it. If the call stack is empty, the return statement performs a full restart of Ren'Py. <span class="anchor" id="line-357" /><span class="anchor" id="line-358" /></p>
+<pre>
+return_statement -&gt; "return"
+<span class="anchor" id="line-359" />
+</pre>
+<span class="anchor" id="line-360" /><span class="anchor" id="line-361" />
+<p class="line867"><span class="anchor" id="Say_Statement" /> <span class="anchor" id="line-362" /><span class="anchor" id="say" /> <span class="anchor" id="line-363" /></p>
+<h3 id="head-848368206bfb6ceccb529b803b1ed7e70cc2ec18">Say Statement</h3>
+<span class="anchor" id="line-364" /><span class="anchor" id="line-365" />
+<p class="line862">The say statement is used to present text to the user, in the form of dialogue or thoughts. Since the bulk of the of the content of a script will be dialogue or thoughts, it's important that the say statement be as convenient as possible. Because of this, the say statement is the only statement that is not delimited with a keyword or other form of delimiter. Instead, it consists of a string, with an optional <em>simple_expression</em> before it to designate who is doing the speaking, and an optional <tt class="backtick">with</tt> clause after it used to specify a transition. <span class="anchor" id="line-366" /><span class="anchor" id="line-367" /></p>
+<pre>
+say_statement -&gt; ( simple_expression )? string ( "with" simple_expression )?
+<span class="anchor" id="line-368" />
+</pre>
+<span class="anchor" id="line-369" />
+<p class="line874">There are two forms of the say statement, depending on if the simple expression is provided. The single-argument form consists of a single string (with or without the optional with clause). This form causes the string to be displayed to the user as without any label as to who is saying it. Conventionally, this is used to indicate POV character thoughts or narration. <span class="anchor" id="line-370" /><span class="anchor" id="line-371" /><span class="anchor" id="line-372" /><span class="anchor" id="line-373" /><span class="anchor" id="line-374" /><span class="anchor" id="line-375" /><span class="anchor" id="line-376" /><span class="anchor" id="line-377" /><span class="anchor" id="line-378" /><span class="anchor" id="line-379" /></p>
+<pre class="renpy">
+"<span class="renpy_string">I moved to my left, and she moved to her right.</span>"
+
+"<span class="renpy_string">So we were still blocking each other's path.</span>"
+
+"<span class="renpy_string">I then moved to my right, and at the same time she moved to her
+ left.</span>"
+
+"<span class="renpy_string">We could be at this all day.</span>"
+</pre>
+<span class="anchor" id="line-380" />
+<p class="line862">The two-argument form of the say statement consist of a <em>simple_expression</em>, a string, and optionally a <tt class="backtick">with</tt> clause. This form of the statement is used to indicate dialogue. The first argument is expected to be an object (usually a <a href="../reference/functions/Character.html">Character</a> or <a href="../reference/functions/DynamicCharacter.html">DynamicCharacter</a> object) that knows how to show dialogue to the user. The string is then passed to that object, which is responsible for showing it to to the user. <span class="anchor" id="line-381" /><span class="anchor" id="line-382" /></p>
+<p class="line862">The <em>simple_expression</em> can also be a string, rather than an object. Strings are used directly as the name of the character. <span class="anchor" id="line-383" /><span class="anchor" id="line-384" /><span class="anchor" id="line-385" /><span class="anchor" id="line-386" /><span class="anchor" id="line-387" /></p>
+<pre class="renpy">
+"<span class="renpy_string">Girl</span>" "<span class="renpy_string">Hi, my name is Eileen.</span>"
+
+e "<span class="renpy_string">Starting today, I'll be living here.</span>"
+</pre>
+<span class="anchor" id="line-388" />
+<p class="line867" />
+<h4 id="head-066a72753c04c49d99669bae934c251407921a63-2">Details</h4>
+<span class="anchor" id="line-389" />
+<p class="line874">The two-argument say statement first evaluates the supplied simple expression. It then attempts to call that value (the who value) with the string giving the line of dialogue (the what string). If it can do so, it's finished, as the object that is called is responsible for interacting with the user. <span class="anchor" id="line-390" /><span class="anchor" id="line-391" /></p>
+<p class="line862">If it can't call the value of the expression, then it calls the <tt class="backtick">say</tt> function with the who value and the what string. The say function is then responsible for showing the dialogue to the user. <span class="anchor" id="line-392" /><span class="anchor" id="line-393" /></p>
+<p class="line862">The single-argument form of the expression simply calls the special function (or object) <tt class="backtick">narrator</tt> with the string to be shown. This function is responsible for showing the string to the user. <a href="../reference/functions/Character.html">Character</a> and <a href="../reference/functions/DynamicCharacter.html">DynamicCharacter</a> objects are suitable for use as the <tt class="backtick">narrator</tt>. <span class="anchor" id="line-394" /><span class="anchor" id="line-395" /></p>
+<p class="line862">The <tt class="backtick">with</tt> clause is used to specify a transition, see With Statement and Clauses for details. <span class="anchor" id="line-396" /><span class="anchor" id="line-397" /></p>
+<p class="line867"><span class="anchor" id="Scene_Statement" /> <span class="anchor" id="line-398" /><span class="anchor" id="scene" /> <span class="anchor" id="line-399" /></p>
+<h3 id="head-46bb932d2d76a6703dc0bc9fd09444bf2bbadf15">Scene Statement</h3>
+<span class="anchor" id="line-400" />
+<p class="line862">The <tt class="backtick">scene</tt> statement clears a layer by removing all images from it. It may then show a supplied image to the user. This makes it appropriate for changing the background of a scene. <span class="anchor" id="line-401" /><span class="anchor" id="line-402" /></p>
+<pre>
+scene_statement -&gt; "scene" ("onlayer" name | image_spec )?
+<span class="anchor" id="line-403" />
+</pre>
+<span class="anchor" id="line-404" />
+<p class="line862">The scene statement first clears out all images from a layer. The layer is taken from the <em>image_spec</em> or <tt class="backtick">onlayer</tt> clause, if present. The "master" layer is used if no other layer is specified. <span class="anchor" id="line-405" /><span class="anchor" id="line-406" /></p>
+<p class="line862">If an <em>image_spec</em> is present, it is then added to the layer, as with the <tt class="backtick">show</tt> statement. <span class="anchor" id="line-407" /><span class="anchor" id="line-408" /></p>
+<p class="line874">By default, no background is added to the screen, so we recommend that every script begin with a scene statement that shows a full-screen background to the user. <span class="anchor" id="line-409" /><span class="anchor" id="line-410" /></p>
+<p class="line867"><span class="anchor" id="Show_Statement" /> <span class="anchor" id="line-411" /><span class="anchor" id="show" /> <span class="anchor" id="line-412" /></p>
+<h3 id="head-b9c4d3d24b12c97609bd98de6f38456bf4c431ac">Show Statement</h3>
+<span class="anchor" id="line-413" />
+<p class="line862">The <tt class="backtick">show</tt> statement takes an image specifier, and adds the specified image to the specified layer, with the "master" layer used if no <tt class="backtick">onlayer</tt> clause is present. <span class="anchor" id="line-414" /><span class="anchor" id="line-415" /></p>
+<pre>
+show_statement -&gt; "show" image_spec
+<span class="anchor" id="line-416" />
+</pre>
+<span class="anchor" id="line-417" />
+<p class="line862">The <tt class="backtick">show</tt> statement first finds a displayable to add to the screen. This is done by looking up the image name in the list of registered images. It then applies all transformations into the at list to the displayable. This yields the image to be added to the layer. The show statement then checks to see if an image beginning with the same image tag can be found in the layer. If such an image exists, it is replaces with the new image. Otherwise, the new image is added to the layer, in a position that makes it closer to the user than any other image. <span class="anchor" id="line-418" /><span class="anchor" id="line-419" /><span class="anchor" id="line-420" /><span class="anchor" id="line-421" /><span class="anchor" id="line-422" /><span class="anchor" id="line-423" /><span class="anchor" id="line-424" /><span class="anchor" id="line-425" /><span class="anchor" id="line-426" /><span class="anchor" id="line-427" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">scene</span> living_room
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">at</span> left
+
+e "<span class="renpy_string">I'm feeling happy right now.</span>"
+
+<span class="renpy_keyword">show</span> eileen upset <span class="renpy_keyword">at</span> left
+
+e "<span class="renpy_string">But sometimes, I can get upset for no good reason.</span>"
+</pre>
+<span class="anchor" id="line-428" /><span class="anchor" id="line-429" />
+<p class="line867"><span class="anchor" id="Stop_Statement" /> <span class="anchor" id="line-430" /></p>
+<h3 id="head-d72812ed284994c4b2fcf1a743880368f9b20e79">Stop Statement</h3>
+<span class="anchor" id="line-431" /><span class="anchor" id="line-432" />
+<p class="line874">The stop statement is used to stop playing sound and music. <span class="anchor" id="line-433" /><span class="anchor" id="line-434" /></p>
+<p class="line867"><span class="anchor" id="line-435" /></p>
+<pre>
+stop_statement -&gt; "stop" ( "sound" | "music" )
+<span class="anchor" id="line-436" />                       ( "fadeout" simple_expression )?
+<span class="anchor" id="line-437" />                       ( "channel" simple_expression )?
+<span class="anchor" id="line-438" />
+</pre>
+<span class="anchor" id="line-439" /><span class="anchor" id="line-440" /><span class="anchor" id="line-441" />
+<p class="line862">The sound or music is stopped using <a href="../reference/functions/renpy.sound.stop.html">renpy.sound.stop</a> or <a href="../reference/functions/renpy.music.stop.html">renpy.music.stop</a> }, depending on the second keyword in the statement. The other clauses are all optional. Fadeout expects a time in seconds, while channel expects a channel number. The channel number defaults to 0 for sound and 7 for music. <span class="anchor" id="line-442" /><span class="anchor" id="line-443" /></p>
+<p class="line867"><span class="anchor" id="line-444" /><span class="anchor" id="line-445" /><span class="anchor" id="line-446" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">stop</span> <span class="renpy_keyword">sound</span>
+<span class="renpy_keyword">stop</span> <span class="renpy_keyword">music</span> <span class="renpy_keyword">fadeout</span> 1.0
+</pre>
+<span class="anchor" id="line-447" /><span class="anchor" id="line-448" /><span class="anchor" id="line-449" /><span class="anchor" id="line-450" />
+<p class="line867"><span class="anchor" id="With_Statement_and_Clauses" /> <span class="anchor" id="line-451" /><span class="anchor" id="with" /> <span class="anchor" id="line-452" /></p>
+<h3 id="head-a29d84f02a9c75dff569b680be22a19fdb88e5ae">With Statement and Clauses</h3>
+<span class="anchor" id="line-453" />
+<p class="line862">The <tt class="backtick">with</tt> statement and <tt class="backtick">with</tt> clauses are used to show transitions to the user. These transitions are always from the last screen shown to the user to the current screen. At the end of a <tt class="backtick">with</tt> statement, the last screen shown to the user is set to the current screen. The last screen shown to the user can also be updated by <tt class="backtick">say</tt> or <tt class="backtick">menu</tt> statements, as well as by Python code. <span class="anchor" id="line-454" /><span class="anchor" id="line-455" /></p>
+<p class="line862">The <tt class="backtick">with</tt> statement has the form: <span class="anchor" id="line-456" /><span class="anchor" id="line-457" /></p>
+<pre>
+with_statement -&gt; "with" simple_expression
+<span class="anchor" id="line-458" />
+</pre>
+<span class="anchor" id="line-459" />
+<p class="line862">The <em>simple_expression</em> is expected to evaluate to a transition function. If it evaluates to the value <em>None</em>, the last screen shown to the user is updated to the current screen, without performing a transition. This is useful to remove transient interface items (like a prior <tt class="backtick">say</tt> statement) from partaking in a transition. <span class="anchor" id="line-460" /><span class="anchor" id="line-461" /></p>
+<p class="line862">For convenience, a number of statements support <tt class="backtick">with</tt> clauses. In the case of the <tt class="backtick">scene</tt>, <tt class="backtick">show</tt>, and <tt class="backtick">hide</tt> statements, the <tt class="backtick">with</tt> clause is equivalent to placing a "with None" statement before the <tt class="backtick">scene</tt>, <tt class="backtick">show</tt> or <tt class="backtick">hide</tt> statement, and a "with transition" statement after it. For example, the statement: <span class="anchor" id="line-462" /><span class="anchor" id="line-463" /><span class="anchor" id="line-464" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-465" />
+<p class="line874">is equivalent to: <span class="anchor" id="line-466" /><span class="anchor" id="line-467" /><span class="anchor" id="line-468" /><span class="anchor" id="line-469" /><span class="anchor" id="line-470" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">show</span> eileen happy
+<span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-471" />
+<p class="line874">This behavior can lead to undesired side-effects. The code: <span class="anchor" id="line-472" /><span class="anchor" id="line-473" /><span class="anchor" id="line-474" /><span class="anchor" id="line-475" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">show</span> bg whitehouse <span class="renpy_keyword">with</span> dissolve
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-476" />
+<p class="line874">will cause two transitions to occur. To ensure only a single transition occurs, one must write: <span class="anchor" id="line-477" /><span class="anchor" id="line-478" /><span class="anchor" id="line-479" /><span class="anchor" id="line-480" /><span class="anchor" id="line-481" /><span class="anchor" id="line-482" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">show</span> bg whitehouse
+<span class="renpy_keyword">show</span> eileen happy
+<span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-483" />
+<p class="line862">With clauses can also be applied to <tt class="backtick">say</tt> and <tt class="backtick">menu</tt> statements. In this case, the transition occurs when the dialogue or menu is first shown to the user. <span class="anchor" id="line-484" /><span class="anchor" id="line-485" /></p>
+<p class="line862">For pre-defined transition functions that can be used in any script, see <a href="../reference/Transitions.html#predefined">Pre-defined Transitions</a>. For functions that return transition functions, see <a href="../reference/Transitions.html#constructors">Transition Constructors</a>. <span class="anchor" id="line-486" /><span class="anchor" id="line-487" /></p>
+<p class="line867"><span class="anchor" id="While_Statement" /> <span class="anchor" id="line-488" /><span class="anchor" id="while" /> <span class="anchor" id="line-489" /></p>
+<h3 id="head-e8bee6a8518eea357f79234962c526d3c18d0506">While Statement</h3>
+<span class="anchor" id="line-490" />
+<p class="line862">The <tt class="backtick">while</tt> statement is used to execute a block of Ren'Py statement while a condition remains true. <span class="anchor" id="line-491" /><span class="anchor" id="line-492" /></p>
+<pre>
+while_statement -&gt; "while" python_expression ":"
+<span class="anchor" id="line-493" />
+</pre>
+<span class="anchor" id="line-494" />
+<p class="line862">When a <tt class="backtick">while</tt> statement is executed, the <em>python_expression</em> is evaluated. If it evaluates to true, control is transferred to the first statement in the block associated with this <tt class="backtick">while</tt> statement. If false, control is instead sent to the statement following the <tt class="backtick">while</tt> statement. <span class="anchor" id="line-495" /><span class="anchor" id="line-496" /></p>
+<p class="line862">When control reaches the end of the block associated with the while statement, it returns to the <tt class="backtick">while</tt> statement. This allows the <tt class="backtick">while</tt> statement to check the condition again, and evaluate the block if the condition remains true. <span class="anchor" id="line-497" /><span class="anchor" id="line-498" /><span class="anchor" id="line-499" /><span class="anchor" id="line-500" /><span class="anchor" id="line-501" /><span class="anchor" id="line-502" /><span class="anchor" id="line-503" /><span class="anchor" id="line-504" /><span class="anchor" id="line-505" /><span class="anchor" id="line-506" /><span class="anchor" id="line-507" /><span class="anchor" id="line-508" /><span class="anchor" id="line-509" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">while</span> not endgame:
+
+   "<span class="renpy_string">It's now morning. Time to get up and seize the day.</span>"
+
+    <span class="renpy_keyword">call</span> morning
+    <span class="renpy_keyword">call</span> afternoon
+    <span class="renpy_keyword">call</span> evening
+
+    "<span class="renpy_string">Well, time to call it a night.</span>"
+
+"<span class="renpy_string">Now it's time to wake up and face the endgame.</span>"
+</pre>
+<span class="anchor" id="line-510" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

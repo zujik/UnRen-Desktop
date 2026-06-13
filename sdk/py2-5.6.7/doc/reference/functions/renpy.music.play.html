@@ -1,0 +1,46 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-a29fd9ee5c2e2a29f5dd5e8cff73384eb9ba57dc">renpy.music.play</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.music.play" name="renpy.music.play" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.music.play.html">renpy.music.play</a></b>(</td>
+<td>filenames, channel=7, loop=True, fadeout=None, synchro_start=False, fadein=0, tight=False, if_changed=False)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This stops the music currently playing on the numbered <em>channel</em>, dequeues any queued music, and begins playing the specified file or files. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>filenames</em> may be a single file, or a list of files. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>loop</em> - If True, the tracks will loop while they are the last thing in the queue. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>fadeout</em> - If None, the fadeout time is taken from <a href="../../reference/Configuration_Variables.html#config.fade_music">config.fade_music</a> , otherwise it is a time in seconds to fade out for. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>synchro_start</em> - If True, all the channels that have had play called on them with synchro_start set to True will be started at the same time, in a sample accurate manner. This can be used to, for instance, have a piece of music separated into separate percussion, melody, and background chord audio files, and play them simultaneously. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>fadein</em> - The number of seconds to fade the music in for, on the first loop only. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>tight</em> - If True, then fadeouts will span into the next-queued sound. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>if_changed</em> - If True, and the music file is currently playing, then it will not be stopped/faded out and faded back in again, but instead will be kept playing. (This will always queue up an additional loop of the music.) <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-22" />
+<h2 id="head-b8196eb2f2ca0f84d7dace184a995120cd48b879">Example</h2>
+<span class="anchor" id="line-23" />
+<p class="line867"><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<pre class="renpy">
+TODO
+</pre>
+<span class="anchor" id="line-26" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

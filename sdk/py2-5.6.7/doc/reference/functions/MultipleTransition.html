@@ -1,0 +1,53 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-50c34eb7e8a1860ef387ded78d958b287b99efc2">MultipleTransition</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="MultipleTransition" name="MultipleTransition" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/MultipleTransition.html">MultipleTransition</a></b>(</td>
+<td>args)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates a transition that consists of one or more transitions. <em>args</em> must be a list of odd length, containing at least 3 elements. Odd elements of this list are considered to be displayables, while even elements are transitions. When used, this causes the first element (a displayable) to transition to the third element (a displayable), using the second element as the transition. If the fourth and fifth elements are present, a transition will occur from the third element (a displayable) to the fifth element (a displayable) using the fourth element (a transition). <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">There are two special values that will be recognized as displayables. <em>False</em> will be replaced with a displayable containing the scene before the transition, while <em>True</em> will be replaced with a displayable containing the scene after the transition. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" />
+<h2 id="head-d3a89182049348078d22288b1ca536cb06dad287">Example</h2>
+<span class="anchor" id="line-11" />
+<p class="line867"><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> teleport = MultipleTransition([False, dissolve, "<span class="renpy_string">#fff</span>", dissolve, False, 
+                                     dissolve, "<span class="renpy_string">#fff</span>", dissolve,
+                                     True, dissolve, "<span class="renpy_string">#fff</span>", dissolve, True])
+
+<span class="renpy_keyword">label</span> start:
+    <span class="renpy_keyword">scene</span> bg ship
+ 
+    "<span class="renpy_string">I'm on my ship.</span>"
+
+    <span class="renpy_keyword">scene</span> bg surface
+    <span class="renpy_keyword">with</span> teleport
+
+    "<span class="renpy_string">And now I'm down on the planet's surface.</span>"
+</pre>
+<span class="anchor" id="line-27" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

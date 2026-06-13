@@ -1,0 +1,48 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-a4a3cbd4d07d3c6bfa30e14afa9e47f2e7241518">ui.saybehavior</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ui.saybehavior" name="ui.saybehavior" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/ui.saybehavior.html">ui.saybehavior</a></b>(</td>
+<td>afm=None, dismiss=[ 'dismiss' ], allow_dismiss=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This is a pseudo-widget that adds the say behavior to the screen. The say behavior is to return True if the left mouse is clicked or enter is pressed. It also returns True in various other cases, such as if the current statement has already been seen. This widget should not be added to any other widget, but should instead be only added to the screen itself. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">If <em>afm</em> is present, it is a block of text, that's given to the auto forwarding mode algorithm to determine the auto-forwarding timeout. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line862">If <em>dismiss</em> is present, it is a list of names of keybindings that are used to dismiss this saybehavior. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line862">If <em>allow_dismiss</em> is present, it should be a function. This function is called without any arguments <span class="anchor" id="line-12" />each time the user initiates a dismiss request. If the function returns True, the dismiss request is allowed, <span class="anchor" id="line-13" />otherwise it is ignored. <em>Added in 5.6.6.</em> <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line874">There should only be one saybehavior shown at a time, otherwise they will fight for focus. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-18" /><span class="anchor" id="line-19" />
+<p class="line867" />
+<h2 id="head-337aee2c8919423b254a976e0a54373411c32b80">Changes</h2>
+<span class="anchor" id="line-20" /><span class="anchor" id="line-21" />
+<p class="line874">The dismiss parameter was changed in 5.6.1 from a single keybinding to a list of keybindings. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867" />
+<h2 id="head-cb06569f90a14cf8651b4f881faa0ef9d0d35107">Example</h2>
+<span class="anchor" id="line-24" />
+<p class="line867"><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /></p>
+<pre class="renpy">
+TODO
+</pre>
+<span class="anchor" id="line-27" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

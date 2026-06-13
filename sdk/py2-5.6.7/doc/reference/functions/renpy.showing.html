@@ -1,0 +1,43 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-0cb4a414f63c641289e05f614c538ef0639e7c19">renpy.showing</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.showing" name="renpy.showing" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.showing.html">renpy.showing</a></b>(</td>
+<td>name, layer='master')</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns true if an image with the same image tag as name is being shown on the given layer, and false otherwise. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>name</em> - may be a tuple of strings, or a single string. In the latter <span class="anchor" id="line-8" />case, it is split on whitespace to make a tuple. The first element <span class="anchor" id="line-9" />of the tuple is used as the image tag. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" />
+<h2 id="head-60f6ed3439be550915f8a80fa99c1ba4e70de5ba">Example</h2>
+<span class="anchor" id="line-13" /><span class="anchor" id="line-14" />
+<p class="line874">This only hides the eileen image with a dissolve if it is being shown. This allows us to avoid an unnecessary dissolve. <span class="anchor" id="line-15" /><span class="anchor" id="line-16" /></p>
+<p class="line867"><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">if</span> renpy.showing("<span class="renpy_string">eileen</span>"):
+    <span class="renpy_keyword">hide</span> eileen
+    <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-21" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

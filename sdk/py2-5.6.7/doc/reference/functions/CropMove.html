@@ -1,0 +1,146 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-4dadc4018a3d72caf6396455499dfe230012b3f2">CropMove</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="CropMove" name="CropMove" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/CropMove.html">CropMove</a></b>(</td>
+<td>time, mode='fromleft', startcrop=(0.0, 0.0, 0.0, 1.0), startpos=(0.0, 0.0), endcrop=(0.0, 0.0, 1.0, 1.0), endpos=(0.0, 0.0), topnew=True, old_widget=None, new_widget=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">The CropMove transition works by placing the old and the new image on two layers, called the top and the bottom. (Normally the new image is on the top, but that can be changed in some modes.) The bottom layer is always drawn in full. The top image is first cropped to a rectangle, and then that rectangle drawn onto the screen at a specified position. Start and end crop rectangles and positions can be selected by the supplied mode, or specified manually. The result is a surprisingly flexible transition. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">This transition has many modes, simplifying its use. We can group these modes into three groups: wipes, slides, and other. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">In a wipe, the image stays fixed, and more of it is revealed as the transition progresses. For example, in "wiperight", a wipe from left to right, first the left edge of the image is revealed at the left edge of the screen, then the center of the image, and finally the right side of the image at the right of the screen. Other supported wipes are "wipeleft", "wipedown", and "wipeup". <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">In a slide, the image moves. So in a "slideright", the right edge of the image starts at the left edge of the screen, and moves to the right as the transition progresses. Other slides are "slideleft", "slidedown", and "slideup". <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">There are also slideaways, in which the old image moves on top of the new image. Slideaways include "slideawayright", "slideawayleft", "slideawayup", and "slideawaydown". <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line874">We also support a rectangular iris in with "irisin" and a rectangular iris out with "irisout". Finally, "custom" lets the user define new transitions, if these ones are not enough. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>time</em> - The time that this transition will last for, in seconds. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>mode</em> - One of the modes given above. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line874">The following parameters are only respected if the mode is "custom". <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>startcrop</em> - The starting rectangle that is cropped out of the top image. A 4-element tuple containing x, y, width, and height. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867"><em>startpos</em> - The starting place that the top image is drawn to the screen at, a 2-element tuple containing x and y. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<p class="line867"><em>startcrop</em> - The starting rectangle that is cropped out of the top image. A 4-element tuple containing x, y, width, and height. <span class="anchor" id="line-28" /><span class="anchor" id="line-29" /></p>
+<p class="line867"><em>startpos</em> - The starting place that the top image is drawn to the screen at, a 2-element tuple containing x and y. <span class="anchor" id="line-30" /><span class="anchor" id="line-31" /></p>
+<p class="line867"><em>topnew</em> - If True, the top layer contains the new image. Otherwise, the top layer contains the old image. <span class="anchor" id="line-32" /><span class="anchor" id="line-33" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-34" />
+<h2 id="head-4f215b6b9949c9edd5ab9e7e30723920ecf2f264">Example</h2>
+<span class="anchor" id="line-35" />
+<p class="line867"><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /><span class="anchor" id="line-40" /><span class="anchor" id="line-41" /><span class="anchor" id="line-42" /><span class="anchor" id="line-43" /><span class="anchor" id="line-44" /><span class="anchor" id="line-45" /><span class="anchor" id="line-46" /><span class="anchor" id="line-47" /><span class="anchor" id="line-48" /><span class="anchor" id="line-49" /><span class="anchor" id="line-50" /><span class="anchor" id="line-51" /><span class="anchor" id="line-52" /><span class="anchor" id="line-53" /><span class="anchor" id="line-54" /><span class="anchor" id="line-55" /><span class="anchor" id="line-56" /><span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /><span class="anchor" id="line-60" /><span class="anchor" id="line-61" /><span class="anchor" id="line-62" /><span class="anchor" id="line-63" /><span class="anchor" id="line-64" /><span class="anchor" id="line-65" /><span class="anchor" id="line-66" /><span class="anchor" id="line-67" /><span class="anchor" id="line-68" /><span class="anchor" id="line-69" /><span class="anchor" id="line-70" /><span class="anchor" id="line-71" /><span class="anchor" id="line-72" /><span class="anchor" id="line-73" /><span class="anchor" id="line-74" /><span class="anchor" id="line-75" /><span class="anchor" id="line-76" /><span class="anchor" id="line-77" /><span class="anchor" id="line-78" /><span class="anchor" id="line-79" /><span class="anchor" id="line-80" /><span class="anchor" id="line-81" /><span class="anchor" id="line-82" /><span class="anchor" id="line-83" /><span class="anchor" id="line-84" /><span class="anchor" id="line-85" /><span class="anchor" id="line-86" /><span class="anchor" id="line-87" /><span class="anchor" id="line-88" /><span class="anchor" id="line-89" /><span class="anchor" id="line-90" /><span class="anchor" id="line-91" /><span class="anchor" id="line-92" /><span class="anchor" id="line-93" /><span class="anchor" id="line-94" /><span class="anchor" id="line-95" /><span class="anchor" id="line-96" /><span class="anchor" id="line-97" /><span class="anchor" id="line-98" /><span class="anchor" id="line-99" /><span class="anchor" id="line-100" /><span class="anchor" id="line-101" /><span class="anchor" id="line-102" /><span class="anchor" id="line-103" /><span class="anchor" id="line-104" /><span class="anchor" id="line-105" /><span class="anchor" id="line-106" /><span class="anchor" id="line-107" /><span class="anchor" id="line-108" /><span class="anchor" id="line-109" /><span class="anchor" id="line-110" /><span class="anchor" id="line-111" /><span class="anchor" id="line-112" /><span class="anchor" id="line-113" /><span class="anchor" id="line-114" /><span class="anchor" id="line-115" /><span class="anchor" id="line-116" /><span class="anchor" id="line-117" /><span class="anchor" id="line-118" /><span class="anchor" id="line-119" /><span class="anchor" id="line-120" /><span class="anchor" id="line-121" /><span class="anchor" id="line-122" /><span class="anchor" id="line-123" /><span class="anchor" id="line-124" /><span class="anchor" id="line-125" /><span class="anchor" id="line-126" /><span class="anchor" id="line-127" /><span class="anchor" id="line-128" /><span class="anchor" id="line-129" /><span class="anchor" id="line-130" /><span class="anchor" id="line-131" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> wiperight = CropMove(1.0, "<span class="renpy_string">wiperight</span>")
+    <span class="renpy_keyword">$</span> wipeleft = CropMove(1.0, "<span class="renpy_string">wipeleft</span>")
+    <span class="renpy_keyword">$</span> wipeup = CropMove(1.0, "<span class="renpy_string">wipeup</span>")
+    <span class="renpy_keyword">$</span> wipedown = CropMove(1.0, "<span class="renpy_string">wipedown</span>")
+
+    <span class="renpy_keyword">$</span> slideright = CropMove(1.0, "<span class="renpy_string">slideright</span>")
+    <span class="renpy_keyword">$</span> slideleft = CropMove(1.0, "<span class="renpy_string">slideleft</span>")
+    <span class="renpy_keyword">$</span> slideup = CropMove(1.0, "<span class="renpy_string">slideup</span>")
+    <span class="renpy_keyword">$</span> slidedown = CropMove(1.0, "<span class="renpy_string">slidedown</span>")
+
+    <span class="renpy_keyword">$</span> slideawayright = CropMove(1.0, "<span class="renpy_string">slideawayright</span>")
+    <span class="renpy_keyword">$</span> slideawayleft = CropMove(1.0, "<span class="renpy_string">slideawayleft</span>")
+    <span class="renpy_keyword">$</span> slideawayup = CropMove(1.0, "<span class="renpy_string">slideawayup</span>")
+    <span class="renpy_keyword">$</span> slideawaydown = CropMove(1.0, "<span class="renpy_string">slideawaydown</span>")
+
+    <span class="renpy_keyword">$</span> irisout = CropMove(1.0, "<span class="renpy_string">irisout</span>")
+    <span class="renpy_keyword">$</span> irisin = CropMove(1.0, "<span class="renpy_string">irisin</span>")
+
+e "<span class="renpy_string">The CropMove transition class lets us provide a wide
+               range of transition effects.</span>"
+
+<span class="renpy_keyword">hide</span> eileen <span class="renpy_keyword">with</span> dissolve
+
+e "<span class="renpy_string">I'll stand offscreen, so you can see some of its modes. I'll read
+   out the mode name after each transition.</span>"
+
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">with</span> wiperight
+
+e "<span class="renpy_string">We first have wiperight...</span>"
+
+<span class="renpy_keyword">scene</span> bg washington <span class="renpy_keyword">with</span> wipeleft
+
+e "<span class="renpy_string">...followed by wipeleft... </span>"    
+
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">with</span> wipeup
+
+e "<span class="renpy_string">...wipeup...</span>"
+
+<span class="renpy_keyword">scene</span> bg washington <span class="renpy_keyword">with</span> wipedown
+
+e "<span class="renpy_string">...and wipedown.</span>"
+
+e "<span class="renpy_string">Next, the slides.</span>"
+
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">with</span> slideright
+
+e "<span class="renpy_string">Slideright...</span>"
+
+<span class="renpy_keyword">scene</span> bg washington <span class="renpy_keyword">with</span> slideleft
+
+e "<span class="renpy_string">...slideleft...</span>"
+
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">with</span> slideup
+
+e "<span class="renpy_string">...slideup...</span>"
+
+<span class="renpy_keyword">scene</span> bg washington <span class="renpy_keyword">with</span> slidedown
+
+e "<span class="renpy_string">and slidedown.</span>"
+
+e "<span class="renpy_string">While the slide transitions slide in the new scene, the
+   slideaways slide out the old scene.</span>"
+
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">with</span> slideawayright
+
+e "<span class="renpy_string">Slideawayright...</span>"
+
+<span class="renpy_keyword">scene</span> bg washington <span class="renpy_keyword">with</span> slideawayleft
+
+e "<span class="renpy_string">...slideawayleft...</span>"
+
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">with</span> slideawayup
+
+e "<span class="renpy_string">...slideawayup...</span>"
+
+<span class="renpy_keyword">scene</span> bg washington <span class="renpy_keyword">with</span> slideawaydown
+
+e "<span class="renpy_string">and slideawaydown.</span>"
+
+e "<span class="renpy_string">We also have a couple of transitions that use a
+   rectangular iris.</span>"
+
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">with</span> irisout
+
+e "<span class="renpy_string">There's irisout...</span>"
+
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">scene</span> bg washington
+<span class="renpy_keyword">show</span> eileen happy
+<span class="renpy_keyword">with</span> irisin
+
+e "<span class="renpy_string">... and irisin.</span>"
+
+e "<span class="renpy_string">It's enough to make you feel a bit dizzy.</span>"
+</pre>
+<span class="anchor" id="line-132" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

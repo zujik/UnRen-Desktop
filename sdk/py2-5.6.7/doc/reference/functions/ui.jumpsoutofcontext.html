@@ -1,0 +1,94 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-022fe65d6f321fd71e30f36f8c1b712d8ed9cda6">ui.jumpsoutofcontext</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ui.jumpsoutofcontext" name="ui.jumpsoutofcontext" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/ui.jumpsoutofcontext.html">ui.jumpsoutofcontext</a></b>(</td>
+<td>label)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This function returns a function that, when called, exits the current context, and in the parent context jumps to the named label. It's intended to be used as the clicked argument to a button. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" />
+<h2 id="head-6292e71bb02aa9e9d0c04dbf9ad83bc5cae00ccb">Example</h2>
+<span class="anchor" id="line-9" />
+<p class="line867"><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /><span class="anchor" id="line-40" /><span class="anchor" id="line-41" /><span class="anchor" id="line-42" /><span class="anchor" id="line-43" /><span class="anchor" id="line-44" /><span class="anchor" id="line-45" /><span class="anchor" id="line-46" /><span class="anchor" id="line-47" /><span class="anchor" id="line-48" /><span class="anchor" id="line-49" /><span class="anchor" id="line-50" /><span class="anchor" id="line-51" /><span class="anchor" id="line-52" /><span class="anchor" id="line-53" /><span class="anchor" id="line-54" /><span class="anchor" id="line-55" /><span class="anchor" id="line-56" /><span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /><span class="anchor" id="line-60" /><span class="anchor" id="line-61" /><span class="anchor" id="line-62" /><span class="anchor" id="line-63" /><span class="anchor" id="line-64" /><span class="anchor" id="line-65" /><span class="anchor" id="line-66" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">python</span>:
+        <span class="renpy_comment"># The contents of the main menu.</span>
+        config.main_menu = [
+            ( u"<span class="renpy_string">Start Game</span>", "<span class="renpy_string">start</span>", '<span class="renpy_string">True</span>'),
+            ( u"<span class="renpy_string">Continue Game</span>", ui.jumps("<span class="renpy_string">_load_screen</span>"), '<span class="renpy_string">True</span>' ),
+            ( u"<span class="renpy_string">Preferences</span>", ui.jumps("<span class="renpy_string">_prefs_screen</span>"), '<span class="renpy_string">True</span>' ),
+            ( u"<span class="renpy_string">Quit</span>",  ui.jumps("<span class="renpy_string">_quit</span>"), '<span class="renpy_string">True</span>' ),
+            ]
+
+<span class="renpy_comment"># This is the default main menu, which we get if the user hasn't</span>
+<span class="renpy_comment"># defined his own, or if that function calls this explicitly.        </span>
+<span class="renpy_keyword">label</span> _library_main_menu:
+    <span class="renpy_keyword">python</span> <span class="renpy_keyword">hide</span>:
+        ui.add(renpy.Keymap(toggle_fullscreen = renpy.toggle_fullscreen))
+
+        ui.window(style='<span class="renpy_string">mm_root</span>')
+        ui.fixed()
+
+        <span class="renpy_keyword">if</span> config.main_menu_positions:
+            ui.fixed()
+        <span class="renpy_keyword">else</span>:
+            ui.window(style='<span class="renpy_string">mm_menu_frame</span>')
+            ui.vbox(style='<span class="renpy_string">mm_menu_frame_vbox</span>')
+
+        for text, clicked, enabled in config.main_menu:
+
+            <span class="renpy_comment"># if the clicked argument in config.main_menu is just a</span>
+            <span class="renpy_comment"># string (for a label), like the start game entry in the </span>
+            <span class="renpy_comment"># default config.main_menu, replace it with a</span>
+            <span class="renpy_comment"># ui.jumpsoutofcontext call to the label</span>
+            <span class="renpy_keyword">if</span> isinstance(clicked, basestring):
+                clicked = ui.jumpsoutofcontext(clicked)
+
+            <span class="renpy_keyword">if</span> config.main_menu_positions:
+                kwargs = config.main_menu_positions.get(text, { })
+            <span class="renpy_keyword">else</span>:
+                kwargs = { }
+
+            <span class="renpy_keyword">if</span> not eval(enabled):
+                clicked = None
+                disabled = True
+            <span class="renpy_keyword">else</span>:
+                disabled = False
+
+            _button_factory(text, "<span class="renpy_string">mm</span>", clicked=clicked, disabled=disabled, properties=kwargs)
+
+        ui.close()
+        ui.close()
+
+        store._result = ui.interact(suppress_overlay = True,
+                                    suppress_underlay = True,
+                                    mouse="<span class="renpy_string">mainmenu</span>")
+
+    <span class="renpy_comment"># Computed jump to the appropriate label.</span>
+    <span class="renpy_keyword">jump</span> _main_menu
+</pre>
+<span class="anchor" id="line-67" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>
