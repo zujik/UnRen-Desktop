@@ -20,7 +20,7 @@ Reference Windows spec (archived): `../../_archive/unren-legacy/UnRen-forall-la_
 | Feature | Notes |
 |---------|-------|
 | UnRen 0.9.0 (huchukato) | Behind UnRen-Desktop; deobfuscate identical |
-| dikau-UnRen-sh | Ancestor only; keep at `../../dikau-UnRen-sh/` |
+| dikau-UnRen-sh | Ancestor only; archived at `../../_archive/unren-legacy/dikau-UnRen-sh/` |
 | `.org` delete | Windows opt **s** — low priority |
 | Multi-option chains (`72k1`) | Power-user; 8/9 cover most |
 | MC rename patch | forall launcher |
