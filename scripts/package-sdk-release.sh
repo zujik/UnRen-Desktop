@@ -7,7 +7,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="${ROOT}/dist"
 mkdir -p "$OUT"
 
-for slice in py3-8.5.3 py2-7.8.7; do
+for slice in py3-8.5.3 py2-7.8.7 py2-6.99.14.3 py2-5.6.7; do
     src="${ROOT}/sdk/${slice}"
     [[ -d "${src}/lib" ]] || { echo "skip ${slice}: run populate-sdk.sh first" >&2; continue; }
     out="${OUT}/unren-sdk-${slice}.tar.bz2"

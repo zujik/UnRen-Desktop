@@ -33,6 +33,8 @@ fi
 source "${UNREN_ROOT}/unren/config.sh"
 # shellcheck source=unren/platform.sh
 source "${UNREN_ROOT}/unren/platform.sh"
+# shellcheck source=unren/sdk-resolve.sh
+source "${UNREN_ROOT}/unren/sdk-resolve.sh"
 # shellcheck source=unren/runtime.sh
 source "${UNREN_ROOT}/unren/runtime.sh"
 # shellcheck source=unren/python-resolve.sh
