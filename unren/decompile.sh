@@ -8,10 +8,10 @@ _unren_script_version_major() {
 }
 
 _unren_decompile_auto_opts() {
-    local -a existing=("$@")
-    local opt major py_major has_sl1=0
+    local -n _opts=$1
+    local major py_major has_sl1=0 opt
 
-    for opt in "${existing[@]}"; do
+    for opt in "${_opts[@]}"; do
         [[ "$opt" == "--sl1-as-python" ]] && has_sl1=1
     done
 
@@ -19,12 +19,11 @@ _unren_decompile_auto_opts() {
         major="$(_unren_script_version_major)"
         py_major="$(_unren_guess_python_major "$UNREN_APP" "$(_unren_renpy_platform)")"
         if [[ "$py_major" == "2" || "$major" -lt 7 ]]; then
-            existing+=(--sl1-as-python)
-            echo "  Ren'Py ${major}/py${py_major}: enabling --sl1-as-python (screen language v1)"
-            echo
+            _opts+=(--sl1-as-python)
+            echo "  Ren'Py ${major}/py${py_major}: enabling --sl1-as-python (screen language v1)" >&2
+            echo >&2
         fi
     fi
-    printf '%s\0' "${existing[@]}"
 }
 
 unren_decompile() {
@@ -41,7 +40,7 @@ unren_decompile() {
         return 0
     fi
 
-    mapfile -d '' -t opts < <(_unren_decompile_auto_opts "${opts[@]}")
+    _unren_decompile_auto_opts opts
 
     unrpyc_py="$(unren_resolve_unrpyc_python)"
     if [[ "$unrpyc_py" != "$UNREN_PYTHON" ]]; then
@@ -60,8 +59,13 @@ unren_decompile() {
     awk '!/^Co.*exec_prefix/ && !/^Traceback/ && !/^  File / && !/^ModuleNotFoundError/ && !/^The multiprocessing module/ && !/Attempting to deobfuscate/ && !/strategy extract_slot_/{ if (length) print "  > "$0 }' "$errortemp"
     if (( rc != 0 )); then
         echo
-        echo "  Decompile failed (exit ${rc})."
+        echo "  Decompile finished with errors (exit ${rc})."
         awk '{ print "  ! "$0 }' "$errortemp" | tail -20
+        echo
+    elif grep -q "failed to decompile" "$errortemp" 2>/dev/null; then
+        echo
+        echo "  Decompile finished with some file failures (see summary above)."
+        echo "  Pre-existing .rpy files are kept when a file fails under --clobber."
         echo
     fi
     rm -f "$errortemp"

@@ -125,11 +125,17 @@ class SLDecompiler(DecompilerBase):
                 self.indent()
                 self.write("python:")
                 with self.increase_indent():
-                    # The first line is always "_1 = (_name, 0)", which gets included
-                    # even if the python: block is the only thing in the screen. Don't
-                    # include ours, since if we do, it'll be included twice when
-                    # recompiled.
-                    self.write_lines(self.to_source(ast.code.source).splitlines()[1:])
+                    source = ast.code.source
+                    try:
+                        rendered = self.to_source(source)
+                        self.write_lines(rendered.splitlines()[1:])
+                    except (AttributeError, TypeError, Exception):
+                        # Ren'Py 6 SL1: source may not be a stdlib ast.Module on Python 3.
+                        body = getattr(source, 'body', None)
+                        if body is not None:
+                            self.print_nodes(body)
+                        else:
+                            raise
         else:
             self.print_keywords_and_nodes(keywords, ast.code.source.body, False)
 
