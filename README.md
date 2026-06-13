@@ -189,7 +189,7 @@ Download full SDKs from [renpy.org](https://www.renpy.org/) into `sdk-sources/` 
 - [UnRen-Ultrahack](https://f95zone.to/threads/92717/) — VepsrP
 - [UnRen-Linux.sh](https://github.com/zujik/UnRen-Linux.sh) — Troy Dallas
 - [UnRen for Mac 0.9.0](https://f95zone.to/threads/16887/) — huchukato (Python 3 / unrpyc v2)
-- [dikau-UnRen-sh](https://github.com/dikau/UnRen-sh) — cleaner bash structure
+- [dikau-UnRen-sh](https://github.com/dikau/UnRen-sh) — cleaner bash structure (reference: `_archive/unren-legacy/dikau-UnRen-sh/`)
 
 ## Third-party tools
 
