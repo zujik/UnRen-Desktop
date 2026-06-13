@@ -40,13 +40,14 @@ __all__ = ["astdump", "magic", "sl2decompiler", "testcasedecompiler", "translate
 class Options(OptionBase):
     def __init__(self, indentation="    ", log=None,
                  translator=None, init_offset=False,
-                 sl_custom_names=None):
+                 sl_custom_names=None, sl1_as_python=False):
         super(Options, self).__init__(indentation=indentation, log=log)
 
         # decompilation options
         self.translator = translator
         self.init_offset = init_offset
         self.sl_custom_names = sl_custom_names
+        self.sl1_as_python = sl1_as_python
 
 def pprint(out_file, ast, options=Options()):
     Decompiler(out_file, options).dump(ast)
@@ -906,10 +907,18 @@ class Decompiler(DecompilerBase):
         self.require_init()
         screen = ast.screen
         if isinstance(screen, renpy.screenlang.ScreenLangScreen):
-            raise Exception(
-                "Decompiling screen language version 1 screens is no longer supported. "
-                "use the legacy branch of unrpyc if this is required"
-            )
+            if self.options.sl1_as_python:
+                from . import screendecompiler
+                self.linenumber = screendecompiler.pprint(
+                    self.out_file, screen, self.indent_level, self.linenumber,
+                    decompile_python=True,
+                    skip_indent_until_write=self.skip_indent_until_write)
+                self.skip_indent_until_write = False
+            else:
+                raise Exception(
+                    "Decompiling screen language version 1 screens is no longer supported. "
+                    "Re-run with --sl1-as-python (UnRen adds this automatically for Ren'Py 6/7 games)"
+                )
 
         if isinstance(screen, renpy.sl2.slast.SLScreen):
             self.linenumber = sl2decompiler.pprint(

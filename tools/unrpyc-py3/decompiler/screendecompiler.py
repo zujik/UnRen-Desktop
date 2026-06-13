@@ -24,15 +24,16 @@ from operator import itemgetter
 from contextlib import contextmanager
 
 from .util import DecompilerBase, WordConcatenator, reconstruct_paraminfo, \
-                 simple_expression_guard, split_logical_lines, Dispatcher
+                 simple_expression_guard, split_logical_lines, Dispatcher, OptionBase
 from . import codegen
 
 # Main API
 
 def pprint(out_file, ast, indent_level=0, linenumber=1,
            decompile_python=False,
-           skip_indent_until_write=False, printlock=None):
-    return SLDecompiler(out_file, printlock=printlock,
+           skip_indent_until_write=False):
+    options = OptionBase()
+    return SLDecompiler(out_file, options,
                  decompile_python=decompile_python).dump(
                      ast, indent_level, linenumber, skip_indent_until_write)
 
@@ -47,9 +48,8 @@ class SLDecompiler(DecompilerBase):
     # what method to call for which statement
     dispatch = Dispatcher()
 
-    def __init__(self, out_file=None, decompile_python=False,
-                 indentation="    ", printlock=None):
-        super(SLDecompiler, self).__init__(out_file, indentation, printlock)
+    def __init__(self, out_file=None, options=None, decompile_python=False):
+        super(SLDecompiler, self).__init__(out_file, options or OptionBase())
         self.decompile_python = decompile_python
         self.should_advance_to_line = True
         self.is_root = True
@@ -112,9 +112,8 @@ class SLDecompiler(DecompilerBase):
         keywords = {ast.code.location[1]: WordConcatenator(False, True)}
         for key in ('modal', 'zorder', 'variant', 'predict'):
             value = getattr(ast, key)
-            # Non-Unicode strings are default values rather than user-supplied
-            # values, so we don't need to write them out.
-            if isinstance(value, unicode):
+            # User-supplied PyExpr values have linenumber; plain str defaults are skipped.
+            if hasattr(value, 'linenumber'):
                 if value.linenumber not in keywords:
                     keywords[value.linenumber] = WordConcatenator(False, True)
                 keywords[value.linenumber].append("%s %s" % (key, value))
