@@ -1,11 +1,21 @@
 # Innocent Witches — post-decompile repairs (Sad Crab custom Ren'Py statements).
 
 unren_decompile_fix_innocent_witches() {
-    local credits="${UNREN_GAME}/credits/credits.rpy"
-    [[ -f "$credits" ]] || return 0
+    local root="${UNREN_ROOT:-.}"
+    local game="${UNREN_GAME:-${root}/game}"
+    local tools="${root}/tools/decompile-fixes"
+    local py="env -u PYTHONHOME -u PYTHONPATH -u UNREN_PYTHON python3"
 
-    # Truncated credits screen: styles decompile but exit_credits ends mid-imagebutton.
-    if grep -q 'screen exit_credits' "$credits" && ! grep -q 'action ' "$credits"; then
+    [ -d "$game" ] || return 0
+
+    for script in fix-sonya-store.py fix-achievements-init.py fix-spell-cast-anims.py fix-community-tl.py; do
+        if [ -f "${tools}/${script}" ]; then
+            $py "${tools}/${script}" "$game" || true
+        fi
+    done
+
+    local credits="${game}/credits/credits.rpy"
+    if [ -f "$credits" ] && grep -q 'screen exit_credits' "$credits" && ! grep -q 'action ' "$credits"; then
         head -n 69 "$credits" > "${credits}.unren-fix"
         cat >> "${credits}.unren-fix" <<'EOF'
 
