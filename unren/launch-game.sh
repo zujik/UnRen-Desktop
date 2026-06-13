@@ -88,10 +88,10 @@ _unren_launcher_sdk_elif_block() {
                 ld_line='    SDK_LD_PATH="$LIB:$LIB/lib"'
                 renpy_py_line="    SDK_RENPY_PY=\"\$ROOT/${rel_sdk}/renpy.py\""
                 ;;
-            *)
-                ld_line='    SDK_LD_PATH="$LIB"'
-                renpy_py_line='    SDK_RENPY_PY=""'
-                ;;
+        *)
+            ld_line='    SDK_LD_PATH="$LIB"'
+            renpy_py_line="    SDK_RENPY_PY=\"\$ROOT/${rel_sdk}/renpy.py\""
+            ;;
         esac
 
         printf '%s\n' \

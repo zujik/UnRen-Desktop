@@ -126,12 +126,23 @@ _unren_renpy_platform() {
 }
 
 _unren_guess_python_major() {
-    local app="$1" platform="$2" sv
+    local app="$1" platform="$2" sv renpy_major
+
+    renpy_major="$(_unren_script_version_major_from_app "$app")"
+    if (( renpy_major >= 8 )); then
+        printf '3\n'
+        return 0
+    fi
 
     if compgen -G "${app}/lib/py3-${platform}" >/dev/null ||
        compgen -G "${app}/lib/py3-*" >/dev/null ||
        [[ -d "${app}/lib/python3.12" || -d "${app}/lib/python3.9" || -d "${app}/lib/python3.11" ]]; then
         printf '3\n'
+        return 0
+    fi
+
+    if (( renpy_major == 7 )); then
+        printf '2\n'
         return 0
     fi
 

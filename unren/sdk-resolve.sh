@@ -22,8 +22,10 @@ _unren_script_version_major_from_app() {
     fi
 
     if [[ -f "${app}/renpy/__init__.py" ]]; then
-        sv="$(perl -ne 'if (/version_tuple\s*=\s*\(\s*(\d+)/) { print $1; exit }' \
-            "${app}/renpy/__init__.py" 2>/dev/null)"
+        sv="$(perl -ne '
+            if (/version_tuple\s*=\s*\(\s*(\d+)/) { push @v, $1 }
+            END { if (@v) { @v = sort { $b <=> $a } @v; print $v[0] } }
+        ' "${app}/renpy/__init__.py" 2>/dev/null)"
         [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
     fi
 
