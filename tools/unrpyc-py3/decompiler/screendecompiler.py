@@ -119,23 +119,22 @@ class SLDecompiler(DecompilerBase):
                 keywords[value.linenumber].append("%s %s" % (key, value))
         keywords = sorted([(k, v.join()) for k, v in keywords.items()],
                           key=itemgetter(0)) # so the first one is right
-        if self.decompile_python:
+
+        use_python_dump = self.decompile_python
+        if use_python_dump:
+            try:
+                self.to_source(ast.code.source)
+            except (AttributeError, TypeError, Exception):
+                use_python_dump = False
+
+        if use_python_dump:
             self.print_keywords_and_nodes(keywords, None, True)
             with self.increase_indent():
                 self.indent()
                 self.write("python:")
                 with self.increase_indent():
-                    source = ast.code.source
-                    try:
-                        rendered = self.to_source(source)
-                        self.write_lines(rendered.splitlines()[1:])
-                    except (AttributeError, TypeError, Exception):
-                        # Ren'Py 6 SL1: source may not be a stdlib ast.Module on Python 3.
-                        body = getattr(source, 'body', None)
-                        if body is not None:
-                            self.print_nodes(body)
-                        else:
-                            raise
+                    rendered = self.to_source(ast.code.source)
+                    self.write_lines(rendered.splitlines()[1:])
         else:
             self.print_keywords_and_nodes(keywords, ast.code.source.body, False)
 
