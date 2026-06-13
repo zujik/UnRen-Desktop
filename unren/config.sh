@@ -12,6 +12,8 @@ MIN_GAME_PYVER=2007018
 RPATOOL="${UNREN_ROOT}/tools/rpatool-py3/rpatool.py"
 UNRPYC="${UNREN_ROOT}/tools/unrpyc-py3/unrpyc.py"
 PATCHES_DIR="${UNREN_ROOT}/patches"
+LAUNCHER_SH_TEMPLATE="${UNREN_ROOT}/unren/templates/renpy-desktop.sh"
+LAUNCHER_PY_HEADER="${UNREN_ROOT}/unren/templates/renpy-desktop.py"
 
 SDK_PY3_DIR="${UNREN_ROOT}/sdk/py3-8.5.3"
 SDK_PY2_DIR="${UNREN_ROOT}/sdk/py2-7.8.7"
