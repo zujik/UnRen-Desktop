@@ -45,6 +45,12 @@ source "${UNREN_ROOT}/unren/patches.sh"
 source "${UNREN_ROOT}/unren/extract.sh"
 # shellcheck source=unren/decompile.sh
 source "${UNREN_ROOT}/unren/decompile.sh"
+# shellcheck source=unren/rpyc-correct.sh
+source "${UNREN_ROOT}/unren/rpyc-correct.sh"
+# shellcheck source=unren/extras.sh
+source "${UNREN_ROOT}/unren/extras.sh"
+# shellcheck source=unren/mac.sh
+source "${UNREN_ROOT}/unren/mac.sh"
 # shellcheck source=unren/launch-game.sh
 source "${UNREN_ROOT}/unren/launch-game.sh"
 # shellcheck source=unren/menu.sh

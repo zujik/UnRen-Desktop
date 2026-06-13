@@ -1,7 +1,8 @@
 # Pick bundled Ren'Py SDK slice by game era (2005–present)
 
 _unren_script_version_major_from_app() {
-    local app="$1" sv
+    local app="$1" sv detected
+
     sv="$(grep -rh 'config\.script_version' \
         "${app}/game/script_version.rpy" "${app}/game/script_version.txt" \
         "${app}/script_version.rpy" "${app}/script_version.txt" 2>/dev/null \
@@ -15,12 +16,24 @@ _unren_script_version_major_from_app() {
         sv="$(grep -m1 '^version' "${app}/renpy/vc_version.py" 2>/dev/null \
             | sed -n "s/.*['\"]\\([0-9][0-9]*\\)\\..*/\\1/p")"
         [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
+        sv="$(perl -nle 'if (/\b(?:vc_)?version\s*=\s*[\x22\x27]?([0-9]+)/) { print $1; exit }' \
+            "${app}/renpy/vc_version.py" 2>/dev/null)"
+        [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
     fi
 
     if [[ -f "${app}/renpy/__init__.py" ]]; then
         sv="$(perl -ne 'if (/version_tuple\s*=\s*\(\s*(\d+)/) { print $1; exit }' \
             "${app}/renpy/__init__.py" 2>/dev/null)"
         [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
+    fi
+
+    if [[ -f "${DETECT_RENPY_VERSION:-}" ]]; then
+        detected="$(env -u PYTHONHOME -u PYTHONPATH python3 \
+            "${DETECT_RENPY_VERSION}" "${app}" 2>/dev/null || true)"
+        if [[ "$detected" =~ ^[678]$ ]]; then
+            printf '%s\n' "$detected"
+            return 0
+        fi
     fi
 
     printf '0\n'

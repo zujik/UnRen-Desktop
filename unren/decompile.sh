@@ -95,13 +95,13 @@ _unren_decompile_targets() {
 
 unren_decompile() {
     local -a opts=() targets=()
-    local unrpyc_py py_runner=() rc want_clobber=0 force_all=0 skipped=0
+    local unrpyc_py py_runner=() rc want_clobber=0 force_all=0 skipped=0 try_harder=0
     while [[ $# -gt 0 ]]; do
-        if [[ "$1" == "--clobber" ]]; then
-            want_clobber=1
-        else
-            opts+=("$1")
-        fi
+        case "$1" in
+            --clobber) want_clobber=1 ;;
+            --try-harder) try_harder=1; opts+=("$1") ;;
+            *) opts+=("$1") ;;
+        esac
         shift
     done
 
@@ -148,6 +148,10 @@ unren_decompile() {
     fi
 
     _unren_decompile_auto_opts opts
+
+    if (( try_harder )); then
+        unren_rpyc_correct
+    fi
 
     unrpyc_py="$(unren_resolve_unrpyc_python)"
     if [[ "$unrpyc_py" != "$UNREN_PYTHON" ]]; then

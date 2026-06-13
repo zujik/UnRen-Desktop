@@ -154,7 +154,6 @@ resolve_game_and_python() {
     # macOS .app bundle
     if [[ -e "${UNREN_TARGET}/Contents/Resources/autorun/renpy" &&
           -e "${UNREN_TARGET}/Contents/Resources/autorun/game" ]]; then
-        xattr -rd com.apple.quarantine "${UNREN_TARGET}" 2>/dev/null || true
         UNREN_APP="${UNREN_TARGET}/Contents/Resources/autorun"
         UNREN_GAME="${UNREN_APP}/game"
         UNREN_PYTHON="$(find "${UNREN_TARGET}/Contents/MacOS" -type f -name python 2>/dev/null | head -1)"

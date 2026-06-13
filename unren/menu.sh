@@ -20,7 +20,7 @@ unren_menu() {
     local choice=
     while true; do
         echo " Available Options:"
-        echo "   1) Extract RPA packages (in game folder)"
+        echo "   1) Extract RPA/JAS/RPC packages (in game folder)"
         echo "   2) Decompile rpyc files (in game folder)"
         echo "   3) Enable Console and Developer Menu"
         echo "   4) Enable Quick Save and Quick Load"
@@ -28,12 +28,18 @@ unren_menu() {
         echo "   6) Force enable rollback (scroll wheel)"
         echo "   7) Options 3-6"
         echo "   8) Options 1-6 + install game launcher"
-        echo "   9) Options 1-6 + deobfuscate + install game launcher"
+        echo "   9) Options 1-6 + rpycCorrector + deobfuscate + install launcher"
         echo "   0) Decompile rpyc (overwrite stub/missing .rpy only)"
+        echo "   c) Fix mangled RPYC signatures (rpycCorrector only)"
+        echo "   n) Disable Ren'Py cloud sync (unren-nsync.rpy)"
+        echo "   r) Restore .org backup files (.rpa.org, .rpy.org, ...)"
+        if is_osx; then
+            echo "   m) Remove macOS quarantine (Gatekeeper) from game"
+        fi
         echo "   g) Install / launch game (creates GameName.sh from .exe if needed)"
         echo "   q) Quit"
         echo
-        read -r -s -n 1 -p "     Enter choice (0-9, g, q): " choice
+        read -r -s -n 1 -p "     Enter choice: " choice
         echo
         echo "----------------------------------------------------"
         echo
@@ -74,6 +80,17 @@ unren_menu() {
                 echo
                 echo " Installing game launcher ..."
                 unren_install_launcher
+                ;;
+            c|C) unren_rpyc_correct ;;
+            n|N) unren_sync_disable ;;
+            r|R) unren_restore_org ;;
+            m|M)
+                if is_osx; then
+                    unren_mac_quarantine
+                else
+                    printf '\aInvalid choice.\n'
+                    continue
+                fi
                 ;;
             q|Q)
                 echo "Bye..."
