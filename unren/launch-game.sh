@@ -115,17 +115,15 @@ _unren_runtime_needs_xwayland() {
 _unren_configure_sdl_video() {
     local py_major="$1" lib_dir="$2"
 
-    if [[ -n "${SDL_VIDEODRIVER:-}" ]]; then
-        return 0
-    fi
     if [[ -n "${UNREN_SDL_VIDEODRIVER:-}" ]]; then
         export SDL_VIDEODRIVER="$UNREN_SDL_VIDEODRIVER"
         return 0
     fi
-    if ! is_linux || ! unren_session_uses_wayland; then
+    if ! is_linux || ! _unren_runtime_needs_xwayland "$py_major" "$lib_dir"; then
         return 0
     fi
-    if _unren_runtime_needs_xwayland "$py_major" "$lib_dir"; then
+    # KDE and others often export SDL_VIDEODRIVER=wayland; py2 SDL cannot use it.
+    if [[ -z "${SDL_VIDEODRIVER:-}" || "${SDL_VIDEODRIVER}" == "wayland" ]]; then
         export SDL_VIDEODRIVER=x11
     fi
 }
@@ -134,20 +132,14 @@ _unren_launcher_sdl_block() {
     local sdl_legacy="$1"
     if [[ "$sdl_legacy" == 1 ]]; then
         cat <<'SDL'
-# Legacy runtime: bundled pygame_sdl2 has no native Wayland — use XWayland.
+# py2 on Linux: bundled pygame_sdl2 has no Wayland backend (use XWayland via x11).
+# KDE often sets SDL_VIDEODRIVER=wayland globally — override that for py2.
 case "$(uname -s)" in
     Linux)
-        if [ -z "$SDL_VIDEODRIVER" ]; then
-            if [ -n "$UNREN_SDL_VIDEODRIVER" ]; then
-                export SDL_VIDEODRIVER="$UNREN_SDL_VIDEODRIVER"
-            else
-                case "${XDG_SESSION_TYPE:-}" in
-                    wayland) export SDL_VIDEODRIVER=x11 ;;
-                esac
-                if [ -z "$SDL_VIDEODRIVER" ] && [ -n "$WAYLAND_DISPLAY" ]; then
-                    export SDL_VIDEODRIVER=x11
-                fi
-            fi
+        if [ -n "$UNREN_SDL_VIDEODRIVER" ]; then
+            export SDL_VIDEODRIVER="$UNREN_SDL_VIDEODRIVER"
+        elif [ -z "$SDL_VIDEODRIVER" ] || [ "$SDL_VIDEODRIVER" = "wayland" ]; then
+            export SDL_VIDEODRIVER=x11
         fi
         ;;
 esac
@@ -244,7 +236,7 @@ unren_install_launcher() {
         echo "  Launcher: ${basename}.sh (runtime: sdk/${sdk_slice})" >&2
     fi
     if [[ "$sdl_legacy" == 1 ]]; then
-        echo "  Display: SDL_VIDEODRIVER=x11 on Wayland sessions (py2 runtime)" >&2
+        echo "  Display: SDL_VIDEODRIVER=x11 on Linux (py2 runtime)" >&2
     fi
     [[ -f "$py_path" ]] && echo "  Bootstrap: ${basename}.py (from renpy-desktop.py + SDK renpy.py)" >&2
 }
