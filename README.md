@@ -51,6 +51,19 @@ UnRen-Desktop/
 
 ## SDK setup
 
+**Recommended git layout (development branch):** commit scripts and manifests only; keep
+`~150 MB` of SDK binaries out of git. Clone stays fast; merges stay simple.
+
+| Approach | When to use |
+|----------|-------------|
+| **`populate-sdk.sh` (default)** | Developers and CI — one local command |
+| **GitHub Release tarballs** | End users — attach `unren-sdk-*.tar.bz2` from `scripts/package-sdk-release.sh` |
+| **Git LFS** | Only if you need binaries *inside* git history; requires `git lfs` on every clone |
+
+Git LFS is better than committing blobs as plain git objects, but both bloat clones
+compared to release assets. This repo uses **populate locally + release tarballs** until
+the branch is release-ready.
+
 If you have full SDKs extracted locally (as `renpy-8.5.3-sdk` and `renpy-7.8.7-sdk` next to this repo):
 
 ```bash
@@ -63,6 +76,13 @@ Or point at custom paths:
 RENPY_PY3_SRC=/path/to/renpy-8.5.3-sdk \
 RENPY_PY2_SRC=/path/to/renpy-7.8.7-sdk \
 ./scripts/populate-sdk.sh
+```
+
+Package for a GitHub Release:
+
+```bash
+./scripts/package-sdk-release.sh
+# uploads: dist/unren-sdk-py3-8.5.3.tar.bz2, dist/unren-sdk-py2-7.8.7.tar.bz2
 ```
 
 ## Lineage

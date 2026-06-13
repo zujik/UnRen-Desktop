@@ -24,10 +24,11 @@ b64.file
 # Generated / local SDK download cache
 .cache/
 
-# Large SDK runtimes — commit via Git LFS or run scripts/populate-sdk.sh locally
-# Uncomment the next line if you prefer not to commit sdk binaries:
-# sdk/*/lib/
-# sdk/*/renpy/
+# Large SDK runtimes — use scripts/populate-sdk.sh locally or GitHub Release tarballs
+sdk/*/lib/
+sdk/*/renpy/
+
+# Keep small SDK stubs committable: renpy.sh, renpy.py, LICENSE.txt, README.md
 
 # Linux and macOS specific files
 # Ignore hidden backup files created by editors
