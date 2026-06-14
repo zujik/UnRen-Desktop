@@ -46,12 +46,12 @@ source "${UNREN_ROOT}/unren/patches.sh"
 source "${UNREN_ROOT}/unren/forall.sh"
 # shellcheck source=unren/extract.sh
 source "${UNREN_ROOT}/unren/extract.sh"
+# shellcheck source=unren/rpyc-correct.sh
+source "${UNREN_ROOT}/unren/rpyc-correct.sh"
 # shellcheck source=unren/decompile.sh
 source "${UNREN_ROOT}/unren/decompile.sh"
 # shellcheck source=unren/decompile-fixes.sh
 source "${UNREN_ROOT}/unren/decompile-fixes.sh"
-# shellcheck source=unren/rpyc-correct.sh
-source "${UNREN_ROOT}/unren/rpyc-correct.sh"
 # shellcheck source=unren/extras.sh
 source "${UNREN_ROOT}/unren/extras.sh"
 # shellcheck source=unren/mac.sh

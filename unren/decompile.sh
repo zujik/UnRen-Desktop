@@ -41,6 +41,13 @@ _unren_decompile_find() {
     done
 }
 
+_unren_decompile_is_unren_patch() {
+    case "${1##*/}" in
+        unren-*.rpyc|unren-*.rpymc) return 0 ;;
+    esac
+    return 1
+}
+
 _unren_decompile_has_rpyc() {
     local hit=
     while IFS= read -r -d '' hit || [[ -n "${hit:-}" ]]; do
@@ -109,6 +116,7 @@ _unren_decompile_targets() {
     _out=()
 
     while IFS= read -r -d '' rpyc; do
+        _unren_decompile_is_unren_patch "$rpyc" && continue
         source="$(_unren_decompile_source_path "$rpyc")"
         if [[ ! -f "$source" ]]; then
             rel="$(_unren_decompile_relpath "$rpyc")"
@@ -131,7 +139,7 @@ _unren_decompile_targets() {
 unren_decompile() {
     local -a opts=() targets=() searched=()
     local unrpyc_py py_runner=() rc want_clobber=0 force_all=0 skipped=0 try_harder=0
-    local decompile_root dir
+    local decompile_root dir unren_kept=0
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --clobber) want_clobber=1 ;;
@@ -159,6 +167,10 @@ unren_decompile() {
 
     if (( ! force_all )); then
         while IFS= read -r -d '' rpyc; do
+            if _unren_decompile_is_unren_patch "$rpyc"; then
+                (( unren_kept++ )) || true
+                continue
+            fi
             source="$(_unren_decompile_source_path "$rpyc")"
             [[ -f "$source" ]] || continue
             if (( want_clobber )); then
@@ -166,6 +178,10 @@ unren_decompile() {
             else
                 (( skipped++ )) || true
             fi
+        done < <(_unren_decompile_find)
+    else
+        while IFS= read -r -d '' rpyc; do
+            _unren_decompile_is_unren_patch "$rpyc" && (( unren_kept++ )) || true
         done < <(_unren_decompile_find)
     fi
 
@@ -201,6 +217,11 @@ unren_decompile() {
         echo
     fi
 
+    if (( unren_kept > 0 )); then
+        echo "  Keeping UnRen patch sources (${unren_kept} unren-*.rpyc skipped)"
+        echo
+    fi
+
     unren_forall_rpyc_version_warn
     unren_wos_decrypt_if_needed
 
@@ -218,7 +239,12 @@ unren_decompile() {
     _unren_decompile_auto_opts opts
 
     if (( try_harder )); then
-        unren_rpyc_correct
+        if _unren_has_mangled_rpyc; then
+            unren_rpyc_correct
+        else
+            echo "  rpycCorrector: standard RPYC signatures — skipping."
+            echo
+        fi
     fi
 
     unrpyc_py="$(unren_resolve_unrpyc_python)"
