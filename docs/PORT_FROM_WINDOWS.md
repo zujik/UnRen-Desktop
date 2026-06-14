@@ -1,6 +1,6 @@
 # Port / merge audit
 
-Reference Windows spec (archived): `../../_archive/unren-legacy/UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80/`
+Reference Windows spec (archived): `../../UnRen-Local/_archive/unren-legacy/UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80/`
 
 ## Ported (2026-06-13)
 
@@ -23,7 +23,7 @@ Reference Windows spec (archived): `../../_archive/unren-legacy/UnRen-forall-la_
 | Feature | Notes |
 |---------|-------|
 | UnRen 0.9.0 (huchukato) | Behind UnRen-Desktop; deobfuscate identical |
-| dikau-UnRen-sh | Ancestor only; archived at `../../_archive/unren-legacy/dikau-UnRen-sh/` |
+| dikau-UnRen-sh | Ancestor only; archived at `../../UnRen-Local/_archive/unren-legacy/dikau-UnRen-sh/` |
 | `.org` delete | Windows opt **s** — low priority |
 | Multi-option chains (`72k1`) | Power-user; 8/9 cover most |
 | MC rename patch | forall launcher |
@@ -31,7 +31,7 @@ Reference Windows spec (archived): `../../_archive/unren-legacy/UnRen-forall-la_
 
 ## rpycCorrector source
 
-Use **`rpycCorrector_1.04`** from `_archive/unren-legacy/misc/` — forall `.bat` does not embed it.
+Use **`rpycCorrector_1.04`** from `../../UnRen-Local/_archive/unren-legacy/misc/` — forall `.bat` does not embed it.
 
 ## Attribution
 

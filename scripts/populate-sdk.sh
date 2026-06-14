@@ -5,8 +5,10 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-PERSONAL="$(cd "${ROOT}/.." && pwd)"
-SDK_SOURCES="${RENPY_SDK_SOURCES:-${PERSONAL}/sdk-sources}"
+# shellcheck source=unren-local.sh
+source "$(dirname "$0")/unren-local.sh"
+UNREN_LOCAL="$(unren_local_dir "${ROOT}")"
+SDK_SOURCES="${RENPY_SDK_SOURCES:-${UNREN_LOCAL}/sdk-sources}"
 PY3_SRC="${RENPY_PY3_SRC:-${SDK_SOURCES}/renpy-8.5.3-sdk}"
 PY2_SRC="${RENPY_PY2_SRC:-${SDK_SOURCES}/renpy-7.8.7-sdk}"
 DEST_ROOT="${POPULATE_DEST_ROOT:-${ROOT}}"

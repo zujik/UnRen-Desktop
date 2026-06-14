@@ -31,8 +31,9 @@ Keep both repos as **siblings** (two independent git clones — no submodule req
 
 ```
 ~/Git/personal/
-├── UnRen-Desktop/          ← daily development
-└── UnRen-Dependencies/     ← mirror metadata + release assets
+├── UnRen-Desktop/          ← daily development (git)
+├── UnRen-Dependencies/     ← mirror metadata + release assets (git)
+└── UnRen-Local/            ← local caches (not git): _archive, sdk-sources, .mirror-staging
 ```
 
 Open both in one Cursor workspace if you like (multi-root). Each has its own
@@ -80,51 +81,52 @@ git commit -m "Initial vendor mirror scaffold for UnRen-Desktop compliance"
 
 ## Step 3 — Stage pristine upstream (one-time per version)
 
-In **UnRen-Desktop**, download upstream into `.mirror-staging/` (gitignored):
+In **UnRen-Desktop**, download upstream into `../UnRen-Local/.mirror-staging/`:
 
 ```bash
 cd ~/Git/personal/UnRen-Desktop
-mkdir -p .mirror-staging
+LOCAL="../UnRen-Local"
+mkdir -p "${LOCAL}/.mirror-staging"
 
 # unrpyc 2.0.4
 git clone --depth 1 --branch v2.0.4 \
-  https://github.com/CensoredUsername/unrpyc.git .mirror-staging/unrpyc-2.0.4
+  https://github.com/CensoredUsername/unrpyc.git "${LOCAL}/.mirror-staging/unrpyc-2.0.4"
 
 # rpatool — canonical upstream (NOT the older embed inside the .bat)
-git clone --depth 1 https://codeberg.org/shiz/rpatool.git .mirror-staging/rpatool
+git clone --depth 1 https://codeberg.org/shiz/rpatool.git "${LOCAL}/.mirror-staging/rpatool"
 
 # UnRen-forall — clone repo (provenance + bat files on main)
-git clone --depth 1 https://github.com/Lurmel/UnRen-forall.git .mirror-staging/unren-forall-repo
+git clone --depth 1 https://github.com/Lurmel/UnRen-forall.git "${LOCAL}/.mirror-staging/unren-forall-repo"
 
 # The release zip is NOT inside the git tree — it lives on GitHub Releases only.
 # Option A (simplest): copy the five release bats from the clone (same content as the zip)
-mkdir -p .mirror-staging/unren-forall-la_0.77
-cp -a .mirror-staging/unren-forall-repo/UnRen-forall.bat \
-      .mirror-staging/unren-forall-repo/UnRen-current.bat \
-      .mirror-staging/unren-forall-repo/UnRen-legacy.bat \
-      .mirror-staging/unren-forall-repo/UnRen-cfg.txt \
-      .mirror-staging/unren-forall-repo/UnRen-link.txt \
-      .mirror-staging/unren-forall-la_0.77/
+mkdir -p "${LOCAL}/.mirror-staging/unren-forall-la_0.77"
+cp -a "${LOCAL}/.mirror-staging/unren-forall-repo/UnRen-forall.bat" \
+      "${LOCAL}/.mirror-staging/unren-forall-repo/UnRen-current.bat" \
+      "${LOCAL}/.mirror-staging/unren-forall-repo/UnRen-legacy.bat" \
+      "${LOCAL}/.mirror-staging/unren-forall-repo/UnRen-cfg.txt" \
+      "${LOCAL}/.mirror-staging/unren-forall-repo/UnRen-link.txt" \
+      "${LOCAL}/.mirror-staging/unren-forall-la_0.77/"
 
 # Option B (exact release artifact): download + unzip instead of Option A
-# curl -L -o .mirror-staging/unren-forall-release.zip \
+# curl -L -o "${LOCAL}/.mirror-staging/unren-forall-release.zip" \
 #   https://github.com/Lurmel/UnRen-forall/releases/download/main/UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80.zip
-# unzip -q .mirror-staging/unren-forall-release.zip -d .mirror-staging/
-# cp -a .mirror-staging/UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80 \
-#       .mirror-staging/unren-forall-la_0.77
+# unzip -q "${LOCAL}/.mirror-staging/unren-forall-release.zip" -d "${LOCAL}/.mirror-staging/"
+# cp -a "${LOCAL}/.mirror-staging/UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80" \
+#       "${LOCAL}/.mirror-staging/unren-forall-la_0.77"
 
 # Decode embedded Python from UnRen-current.bat (NOT tools/forall/ — those are patched)
 chmod +x scripts/extract-unren-forall-b64.py
 python3 scripts/extract-unren-forall-b64.py \
-  .mirror-staging/unren-forall-la_0.77/UnRen-current.bat \
-  .mirror-staging/unren-forall-scripts
+  "${LOCAL}/.mirror-staging/unren-forall-la_0.77/UnRen-current.bat" \
+  "${LOCAL}/.mirror-staging/unren-forall-scripts"
 
 # altrpatool upstream = decoded script only
-mkdir -p .mirror-staging/altrpatool-upstream
-cp .mirror-staging/unren-forall-scripts/altrpatool.py .mirror-staging/altrpatool-upstream/
+mkdir -p "${LOCAL}/.mirror-staging/altrpatool-upstream"
+cp "${LOCAL}/.mirror-staging/unren-forall-scripts/altrpatool.py" "${LOCAL}/.mirror-staging/altrpatool-upstream/"
 
 # rpycCorrector — from F95 forum download (not in Lurmel repo)
-# Place under: .mirror-staging/rpyc-corrector-1.04/
+# Place under: ${LOCAL}/.mirror-staging/rpyc-corrector-1.04/
 ```
 
 If you lack the original rpycCorrector zip, note that in `SOURCE_INVENTORY.md` and
@@ -144,7 +146,7 @@ From UnRen-Desktop:
 Output: `dist/mirror-v1.0.0/` containing:
 
 - `*.txt` license files (flat names — copied from UnRen-Desktop `licenses/`)
-- `*.tar.xz` per component (from `.mirror-staging/` when present)
+- `*.tar.xz` per component (from `UnRen-Local/.mirror-staging/` when present)
 
 **Note:** GitHub Releases store assets by **basename only** (no `licenses/` folder in
 download URLs). `manifest.json` → `license_download_url` must match, e.g.
@@ -215,7 +217,7 @@ flowchart TD
   end
   subgraph occasional [Occasionally]
     D[New upstream version?]
-    E[Refresh .mirror-staging]
+    E[Refresh UnRen-Local/.mirror-staging]
     F[package-mirror-release.sh]
     G[New tag on UnRen-Dependencies]
     H[Bump manifest.json URLs in UnRen-Desktop]

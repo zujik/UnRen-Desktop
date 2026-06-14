@@ -5,7 +5,10 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-STAGING="${MIRROR_STAGING:-${ROOT}/.mirror-staging}"
+# shellcheck source=unren-local.sh
+source "$(dirname "$0")/unren-local.sh"
+UNREN_LOCAL="$(unren_local_dir "${ROOT}")"
+STAGING="${MIRROR_STAGING:-${UNREN_LOCAL}/.mirror-staging}"
 VERSION="${MIRROR_VERSION:-v1.0.0}"
 OUT="${MIRROR_OUT:-${ROOT}/dist/mirror-${VERSION}}"
 

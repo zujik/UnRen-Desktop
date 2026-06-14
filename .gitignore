@@ -24,6 +24,7 @@ b64.file
 # Generated / local SDK download cache
 .cache/
 .sdk-sources-cache/
+# Legacy: .mirror-staging/ may exist under UnRen-Desktop; canonical path is ../UnRen-Local/.mirror-staging/
 .mirror-staging/
 
 # SDK binaries are tracked with Git LFS (see .gitattributes).
