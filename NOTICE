@@ -1,0 +1,15 @@
+UnRen-Desktop
+Copyright (c) 2022-2026 Troy Dallas
+
+Licensed under the MIT License. See LICENSE for the full text.
+
+This repository bundles or invokes third-party tools and Ren'Py SDK runtime
+slices. Each component remains under its own license. See:
+
+  THIRD_PARTY_LICENSES.md  — attribution and license summary
+  tools/SOURCES.md         — upstream paths and versions
+  tools/forall/ATTRIBUTION.md
+  sdk/*/LICENSE.txt        — Ren'Py SDK (per runtime slice)
+
+When redistributing UnRen-Desktop (source or release archives), include this
+NOTICE file, LICENSE, and THIRD_PARTY_LICENSES.md.

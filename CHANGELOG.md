@@ -6,7 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Legacy SDK slices `py2-6.99.14.3`, `py2-5.6.7` with version-aware runtime selection (`unren/sdk-resolve.sh`).
+- `NOTICE`, expanded `THIRD_PARTY_LICENSES.md`, tool READMEs for license attribution.
+- `tools/altrpatool-py3/COPYING` (full GPL-3.0 text).
+- Innocent Witches menu guard (`unren/game-guards.sh`), RPC3 stale-source cleanup.
+- `sdk/stdlib-shims/py2/md5.py` for legacy py2 games.
 - `UnRen.command` macOS Finder wrapper.
 - Modular `unren/` bash modules (renamed from `lib/` to avoid collision with Ren'Py's `lib/`), plain `tools/` and `patches/` (no base64).
 - Trimmed Ren'Py SDK layout under `sdk/` with **Git LFS** for `lib/` and `renpy/` binaries.
