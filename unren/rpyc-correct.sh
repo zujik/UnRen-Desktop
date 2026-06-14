@@ -30,6 +30,12 @@ PY
 unren_rpyc_correct() {
     local py="${UNREN_RPA_PYTHON-}" rc
 
+    if _unren_is_rpc3_game "${UNREN_APP}"; then
+        echo "  rpycCorrector: RPC3 bytecode — skipping."
+        echo
+        return 0
+    fi
+
     if [[ ! -f "${UNREN_APP}/renpy/script.py" ]]; then
         echo "  rpycCorrector: no renpy/script.py — skipping signature fix."
         echo

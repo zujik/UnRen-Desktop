@@ -75,14 +75,7 @@ unren_forall_rpyc_version_warn() {
 }
 
 _unren_has_rpc3_rpyc() {
-    local rc
-    pushd "${UNREN_APP}" >/dev/null || return 1
-    set +e
-    env -u PYTHONHOME -u PYTHONPATH python3 "${DETECT_RPYC_VERSION}" >/dev/null 2>&1
-    rc=$?
-    set -e
-    popd >/dev/null || return 1
-    (( rc == 1 ))
+    _unren_is_rpc3_game "${UNREN_APP}"
 }
 
 unren_wos_decrypt_if_needed() {

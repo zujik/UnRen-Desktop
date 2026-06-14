@@ -153,6 +153,17 @@ unren_decompile() {
     [[ "${UNREN_DECOMPILE_FORCE_ALL:-0}" == "1" ]] && force_all=1
     (( want_clobber )) && opts+=(--clobber)
 
+    if unren_guard_skip_decompile; then
+        return 0
+    fi
+
+    if _unren_has_rpc3_rpyc && [[ "${UNREN_DECOMPILE_RPC3:-}" != 1 ]]; then
+        echo "  RPC3 bytecode — decompile skipped (sources are unreliable on RPC3 games)."
+        echo "  Launch with g to run from .rpyc. Set UNREN_DECOMPILE_RPC3=1 to force decompile anyway."
+        echo
+        return 0
+    fi
+
     decompile_root="$(_unren_decompile_primary_root)"
 
     if ! _unren_decompile_has_rpyc; then

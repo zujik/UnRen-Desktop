@@ -10,6 +10,9 @@ UNREN_MENU_PATCH_SKIP=0
 UNREN_MENU_PATCH_ROLLBACK=0
 UNREN_MENU_PATCH_NSYNC=0
 UNREN_MENU_HAS_RPC3=0
+UNREN_MENU_RPC3_STALE=0
+UNREN_MENU_RPC3_QUARANTINED=0
+UNREN_MENU_GUARD_IW=0
 UNREN_MENU_OPT8_LABEL=""
 UNREN_MENU_OPT9_LABEL=""
 
@@ -83,8 +86,8 @@ _unren_menu_patch_nums_pending() {
 
 _unren_menu_workflow_nums() {
     local -a nums=()
-    if (( UNREN_MENU_HAS_ARCHIVES )); then nums+=(1); fi
-    if (( UNREN_MENU_HAS_RPYC )); then nums+=(2); fi
+    if (( UNREN_MENU_HAS_ARCHIVES && ! UNREN_MENU_GUARD_IW )); then nums+=(1); fi
+    if (( UNREN_MENU_HAS_RPYC && ! UNREN_MENU_HAS_RPC3 && ! UNREN_MENU_GUARD_IW )); then nums+=(2); fi
     printf '%s\n' "${nums[@]}"
 }
 
@@ -96,6 +99,9 @@ _unren_menu_refresh_state() {
     UNREN_MENU_HAS_RESTORE=0
     UNREN_MENU_HAS_MANGLED_RPYC=0
     UNREN_MENU_HAS_RPC3=0
+    UNREN_MENU_RPC3_STALE=0
+    UNREN_MENU_RPC3_QUARANTINED=0
+    UNREN_MENU_GUARD_IW=0
     UNREN_MENU_PATCH_DEV=0
     UNREN_MENU_PATCH_QUICK=0
     UNREN_MENU_PATCH_SKIP=0
@@ -114,6 +120,13 @@ _unren_menu_refresh_state() {
         -type f && UNREN_MENU_HAS_RESTORE=1
     _unren_has_mangled_rpyc && UNREN_MENU_HAS_MANGLED_RPYC=1
     _unren_has_rpc3_rpyc && UNREN_MENU_HAS_RPC3=1
+    _unren_is_innocent_witches_game && UNREN_MENU_GUARD_IW=1
+    if (( UNREN_MENU_HAS_RPC3 )); then
+        UNREN_MENU_RPC3_STALE="$(_unren_rpc3_stale_source_count)"
+        UNREN_MENU_RPC3_QUARANTINED="$(
+            find "${UNREN_GAME}" -name "*${UNREN_RPC3_QUARANTINE_SUFFIX}" -type f 2>/dev/null | wc -l | tr -d ' '
+        )"
+    fi
 
     [[ -f "${UNREN_GAME}/unren-dev.rpy" ]] && UNREN_MENU_PATCH_DEV=1
     [[ -f "${UNREN_GAME}/unren-quick.rpy" ]] && UNREN_MENU_PATCH_QUICK=1
@@ -131,7 +144,7 @@ _unren_menu_refresh_state() {
     local opt9_extra="deobfuscate + install launcher"
     (( UNREN_MENU_HAS_MANGLED_RPYC )) && opt9_extra="rpycCorrector + ${opt9_extra}"
 
-    if (( ! UNREN_MENU_HAS_RPC3 )); then
+    if (( ! UNREN_MENU_HAS_RPC3 && ! UNREN_MENU_GUARD_IW )); then
         if ((${#combo[@]} > 0)); then
             label="$(_unren_menu_format_opt_list "${combo[@]}")"
             UNREN_MENU_OPT8_LABEL="8) Options ${label} + install game launcher"
@@ -150,6 +163,8 @@ _unren_menu_refresh_state() {
 
     if (( UNREN_MENU_HAS_RPC3 )); then
         UNREN_MENU_OPT9_LABEL=""
+    elif (( UNREN_MENU_GUARD_IW )); then
+        UNREN_MENU_OPT9_LABEL=""
     fi
 }
 
@@ -158,6 +173,11 @@ unren_menu_refresh_state() {
 }
 
 _unren_menu_run_extract_if() {
+    if (( UNREN_MENU_GUARD_IW )); then
+        echo "  Innocent Witches — skipping extract (use fresh unzip; custom AST game)."
+        echo
+        return 0
+    fi
     if (( UNREN_MENU_HAS_ARCHIVES )); then
         unren_extract
     fi
@@ -166,6 +186,16 @@ _unren_menu_run_extract_if() {
 _unren_menu_run_decompile_if() {
     local try_harder="${1:-}"
     (( UNREN_MENU_HAS_RPYC )) || return 0
+    if (( UNREN_MENU_GUARD_IW )); then
+        echo "  Innocent Witches — skipping decompile (custom AST; launch with g from .rpyc)."
+        echo
+        return 0
+    fi
+    if (( UNREN_MENU_HAS_RPC3 )); then
+        echo "  RPC3 bytecode — skipping decompile (launch with g from .rpyc)."
+        echo
+        return 0
+    fi
     if [[ -n "$try_harder" ]]; then
         unren_decompile --try-harder
     else
@@ -182,6 +212,10 @@ _unren_menu_run_pending_patches() {
 
 _unren_menu_run_combo_8() {
     unren_menu_refresh_state
+    if (( UNREN_MENU_HAS_RPC3 )); then
+        unren_rpc3_quarantine_sources
+        unren_rpc3_purge_quarantined
+    fi
     _unren_menu_run_extract_if
     _unren_menu_run_decompile_if
     _unren_menu_run_pending_patches
@@ -193,7 +227,12 @@ _unren_menu_run_combo_8() {
 _unren_menu_run_combo_9() {
     unren_menu_refresh_state
     if (( UNREN_MENU_HAS_RPC3 )); then
-        echo "  RPC3 bytecode — option 9 disabled (launch from .rpyc; use 2 only if you need sources)."
+        echo "  RPC3 bytecode — option 9 disabled (launch with g from .rpyc)."
+        echo
+        return 1
+    fi
+    if (( UNREN_MENU_GUARD_IW )); then
+        echo "  Innocent Witches — option 9 disabled (use 3–6 + g from fresh .rpyc)."
         echo
         return 1
     fi

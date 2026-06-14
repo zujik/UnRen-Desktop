@@ -91,8 +91,10 @@ _unren_configure_python_env() {
     local py_bin="$1"
     local extra_paths=("${@:2}")
 
-    local enc_dir
-    enc_dir="$(_unren_find_game_encodings_dir "$py_bin" "${UNREN_APP}")"
+    local enc_dir=""
+    if ! enc_dir="$(_unren_find_game_encodings_dir "$py_bin" "${UNREN_APP}")"; then
+        enc_dir=""
+    fi
 
     if [[ -n "$enc_dir" ]]; then
         local pyhome="${enc_dir%/encodings}"
@@ -245,7 +247,7 @@ resolve_game_and_python() {
 
     if [[ -n "$UNREN_PYTHON" && -x "$UNREN_PYTHON" ]]; then
         if env -u PYTHONHOME -u PYTHONPATH "$UNREN_PYTHON" -c "import encodings" >/dev/null 2>&1; then
-            _unren_configure_python_env "$UNREN_PYTHON" "${UNREN_APP}"
+            _unren_configure_python_env "$UNREN_PYTHON" "${UNREN_APP}" || true
             return 0
         fi
         UNREN_PYTHON=""

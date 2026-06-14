@@ -18,8 +18,20 @@ _unren_read_script_version_txt() {
     return 1
 }
 
+_unren_is_rpc3_game() {
+    local app="${1:-$UNREN_APP}" rc
+    [[ -n "$app" && -f "${DETECT_RPYC_VERSION:-}" ]] || return 1
+    pushd "$app" >/dev/null || return 1
+    set +e
+    env -u PYTHONHOME -u PYTHONPATH python3 "${DETECT_RPYC_VERSION}" >/dev/null 2>&1
+    rc=$?
+    set -e
+    popd >/dev/null || true
+    [[ "$rc" -eq 1 ]]
+}
+
 _unren_script_version_major_from_app() {
-    local app="$1" sv detected
+    local app="$1" sv detected f
 
     if sv="$(_unren_read_script_version_txt \
         "${app}/game/script_version.txt" \
@@ -28,14 +40,19 @@ _unren_script_version_major_from_app() {
         return 0
     fi
 
-    sv="$(grep -rh 'config\.script_version' \
-        "${app}/game/script_version.rpy" "${app}/game/script_version.txt" \
-        "${app}/script_version.rpy" "${app}/script_version.txt" 2>/dev/null \
-        | head -1 | sed -n 's/.*([[:space:]]*\([0-9][0-9]*\).*/\1/p')"
-    if [[ -n "$sv" ]]; then
-        printf '%s\n' "$sv"
-        return 0
-    fi
+    for f in \
+        "${app}/game/script_version.rpy" \
+        "${app}/game/script_version.rpy.unren-rpc3" \
+        "${app}/script_version.rpy" \
+        "${app}/script_version.txt"; do
+        [[ -f "$f" ]] || continue
+        sv="$(grep -m1 'config\.script_version' "$f" 2>/dev/null \
+            | sed -n 's/.*([[:space:]]*\([0-9][0-9]*\).*/\1/p')"
+        if [[ -n "$sv" ]]; then
+            printf '%s\n' "$sv"
+            return 0
+        fi
+    done
 
     if [[ -f "${app}/renpy/vc_version.py" ]]; then
         sv="$(grep -m1 '^version' "${app}/renpy/vc_version.py" 2>/dev/null \
@@ -47,6 +64,9 @@ _unren_script_version_major_from_app() {
     fi
 
     if [[ -f "${app}/renpy/__init__.py" ]]; then
+        sv="$(grep -m1 'version_tuple' "${app}/renpy/__init__.py" 2>/dev/null \
+            | sed -n 's/.*([[:space:]]*\([0-9][0-9]*\).*/\1/p')"
+        [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
         sv="$(perl -ne '
             if (/version_tuple\s*=\s*\(\s*(\d+)/) { push @v, $1 }
             END { if (@v) { @v = sort { $b <=> $a } @v; print $v[0] } }
@@ -258,16 +278,24 @@ _unren_sdk_fallback_chain() {
     local app="$1" major
     local -a wanted=() slice
 
+    if _unren_is_rpc3_game "$app"; then
+        wanted=(py2-6.99.14.3 py2-7.8.7 py2-5.6.7)
+        for slice in "${wanted[@]}"; do
+            _unren_sdk_slice_exists "$slice" "$app" && printf '%s\n' "$slice"
+        done
+        return 0
+    fi
+
     major="$(_unren_script_version_major_from_app "$app")"
     case "$major" in
         8|9|10)
             wanted=(py3-8.5.3 py2-7.8.7)
             ;;
         7)
-            wanted=(py2-7.8.7 py2-6.99.14.3 py3-8.5.3)
+            wanted=(py2-7.8.7 py2-6.99.14.3)
             ;;
         6)
-            wanted=(py2-6.99.14.3 py2-7.8.7 py3-8.5.3)
+            wanted=(py2-6.99.14.3 py2-7.8.7)
             ;;
         5)
             wanted=(py2-5.6.7 py2-6.99.14.3 py2-7.8.7)
@@ -308,4 +336,35 @@ _unren_resolve_sdk_runtime() {
     done < <(_unren_sdk_fallback_chain "$app")
 
     return 1
+}
+
+# Ren'Py py2 SDK stdlib omits deprecated md5.py; legacy games still import it.
+_unren_ensure_py2_stdlib_shims() {
+    local app="${1:-$UNREN_APP}" lib_dir="${2:-}" shim_src pyhome sdk_root
+
+    shim_src="${UNREN_ROOT}/sdk/stdlib-shims/py2/md5.py"
+    [[ -f "$shim_src" ]] || return 0
+
+    if [[ -n "$lib_dir" && "$lib_dir" == *"/sdk/"* ]]; then
+        sdk_root="${lib_dir%%/lib/*}"
+        pyhome="$(_unren_sdk_pythonhome "$sdk_root" "$lib_dir" 2>/dev/null || true)"
+        if [[ -n "$pyhome" && -d "$pyhome" ]] && {
+            [[ -f "${pyhome}/_md5.so" || -f "${pyhome}/lib-dynload/_md5.so" ]]
+        } && [[ ! -f "${pyhome}/md5.py" ]]; then
+            cp "$shim_src" "${pyhome}/md5.py"
+        fi
+    fi
+
+    for pyhome in \
+        "${app}/sdk/py2-6.99.14.3/lib/linux-x86_64/lib/python2.7" \
+        "${app}/sdk/py2-6.99.14.3/lib/linux-i686/lib/python2.7" \
+        "${app}/sdk/py2-6.99.14.3/lib/darwin-x86_64/lib/python2.7" \
+        "${app}/sdk/py2-7.8.7/lib/python2.7" \
+        "${UNREN_ROOT}/sdk/py2-6.99.14.3/lib/linux-x86_64/lib/python2.7" \
+        "${UNREN_ROOT}/sdk/py2-6.99.14.3/lib/linux-i686/lib/python2.7" \
+        "${UNREN_ROOT}/sdk/py2-6.99.14.3/lib/darwin-x86_64/lib/python2.7" \
+        "${UNREN_ROOT}/sdk/py2-7.8.7/lib/python2.7"; do
+        [[ -d "$pyhome" && ( -f "${pyhome}/_md5.so" || -f "${pyhome}/lib-dynload/_md5.so" ) ]] || continue
+        [[ -f "${pyhome}/md5.py" ]] || cp "$shim_src" "${pyhome}/md5.py"
+    done
 }

@@ -50,6 +50,10 @@ source "${UNREN_ROOT}/unren/extract.sh"
 source "${UNREN_ROOT}/unren/rpyc-correct.sh"
 # shellcheck source=unren/decompile.sh
 source "${UNREN_ROOT}/unren/decompile.sh"
+# shellcheck source=unren/rpc3.sh
+source "${UNREN_ROOT}/unren/rpc3.sh"
+# shellcheck source=unren/game-guards.sh
+source "${UNREN_ROOT}/unren/game-guards.sh"
 # shellcheck source=unren/decompile-fixes.sh
 source "${UNREN_ROOT}/unren/decompile-fixes.sh"
 # shellcheck source=unren/extras.sh

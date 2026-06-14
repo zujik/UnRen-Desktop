@@ -19,3 +19,4 @@ These copies are **staging** — wired into `unren/forall.sh`, `extract.sh`, and
 **Local patches (UnRen-Desktop only):**
 
 - `wos_decrypt_all.py` — import `renpy.wos_rpyc_loader` from game root (`UNREN_APP`), not beside the script.
+- `detect_rpyc_version.py` — probe `scripts.rpa` (and other `.rpa`) plus any loose `.rpyc` when standard candidates are not on disk yet.
