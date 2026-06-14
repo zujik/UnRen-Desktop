@@ -100,17 +100,17 @@ _unren_menu_format_opt_list() {
 
 _unren_menu_patch_nums_pending() {
     local -a nums=()
-    (( ! UNREN_MENU_PATCH_DEV )) && nums+=(3)
-    (( ! UNREN_MENU_PATCH_QUICK )) && nums+=(4)
-    (( ! UNREN_MENU_PATCH_SKIP )) && nums+=(5)
-    (( ! UNREN_MENU_PATCH_ROLLBACK )) && nums+=(6)
+    if (( ! UNREN_MENU_PATCH_DEV )); then nums+=(3); fi
+    if (( ! UNREN_MENU_PATCH_QUICK )); then nums+=(4); fi
+    if (( ! UNREN_MENU_PATCH_SKIP )); then nums+=(5); fi
+    if (( ! UNREN_MENU_PATCH_ROLLBACK )); then nums+=(6); fi
     printf '%s\n' "${nums[@]}"
 }
 
 _unren_menu_workflow_nums() {
     local -a nums=()
-    (( UNREN_MENU_HAS_ARCHIVES )) && nums+=(1)
-    (( UNREN_MENU_HAS_RPYC )) && nums+=(2)
+    if (( UNREN_MENU_HAS_ARCHIVES )); then nums+=(1); fi
+    if (( UNREN_MENU_HAS_RPYC )); then nums+=(2); fi
     printf '%s\n' "${nums[@]}"
 }
 
@@ -173,7 +173,9 @@ unren_menu_refresh_state() {
 }
 
 _unren_menu_run_extract_if() {
-    (( UNREN_MENU_HAS_ARCHIVES )) && unren_extract
+    if (( UNREN_MENU_HAS_ARCHIVES )); then
+        unren_extract
+    fi
 }
 
 _unren_menu_run_decompile_if() {
@@ -187,10 +189,10 @@ _unren_menu_run_decompile_if() {
 }
 
 _unren_menu_run_pending_patches() {
-    (( ! UNREN_MENU_PATCH_DEV )) && unren_console
-    (( ! UNREN_MENU_PATCH_QUICK )) && unren_quick
-    (( ! UNREN_MENU_PATCH_SKIP )) && unren_skip
-    (( ! UNREN_MENU_PATCH_ROLLBACK )) && unren_rollback
+    if (( ! UNREN_MENU_PATCH_DEV )); then unren_console; fi
+    if (( ! UNREN_MENU_PATCH_QUICK )); then unren_quick; fi
+    if (( ! UNREN_MENU_PATCH_SKIP )); then unren_skip; fi
+    if (( ! UNREN_MENU_PATCH_ROLLBACK )); then unren_rollback; fi
 }
 
 _unren_menu_run_combo_8() {
@@ -205,7 +207,9 @@ _unren_menu_run_combo_8() {
 
 _unren_menu_run_combo_9() {
     unren_menu_refresh_state
-    (( UNREN_MENU_HAS_MANGLED_RPYC )) && unren_rpyc_correct
+    if (( UNREN_MENU_HAS_MANGLED_RPYC )); then
+        unren_rpyc_correct
+    fi
     _unren_menu_run_extract_if
     _unren_menu_run_decompile_if try-harder
     _unren_menu_run_pending_patches
