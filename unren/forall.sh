@@ -68,10 +68,21 @@ unren_forall_rpyc_version_warn() {
     set -e
     popd >/dev/null || true
     if (( rc == 1 )); then
-        echo "  Warning: RPC3/unknown bytecode — decompile may fail or need option 9."
+        echo "  Warning: RPC3/unknown bytecode — forced decompile can break sources; launch from .rpyc when possible."
         echo
     fi
     return 0
+}
+
+_unren_has_rpc3_rpyc() {
+    local rc
+    pushd "${UNREN_APP}" >/dev/null || return 1
+    set +e
+    env -u PYTHONHOME -u PYTHONPATH python3 "${DETECT_RPYC_VERSION}" >/dev/null 2>&1
+    rc=$?
+    set -e
+    popd >/dev/null || return 1
+    (( rc == 1 ))
 }
 
 unren_wos_decrypt_if_needed() {

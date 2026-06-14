@@ -188,6 +188,12 @@ unren_decompile() {
     _unren_decompile_targets "$want_clobber" "$force_all" targets
     if [[ ${#targets[@]} -eq 0 ]]; then
         if (( try_harder && skipped > 0 )); then
+            if _unren_has_rpc3_rpyc; then
+                echo "  All compiled scripts already have matching .rpy/.rpym (${skipped} file(s))."
+                echo "  RPC3 bytecode — skipping --try-harder force overwrite (launch from .rpyc)."
+                echo
+                return 0
+            fi
             echo "  All compiled scripts already have matching .rpy/.rpym (${skipped} file(s))."
             echo "  Running --try-harder deobfuscate pass (overwriting existing sources)."
             echo
@@ -239,7 +245,10 @@ unren_decompile() {
     _unren_decompile_auto_opts opts
 
     if (( try_harder )); then
-        if _unren_has_mangled_rpyc; then
+        if _unren_has_rpc3_rpyc; then
+            echo "  rpycCorrector: RPC3 bytecode — skipping."
+            echo
+        elif _unren_has_mangled_rpyc; then
             unren_rpyc_correct
         else
             echo "  rpycCorrector: standard RPYC signatures — skipping."

@@ -55,7 +55,11 @@ unren_menu() {
             echo "   7) Options $(_unren_menu_format_opt_list "${pending[@]}")"
         fi
         echo "   ${UNREN_MENU_OPT8_LABEL}"
-        echo "   ${UNREN_MENU_OPT9_LABEL}"
+        if (( UNREN_MENU_HAS_RPC3 )); then
+            echo "   ! RPC3 bytecode detected — option 9 disabled (launch from .rpyc; use 2 only if you need sources)"
+        else
+            echo "   ${UNREN_MENU_OPT9_LABEL}"
+        fi
         (( UNREN_MENU_HAS_RPYC )) &&
             echo "   0) Decompile rpyc (overwrite stub/missing .rpy only)"
         (( UNREN_MENU_HAS_MANGLED_RPYC )) &&
@@ -125,7 +129,10 @@ unren_menu() {
                 _unren_menu_run_pending_patches
                 ;;
             8) _unren_menu_run_combo_8 ;;
-            9) _unren_menu_run_combo_9 ;;
+            9)
+                (( ! UNREN_MENU_HAS_RPC3 )) || { printf '\aInvalid choice.\n'; continue; }
+                _unren_menu_run_combo_9
+                ;;
             c|C)
                 (( UNREN_MENU_HAS_MANGLED_RPYC )) || { printf '\aInvalid choice.\n'; continue; }
                 unren_rpyc_correct
