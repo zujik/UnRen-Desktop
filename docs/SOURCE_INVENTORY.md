@@ -1,9 +1,9 @@
 # Source Inventory & Dependency Provenance
 
-This inventory is maintained for license compliance and bootstrap auditing. Because
-this tool utilizes a **download-on-first-run** architecture (alongside optional
-offline bundles), third-party components may be fetched dynamically at runtime from
-our managed vendor mirror repository and are subject to their own licenses.
+This inventory is maintained for license compliance and bootstrap auditing. The
+**full-tree copy** workflow is what ships today; a thin bootstrap download (Track B)
+is planned. `verify_compliance.py` can already re-fetch license texts (and cache
+tool archives) from the live mirror when local files are missing.
 
 **Maintainer:** Kijuz · GitHub: [zujik](https://github.com/zujik)
 
@@ -22,11 +22,12 @@ our managed vendor mirror repository and are subject to their own licenses.
 | **UnRen-Linux.sh** | https://github.com/zujik/UnRen-Linux.sh | MIT (prior port) | Earlier Linux wrapper by Troy Dallas; superseded by UnRen-Desktop |
 | **UnRen-Desktop** | https://github.com/zujik/UnRen-Desktop | GPL-3.0 | This wrapper / orchestrator (`UnRen.sh`, `unren/`, release bundles) |
 
-## Mirror archive (bootstrap)
+## Mirror archive (compliance re-fetch)
 
-Runtime downloads and license re-fetch use the planned **UnRen-Dependencies** mirror:
+Runtime license re-fetch (and optional archive cache) uses **UnRen-Dependencies**
+release **v1.0.0**:
 
-- https://github.com/zujik/UnRen-Dependencies
+- https://github.com/zujik/UnRen-Dependencies/releases/tag/v1.0.0
 
 See `manifest.json` → `dependencies` for per-component `download_url` and
 `license_download_url` paths. Local copies live under `licenses/`.
@@ -35,4 +36,5 @@ See `manifest.json` → `dependencies` for per-component `download_url` and
 
 | Date | Auditor | Notes |
 |------|---------|-------|
+| 2026-06-15 | Kijuz | UnRen-Dependencies v1.0.0 published; mirror URLs verified; UnRen-Local layout for maintainer caches |
 | 2026-06-13 | Kijuz | Verified UnRen-forall GPL-3.0 (`Lurmel/UnRen-forall` LICENSE); rpycCorrector BSD-2-Clause (F95 header); project relicensed GPL-3.0 for offline bundle distribution |

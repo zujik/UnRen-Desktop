@@ -208,8 +208,8 @@ SDL_VIDEODRIVER=wayland ./GameName.sh   # py3 native Linux only
 
 ## Next steps (project)
 
-1. Commit `rename-refactor` (RPC3 cleanup, md5 shim, IW guard, launcher fixes).
-2. Refactor layout: game folder + `UnRen.sh` only for transfer.
-3. Slim deploy: `UnRen.sh` pulls tools/sdk from GitHub as needed.
+1. ~~Commit `rename-refactor`~~ — done; PR #1 open.
+2. Merge PR → tag `v2.0.0-alpha.1`.
+3. **Track B:** bootstrap `UnRen.sh` + slim release (game folder + script only).
 
 See `docs/DEPLOY.md` when starting slim packaging.
