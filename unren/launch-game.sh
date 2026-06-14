@@ -417,6 +417,34 @@ _unren_sync_native_renpy_modules() {
     done
 }
 
+_unren_patch_launcher_sdk_renpy_base() {
+    local dest="$1"
+    [[ -f "$dest" ]] || return 0
+    if grep -q 'UNREN_SDK_RENPY_BASE' "$dest" 2>/dev/null; then
+        return 0
+    fi
+    env -u PYTHONHOME -u PYTHONPATH python3 - "$dest" <<'PY'
+import pathlib
+import sys
+
+dest = pathlib.Path(sys.argv[1])
+text = dest.read_text()
+needle = "    renpy_base = path_to_renpy_base()\n"
+snippet = """    renpy_base = path_to_renpy_base()
+
+    # UNREN_SDK_RENPY_BASE - SDK python native modules need the matching sdk/renpy tree.
+    import os as _unren_os
+    _unren_sdk = _unren_os.environ.get("UNREN_SDK_ROOT", "")
+    if _unren_sdk and _unren_os.path.isdir(_unren_os.path.join(_unren_sdk, "renpy")):
+        renpy_base = _unren_os.path.abspath(_unren_sdk)
+
+"""
+if needle not in text:
+    sys.exit(0)
+dest.write_text(text.replace(needle, snippet, 1))
+PY
+}
+
 _unren_patch_launcher_native_renpy() {
     local dest="$1"
     [[ -f "$dest" ]] || return 0
@@ -473,6 +501,7 @@ _unren_install_launcher_py() {
         cp -a "$src" "$dest"
     fi
     _unren_patch_launcher_native_renpy "$dest"
+    _unren_patch_launcher_sdk_renpy_base "$dest"
     chmod +x "$dest" 2>/dev/null || true
 }
 
