@@ -106,6 +106,8 @@ fi
 # SDK python + game native renpy/*.so (Windows PC builds): add game lib/ to loader path.
 case "$LIB" in
     */sdk/*)
+        UNREN_SDK_ROOT="${LIB%%/lib/*}"
+        export UNREN_SDK_ROOT
         for _glib in \
             "$ROOT/lib/linux-x86_64" \
             "$ROOT/lib/linux-i686" \
