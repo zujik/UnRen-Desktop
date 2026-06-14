@@ -6,6 +6,7 @@ UnRen runs these automatically after decompile and before launch.
 
 - `tools/decompile-fixes/run-all.sh` — POSIX entry used by `GameName.sh` launchers (`/bin/sh` safe).
 - `tools/decompile-fixes/fix-atl-tails.py` — empty trailing blocks (`at transform:`, `image foo:`, `show …:`, `camera:`, etc.).
+- `tools/decompile-fixes/fix-dotted-image-ext.py` — spurious trailing dot on image paths (`"tip.png."` → `"tip.png"`; Hollow splash).
 - `tools/decompile-fixes/fix-sl-keywords.py` — restores SL keywords (`imagetext_button` → `imagetextbutton`, etc.).
 
 ## Per-game hooks
