@@ -9,7 +9,7 @@ unren_sync_disable() {
         return 0
     fi
     cat > "$patch" <<'EOF'
-# Made by (SM) aka JoeLurmel @ f95zone.to — ported in UnRen-Desktop
+# Made by (SM) aka JoeLurmel @ f95zone.to - ported in UnRen-Desktop
 
 init 9999 python:
     renpy.config.has_sync = False
@@ -21,31 +21,46 @@ EOF
 
 unren_restore_org() {
     local found=0 restored=0
-    local orgfile dstfile filename dstfilename dir prev_dir=""
+    local backup dstfile filename dstfilename dir prev_dir="" suffix=""
 
-    echo "  Restoring *.rpa.org / *.rpy.org / *.rpyc.org backups in game/"
+    echo "  Restoring backup files in game/ (.org and .bak from UnRen)"
     echo
 
-    while IFS= read -r -d '' orgfile; do
+    while IFS= read -r -d '' backup; do
         found=1
-        dir="$(dirname "$orgfile")"
+        dir="$(dirname "$backup")"
         if [[ "$dir" != "$prev_dir" ]]; then
             echo "  ${dir}/"
             prev_dir="$dir"
         fi
-        filename="$(basename "$orgfile")"
-        dstfilename="${filename%.org}"
-        dstfile="${orgfile%.org}"
-        if mv -f "$orgfile" "$dstfile" 2>/dev/null; then
+        filename="$(basename "$backup")"
+        case "$filename" in
+            *.rpa.org|*.rpy.org|*.rpyc.org)
+                suffix=".org"
+                ;;
+            *.rpa.bak|*.rpy.bak|*.rpyc.bak)
+                suffix=".bak"
+                ;;
+            *)
+                continue
+                ;;
+        esac
+        dstfilename="${filename%${suffix}}"
+        dstfile="${backup%${suffix}}"
+        if mv -f "$backup" "$dstfile" 2>/dev/null; then
             echo "    ${filename} -> ${dstfilename}"
             ((restored++)) || true
         else
             echo "    ! failed: ${filename}"
         fi
-    done < <(find "${UNREN_GAME}" \( -name '*.rpa.org' -o -name '*.rpy.org' -o -name '*.rpyc.org' \) -type f -print0 2>/dev/null)
+    done < <(find "${UNREN_GAME}" \( \
+        -name '*.rpa.org' -o -name '*.rpy.org' -o -name '*.rpyc.org' \
+        -o -name '*.rpa.bak' -o -name '*.rpy.bak' -o -name '*.rpyc.bak' \
+        \) -type f -print0 2>/dev/null)
 
     if (( ! found )); then
-        echo "  No .org backup files found."
+        echo "  No .org or .bak backup files found."
+        echo "  (.org = pre-patch copies; .bak = archives renamed by option 1 extract)"
     else
         echo
         echo "  Restored ${restored} file(s)."

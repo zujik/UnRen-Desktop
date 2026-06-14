@@ -58,6 +58,8 @@ source "${UNREN_ROOT}/unren/extras.sh"
 source "${UNREN_ROOT}/unren/mac.sh"
 # shellcheck source=unren/launch-game.sh
 source "${UNREN_ROOT}/unren/launch-game.sh"
+# shellcheck source=unren/menu-state.sh
+source "${UNREN_ROOT}/unren/menu-state.sh"
 # shellcheck source=unren/menu.sh
 source "${UNREN_ROOT}/unren/menu.sh"
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2019-2020 "Anne O'nymous" AON/SC4X — ported to Python 3 for UnRen-Desktop
+# Copyright 2019-2020 "Anne O'nymous" AON/SC4X - ported to Python 3 for UnRen-Desktop
 # Fixes mangled RPYC signatures/encodings in renpy/script.py and game .rpyc files.
 
 import base64

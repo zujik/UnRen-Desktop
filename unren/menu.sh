@@ -18,21 +18,55 @@ unren_finished() {
 
 unren_menu() {
     local choice=
+    local -a pending=()
+    local pending_count=0
+
     while true; do
+        unren_menu_refresh_state
+        mapfile -t pending < <(_unren_menu_patch_nums_pending)
+        pending_count=${#pending[@]}
+
         echo " Available Options:"
-        echo "   1) Extract RPA/JAS/RPC packages (in game folder)"
-        echo "   2) Decompile rpyc files (in game folder)"
-        echo "   3) Enable Console and Developer Menu"
-        echo "   4) Enable Quick Save and Quick Load"
-        echo "   5) Force enable skipping of unseen content"
-        echo "   6) Force enable rollback (scroll wheel)"
-        echo "   7) Options 3-6"
-        echo "   8) Options 1-6 + install game launcher"
-        echo "   9) Options 1-6 + rpycCorrector + deobfuscate + install launcher"
-        echo "   0) Decompile rpyc (overwrite stub/missing .rpy only)"
-        echo "   c) Fix mangled RPYC signatures (rpycCorrector only)"
-        echo "   n) Disable Ren'Py cloud sync (unren-nsync.rpy)"
-        echo "   r) Restore .org backup files (.rpa.org, .rpy.org, ...)"
+        (( UNREN_MENU_HAS_ARCHIVES )) &&
+            echo "   1) Extract RPA/JAS/RPC packages (in game folder)"
+        (( UNREN_MENU_HAS_RPYC )) &&
+            echo "   2) Decompile rpyc files (in game folder)"
+        if (( UNREN_MENU_PATCH_DEV )); then
+            echo "   3) Remove Console and Developer Menu"
+        else
+            echo "   3) Enable Console and Developer Menu"
+        fi
+        if (( UNREN_MENU_PATCH_QUICK )); then
+            echo "   4) Remove Quick Save and Quick Load"
+        else
+            echo "   4) Enable Quick Save and Quick Load"
+        fi
+        if (( UNREN_MENU_PATCH_SKIP )); then
+            echo "   5) Remove force-enable skipping"
+        else
+            echo "   5) Force enable skipping of unseen content"
+        fi
+        if (( UNREN_MENU_PATCH_ROLLBACK )); then
+            echo "   6) Remove force-enable rollback"
+        else
+            echo "   6) Force enable rollback (scroll wheel)"
+        fi
+        if (( pending_count > 0 )); then
+            echo "   7) Options $(_unren_menu_format_opt_list "${pending[@]}")"
+        fi
+        echo "   ${UNREN_MENU_OPT8_LABEL}"
+        echo "   ${UNREN_MENU_OPT9_LABEL}"
+        (( UNREN_MENU_HAS_RPYC )) &&
+            echo "   0) Decompile rpyc (overwrite stub/missing .rpy only)"
+        (( UNREN_MENU_HAS_MANGLED_RPYC )) &&
+            echo "   c) Fix mangled RPYC signatures (rpycCorrector only)"
+        if (( UNREN_MENU_PATCH_NSYNC )); then
+            echo "   n) Remove Ren'Py cloud sync disable (unren-nsync.rpy)"
+        else
+            echo "   n) Disable Ren'Py cloud sync (unren-nsync.rpy)"
+        fi
+        (( UNREN_MENU_HAS_RESTORE )) &&
+            echo "   r) Restore backup files (.rpa.org / .rpa.bak, ...)"
         if is_osx; then
             echo "   m) Remove macOS quarantine (Gatekeeper) from game"
         fi
@@ -45,45 +79,68 @@ unren_menu() {
         echo
 
         case "$choice" in
-            0) unren_decompile --clobber ;;
+            0)
+                (( UNREN_MENU_HAS_RPYC )) || { printf '\aInvalid choice.\n'; continue; }
+                unren_decompile --clobber
+                ;;
             g|G) unren_launch_game ;;
-            1) unren_extract ;;
-            2) unren_decompile ;;
-            3) unren_console ;;
-            4) unren_quick ;;
-            5) unren_skip ;;
-            6) unren_rollback ;;
-            7)
-                unren_console
-                unren_quick
-                unren_skip
-                unren_rollback
-                ;;
-            8)
+            1)
+                (( UNREN_MENU_HAS_ARCHIVES )) || { printf '\aInvalid choice.\n'; continue; }
                 unren_extract
+                ;;
+            2)
+                (( UNREN_MENU_HAS_RPYC )) || { printf '\aInvalid choice.\n'; continue; }
                 unren_decompile
-                unren_console
-                unren_quick
-                unren_skip
-                unren_rollback
-                echo
-                echo " Installing game launcher ..."
-                unren_install_launcher
                 ;;
-            9)
-                unren_extract
-                unren_decompile --try-harder
-                unren_console
-                unren_quick
-                unren_skip
-                unren_rollback
-                echo
-                echo " Installing game launcher ..."
-                unren_install_launcher
+            3)
+                if (( UNREN_MENU_PATCH_DEV )); then
+                    unren_console_remove
+                else
+                    unren_console
+                fi
                 ;;
-            c|C) unren_rpyc_correct ;;
-            n|N) unren_sync_disable ;;
-            r|R) unren_restore_org ;;
+            4)
+                if (( UNREN_MENU_PATCH_QUICK )); then
+                    unren_quick_remove
+                else
+                    unren_quick
+                fi
+                ;;
+            5)
+                if (( UNREN_MENU_PATCH_SKIP )); then
+                    unren_skip_remove
+                else
+                    unren_skip
+                fi
+                ;;
+            6)
+                if (( UNREN_MENU_PATCH_ROLLBACK )); then
+                    unren_rollback_remove
+                else
+                    unren_rollback
+                fi
+                ;;
+            7)
+                (( pending_count > 0 )) || { printf '\aInvalid choice.\n'; continue; }
+                _unren_menu_run_pending_patches
+                ;;
+            8) _unren_menu_run_combo_8 ;;
+            9) _unren_menu_run_combo_9 ;;
+            c|C)
+                (( UNREN_MENU_HAS_MANGLED_RPYC )) || { printf '\aInvalid choice.\n'; continue; }
+                unren_rpyc_correct
+                ;;
+            n|N)
+                if (( UNREN_MENU_PATCH_NSYNC )); then
+                    unren_sync_remove
+                else
+                    unren_sync_disable
+                fi
+                ;;
+            r|R)
+                (( UNREN_MENU_HAS_RESTORE )) || { printf '\aInvalid choice.\n'; continue; }
+                unren_restore_org
+                ;;
             m|M)
                 if is_osx; then
                     unren_mac_quarantine
@@ -114,7 +171,7 @@ unren_splash() {
     echo "/ /_/ / / / / _, _/  __/ / / / (__  ) / / / "
     echo "\____/_/ /_/_/ |_|\___/_/ /_(_)____/_/ /_/  "
     echo " UnRen-Desktop v${UNREN_VERSION} ${UNREN_VERSION_DATE}"
-    echo " Linux and macOS — from UnRen.bat and UnRen-Ultrahack"
+    echo " Linux and macOS - from UnRen.bat and UnRen-Ultrahack"
     echo " https://github.com/zujik/UnRen-Desktop"
     echo
     echo "----------------------------------------------------"

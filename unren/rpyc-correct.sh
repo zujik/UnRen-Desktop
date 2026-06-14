@@ -1,7 +1,7 @@
 # rpycCorrector pre-pass (AON/SC4X v1.04, py3 port)
 
 unren_rpyc_correct() {
-    local py="${UNREN_PYTHON}" rc
+    local py="${UNREN_RPA_PYTHON-}" rc
 
     if [[ ! -f "${UNREN_APP}/renpy/script.py" ]]; then
         echo "  rpycCorrector: no renpy/script.py — skipping signature fix."
@@ -9,12 +9,16 @@ unren_rpyc_correct() {
         return 0
     fi
 
+    if [[ -z "$py" ]]; then
+        py="$(unren_resolve_rpatool_python)"
+    fi
+
     echo "  Running rpycCorrector (mangled RPYC signature / encoding fix)..."
     echo
 
     pushd "${UNREN_APP}" >/dev/null || return 1
     set +e
-    "${py}" "${PYARGS[@]}" "${RPYCCORRECT}" 2>&1 | awk '{ if (length) print "  > "$0 }'
+    env -u PYTHONHOME -u PYTHONPATH "$py" "${RPYCCORRECT}" 2>&1 | awk '{ if (length) print "  > "$0 }'
     rc=$?
     set -e
     popd >/dev/null || return 1
