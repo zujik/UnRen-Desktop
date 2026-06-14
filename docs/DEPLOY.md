@@ -179,7 +179,7 @@ confirm `LICENSE.txt` landed in each `sdk/<slice>/`.
 | `unren-sdk-<slice>-*.tar.bz2` | SDK-only refresh | One slice | Medium |
 | Git + LFS | Developers | Full tree | Clone + `git lfs pull` |
 
-`personal/sdk-sources/` and `.sdk-sources-cache/` are **local maintainer caches**
+`.sdk-sources-cache/` and `${UNREN_LOCAL}/.mirror-staging/` are **local maintainer caches**
 — never publish (see `.gitignore`).
 
 ---

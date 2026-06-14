@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
-# Populate sdk/py3-8.5.3 and sdk/py2-7.8.7 from ../sdk-sources tarballs.
+# Populate sdk/py3-8.5.3 and sdk/py2-7.8.7 from UnRen-Local/sdk-sources tarballs.
 # Safe to re-run: uses .linux-full extract; populate skips if dest already OK
 # unless FORCE_POPULATE_SDK=1.
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-PERSONAL="$(cd "${ROOT}/.." && pwd)"
-SRC="${RENPY_SDK_SOURCES:-${PERSONAL}/sdk-sources}"
+# shellcheck source=unren-local.sh
+source "$(dirname "$0")/unren-local.sh"
+UNREN_LOCAL="$(unren_local_dir "${ROOT}")"
+SRC="${RENPY_SDK_SOURCES:-${UNREN_LOCAL}/sdk-sources}"
 STAGE="${SRC}/.linux-full"
 
 die() { echo "populate-sdk-from-sources: $*" >&2; exit 1; }
