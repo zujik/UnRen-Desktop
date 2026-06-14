@@ -9,6 +9,7 @@ UNREN_MENU_PATCH_QUICK=0
 UNREN_MENU_PATCH_SKIP=0
 UNREN_MENU_PATCH_ROLLBACK=0
 UNREN_MENU_PATCH_NSYNC=0
+UNREN_MENU_HAS_RPC3=0
 UNREN_MENU_OPT8_LABEL=""
 UNREN_MENU_OPT9_LABEL=""
 
@@ -94,6 +95,7 @@ _unren_menu_refresh_state() {
     UNREN_MENU_HAS_RPYC=0
     UNREN_MENU_HAS_RESTORE=0
     UNREN_MENU_HAS_MANGLED_RPYC=0
+    UNREN_MENU_HAS_RPC3=0
     UNREN_MENU_PATCH_DEV=0
     UNREN_MENU_PATCH_QUICK=0
     UNREN_MENU_PATCH_SKIP=0
@@ -111,6 +113,7 @@ _unren_menu_refresh_state() {
            -o -name '*.rpa.bak' -o -name '*.rpy.bak' -o -name '*.rpyc.bak' \) \
         -type f && UNREN_MENU_HAS_RESTORE=1
     _unren_has_mangled_rpyc && UNREN_MENU_HAS_MANGLED_RPYC=1
+    _unren_has_rpc3_rpyc && UNREN_MENU_HAS_RPC3=1
 
     [[ -f "${UNREN_GAME}/unren-dev.rpy" ]] && UNREN_MENU_PATCH_DEV=1
     [[ -f "${UNREN_GAME}/unren-quick.rpy" ]] && UNREN_MENU_PATCH_QUICK=1
@@ -128,16 +131,25 @@ _unren_menu_refresh_state() {
     local opt9_extra="deobfuscate + install launcher"
     (( UNREN_MENU_HAS_MANGLED_RPYC )) && opt9_extra="rpycCorrector + ${opt9_extra}"
 
-    if ((${#combo[@]} > 0)); then
+    if (( ! UNREN_MENU_HAS_RPC3 )); then
+        if ((${#combo[@]} > 0)); then
+            label="$(_unren_menu_format_opt_list "${combo[@]}")"
+            UNREN_MENU_OPT8_LABEL="8) Options ${label} + install game launcher"
+            UNREN_MENU_OPT9_LABEL="9) Options ${label} + ${opt9_extra}"
+        else
+            if (( UNREN_MENU_HAS_MANGLED_RPYC )); then
+                UNREN_MENU_OPT9_LABEL="9) ${opt9_extra}"
+            else
+                UNREN_MENU_OPT9_LABEL="9) Deobfuscate + install launcher"
+            fi
+        fi
+    elif ((${#combo[@]} > 0)); then
         label="$(_unren_menu_format_opt_list "${combo[@]}")"
         UNREN_MENU_OPT8_LABEL="8) Options ${label} + install game launcher"
-        UNREN_MENU_OPT9_LABEL="9) Options ${label} + ${opt9_extra}"
-    else
-        if (( UNREN_MENU_HAS_MANGLED_RPYC )); then
-            UNREN_MENU_OPT9_LABEL="9) ${opt9_extra}"
-        else
-            UNREN_MENU_OPT9_LABEL="9) Deobfuscate + install launcher"
-        fi
+    fi
+
+    if (( UNREN_MENU_HAS_RPC3 )); then
+        UNREN_MENU_OPT9_LABEL=""
     fi
 }
 
@@ -180,6 +192,11 @@ _unren_menu_run_combo_8() {
 
 _unren_menu_run_combo_9() {
     unren_menu_refresh_state
+    if (( UNREN_MENU_HAS_RPC3 )); then
+        echo "  RPC3 bytecode — option 9 disabled (launch from .rpyc; use 2 only if you need sources)."
+        echo
+        return 1
+    fi
     if (( UNREN_MENU_HAS_MANGLED_RPYC )); then
         unren_rpyc_correct
     fi
