@@ -198,38 +198,79 @@ _unren_launch_lib_dir() {
     return 1
 }
 
+_unren_launcher_root_path() {
+    local app="$1" path="$2"
+    local app_real path_real dir base rel
+
+    [[ -n "$path" ]] || return 1
+    app_real="$(cd -P "$app" 2>/dev/null && pwd)" || app_real="$app"
+    if [[ -d "$path" ]]; then
+        path_real="$(cd -P "$path" && pwd)"
+    else
+        dir="$(dirname "$path")"
+        base="$(basename "$path")"
+        path_real="$(cd -P "$dir" 2>/dev/null && pwd)/${base}"
+    fi
+
+    if [[ "$path_real" == "${app_real}/"* ]]; then
+        printf '%s\n' "${path_real#"${app_real}/"}"
+        return 0
+    fi
+    if rel="$(realpath --relative-to="$app_real" "$path_real" 2>/dev/null)" \
+        && [[ -n "$rel" && "$rel" != ".." && "$rel" != ../* ]]; then
+        printf '%s\n' "$rel"
+        return 0
+    fi
+    printf '%s\n' "$path_real"
+}
+
+_unren_launcher_path_shell() {
+    local app="$1" path="$2"
+    local rel
+
+    rel="$(_unren_launcher_root_path "$app" "$path")"
+    if [[ "$rel" == /* ]]; then
+        printf '%s\n' "$rel"
+    else
+        printf '$ROOT/%s\n' "$rel"
+    fi
+}
+
 _unren_launcher_sdk_elif_block() {
     local app="$1" py_major="$2" platform="$3" kw="${4:-elif}"
     local slice sdk_root lib_dir rel_lib phome py_args layout ld_line
+    local lib_shell phome_shell sdk_shell
 
     while IFS= read -r slice; do
         [[ -n "$slice" ]] || continue
         local slice_py
-        sdk_root="$(_unren_sdk_slice_dir "$slice")"
+        sdk_root="$(_unren_sdk_slice_dir "$slice" "$app")"
         slice_py="$(_unren_sdk_slice_py_major "$slice")"
         lib_dir="$(_unren_sdk_lib_dir "$sdk_root" "$slice_py" "$platform")" || continue
         _unren_sdk_lib_usable "$lib_dir" || continue
         _unren_sdk_runtime_usable "$slice" "$sdk_root" "$lib_dir" || continue
 
         phome="$(_unren_sdk_pythonhome "$sdk_root" "$lib_dir")"
-        rel_lib="${lib_dir#"${app}/"}"
+        rel_lib="$(_unren_launcher_root_path "$app" "$lib_dir")"
         py_args="$(_unren_sdk_py_args "$sdk_root")"
         layout="$(_unren_sdk_layout "$sdk_root")"
-        rel_sdk="${sdk_root#"${app}/"}"
+        lib_shell="$(_unren_launcher_path_shell "$app" "$lib_dir")"
+        sdk_shell="$(_unren_launcher_path_shell "$app" "$sdk_root")"
         local sdk_pyhome_line=""
         if [[ -n "$phome" ]]; then
-            sdk_pyhome_line="    SDK_PYHOME=\"\$ROOT/${phome#"${app}/"}\""
+            phome_shell="$(_unren_launcher_path_shell "$app" "$phome")"
+            sdk_pyhome_line="    SDK_PYHOME=\"${phome_shell}\""
         fi
         case "$layout" in
             renpy6|renpy5)
                 ld_line='    SDK_LD_PATH="$LIB:$LIB/lib"'
-                renpy_py_line="    SDK_RENPY_PY=\"\$ROOT/${rel_sdk}/renpy.py\""
+                renpy_py_line="    SDK_RENPY_PY=\"${sdk_shell}/renpy.py\""
                 ;;
         *)
             ld_line='    SDK_LD_PATH="$LIB"'
             case "$slice" in
                 py2-*)
-                    renpy_py_line="    SDK_RENPY_PY=\"\$ROOT/${rel_sdk}/renpy.py\""
+                    renpy_py_line="    SDK_RENPY_PY=\"${sdk_shell}/renpy.py\""
                     ;;
                 *)
                     renpy_py_line=""
@@ -238,9 +279,15 @@ _unren_launcher_sdk_elif_block() {
                 ;;
         esac
 
-        printf '%s\n' \
-            "${kw} [ -d \"\$ROOT/${rel_lib}\" ] && { [ -x \"\$ROOT/${rel_lib}/renpy\" ] || [ -x \"\$ROOT/${rel_lib}/python\" ] || [ -x \"\$ROOT/${rel_lib}/python.real\" ]; }; then" \
-            "    LIB=\"\$ROOT/${rel_lib}\""
+        if [[ "$rel_lib" == /* ]]; then
+            printf '%s\n' \
+                "${kw} [ -d \"${rel_lib}\" ] && { [ -x \"${rel_lib}/renpy\" ] || [ -x \"${rel_lib}/python\" ] || [ -x \"${rel_lib}/python.real\" ]; }; then" \
+                "    LIB=\"${rel_lib}\""
+        else
+            printf '%s\n' \
+                "${kw} [ -d \"\$ROOT/${rel_lib}\" ] && { [ -x \"\$ROOT/${rel_lib}/renpy\" ] || [ -x \"\$ROOT/${rel_lib}/python\" ] || [ -x \"\$ROOT/${rel_lib}/python.real\" ]; }; then" \
+                "    LIB=\"\$ROOT/${rel_lib}\""
+        fi
         [[ -n "$sdk_pyhome_line" ]] && printf '%s\n' "$sdk_pyhome_line"
         printf '%s\n' \
             "    SDK_PY_ARGS=\"${py_args}\"" \
@@ -311,16 +358,38 @@ _unren_render_launcher_sh() {
 
     env -u PYTHONHOME -u PYTHONPATH python3 - "$LAUNCHER_SH_TEMPLATE" "$dest" "$py_major" "$tmp_game" "$tmp_elifs" "$tmp_sdl" <<'PY'
 import pathlib
+import re
 import sys
 
 template_path, dest, py_major, game_path, elifs_path, sdl_path = sys.argv[1:7]
 content = pathlib.Path(template_path).read_text()
-content = content.replace("@@UNREN_PY_MAJOR@@", py_major)
-content = content.replace("@@UNREN_GAME_LIB_IF@@", pathlib.Path(game_path).read_text())
-content = content.replace("@@UNREN_SDK_ELIFS@@", pathlib.Path(elifs_path).read_text())
-content = content.replace("@@UNREN_SDL_BLOCK@@", pathlib.Path(sdl_path).read_text())
+content = content.replace("\r\n", "\n").replace("\r", "\n")
+
+def read_block(path: str) -> str:
+    p = pathlib.Path(path)
+    if not p.is_file():
+        return ""
+    return p.read_text().replace("\r\n", "\n").replace("\r", "\n")
+
+replacements = {
+    "@@UNREN_PY_MAJOR@@": py_major,
+    "@@UNREN_GAME_LIB_IF@@": read_block(game_path),
+    "@@UNREN_SDK_ELIFS@@": read_block(elifs_path),
+    "@@UNREN_SDL_BLOCK@@": read_block(sdl_path),
+}
+for token, block in replacements.items():
+    content = re.sub(re.escape(token) + r"\s*", block, content)
+
+if "@@UNREN_" in content:
+    raise SystemExit("launcher template still has unreplaced placeholders")
+
 pathlib.Path(dest).write_text(content)
 PY
+
+    if [[ ! -f "$dest" ]] || grep -q '@@UNREN_' "$dest" 2>/dev/null; then
+        rm -f "$tmp_game" "$tmp_elifs" "$tmp_sdl"
+        unren_die "Failed to generate launcher script (template placeholders remain)."
+    fi
 
     rm -f "$tmp_game" "$tmp_elifs" "$tmp_sdl"
 }
@@ -449,7 +518,7 @@ unren_install_launcher() {
     renpy_major="$(_unren_script_version_major_from_app "$UNREN_APP")"
     launcher_pick="$(_unren_launcher_game_lib_if_block "$UNREN_APP" "$py_major" "$platform")"
     sdk_kw="$(printf '%s\n' "$launcher_pick" | tail -1)"
-    game_lib_if="$(printf '%s\n' "$launcher_pick" | sed '$d')"
+    game_lib_if="$(printf '%s\n' "$launcher_pick" | sed '$d' | sed '/^[[:space:]]*$/d')"
 
     if [[ -z "$game_lib_if" ]]; then
         sdk_kw="if"
@@ -464,6 +533,10 @@ unren_install_launcher() {
     fi
 
     sdk_elifs="$(_unren_launcher_sdk_elif_block "$UNREN_APP" "$py_major" "$platform" "$sdk_kw")"
+
+    if [[ -z "$game_lib_if" && -n "$sdk_elifs" ]]; then
+        sdk_elifs="$(printf '%s\n' "$sdk_elifs" | sed '1s/^elif /if /')"
+    fi
 
     if [[ -z "$game_lib_if" && -z "$sdk_elifs" ]]; then
         echo "  Cannot generate launcher: no lib/ or sdk/ runtime matched."
