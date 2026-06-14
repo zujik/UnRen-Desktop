@@ -67,7 +67,15 @@ _unren_script_version_major_from_app() {
 }
 
 _unren_sdk_slice_dir() {
-    printf '%s\n' "${UNREN_ROOT}/sdk/${1}"
+    local slice=$1 app="${2:-}"
+    if [[ -n "$app" ]]; then
+        app="$(cd -P "$app" 2>/dev/null && pwd)" || app="$2"
+        if [[ -d "${app}/sdk/${slice}" && ( -f "${app}/sdk/${slice}/renpy.py" || -d "${app}/sdk/${slice}/renpy" ) ]]; then
+            printf '%s\n' "${app}/sdk/${slice}"
+            return 0
+        fi
+    fi
+    printf '%s\n' "${UNREN_ROOT}/sdk/${slice}"
 }
 
 _unren_sdk_slice_py_major() {
@@ -105,7 +113,10 @@ _unren_sdk_runtime_usable() {
 }
 
 _unren_sdk_slice_exists() {
-    local slice=$1 dir
+    local slice=$1 app="${2:-}" dir
+    if [[ -n "$app" && -d "${app}/sdk/${slice}" ]]; then
+        [[ -f "${app}/sdk/${slice}/renpy.py" || -d "${app}/sdk/${slice}/renpy" ]] && return 0
+    fi
     dir="$(_unren_sdk_slice_dir "$slice")"
     [[ -d "$dir" && ( -f "${dir}/renpy.py" || -d "${dir}/renpy" ) ]]
 }
@@ -270,7 +281,7 @@ _unren_sdk_fallback_chain() {
     esac
 
     for slice in "${wanted[@]}"; do
-        _unren_sdk_slice_exists "$slice" && printf '%s\n' "$slice"
+        _unren_sdk_slice_exists "$slice" "$app" && printf '%s\n' "$slice"
     done
 }
 
@@ -286,7 +297,7 @@ _unren_resolve_sdk_runtime() {
     while IFS= read -r slice; do
         [[ -n "$slice" ]] || continue
         local slice_py phome
-        resolved_root="$(_unren_sdk_slice_dir "$slice")"
+        resolved_root="$(_unren_sdk_slice_dir "$slice" "$app")"
         slice_py="$(_unren_sdk_slice_py_major "$slice")"
         resolved_lib="$(_unren_sdk_lib_dir "$resolved_root" "$slice_py" "$platform")" || continue
         _unren_sdk_lib_usable "$resolved_lib" || continue
