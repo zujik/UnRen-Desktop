@@ -207,7 +207,7 @@ confirm `LICENSE.txt` landed in each `sdk/<slice>/`.
 ## Related docs
 
 - `docs/TESTING.md` — game matrix and regression anchors
-- `docs/SOURCE_INVENTORY.md` — your download provenance (fill from your list)
+- `docs/SOURCE_INVENTORY.md` — download provenance and mirror audit log
 - `docs/MIRROR_SETUP.md` — two-repo mirror setup (UnRen-Dependencies)
 - `THIRD_PARTY_LICENSES.md` — component licenses
 - `tools/SOURCES.md` — tool paths and upstream URLs

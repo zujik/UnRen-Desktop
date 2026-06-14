@@ -16,6 +16,8 @@ Use **9** when forum reports obfuscation / failed decompile. Use **c** first if 
 
 **Innocent Witches (known exception):** fresh unzip → patches **3–6** → **g** only. Menu auto-disables **1** / **2** / **0** / **8** / **9** / **c**. See [Known limits](#known-limits).
 
+**Hollow (regression anchor):** fresh unzip → **3–6** → **g** for smoke; optional **1** → **8** → **9** → **g** for full pipeline. Use `UNREN_KEEP_RPA=1` with option **1** until `game/gui/button/*.png` is verified. See [Hollow](#hollow).
+
 ---
 
 ## Matrix status (2026-06-14)
@@ -39,7 +41,7 @@ Extract fresh from zip, flat-copy UnRen, option **8** or **g**:
 | Game | Why |
 |------|-----|
 | **Magic Shop 1.03** | py2 Win-only, SDK `py2-6.99.14.3`, RPC3, Wayland/SDL |
-| **Hollow** | py3 native Linux `lib/py3-linux-x86_64`; after full decompile fix `tip.png.` splash (auto via `fix-dotted-image-ext.py`) |
+| **Hollow** | py3 native Linux `lib/py3-linux-x86_64`; option **1** needs `UNREN_KEEP_RPA=1` until assets verified; splash `tip.png.` auto-fixed via `fix-dotted-image-ext.py` |
 
 ---
 
@@ -63,6 +65,35 @@ fresh unzip → flat-copy UnRen → 3–6 (or 7) → g
 
 Details: `patches/decompile-fixes/README.md`.
 
+### Hollow
+
+**Status:** Regression anchor — **fully playable** on Linux with native `lib/py3-linux-x86_64`.
+
+**Minimal smoke (pre-merge):**
+
+```
+fresh unzip → flat-copy UnRen → 3–6 → g
+```
+
+**Full pipeline (optional, confirmed 2026-06-15):**
+
+```
+fresh unzip → flat-copy UnRen → 1 → 8 → 9 → g
+```
+
+Launcher should report `runtime: game lib/` (not `sdk/py3-8.5.3`). If `lib/py3-linux-x86_64/` is empty, UnRen falls back to the bundled SDK — that usually means the game folder was damaged; **re-unzip** from the original archive.
+
+**Extract caution (option 1):**
+
+- Successful extract renames each `.rpa` to `.rpa.bak` unless you set **`UNREN_KEEP_RPA=1`**.
+- Re-running option **1** skips `*.bak` archives — if `.bak` files were removed, option **1** reports "No archives found" even though extract already ran once.
+- Before deleting or renaming archives, verify:
+  - `test -x lib/py3-linux-x86_64/python`
+  - `ls game/gui/button/*.png` (navigation button backgrounds)
+- A partial or repeated extract on a damaged tree can leave `game/gui/button/` empty and crash the main menu with missing `navigation_*_background.png` images. Recovery: fresh unzip, not in-place patching.
+
+**Decompile note:** Full decompile once produced `image tip = "tip.png."` in `game/script.rpy` (splash crash). UnRen auto-fixes this via `tools/decompile-fixes/fix-dotted-image-ext.py` on launch.
+
 ### RPC3 bytecode (Ren'Py 6)
 
 Games with zlib RPC3 `.rpyc` (e.g. Demon Master Chris, Medicine Woman, Magic Shop, Planet Stronghold): decompile is unreliable. Options **2** / **0** / **9** / **c** disabled; launch uses `.rpyc`. Leftover decompiled `.rpy` removed automatically on **g** / **8**.
@@ -75,6 +106,7 @@ Games with zlib RPC3 `.rpyc` (e.g. Demon Master Chris, Medicine Woman, Magic Sho
 Date       Game                              Bucket           Result   Notes
 2026-06-13 Magic Shop 1.03                   A1 / py2 SDK     PASS     RPC3; py2-6.99; SDL x11; regression anchor
 2026-06-14 Hollow                            B5               PASS     py3 native Linux; regression anchor
+2026-06-15 Hollow                            A2 / B5          PASS     3-6+g and 1+8+9+g on fresh zip; UNREN_KEEP_RPA
 2026-06-14 Deviant Brew                      B5               PASS     stale launcher placeholders fixed
 2026-06-14 Rediscovering Us                  B5               PASS     rpycCorrector exit 1 on R8 = harmless
 2026-06-14 Planet Stronghold                 B4 / RPC3        PASS     md5.py shim for py2 SDK
@@ -201,13 +233,17 @@ Post-decompile fixes: `patches/decompile-fixes/`, `tools/decompile-fixes/`. Re-r
 ./UnRen.sh /path/to/GameFolder   # option 8 = full pipeline + launcher
 ./GameName.sh                    # launch after option g/8/9
 SDL_VIDEODRIVER=wayland ./GameName.sh   # py3 native Linux only
+
+# Hollow / cautious extract — keep .rpa until gui/button/*.png verified
+UNREN_KEEP_RPA=1 ./UnRen.sh      # then option 1
 ```
 
 ---
 
 ## Next steps (project)
 
-2. Merge PR → tag `v2.0.0-alpha.1`.
+1. ~~Linux smoke matrix~~ — **complete** (Magic Shop, Innocent Witches guarded, Hollow both workflows).
+2. Merge PR #1 → tag `v2.0.0-alpha.1` → set GitHub repo license to **GPLv3**.
 3. **Track B:** bootstrap `UnRen.sh` + slim release (game folder + script only).
 
 See `docs/DEPLOY.md` when starting slim packaging.
