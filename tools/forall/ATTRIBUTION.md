@@ -7,7 +7,7 @@ Vendored from **UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80** (JoeLurmel / Lurmel).
 
 These copies are **staging** — wired into `unren/forall.sh`, `extract.sh`, and `decompile.sh` as-is for testing. Refactor or reimplement later; keep this attribution block.
 
-**License:** GitHub does not declare an SPDX license for UnRen-forall. The embedded **altrpatool** component is **GPL-3.0** (`tools/altrpatool-py3/COPYING`). Other forall scripts are attributed here; treat as third-party forum/community code. See `THIRD_PARTY_LICENSES.md`.
+**License:** **GNU GPL v3** — verified at https://github.com/Lurmel/UnRen-forall/blob/main/LICENSE (Copyright 2025 JoeLurmel). Full text: `licenses/unren_forall.GPL-3.txt` and `licenses/GPL-3.0.txt`. The embedded **altrpatool** component is also **GPL-3.0** (`tools/altrpatool-py3/COPYING`). See `THIRD_PARTY_LICENSES.md` and `docs/SOURCE_INVENTORY.md`.
 
 | Script | Role in UnRen-Desktop |
 |--------|------------------------|

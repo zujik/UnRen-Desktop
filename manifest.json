@@ -1,11 +1,79 @@
 {
+  "manifest_version": "1.0.0",
   "name": "UnRen-Desktop",
   "version": "2.0.0-alpha.1",
+  "maintainer": {
+    "name": "Kijuz",
+    "github": "zujik",
+    "forum": "Kijuz @ f95zone.to"
+  },
+  "compliance_block": {
+    "project_license": "GPL-3.0-only",
+    "audit_status": "compliant",
+    "last_audit_date": "2026-06-13",
+    "required_files": [
+      "LICENSE",
+      "NOTICE",
+      "THIRD_PARTY_LICENSES.md",
+      "docs/SOURCE_INVENTORY.md"
+    ],
+    "distribution_modes": [
+      "offline-bundle",
+      "download-on-first-run"
+    ],
+    "mirror_repository": "https://github.com/zujik/UnRen-Dependencies"
+  },
+  "dependencies": {
+    "unrpyc": {
+      "version": "2.0.4",
+      "license_type": "MIT",
+      "expected_license_file": "licenses/unrpyc.MIT.txt",
+      "tool_path": "tools/unrpyc-py3",
+      "download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/unrpyc-2.0.4.tar.xz",
+      "license_download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/unrpyc.MIT.txt"
+    },
+    "unren_forall": {
+      "version": "la_0.77",
+      "license_type": "GPL-3.0",
+      "expected_license_file": "licenses/unren_forall.GPL-3.txt",
+      "tool_path": "tools/forall",
+      "download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/unren-forall-la_0.77.tar.xz",
+      "license_download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/unren_forall.GPL-3.txt"
+    },
+    "rpyc_corrector": {
+      "version": "1.04",
+      "license_type": "BSD-2-Clause",
+      "expected_license_file": "licenses/rpyc_corrector.BSD-2-Clause.txt",
+      "tool_path": "tools/rpyccorrect-py3",
+      "source_header_file": "tools/rpyccorrect-py3/rpyccorrect.py",
+      "download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/rpyc-corrector-1.04.tar.xz",
+      "license_download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/rpyc_corrector.BSD-2-Clause.txt"
+    },
+    "altrpatool": {
+      "version": "embedded",
+      "license_type": "GPL-3.0",
+      "expected_license_file": "licenses/altrpatool.GPL-3.txt",
+      "tool_path": "tools/altrpatool-py3",
+      "gpl_full_text": "licenses/GPL-3.0.txt",
+      "gpl_full_text_download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/GPL-3.0.txt",
+      "download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/altrpatool.tar.xz",
+      "license_download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/altrpatool.GPL-3.txt"
+    },
+    "rpatool": {
+      "version": "upstream",
+      "license_type": "WTFPL",
+      "expected_license_file": "licenses/rpatool.WTFPL.txt",
+      "tool_path": "tools/rpatool-py3",
+      "download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/rpatool.tar.xz",
+      "license_download_url": "https://github.com/zujik/UnRen-Dependencies/releases/download/v1.0.0/rpatool.WTFPL.txt"
+    }
+  },
   "runtimes": {
     "py3": {
       "renpy_version": "8.5.3",
       "sdk_dir": "sdk/py3-8.5.3",
       "download_url": "https://www.renpy.org/dl/8.5.3/renpy-8.5.3-sdk.tar.bz2",
+      "license_file": "sdk/py3-8.5.3/LICENSE.txt",
       "components": [
         "renpy.sh",
         "renpy.py",
@@ -22,6 +90,7 @@
       "renpy_version": "7.8.7",
       "sdk_dir": "sdk/py2-7.8.7",
       "download_url": "https://www.renpy.org/dl/7.8.7/renpy-7.8.7-sdk.tar.bz2",
+      "license_file": "sdk/py2-7.8.7/LICENSE.txt",
       "components": [
         "renpy.sh",
         "renpy.py",
@@ -36,11 +105,13 @@
     "py2_legacy": {
       "renpy_version": "6.99.14.3",
       "sdk_dir": "sdk/py2-6.99.14.3",
+      "license_file": "sdk/py2-6.99.14.3/LICENSE.txt",
       "note": "Ren'Py 6.x games; lib/linux-* layout"
     },
     "py2_mid": {
       "renpy_version": "5.6.7",
       "sdk_dir": "sdk/py2-5.6.7",
+      "license_file": "sdk/py2-5.6.7/LICENSE.txt",
       "note": "Ren'Py 5.x; lib/linux-x86 (32-bit)"
     }
   },
@@ -49,30 +120,37 @@
       "path": "tools/unrpyc-py3",
       "version": "v2.0.4",
       "upstream": "v2.0.4",
+      "license": "MIT",
       "patches": "tools/unrpyc-py3/PATCHES.md",
       "source": "https://github.com/CensoredUsername/unrpyc"
     },
     "rpatool": {
       "path": "tools/rpatool-py3/rpatool.py",
+      "license": "WTFPL-2.0",
       "source": "https://codeberg.org/shiz/rpatool"
     },
     "altrpatool": {
       "path": "tools/altrpatool-py3/altrpatool.py",
+      "license": "GPL-3.0",
+      "license_file": "tools/altrpatool-py3/COPYING",
       "author": "JoeLurmel @ f95zone",
       "source": "UnRen-forall-la (embedded)"
     },
     "rpyccorrect": {
       "path": "tools/rpyccorrect-py3/rpyccorrect.py",
       "version": "1.04",
+      "license": "BSD-2-Clause",
       "author": "AON/SC4X",
-      "source": "_archive/unren-legacy/misc/rpycCorrector_1.04"
+      "source": "https://f95zone.to/threads/rpyccorrector-1-04-rpyc-signature-corrector-formerly-sigcorrector.26320/"
     },
     "detect_renpy_version": {
       "path": "tools/detect-renpy-version/detect_renpy_version.py",
+      "license": "GPL-3.0",
       "source": "UnRen-forall-la (embedded)"
     },
     "forall": {
       "path": "tools/forall/",
+      "license": "GPL-3.0",
       "source": "https://github.com/Lurmel/UnRen-forall",
       "tag": "UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80",
       "author": "JoeLurmel / Lurmel",

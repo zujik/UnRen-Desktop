@@ -1,0 +1,7 @@
+rpatool
+Upstream: https://codeberg.org/shiz/rpatool
+
+Licensed under the Do What The Fuck You Want To Public License (WTFPL).
+See upstream repository for the canonical license text.
+
+WTFPL summary: You are free to do whatever you want with this software.

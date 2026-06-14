@@ -135,9 +135,12 @@ UnRen-Desktop/
 │   └── templates/        # renpy-desktop.sh / renpy-desktop.py launcher templates
 ├── tools/                # rpatool + unrpyc (plain Python, not base64)
 ├── patches/              # .rpy patch templates
+├── licenses/             # per-component license texts (runtime audit)
 ├── sdk/                  # trimmed Ren'Py runtime slices
-├── scripts/              # populate-sdk.sh, build-release.sh
-└── manifest.json         # pinned versions and download URLs
+├── docs/
+│   └── SOURCE_INVENTORY.md  # provenance audit trail
+├── scripts/              # populate-sdk.sh, build-release.sh, verify_compliance.py
+└── manifest.json         # pinned versions, compliance_block, mirror URLs
 ```
 
 ## SDK setup
@@ -199,22 +202,26 @@ See **`THIRD_PARTY_LICENSES.md`** and **`NOTICE`** for full attribution.
 |------|---------|
 | [unrpyc](https://github.com/CensoredUsername/unrpyc) | MIT |
 | [rpatool](https://codeberg.org/shiz/rpatool) | WTFPL |
-| [UnRen-forall](https://github.com/Lurmel/UnRen-forall) staging | Attributed; altrpatool is GPL-3 |
+| [UnRen-forall](https://github.com/Lurmel/UnRen-forall) staging | GPL-3.0 — `licenses/unren_forall.GPL-3.txt` |
 | altrpatool (py3 port) | GPL-3 — `tools/altrpatool-py3/COPYING` |
-| rpycCorrector (AON/SC4X, py3 port) | Forum tool; no SPDX — see `tools/rpyccorrect-py3/README.md` |
+| rpycCorrector (AON/SC4X, py3 port) | BSD-2-Clause — `licenses/rpyc_corrector.BSD-2-Clause.txt` |
 | Ren'Py SDK slices | MIT + LGPL binaries — `sdk/*/LICENSE.txt` |
 
-Origins and versions: `tools/SOURCES.md`, `manifest.json`.
+Origins and versions: `tools/SOURCES.md`, `manifest.json`, `docs/SOURCE_INVENTORY.md`.
 
 ## Legal notes
 
-- **UnRen-Desktop** is **MIT** (`LICENSE`). Third-party tools keep their own licenses.
-- **altrpatool** is **GPL-3** and ships with full license text in `tools/altrpatool-py3/COPYING`.
+- **UnRen-Desktop** is **GPL-3.0-only** (`LICENSE`). Third-party tools keep their own licenses.
+- Offline bundles that include GPL tools (forall, altrpatool) must ship under GPL-3.0.
+- **altrpatool** and **UnRen-forall** staging are **GPL-3** — full text in `licenses/GPL-3.0.txt`.
+- **rpycCorrector** is **BSD-2-Clause** — Anne O'nymous copyright preserved in source and `licenses/`.
 - **Ren'Py SDK** runtime files include `LICENSE.txt` per slice; some binaries are LGPL.
 - **Game content** remains copyrighted by game authors. UnRen only helps unpack/patch installs you already have for personal use.
 
+At startup, `scripts/verify_compliance.py` audits `licenses/` against `manifest.json`.
+
 This is practical open-source hygiene, not legal advice. If you redistribute a
-custom build, include `LICENSE`, `NOTICE`, and `THIRD_PARTY_LICENSES.md`.
+custom build, include `LICENSE`, `NOTICE`, `THIRD_PARTY_LICENSES.md`, and `docs/SOURCE_INVENTORY.md`.
 
 ## Decompile limits
 
@@ -228,6 +235,8 @@ Game test notes and known titles: **`docs/TESTING.md`**.
 
 ## License
 
-MIT — see `LICENSE` (Copyright 2022–2026 Troy Dallas).
+GNU GPL v3.0 — see `LICENSE` (Copyright 2022–2026 Kijuz).
+
+Maintainer: **Kijuz** on [F95zone](https://f95zone.to/) · GitHub: [zujik](https://github.com/zujik)
 
 Third-party components: `THIRD_PARTY_LICENSES.md`, `NOTICE`, `tools/SOURCES.md`.
