@@ -14,16 +14,16 @@ Add `patches/decompile-fixes/<slug>.sh` with a `unren_decompile_fix_<slug>()` fu
 
 | Game | Detector | Fixes (`tools/decompile-fixes/`) |
 |------|----------|----------------------------------|
-| Innocent Witches | `Innocent Witches.exe` / `Innocent_Witches.exe` | see below — **not fully launchable after full decompile** |
+| Innocent Witches | exe / folder / `build.name` | see below — **KNOWN LIMIT: not playable after full extract+decompile** |
 
 Innocent Witches hooks: `fix-sonya-store.py`, `fix-achievements-init.py`, `fix-spell-cast-anims.py`, `fix-community-tl.py`, `fix-tutorial-settings.py`, `fix-memories-scopes.py`, `fix-live2d-tails.py`, `fix-layered-images.py`, `fix-missing-menus.py`, `fix-iw-runtime-stubs.py`, `fix-main-menu.py`, `fix-assistant-actions.py`, `fix-game-menu.py`, `fix-characters.py`, truncated `credits/credits.rpy`.
 
-**Innocent Witches is a special case — treat as FAIL for full decompile (option 8).** Sad Crab ships dozens of custom `store.*` AST node types (`DefinePersonStatement`, `DynamicStatement`, `LayeredImageStatement`, `RawMenu`, …). Full decompile leaves ~90k+ `COULD NOT DECOMPILE` lines, drops whole modules (`scripts/loadsave.rpy`), truncates files (`menus/loadsave.rpy`), and loses all 54 `define person` blocks in `persons.rpy`. Post-fix stubs can reach menus and early plot but gameplay remains broken (e.g. `tutorial.complete_item` on decompiled `main.rpy`).
+**Innocent Witches — documented exception (menu-guarded).** Sad Crab ships dozens of custom `store.*` AST node types (`DefinePersonStatement`, `DynamicStatement`, `LayeredImageStatement`, `RawMenu`, …). Extract + decompile (options **1**, **2**, **8**, **9**) have been broken for years and are unlikely to be fixed while the game relies on custom Ren'Py internals. Full decompile leaves ~90k+ `COULD NOT DECOMPILE` lines, drops modules, truncates files, and breaks gameplay even after post-fix stubs.
 
-**Recommended (vanilla play on Linux):** unzip fresh game → flat-copy UnRen → options **3–6** (or **7**) → **g**. Do **not** run options 1, 2, or 8. **Confirmed 2026-06-14:** language picker, terms, main menu, and new game start all work. Launch does **not** apply IW decompile stubs unless decompiled `.rpy` with `COULD NOT DECOMPILE` markers is already present (`UNREN_IW_FIXES=1` forces them).
+**Supported workflow (Linux play):** fresh unzip → flat-copy UnRen → options **3–6** (or **7**) → **g**. UnRen auto-detects this title and disables **1/2/0/8/9/c** in the menu. **Confirmed 2026-06-14:** language picker, terms, main menu, and new game start all work. Crash-report prompt on first run is normal.
 
-**Decompile experiment (not playable end-to-end):** option **1** (extract RPA) → option **8** (decompile) → **g**. Option 1 again after extract = no archives (`.rpa.bak`) — expected.
+**Not supported:** option **1** (extract) → **8** (decompile) → **g** — remains a FAIL for end-to-end play regardless of post-fix hooks.
 
-Re-decompile workflow: flat-copy UnRen → option **8** (decompile) → generic fixes run automatically → Innocent Witches hook runs if detected → option **g** (launch) re-runs fixes before start. Patches are idempotent (skip if marker already present).
+Re-decompile experiment (optional): flat-copy UnRen → option **8** → generic + IW hooks → **g**. Patches are idempotent. `UNREN_IW_FIXES=1` forces IW stubs when decompiled `.rpy` is already present.
 
 These are **launchability** repairs, not full source recovery. For complete scripts, keep original `.rpyc` or restore from backup.

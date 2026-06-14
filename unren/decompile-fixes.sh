@@ -19,7 +19,8 @@ unren_decompile_fixes() {
         done
     fi
 
-    if [ -f "${root}/Innocent Witches.exe" ] || [ -f "${root}/Innocent_Witches.exe" ]; then
+    if [ -f "${root}/Innocent Witches.exe" ] || [ -f "${root}/Innocent_Witches.exe" ] ||
+        { type _unren_is_innocent_witches_game >/dev/null 2>&1 && _unren_is_innocent_witches_game "$root"; }; then
         if type unren_decompile_fix_innocent_witches >/dev/null 2>&1; then
             UNREN_ROOT="$root" UNREN_GAME="$game" unren_decompile_fix_innocent_witches
         fi

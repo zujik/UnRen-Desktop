@@ -57,17 +57,35 @@ _unren_launcher_stdlib_shell_guard() {
         "${app}/lib/python3.12/site.py" \
         "${app}/lib/python3.12/site.pyc" \
         "${app}/lib/python3.9/site.py" \
+        "${app}/lib/python3.9/site.pyc" \
         "${lib_dir}/lib/python3.12/site.py" \
         "${lib_dir}/lib/python3.12/site.pyc" \
         "${lib_dir}/lib/python3.9/site.py" \
+        "${lib_dir}/lib/python3.9/site.pyc" \
         "${app}/lib/pythonlib2.7/site.py"; do
         [[ -f "$candidate" ]] || continue
         rel="${candidate#"${app}/"}"
         parts+=("[ -f \"\$ROOT/${rel}\" ]")
     done
 
+    for candidate in \
+        "${lib_dir}/lib/python3.12/encodings" \
+        "${lib_dir}/lib/python3.9/encodings" \
+        "${lib_dir}/lib/python2.7/encodings" \
+        "${app}/lib/python3.12/encodings" \
+        "${app}/lib/python3.9/encodings" \
+        "${app}/lib/python2.7/encodings"; do
+        [[ -d "$candidate" ]] || continue
+        rel="${candidate#"${app}/"}"
+        parts+=("[ -d \"\$ROOT/${rel}\" ]")
+    done
+
     ((${#parts[@]} == 0)) && return 1
-    printf ' && { %s; }' "$(IFS=' || '; echo "${parts[*]}")"
+    local joined="${parts[0]}" part
+    for part in "${parts[@]:1}"; do
+        joined+=" || ${part}"
+    done
+    printf ' && { %s; }' "$joined"
 }
 
 _unren_runtime_py_major_for_lib() {
@@ -297,12 +315,19 @@ _unren_launcher_sdk_elif_block() {
     done < <(_unren_sdk_fallback_chain "$app")
 }
 
-# Legacy py2 pygame_sdl2 has no native Wayland — use XWayland on Wayland sessions.
-# py3 runtimes (native lib/ or sdk/py3-*) leave SDL unset; modern SDL2 picks
-# Wayland or X11 from the session and can fall back if Wayland init fails.
+# Bundled game lib/ and py2 pygame_sdl2 often lack a working Wayland backend on KDE.
+# Use XWayland via SDL_VIDEODRIVER=x11 when the session or desktop forces wayland.
 _unren_runtime_needs_xwayland() {
     local py_major="$1" lib_dir="$2"
-    [[ "$py_major" == 2 ]]
+    is_linux || return 1
+    [[ "$py_major" == 2 ]] && return 0
+    case "$lib_dir" in
+        */sdk/*) ;;
+        */lib/*) return 0 ;;
+    esac
+    [[ "${SDL_VIDEODRIVER:-}" == "wayland" ]] && return 0
+    unren_session_uses_wayland && return 0
+    return 1
 }
 
 _unren_configure_sdl_video() {
@@ -325,8 +350,8 @@ _unren_launcher_sdl_block() {
     local sdl_legacy="$1"
     if [[ "$sdl_legacy" == 1 ]]; then
         cat <<'SDL'
-# py2 on Linux: bundled pygame_sdl2 has no Wayland backend (use XWayland via x11).
-# KDE often sets SDL_VIDEODRIVER=wayland globally — override that for py2.
+# Linux: bundled game lib/ and py2 SDL often fail with SDL_VIDEODRIVER=wayland (KDE).
+# Prefer X11 / XWayland unless the user overrides via UNREN_SDL_VIDEODRIVER.
 case "$(uname -s)" in
     Linux)
         if [ -n "$UNREN_SDL_VIDEODRIVER" ]; then
@@ -341,6 +366,61 @@ SDL
     fi
 }
 
+_unren_prepare_launcher_dest() {
+    local dest="$1"
+    local name
+
+    [[ -n "$dest" ]] || return 0
+    name="$(basename "$dest")"
+    if [[ ! -e "$dest" ]]; then
+        return 0
+    fi
+    if chmod u+w "$dest" 2>/dev/null; then
+        return 0
+    fi
+    if rm -f "$dest" 2>/dev/null; then
+        return 0
+    fi
+    echo "  ! Cannot overwrite read-only launcher: ${name}" >&2
+    echo "  Try: chmod u+w \"${name}\"" >&2
+    return 1
+}
+
+_unren_chmod_game_lib_executables() {
+    local app="$1" basename="${2-}" platform="$3"
+    local -a dirs=() d f
+
+    case "$platform" in
+        linux-x86_64) dirs+=("${app}/lib/linux-x86_64") ;;
+        linux-i686) dirs+=("${app}/lib/linux-i686") ;;
+        mac-universal|darwin-*|Darwin-*)
+            dirs+=("${app}/lib/darwin-arm64" "${app}/lib/darwin-x86_64")
+            ;;
+    esac
+    dirs+=(
+        "${app}/lib/py2-${platform}"
+        "${app}/lib/py3-${platform}"
+    )
+
+    for d in "${dirs[@]}"; do
+        [[ -d "$d" ]] || continue
+        chmod -f u+w "${d}/python" "${d}/python.real" "${d}/renpy" 2>/dev/null || true
+        chmod -f u+x "${d}/python" "${d}/python.real" "${d}/renpy" 2>/dev/null || true
+        for f in "${d}"/*; do
+            [[ -f "$f" ]] || continue
+            case "${f##*/}" in
+                *.so|*.so.*|*.dll|*.pyd) continue ;;
+            esac
+            chmod -f u+w "$f" 2>/dev/null || true
+            chmod -f u+x "$f" 2>/dev/null || true
+        done
+        if [[ -n "$basename" && -f "${d}/${basename}" ]]; then
+            chmod -f u+w "${d}/${basename}" 2>/dev/null || true
+            chmod -f u+x "${d}/${basename}" 2>/dev/null || true
+        fi
+    done
+}
+
 _unren_render_launcher_sh() {
     local dest="$1" py_major="$2" game_lib_if="$3" sdk_elifs="$4" sdl_block="$5"
     local tmp_game tmp_elifs tmp_sdl
@@ -348,6 +428,8 @@ _unren_render_launcher_sh() {
     if [[ ! -f "$LAUNCHER_SH_TEMPLATE" ]]; then
         unren_die "Launcher template missing: ${LAUNCHER_SH_TEMPLATE}"
     fi
+
+    _unren_prepare_launcher_dest "$dest" || return 1
 
     tmp_game="$(mktemp)"
     tmp_elifs="$(mktemp)"
@@ -388,6 +470,11 @@ if "@@UNREN_" in content:
 
 pathlib.Path(dest).write_text(content)
 PY
+    local render_rc=$?
+    if (( render_rc != 0 )); then
+        rm -f "$tmp_game" "$tmp_elifs" "$tmp_sdl"
+        unren_die "Failed to write launcher script (permission denied?). Try: chmod u+w $(basename "$dest")"
+    fi
 
     if [[ ! -f "$dest" ]] || grep -q '@@UNREN_' "$dest" 2>/dev/null; then
         rm -f "$tmp_game" "$tmp_elifs" "$tmp_sdl"
@@ -423,6 +510,7 @@ _unren_sync_native_renpy_modules() {
 _unren_patch_launcher_sdk_renpy_base() {
     local dest="$1"
     [[ -f "$dest" ]] || return 0
+    _unren_prepare_launcher_dest "$dest" || return 1
     if grep -q 'UNREN_SDK_SYS_PATH' "$dest" 2>/dev/null; then
         return 0
     fi
@@ -479,6 +567,7 @@ PY
 _unren_patch_launcher_native_renpy() {
     local dest="$1"
     [[ -f "$dest" ]] || return 0
+    _unren_prepare_launcher_dest "$dest" || return 1
     if grep -q 'UNREN_NATIVE_RENPY_PATH' "$dest" 2>/dev/null; then
         return 0
     fi
@@ -527,8 +616,10 @@ _unren_install_launcher_py() {
     fi
 
     if [[ -f "$LAUNCHER_PY_HEADER" ]]; then
+        _unren_prepare_launcher_dest "$dest" || return 1
         cat "$LAUNCHER_PY_HEADER" "$src" >"$dest"
     else
+        _unren_prepare_launcher_dest "$dest" || return 1
         cp -a "$src" "$dest"
     fi
     _unren_patch_launcher_native_renpy "$dest"
@@ -574,6 +665,8 @@ unren_install_launcher() {
     py_path="${UNREN_APP}/${basename}.py"
 
     platform="$(_unren_renpy_platform)"
+    _unren_chmod_game_lib_executables "$UNREN_APP" "$basename" "$platform"
+
     py_major="$(_unren_guess_python_major "$UNREN_APP" "$platform")"
     renpy_major="$(_unren_script_version_major_from_app "$UNREN_APP")"
     launcher_pick="$(_unren_launcher_game_lib_if_block "$UNREN_APP" "$py_major" "$platform")"
@@ -582,7 +675,8 @@ unren_install_launcher() {
 
     if [[ -z "$game_lib_if" ]]; then
         sdk_kw="if"
-        if [[ -d "${UNREN_APP}/lib/linux-x86_64" || -d "${UNREN_APP}/lib/py${py_major}-${platform}" ]]; then
+        if [[ -d "${UNREN_APP}/lib/linux-x86_64" || -d "${UNREN_APP}/lib/py${py_major}-${platform}" ]] &&
+            ! _unren_launch_lib_dir "$UNREN_APP" "$py_major" "$platform" >/dev/null 2>&1; then
             echo "  Note: game lib/ has no usable Python stdlib (common on Windows-only builds) — trying sdk/"
             echo
         fi
@@ -611,6 +705,12 @@ unren_install_launcher() {
         sdk_elifs="$(_unren_launcher_sdk_elif_block "$UNREN_APP" "$py_major" "$platform" "$sdk_kw")"
     sdk_elifs="${sdk_elifs%$'\n'}"$'\n'
         lib_dir="$(_unren_launch_lib_dir "$UNREN_APP" "$py_major" "$platform")" || lib_dir=""
+    fi
+
+    if _unren_is_rpc3_game "$UNREN_APP" && [[ "$lib_dir" == *"/sdk/py3-"* ]]; then
+        echo "  RPC3 Ren'Py 6 game cannot use py3 SDK runtime."
+        echo "  Ensure sdk/py2-6.99.14.3 is present, then re-run option g."
+        return 1
     fi
 
     if [[ -z "$lib_dir" ]]; then
@@ -642,7 +742,8 @@ unren_install_launcher() {
     sdl_block="${sdl_block%$'\n'}"$'\n'
 
     _unren_sync_native_renpy_modules "$UNREN_APP" "$platform"
-    _unren_render_launcher_sh "$sh_path" "$runtime_py_major" "$game_lib_if" "$sdk_elifs" "$sdl_block"
+    _unren_ensure_py2_stdlib_shims "$UNREN_APP" "$lib_dir"
+    _unren_render_launcher_sh "$sh_path" "$runtime_py_major" "$game_lib_if" "$sdk_elifs" "$sdl_block" || return 1
     chmod +x "$sh_path"
 
     _unren_install_launcher_py "$py_path" "$py_major" "$platform"
@@ -655,7 +756,7 @@ unren_install_launcher() {
         echo "  Launcher: ${basename}.sh (runtime: sdk/${sdk_slice})" >&2
     fi
     if [[ "$sdl_legacy" == 1 ]]; then
-        echo "  Display: SDL_VIDEODRIVER=x11 on Linux (py2 runtime)" >&2
+        echo "  Display: SDL_VIDEODRIVER=x11 on Linux (Wayland/XWayland compatibility)" >&2
     fi
     [[ -f "$py_path" ]] && echo "  Bootstrap: ${basename}.py (from renpy-desktop.py + SDK renpy.py)" >&2
 }
@@ -666,6 +767,11 @@ unren_launch_game() {
     basename="$(_unren_detect_game_basename "$UNREN_APP")"
     sh_path="${UNREN_APP}/${basename}.sh"
 
+    if [[ -f "$sh_path" ]] && grep -q '@@UNREN_' "$sh_path" 2>/dev/null; then
+        echo "  Launcher script is incomplete (template placeholders) — regenerating ..."
+        echo
+    fi
+
     echo "  Installing game launcher for ${basename} ..."
     echo
     unren_install_launcher "$basename" || return 1
@@ -674,12 +780,21 @@ unren_launch_game() {
     platform="$(_unren_renpy_platform)"
     py_major="$(_unren_guess_python_major "$UNREN_APP" "$platform")"
     lib_dir="$(_unren_launch_lib_dir "$UNREN_APP" "$py_major" "$platform")" || return 1
+    _unren_ensure_py2_stdlib_shims "$UNREN_APP" "$lib_dir"
+    _unren_chmod_game_lib_executables "$UNREN_APP" "$basename" "$platform"
 
     local runtime_py_major
     runtime_py_major="$(_unren_runtime_py_major_for_lib "$py_major" "$lib_dir")"
 
+    if _unren_is_rpc3_game "$UNREN_APP"; then
+        echo "  RPC3: launching from .rpyc (py2 SDK runtime)."
+        echo
+    fi
+
     echo "  Launching ${basename} ..."
     echo
+    unren_rpc3_quarantine_sources
+    unren_rpc3_purge_quarantined
     if [[ -f "${UNREN_ROOT}/unren/decompile-fixes.sh" ]]; then
         # shellcheck source=unren/decompile-fixes.sh
         source "${UNREN_ROOT}/unren/decompile-fixes.sh"

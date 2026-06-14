@@ -65,5 +65,6 @@ unren_restore_org() {
         echo
         echo "  Restored ${restored} file(s)."
     fi
+    unren_rpc3_restore_sources
     echo
 }

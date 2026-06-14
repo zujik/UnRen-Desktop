@@ -11,7 +11,7 @@ unren_finished() {
     if [[ "$rorq" == "1" ]]; then
         unren_menu
     else
-        clear
+        clear 2>/dev/null || printf '\n'
         exit 0
     fi
 }
@@ -27,10 +27,11 @@ unren_menu() {
         pending_count=${#pending[@]}
 
         echo " Available Options:"
-        (( UNREN_MENU_HAS_ARCHIVES )) &&
+        (( UNREN_MENU_HAS_ARCHIVES && ! UNREN_MENU_GUARD_IW )) &&
             echo "   1) Extract RPA/JAS/RPC packages (in game folder)"
-        (( UNREN_MENU_HAS_RPYC )) &&
+        if (( UNREN_MENU_HAS_RPYC && ! UNREN_MENU_HAS_RPC3 && ! UNREN_MENU_GUARD_IW )); then
             echo "   2) Decompile rpyc files (in game folder)"
+        fi
         if (( UNREN_MENU_PATCH_DEV )); then
             echo "   3) Remove Console and Developer Menu"
         else
@@ -52,18 +53,29 @@ unren_menu() {
             echo "   6) Force enable rollback (scroll wheel)"
         fi
         if (( pending_count > 0 )); then
-            echo "   7) Options $(_unren_menu_format_opt_list "${pending[@]}")"
+            label="$(_unren_menu_format_opt_list "${pending[@]}")"
+            [[ -n "$label" ]] && echo "   7) Options ${label}"
         fi
         echo "   ${UNREN_MENU_OPT8_LABEL}"
-        if (( UNREN_MENU_HAS_RPC3 )); then
-            echo "   ! RPC3 bytecode detected — option 9 disabled (launch from .rpyc; use 2 only if you need sources)"
+        if (( UNREN_MENU_GUARD_IW )); then
+            echo "   ! Innocent Witches — options 1/2/0/8/9/c disabled (custom AST); use 3–6 + g"
+        elif (( UNREN_MENU_HAS_RPC3 )); then
+            if (( UNREN_MENU_RPC3_STALE > 0 )); then
+                echo "   ! RPC3 — options 2/0/9/c disabled; ${UNREN_MENU_RPC3_STALE} stale .rpy removed on g/8"
+            elif (( UNREN_MENU_RPC3_QUARANTINED > 0 )); then
+                echo "   ! RPC3 — options 2/0/9/c disabled; ${UNREN_MENU_RPC3_QUARANTINED} leftover .unren-rpc3 deleted on g/8"
+            else
+                echo "   ! RPC3 bytecode detected — options 2/0/9/c disabled (launch with g from .rpyc)"
+            fi
         else
             echo "   ${UNREN_MENU_OPT9_LABEL}"
         fi
-        (( UNREN_MENU_HAS_RPYC )) &&
+        if (( UNREN_MENU_HAS_RPYC && ! UNREN_MENU_HAS_RPC3 && ! UNREN_MENU_GUARD_IW )); then
             echo "   0) Decompile rpyc (overwrite stub/missing .rpy only)"
-        (( UNREN_MENU_HAS_MANGLED_RPYC )) &&
+        fi
+        if (( UNREN_MENU_HAS_MANGLED_RPYC && ! UNREN_MENU_HAS_RPC3 && ! UNREN_MENU_GUARD_IW )); then
             echo "   c) Fix mangled RPYC signatures (rpycCorrector only)"
+        fi
         if (( UNREN_MENU_PATCH_NSYNC )); then
             echo "   n) Remove Ren'Py cloud sync disable (unren-nsync.rpy)"
         else
@@ -84,16 +96,16 @@ unren_menu() {
 
         case "$choice" in
             0)
-                (( UNREN_MENU_HAS_RPYC )) || { printf '\aInvalid choice.\n'; continue; }
+                (( UNREN_MENU_HAS_RPYC && ! UNREN_MENU_HAS_RPC3 && ! UNREN_MENU_GUARD_IW )) || { printf '\aInvalid choice.\n'; continue; }
                 unren_decompile --clobber
                 ;;
             g|G) unren_launch_game ;;
             1)
-                (( UNREN_MENU_HAS_ARCHIVES )) || { printf '\aInvalid choice.\n'; continue; }
+                (( UNREN_MENU_HAS_ARCHIVES && ! UNREN_MENU_GUARD_IW )) || { printf '\aInvalid choice.\n'; continue; }
                 unren_extract
                 ;;
             2)
-                (( UNREN_MENU_HAS_RPYC )) || { printf '\aInvalid choice.\n'; continue; }
+                (( UNREN_MENU_HAS_RPYC && ! UNREN_MENU_HAS_RPC3 && ! UNREN_MENU_GUARD_IW )) || { printf '\aInvalid choice.\n'; continue; }
                 unren_decompile
                 ;;
             3)
@@ -130,11 +142,11 @@ unren_menu() {
                 ;;
             8) _unren_menu_run_combo_8 ;;
             9)
-                (( ! UNREN_MENU_HAS_RPC3 )) || { printf '\aInvalid choice.\n'; continue; }
+                (( ! UNREN_MENU_HAS_RPC3 && ! UNREN_MENU_GUARD_IW )) || { printf '\aInvalid choice.\n'; continue; }
                 _unren_menu_run_combo_9
                 ;;
             c|C)
-                (( UNREN_MENU_HAS_MANGLED_RPYC )) || { printf '\aInvalid choice.\n'; continue; }
+                (( UNREN_MENU_HAS_MANGLED_RPYC && ! UNREN_MENU_HAS_RPC3 && ! UNREN_MENU_GUARD_IW )) || { printf '\aInvalid choice.\n'; continue; }
                 unren_rpyc_correct
                 ;;
             n|N)
@@ -170,7 +182,7 @@ unren_menu() {
 }
 
 unren_splash() {
-    clear
+    clear 2>/dev/null || printf '\n'
     echo
     echo "   __  __      ____                    __   "
     echo "  / / / /___  / __ \___  ____    _____/ /_  "
@@ -226,7 +238,7 @@ unren_main() {
     fi
     echo
 
-    resolve_game_and_python
+    resolve_game_and_python || unren_die "Failed to resolve game Python for: ${UNREN_TARGET}"
     echo "Game folder: ${UNREN_GAME}"
     echo "Python:      ${UNREN_PYTHON}"
     echo

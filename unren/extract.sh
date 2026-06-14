@@ -58,6 +58,11 @@ _unren_run_extract_one() {
 
 unren_extract() {
     local -a archives=() f rc renamed=0
+
+    if unren_guard_skip_extract; then
+        return 0
+    fi
+
     echo "  Searching for archives under ${UNREN_APP} (forall detect_rpa_ext)"
     echo
 
