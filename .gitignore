@@ -23,6 +23,7 @@ b64.file
 
 # Generated / local SDK download cache
 .cache/
+.sdk-sources-cache/
 
 # SDK binaries are tracked with Git LFS (see .gitattributes).
 # If LFS objects are missing after clone: git lfs pull

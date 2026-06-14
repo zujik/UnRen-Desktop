@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Made by (SM) aka JoeLurmel @ f95zone.to
-# This script is licensed under GNU GPL v3 — see LICENSE for details
+# This script is licensed under GNU GPL v3 — see COPYING in this directory.
 
 from __future__ import print_function
 import sys

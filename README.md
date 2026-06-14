@@ -193,9 +193,28 @@ Download full SDKs from [renpy.org](https://www.renpy.org/) into `sdk-sources/` 
 
 ## Third-party tools
 
-- [unrpyc](https://github.com/CensoredUsername/unrpyc) — MIT
-- [rpatool](https://codeberg.org/shiz/rpatool) — WTFPL
-- Ren'Py SDK components — MIT / LGPL (see `THIRD_PARTY_LICENSES.md`)
+See **`THIRD_PARTY_LICENSES.md`** and **`NOTICE`** for full attribution.
+
+| Tool | License |
+|------|---------|
+| [unrpyc](https://github.com/CensoredUsername/unrpyc) | MIT |
+| [rpatool](https://codeberg.org/shiz/rpatool) | WTFPL |
+| [UnRen-forall](https://github.com/Lurmel/UnRen-forall) staging | Attributed; altrpatool is GPL-3 |
+| altrpatool (py3 port) | GPL-3 — `tools/altrpatool-py3/COPYING` |
+| rpycCorrector (AON/SC4X, py3 port) | Forum tool; no SPDX — see `tools/rpyccorrect-py3/README.md` |
+| Ren'Py SDK slices | MIT + LGPL binaries — `sdk/*/LICENSE.txt` |
+
+Origins and versions: `tools/SOURCES.md`, `manifest.json`.
+
+## Legal notes
+
+- **UnRen-Desktop** is **MIT** (`LICENSE`). Third-party tools keep their own licenses.
+- **altrpatool** is **GPL-3** and ships with full license text in `tools/altrpatool-py3/COPYING`.
+- **Ren'Py SDK** runtime files include `LICENSE.txt` per slice; some binaries are LGPL.
+- **Game content** remains copyrighted by game authors. UnRen only helps unpack/patch installs you already have for personal use.
+
+This is practical open-source hygiene, not legal advice. If you redistribute a
+custom build, include `LICENSE`, `NOTICE`, and `THIRD_PARTY_LICENSES.md`.
 
 ## Decompile limits
 
@@ -209,4 +228,6 @@ Game test notes and known titles: **`docs/TESTING.md`**.
 
 ## License
 
-MIT — see `LICENSE`.
+MIT — see `LICENSE` (Copyright 2022–2026 Troy Dallas).
+
+Third-party components: `THIRD_PARTY_LICENSES.md`, `NOTICE`, `tools/SOURCES.md`.

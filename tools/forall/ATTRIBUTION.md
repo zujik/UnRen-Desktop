@@ -7,6 +7,8 @@ Vendored from **UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80** (JoeLurmel / Lurmel).
 
 These copies are **staging** — wired into `unren/forall.sh`, `extract.sh`, and `decompile.sh` as-is for testing. Refactor or reimplement later; keep this attribution block.
 
+**License:** GitHub does not declare an SPDX license for UnRen-forall. The embedded **altrpatool** component is **GPL-3.0** (`tools/altrpatool-py3/COPYING`). Other forall scripts are attributed here; treat as third-party forum/community code. See `THIRD_PARTY_LICENSES.md`.
+
 | Script | Role in UnRen-Desktop |
 |--------|------------------------|
 | `detect_rpa_ext.py` | Discover archive extensions via Ren'Py handlers or RPA header scan |
