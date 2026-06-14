@@ -369,7 +369,10 @@ def read_block(path: str) -> str:
     p = pathlib.Path(path)
     if not p.is_file():
         return ""
-    return p.read_text().replace("\r\n", "\n").replace("\r", "\n")
+    block = p.read_text().replace("\r\n", "\n").replace("\r", "\n")
+    if block and not block.endswith("\n"):
+        block += "\n"
+    return block
 
 replacements = {
     "@@UNREN_PY_MAJOR@@": py_major,
@@ -378,7 +381,7 @@ replacements = {
     "@@UNREN_SDL_BLOCK@@": read_block(sdl_path),
 }
 for token, block in replacements.items():
-    content = re.sub(re.escape(token) + r"\s*", block, content)
+    content = content.replace(token, block)
 
 if "@@UNREN_" in content:
     raise SystemExit("launcher template still has unreplaced placeholders")
@@ -590,6 +593,7 @@ unren_install_launcher() {
     fi
 
     sdk_elifs="$(_unren_launcher_sdk_elif_block "$UNREN_APP" "$py_major" "$platform" "$sdk_kw")"
+    sdk_elifs="${sdk_elifs%$'\n'}"$'\n'
 
     if [[ -z "$game_lib_if" && -n "$sdk_elifs" ]]; then
         sdk_elifs="$(printf '%s\n' "$sdk_elifs" | sed '1s/^elif /if /')"
@@ -605,6 +609,7 @@ unren_install_launcher() {
     if ! lib_dir="$(_unren_launch_lib_dir "$UNREN_APP" "$py_major" "$platform")"; then
         _unren_try_ensure_sdk_runtime "$UNREN_APP" "$py_major" "$platform" || true
         sdk_elifs="$(_unren_launcher_sdk_elif_block "$UNREN_APP" "$py_major" "$platform" "$sdk_kw")"
+    sdk_elifs="${sdk_elifs%$'\n'}"$'\n'
         lib_dir="$(_unren_launch_lib_dir "$UNREN_APP" "$py_major" "$platform")" || lib_dir=""
     fi
 
@@ -634,6 +639,7 @@ unren_install_launcher() {
         sdl_legacy=1
     fi
     sdl_block="$(_unren_launcher_sdl_block "$sdl_legacy")"
+    sdl_block="${sdl_block%$'\n'}"$'\n'
 
     _unren_sync_native_renpy_modules "$UNREN_APP" "$platform"
     _unren_render_launcher_sh "$sh_path" "$runtime_py_major" "$game_lib_if" "$sdk_elifs" "$sdl_block"
