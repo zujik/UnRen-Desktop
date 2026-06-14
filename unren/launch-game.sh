@@ -420,28 +420,56 @@ _unren_sync_native_renpy_modules() {
 _unren_patch_launcher_sdk_renpy_base() {
     local dest="$1"
     [[ -f "$dest" ]] || return 0
-    if grep -q 'UNREN_SDK_RENPY_BASE' "$dest" 2>/dev/null; then
+    if grep -q 'UNREN_SDK_SYS_PATH' "$dest" 2>/dev/null; then
         return 0
     fi
     env -u PYTHONHOME -u PYTHONPATH python3 - "$dest" <<'PY'
 import pathlib
+import re
 import sys
 
 dest = pathlib.Path(sys.argv[1])
 text = dest.read_text()
-needle = "    renpy_base = path_to_renpy_base()\n"
-snippet = """    renpy_base = path_to_renpy_base()
 
-    # UNREN_SDK_RENPY_BASE - SDK python native modules need the matching sdk/renpy tree.
+sdk_block = """    renpy_base = path_to_renpy_base()
+
+    # UNREN_SDK_RENPY_BASE - SDK native modules need the matching sdk/renpy tree.
     import os as _unren_os
+    _unren_game_root = _unren_os.path.dirname(_unren_os.path.abspath(__file__))
     _unren_sdk = _unren_os.environ.get("UNREN_SDK_ROOT", "")
+    _unren_use_sdk = False
     if _unren_sdk and _unren_os.path.isdir(_unren_os.path.join(_unren_sdk, "renpy")):
         renpy_base = _unren_os.path.abspath(_unren_sdk)
+        _unren_use_sdk = True
 
 """
-if needle not in text:
+
+sys_path_block = """    # UNREN_SDK_SYS_PATH - game dir is sys.path[0]; put SDK renpy first when using sdk/.
+    if _unren_use_sdk:
+        _unren_gr = _unren_os.path.normpath(_unren_game_root)
+        sys.path[:] = [p for p in sys.path if _unren_os.path.normpath(p or "") != _unren_gr]
+        sys.path.insert(0, renpy_base)
+    else:
+        sys.path.append(renpy_base)
+
+"""
+
+text, n = re.subn(
+    r"    renpy_base = path_to_renpy_base\(\)\n(?:    # UNREN_SDK_RENPY_BASE[^\n]*\n(?:    import os as _unren_os\n    _unren_sdk[^\n]*\n    if _unren_sdk[^\n]*\n        renpy_base[^\n]*\n)?)?",
+    sdk_block,
+    text,
+    count=1,
+)
+if n == 0 and "    renpy_base = path_to_renpy_base()\n" in text:
+    text = text.replace("    renpy_base = path_to_renpy_base()\n", sdk_block, 1)
+    n = 1
+if n == 0:
     sys.exit(0)
-dest.write_text(text.replace(needle, snippet, 1))
+
+if "    sys.path.append(renpy_base)\n" not in text:
+    sys.exit(0)
+text = text.replace("    sys.path.append(renpy_base)\n", sys_path_block, 1)
+dest.write_text(text)
 PY
 }
 
