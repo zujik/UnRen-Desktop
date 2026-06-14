@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0-alpha.1] - 2026-06-13
+
+### Added
+
+- `NOTICE`, expanded `THIRD_PARTY_LICENSES.md`, tool READMEs for license attribution.
+- `tools/altrpatool-py3/COPYING` (full GPL-3.0 text).
+- Innocent Witches menu guard (`unren/game-guards.sh`), RPC3 stale-source cleanup.
+- `sdk/stdlib-shims/py2/md5.py` for legacy py2 games.
+- `UnRen.command` macOS Finder wrapper.
+- Modular `unren/` bash modules (renamed from `lib/` to avoid collision with Ren'Py's `lib/`), plain `tools/` and `patches/` (no base64).
+- Trimmed Ren'Py SDK layout under `sdk/` with **Git LFS** for `lib/` and `renpy/` binaries.
+- `manifest.json`, `NOTICE`, `THIRD_PARTY_LICENSES.md`, `scripts/populate-sdk.sh`, `scripts/build-release.sh`.
+- Python 3 unrpyc v2 and updated rpatool from UnRen 0.9.0 fork.
+- Game-first Python resolution with bundled SDK fallback (dikau-style game detection).
+
+### Changed
+
+- Decompile skips `.rpyc`/`.rpymc` when a matching `.rpy`/`.rpym` already exists (default for options 2, 8, 9). Option 0 overwrites only stub/missing sources; `UNREN_DECOMPILE_FORCE_ALL=1` forces full overwrite.
+- Decompile scans `game/` when present (avoids bundled `sdk/`/`renpy/` in flat copies).
+- `codegen.py` / `screendecompiler.py`: legacy Ren'Py 6 `_ast` nodes on Python 3.12+ (`_fields`, `Num`, `_ast.Add`, etc.).
+- `UnRen.sh` is now a thin entry point; removed broken apt/brew auto-install block.
+- README rewritten for GitHub distribution.
+
+### Removed
+
+- `b64.file` embedded tool encoding (tools are plain files now).
+
 ## [1.0.9.9.1] - 2022-10-06
 
 ### Changed

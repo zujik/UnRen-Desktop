@@ -1,0 +1,66 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-911798e7a1fdf27c619015a66173437c9ec10c10">SnowBlossom</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="SnowBlossom" name="SnowBlossom" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/SnowBlossom.html">SnowBlossom</a></b>(</td>
+<td>image, count=10, border=50, xspeed=(20, 50), yspeed=(100, 200), start=0)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This implements the snowblossom effect, which is a simple linear motion up or down the screen. This effect can be used for falling cherry blossoms, falling snow, and rising bubbles, along with other things. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>image</em> - The image that is to be used for the particles. This can actually be any displayable, so it's okay to use an Animation as an argument to this parameter. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>count</em> - The number of particles to maintain at any given time. (Realize that not all of the particles may be on the screen at once.) <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>border</em> - How many pixels off the screen to maintain a particle for. This is used to ensure that a particle is not displayed on the screen when it is created, and that it is completely off the screen when it is destroyed. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>xspeed</em> - The horizontal speed of the particles, in pixels per second. This may be a single integer, or it may be a tuple of two integers. In the latter case, the two numbers are used as a range from which to pick the horizontal speed for each particle. The numbers can be positive or negative, as long as the second is larger then the first. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>yspeed</em> - The vertical speed of the particles, in pixels per second. This may be a single integer, but it should almost certainly be a pair of integers which are used as a range from which to pick the vertical speed of each particle. (Using a single number will lead to every particle being used in a wave... not what is wanted.) The second number in the tuple should be larger then the first. The numbers can be positive or negative, but you shouldn't mix the two in the same tuple. If positive numbers are given, the particles fall from the top of the screen to the bottom, as with snow or cherry blossoms. If negative numbers are given, the particles rise from the bottom of the screen to the top, as with bubbles. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>start</em> - This is the number of seconds it will take to start all particles moving. Setting this to a non-zero number prevents an initial wave of particles from overwhelming the screen. Each particle will start in a random amount of time less than this number of seconds. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>fast</em> - If true, then all particles will be started at once, and they will be started at random places on the screen, rather then on the top or bottom. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-22" />
+<h2 id="head-525f626e5577521f69b2ee5668f1aa33b9736edd">Example</h2>
+<span class="anchor" id="line-23" />
+<p class="line867"><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /><span class="anchor" id="line-40" /><span class="anchor" id="line-41" /><span class="anchor" id="line-42" /><span class="anchor" id="line-43" /><span class="anchor" id="line-44" /><span class="anchor" id="line-45" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> blossoms = SnowBlossom(Animation("<span class="renpy_string">sakura1.png</span>", 0.15,
+                                           "<span class="renpy_string">sakura2.png</span>", 0.15))
+
+<span class="renpy_keyword">show</span> snowblossom
+
+"<span class="renpy_string">Finally, there's now a particle motion system in
+ Ren'Py.</span>"
+
+"<span class="renpy_string">It can be used to animate things like falling cherry
+ blossoms, falling snow, and rising bubbles.</span>"
+
+"<span class="renpy_string">While there's convenient support for things rising and
+ falling in straight lines, it's also possible to define
+ your own motions.</span>"
+
+"<span class="renpy_string">The sky's the limit.</span>"
+
+"<span class="renpy_string">Or the ground, in the case of these cherry blossoms.</span>"
+
+<span class="renpy_keyword">hide</span> snowblossom <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-46" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

@@ -1,0 +1,88 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h2 id="head-a2c5ca3586b2511e30e4fe0132cb651d1dd5a442">Customizing the Preferences Screen</h2>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line862">Customizing the preferences screen is accomplished by modifying <a href="../reference/Configuration_Variables.html#config.preferences">config.preferences</a>, which is a dictionary mapping from vbox style to a list of preferences to be placed in that vbox. Modifying this dictionary and lists can move preferences around, and eliminate preferences entirely. It may be desirable to create new vbox styles, by using <a href="../reference/functions/style.create.html">style.create</a> . <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line862">Alternative, one can position preferences using <a href="../reference/Configuration_Variables.html#config.preference_positions">config.preference_positions</a> . <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">To create an entirely new preference, create it with _Preference, _SliderPreference, or _VolumePreference, and then add it to an appropriate list in config.preferences. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+<div class="documented"><a name="_Preference" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;_Preference</b>(</td>
+<td>name, field, values, base=...)</td>
+</tr>
+</table>
+<span class="anchor" id="line-10" /><span class="anchor" id="line-11" />
+<p class="line874">This is a class that's used to represent a multiple-choice preference. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>name</em> - The name of this preference. It will be displayed to the user. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>variable</em> - The field on the base object that will be assigned the selected value. This field must exist. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>values</em> - A list of value name, value, condition triples. The value name is the name of this value that will be shown to the user. The value is the literal python value that will be assigned if this value is selected. The condition is a condition that will be evaluated to determine if this is a legal value. If no conditions are true, this preference will not be displayed to the user. A condition of None is always considered to be True. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>base</em> - The base object on which the variable is read from and set. This defaults to _preferences, the user preferences object. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" />
+<p class="line867" />
+<div class="documented"><a name="_SliderPreference" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;_SliderPreference</b>(</td>
+<td>name, range, get, set, enable='True')</td>
+</tr>
+</table>
+<span class="anchor" id="line-25" /><span class="anchor" id="line-26" />
+<p class="line874">A class that represents a preference that is controlled by a slider. <span class="anchor" id="line-27" /><span class="anchor" id="line-28" /></p>
+<p class="line867"><em>set</em> - The name of this preference, that is shown to the user. <span class="anchor" id="line-29" /><span class="anchor" id="line-30" /></p>
+<p class="line867"><em>range</em> - An integer giving the maximum value of this slider. The slider goes from 0 to range. <span class="anchor" id="line-31" /><span class="anchor" id="line-32" /></p>
+<p class="line867"><em>get</em> - A function that's called to get the initial value of the slider. It's called with no arguments, and should return an integet between 0 and range, inclusive. <span class="anchor" id="line-33" /><span class="anchor" id="line-34" /></p>
+<p class="line867"><em>set</em> - A function that's called when the value of the slider is set by the user. It is called with a single integer, in the range 0 to range, inclusive. <span class="anchor" id="line-35" /><span class="anchor" id="line-36" /></p>
+<p class="line867"><em>enable</em> - A string giving a python expression. If the expression is evaluates to false, this preference is not shown. <span class="anchor" id="line-37" /><span class="anchor" id="line-38" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-39" /><span class="anchor" id="line-40" />
+<p class="line867" />
+<div class="documented"><a name="_VolumePreference" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;_VolumePreference</b>(</td>
+<td>name, mixer, enable='True', sound='None', channel=0)</td>
+</tr>
+</table>
+<span class="anchor" id="line-41" /><span class="anchor" id="line-42" />
+<p class="line874">This represents a preference that controls one of the volumes in the system. It is represented as a slider bar, and a button that can be pushed to play a sample sound on a channel. <span class="anchor" id="line-43" /><span class="anchor" id="line-44" /></p>
+<p class="line867"><em>name</em> - The name of this preference, as shown to the user. <span class="anchor" id="line-45" /><span class="anchor" id="line-46" /></p>
+<p class="line867"><em>mixer</em> - The mixer this preference controls. <span class="anchor" id="line-47" /><span class="anchor" id="line-48" /></p>
+<p class="line867"><em>enable</em> - A string giving a python expression. If the expression is evaluates to false, this preference is not shown. <span class="anchor" id="line-49" /><span class="anchor" id="line-50" /></p>
+<p class="line867"><em>sound</em> - A string that is evaluated to yield another string. The yielded string is expected to give a sound file, which is played as the sample sound. (We apologize for the convolution of this.) <span class="anchor" id="line-51" /><span class="anchor" id="line-52" /></p>
+<p class="line867"><em>channel</em> - The number of the channel the sample sound is played on. <span class="anchor" id="line-53" /><span class="anchor" id="line-54" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-55" /><span class="anchor" id="line-56" />
+<p class="line867" />
+<div class="documented"><a name="_remove_preference" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;_remove_preference</b>(</td>
+<td>name)</td>
+</tr>
+</table>
+<span class="anchor" id="line-57" /><span class="anchor" id="line-58" />
+<p class="line874">Removes the preference with the given name from the preferences menu. <span class="anchor" id="line-59" /><span class="anchor" id="line-60" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-61" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

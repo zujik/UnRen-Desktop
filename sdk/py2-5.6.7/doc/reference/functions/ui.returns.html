@@ -1,0 +1,67 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-af09666e418a597337a0ffcfc6e5a578cd72df49">ui.returns</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ui.returns" name="ui.returns" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/ui.returns.html">ui.returns</a></b>(</td>
+<td>value)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This function returns a function that, when called, returns the supplied value. It's best used to supply the clicked argument to the various button widgets. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" />
+<h2 id="head-37286d90b60a01d436f30f95b0eeb3da41f46525">Example</h2>
+<span class="anchor" id="line-9" />
+<p class="line867"><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">python</span>:
+        <span class="renpy_comment"># This renders an empty slot in the file picker.</span>
+        def _render_new_slot(name, save):
+            
+            <span class="renpy_keyword">if</span> save:
+                clicked=ui.returns(("<span class="renpy_string">return</span>", (name, False)))
+                enable_hover = True
+            <span class="renpy_keyword">else</span>:
+                clicked = None
+                enable_hover = True
+    
+            ui.button(style='<span class="renpy_string">file_picker_entry</span>',
+                      clicked=clicked,
+                      enable_hover=enable_hover)
+
+            ui.hbox(style='<span class="renpy_string">file_picker_entry_box</span>')
+
+            <span class="renpy_keyword">if</span> not config.disable_thumbnails:
+                ui.null(width=config.thumbnail_width,
+                        height=config.thumbnail_height)
+
+            ui.text(name + "<span class="renpy_string">. </span>", style='<span class="renpy_string">file_picker_old</span>')
+
+            <span class="renpy_comment">### file_picker_empty_slot file_picker_text</span>
+            <span class="renpy_comment"># (text) The style that is used for the empty slot indicator</span>
+            <span class="renpy_comment"># in the file picker.</span>
+            ui.text(_(u"<span class="renpy_string">Empty Slot.</span>"), style='<span class="renpy_string">file_picker_empty_slot</span>')
+            ui.close()
+</pre>
+<span class="anchor" id="line-40" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

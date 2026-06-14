@@ -1,0 +1,49 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-90c83ea307449b5bdc018291b89a5c49ec6add45">Dissolve</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Dissolve" name="Dissolve" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/Dissolve.html">Dissolve</a></b>(</td>
+<td>time, old_widget=None, new_widget=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This dissolves from the old scene to the new scene, by overlaying the new scene on top of the old scene and varying its alpha from 0 to 255. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>time</em> - The amount of time the dissolve will take. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" />
+<h2 id="head-4ed8e2552f6e8f27e25493edb9144359e69fe89d">Example</h2>
+<span class="anchor" id="line-11" />
+<p class="line867"><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> dissolve = Dissolve(0.5)
+
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">scene</span> bg whitehouse
+<span class="renpy_keyword">show</span> eileen happy
+<span class="renpy_keyword">with</span> dissolve
+
+e "<span class="renpy_string">The dissolve transition is probably the most useful,
+   blending one scene into another.</span>"
+</pre>
+<span class="anchor" id="line-23" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

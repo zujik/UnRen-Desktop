@@ -1,0 +1,182 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-4fdc98f1e67ac1deaf0a98534da5c5723b451374">Saving, Loading, and Rollback</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line874">Ren'Py supports saving a game to disk, loading that game back in from disk, and rolling back the game to a previous state. As these actions share infrastructure, we will discuss them all in this section, paying attention to what is required to support loading of a saved game when a script changes between saving and loading. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line874">Please note that save-game compatibility is not guaranteed between releases of Ren'Py, even between older and newer releases of Ren'Py. It may be necessary to take this into account when releasing a game with an updated version of Ren'Py. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Saving, Loading, and Rollback can all be seen as operations that affect the game state. Saving is an operation that persists the game state out to disk, Loading consists of restoring the game state from disk, and Rollback reverts the game state to what it was at a previous point in time. This game state consists of two parts: The user state consists of variables and objects that have been changed by the user, while the internal state consists of information used by Ren'Py directly. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><strong>Internal State.</strong> Specifically, the internal state of Ren'Py consists of the following: <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<ul>
+<li>The name of the currently-executing statement. <span class="anchor" id="line-12" /></li>
+<li>The name of each statement on the return stack. <span class="anchor" id="line-13" /></li>
+<li>The layers containing images that are shown on the screen. <span class="anchor" id="line-14" /></li>
+<li>The music that Ren'Py has been requested to play. <span class="anchor" id="line-15" /></li>
+<li>The time the game has been played for. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></li>
+</ul>
+<p class="line874">These items are automatically saved, loaded, and rolled back when the appropriate commands are invoked by the user. You do not need do anything for this state to be handled, and there is no way to prevent these things from being saved. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><strong>User State.</strong> The other kind of state that Ren'Py can save and restore is user state. User state consists of all variables that have been changed after the end of the init phase, and all objects transitively reachable from such variables. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line874">It's important to clarify what it means for a variable to be changed. In Python and Ren'Py, variables reference objects. A variable changes when it is updated to reference a new object. A variable does not change when the object it references changes. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line874">For example, in the following code: <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867"><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+      <span class="renpy_keyword">$</span> a = 0
+      <span class="renpy_keyword">$</span> state = object()
+
+<span class="renpy_keyword">$</span> a = 1
+<span class="renpy_keyword">$</span> b = [ ]
+<span class="renpy_keyword">$</span> state.love_love_points = a + 1
+</pre>
+<span class="anchor" id="line-34" /><span class="anchor" id="line-35" />
+<p class="line862">In this example, the variables <tt class="backtick">a</tt> and <tt class="backtick">b</tt> are changed by the code outside of the init block (assuming that code executes), while state is not changed. In the code outside of the init block, <tt class="backtick">a</tt> is assigned a different integer object, while <tt class="backtick">b</tt> is assigned a new empty list. While a field on the object <tt class="backtick">state</tt> refers to has changed, <tt class="backtick">state</tt> itself still refers to the same object, and not considered to have changed. (Hence, state and its associated object are not considered part of user state.) <span class="anchor" id="line-36" /><span class="anchor" id="line-37" /></p>
+<p class="line874">User state is gathered by first finding all variables that have changed outside of init blocks. Ren'Py then finds all objects reachable from one of those variables through some combination of field access, iteration, or iteration over items (as in a dictionary). This combination of variable and object values comprises the user state. <span class="anchor" id="line-38" /><span class="anchor" id="line-39" /></p>
+<p class="line874">It's important to ensure that every object in the user state can be pickled (serialized) by the python pickle module. Most python constructs can be pickled, including booleans, integers, floating-point numbers, strings, lists, tuples, dictionaries, and most objects. You can also refer to your own classes and functions, provided that they are defined in a python block (not a python hide block) inside an init block, and always exist with the same name in later versions of the script. There are some python objects that cannot be pickled, such as files, iterators, and generators. These objects should not be used outside of python hide blocks. <span class="anchor" id="line-40" /><span class="anchor" id="line-41" /></p>
+<p class="line874">While these rules may seem to be complex, it's hoped that in practice they can be reduced to a simple heuristic: Any variable changed outside of an init block, and any object reachable from such a variable, will be saved, loaded, and rolled back properly. <span class="anchor" id="line-42" /><span class="anchor" id="line-43" /></p>
+<p class="line867"><strong>State that isn't Saved.</strong> There is some state kept by Ren'Py that is not part of the interpreter state. This includes: <span class="anchor" id="line-44" /><span class="anchor" id="line-45" /></p>
+<ul>
+<li>Mappings of image names to displayables, created by the image statement. <span class="anchor" id="line-46" /></li>
+<li>Configuration variables (config.varname). <span class="anchor" id="line-47" /></li>
+<li>Styles (style.stylename). <span class="anchor" id="line-48" /><span class="anchor" id="line-49" /></li>
+</ul>
+<p class="line874">As a result, config variables and styles should be set up in init blocks, and then left alone for the rest of the game. As the image statement can only be run from inside an init block, it is impossible to set up a mapping from image name to displayable outside of an image block. To ensure compatibility between script version, once an image name or style is present in a released version of the game, it should be present in all future released versions of the game. <span class="anchor" id="line-50" /><span class="anchor" id="line-51" /></p>
+<p class="line867"><strong>Details.</strong> As the game is played, Ren'Py logs all changes to user and interpreter state. When the game is saved, it writes this log out to disk, alongside the current state. When the game is loaded back in, the variables are reset to what the were when the init code in the current version of the script finished running. The saved user state is then merged with this, with saved user state overriding any variable that was also assigned in the init code. Finally, a rollback is triggered. <span class="anchor" id="line-52" /><span class="anchor" id="line-53" /></p>
+<p class="line874">The rollback that is triggered on load ends when it can find a statement that has the same name as it had when it was encountered in the log. When the script hasn't changed, all statements have the same name, so the effect of the rollback is to bring control back to the start of the statement that was executing when the user saved. When the script has changed, however, the only statements that retain their names are statements that have an explicit name specified. (These statements are labels, menu statements with an explicit name, and call ... from ... statements.) The game will rollback to the start of the most recent statement that exists in both the old and new games. <span class="anchor" id="line-54" /><span class="anchor" id="line-55" /></p>
+<p class="line874">When a rollback occurs, both user and interpreter state are restored to what they were when the statement that is being rolled back to began executing. The statement is then executed again, and play continues normally. <span class="anchor" id="line-56" /><span class="anchor" id="line-57" /></p>
+<p class="line874">Please note that we can only roll back the current statement, and not the return sites listed on the return stack. If the name of a return site changes, we will not be able to return from a procedure call, and the script will crash. If a return site has an explicit name, however, that name is returned to even if the script change. Because of this, it's important that every call site in a released game have a from clause associated with it, giving a name for the return site that can appear in both old scripts. <span class="anchor" id="line-58" /><span class="anchor" id="line-59" /></p>
+<p class="line862">Finally, if allowed, rollback can be invoked explicitly by the user. When such a rollback occurs, we first look for a previous statement that is a checkpoint (checkpoints are say and menu statements, as well as python blocks that called <a href="../reference/functions/renpy.checkpoint.html">renpy.checkpoint</a> . Once a checkpoint is found, we look for a statement which has a name that exists in the current script (this is normally the same statement). We then rollback to that statement and begin executing again. <span class="anchor" id="line-60" /><span class="anchor" id="line-61" /></p>
+<p class="line874">What this means is that when a rollback occurs, the game is usually reverted to the start of the say or menu statement that executed before the currently executing statement. <span class="anchor" id="line-62" /><span class="anchor" id="line-63" /></p>
+<p class="line874">There is one variable that controls the behavior of loading and saving: <span class="anchor" id="line-64" /><span class="anchor" id="line-65" /></p>
+<p class="line867" />
+<div class="documented"><a id="save_name" name="save_name" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;save_name</b>&#160;=</td>
+<td>''</td>
+</tr>
+</table>
+<span class="anchor" id="line-66" /><span class="anchor" id="line-67" />
+<p class="line874">This is a name that will be associated with save files. It's expected that the game will update this on a regular basis with the name of the section of the script that is currently executing. When a save file is shown to the user, this name will be shown with it. Alternatively, never change this and no save name will be shown. <span class="anchor" id="line-68" /><span class="anchor" id="line-69" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-70" /><span class="anchor" id="line-71" /><span class="anchor" id="line-72" />
+<p class="line867"><strong>Running code after a load.</strong> If the after_load label exists, then it is called after a load has occured. It is responsible for updating variables that may have changed between script versions, and performing any other action that may need to be taken in response to the load. When a return statement is executed, execution is transferred to the point where the game was saved. <span class="anchor" id="line-73" /><span class="anchor" id="line-74" /></p>
+<p class="line874">Please note that when calling after_load, the return stack is not safe, and hence the user should not be allowed to save before control returns from after_load. To be safe, this means the after_load code should not be interactive. <span class="anchor" id="line-75" /><span class="anchor" id="line-76" /></p>
+<p class="line867" />
+<h2 id="head-f0f331561f6a4338dc7d28b8829f24fe3e7f1ef0">Load/Save Functions</h2>
+<span class="anchor" id="line-77" /><span class="anchor" id="line-78" />
+<p class="line874">The following functions are useful for code that wants to manage loading and saving on its own. <span class="anchor" id="line-79" /><span class="anchor" id="line-80" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.can_load" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.can_load" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.can_load" name="renpy.can_load" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.can_load.html">renpy.can_load</a></b>(</td>
+<td>filename)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Returns true if filename can be loaded (by the load/save mechanism), or false otherwise. This is a very basic check, mostly ensuring that the file exists. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.can_load" /></div>
+<span class="anchor" id="line-81" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.list_saved_games" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.list_saved_games" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.list_saved_games" name="renpy.list_saved_games" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.list_saved_games.html">renpy.list_saved_games</a></b>(</td>
+<td>regexp=r'.')</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This scans the savegames that we know about and returns information about them. It returns a list of tuples, where each tuple represents one savegame and consists of: <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<ul>
+<li>The filename of the save. <span class="anchor" id="line-8" /></li>
+<li>The extra_info that was passed to renpy.save. <span class="anchor" id="line-9" /></li>
+<li>A displayable, the screenshot used to show the game. <span class="anchor" id="line-10" /></li>
+<li>The time the game was saved at, seconds since 1/1/1970 UTC. <span class="anchor" id="line-11" /><span class="anchor" id="line-12" /></li>
+</ul>
+<p class="line874">The regexp matches at the start of the filename, and filters the list. <span class="anchor" id="line-13" /><span class="anchor" id="line-14" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-15" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.list_saved_games" /></div>
+<span class="anchor" id="line-82" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.load" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.load" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.load" name="renpy.load" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.load.html">renpy.load</a></b>(</td>
+<td>filename)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Causes the load/save mechanism to load <em>filename</em>. This function never returns. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.load" /></div>
+<span class="anchor" id="line-83" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.save" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.save" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.save" name="renpy.save" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.save.html">renpy.save</a></b>(</td>
+<td>filename, extra_info='')</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Saves the current game in <em>filename</em>. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>filename</em> - A string, giving the filename to save in. Note that this does not correspond to any particular file on disk, but should be treated as an arbitrary game identifier. Normal save slots are base-10 representations of integers, while other names will not show up in the file-picker. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>extra_info</em> - Additional information saved with the game. This is usually the value of save_name. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.save" /></div>
+<span class="anchor" id="line-84" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.unlink_save" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.unlink_save" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.unlink_save" name="renpy.unlink_save" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.unlink_save.html">renpy.unlink_save</a></b>(</td>
+<td>filename)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Unlinks (deletes) the save file with the given name. Throws an exception if the file can't be deleted. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.unlink_save" /></div>
+<span class="anchor" id="line-85" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/renpy.rename_save" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/renpy.rename_save" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.rename_save" name="renpy.rename_save" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/renpy.rename_save.html">renpy.rename_save</a></b>(</td>
+<td>old, new)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Renames the save <em>old</em> to the save <em>new</em>, overwriting any existing save named <em>new</em>. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/renpy.rename_save" /></div>
+<span class="anchor" id="line-86" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

@@ -1,0 +1,673 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-2" />
+<p class="line867" />
+<h1 id="head-f6087382281b324235b4eaacc16c265b24c9dc2b">Transitions</h1>
+<span class="anchor" id="line-3" /><span class="anchor" id="line-4" />
+<p class="line874">By default, Ren'Py displays each scene by replacing the old scene with a new one. This is appropriate in general (such as for emotion changes), but it may be boring for large changes, such as a change in location or a character entering or leaving the scene. Ren'Py supports transitions that control how changes to the scene lists are exposed to the user. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" /></p>
+<p class="line874">Transitions occur between the last scene that was shown to the user, and the current scene that has been updated using the scene, show, or hide statements. A transition runs for a given amount of time, but may be dismissed early by the user. Once a transition is shown, the scene is considered shown for the purposes of future transitions. <span class="anchor" id="line-7" /><span class="anchor" id="line-8" /></p>
+<p class="line862">Transitions are introduced with the <tt class="backtick">with</tt> statement. The <tt class="backtick">with</tt> statement takes an expression that is suitable for use with the <tt class="backtick">with</tt> statement (that is, a callable that takes as input two scene lists), and runs that transition. Alternatively, if the expression is <tt class="backtick">None</tt>, then the <tt class="backtick">with</tt> statement has the effect of showing the scene to the user, and returning instantly. This is useful in conjunction with a future <tt class="backtick">with</tt> statement, so that only some changes to the scene list will be transitioned in. <span class="anchor" id="line-9" /><span class="anchor" id="line-10" /></p>
+<p class="line874">An example is in order. First, let us define a few objects that can be passed in as the argument to a with statement: <span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_comment"># Fades to black, then to the new scene.</span>
+    fade = Fade(0.5, 0, 0.5)
+
+    <span class="renpy_comment"># Dissolves between old and new scenes.</span>
+    dissolve = Dissolve(0.5)
+</pre>
+<span class="anchor" id="line-19" />
+<p class="line874">A simple use of with would be to place it after a series of show and hide statements of the program. As an example: <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">scene</span> bg whitehouse
+<span class="renpy_keyword">show</span> eileen happy
+<span class="renpy_keyword">with</span> fade
+</pre>
+<span class="anchor" id="line-25" />
+<p class="line874">This series of statements will cause the old scene (displayed before these statements started) to fade to black, and be replaced with the new scene all at once. This is a useful behavior, for example, when we are replacing a scene with a new one, such as when the story changes locations. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">scene</span> bg whitehouse
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">show</span> eileen happy
+<span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-32" />
+<p class="line862">The <tt class="backtick">with&#160;None</tt> statement is useful to break changes to the scene list into parts, as in the example above. When run, the background will be instantly shown, and then the character image will be dissolved in over the background. <span class="anchor" id="line-33" /><span class="anchor" id="line-34" /></p>
+<p class="line862">Another use of the <tt class="backtick">with&#160;None</tt> statement is to remove transient elements before a transition begins. By default, the scene list includes transient elements like dialogue, thoughts, and menus. <tt class="backtick">with&#160;None</tt> always executes without these elements, and so gets rid of them. <span class="anchor" id="line-35" /><span class="anchor" id="line-36" /></p>
+<p class="line862">The <tt class="backtick">show</tt>, <tt class="backtick">hide</tt>, and <tt class="backtick">scene</tt> statements all take a with clause. One of these statement with a with clause associated with it is actually converted into three statements: A <tt class="backtick">with&#160;None</tt> statement, the original statement sans the with clause, and the with clause as a with statement. For example: <span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /><span class="anchor" id="line-40" /><span class="anchor" id="line-41" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">with</span> fade
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">at</span> left <span class="renpy_keyword">with</span> dissolve
+<span class="renpy_keyword">show</span> lucy happy <span class="renpy_keyword">at</span> right <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-42" />
+<p class="line874">becomes <span class="anchor" id="line-43" /><span class="anchor" id="line-44" /><span class="anchor" id="line-45" /><span class="anchor" id="line-46" /><span class="anchor" id="line-47" /><span class="anchor" id="line-48" /><span class="anchor" id="line-49" /><span class="anchor" id="line-50" /><span class="anchor" id="line-51" /><span class="anchor" id="line-52" /><span class="anchor" id="line-53" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">scene</span> bg whitehouse
+<span class="renpy_keyword">with</span> fade
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">at</span> left
+<span class="renpy_keyword">with</span> dissolve
+<span class="renpy_keyword">with</span> None
+<span class="renpy_keyword">show</span> lucy happy <span class="renpy_keyword">at</span> right
+<span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-54" />
+<p class="line874">This has the effect of fading out the old scene and fading in the new background, then dissolving in the characters one after the other. <span class="anchor" id="line-55" /><span class="anchor" id="line-56" /></p>
+<p class="line874">We also allow with clauses to be supplied for say and menu statements. When a with clause is supplied on one of these statements, the transition is used to introduce the say or menu element. For example, <span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /></p>
+<pre class="renpy">
+e "<span class="renpy_string">How are you doing?</span>" <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-60" />
+<p class="line874">Will dissolve in a line of dialogue. The line of dialogue will be dismissed immediately, unless it is followed by a with statement or clause that causes it to transition to something else. <span class="anchor" id="line-61" /><span class="anchor" id="line-62" /></p>
+<p class="line874">There are two variables that control transitions: <span class="anchor" id="line-63" /><span class="anchor" id="line-64" /></p>
+<p class="line867" />
+<div class="documented"><a id="default_transition" name="default_transition" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;default_transition</b>&#160;=</td>
+<td>None</td>
+</tr>
+</table>
+<span class="anchor" id="line-65" /><span class="anchor" id="line-66" />
+<p class="line874">If not none, specifies a default transition that is applied to all say and menu statements that are not provided a with clause. This is only considered if the transitions preference is set to "All". <span class="anchor" id="line-67" /><span class="anchor" id="line-68" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-69" /><span class="anchor" id="line-70" /><span class="anchor" id="line-71" />
+<p class="line867" />
+<div class="documented"><a name="_window_during_transitions" />
+<table class="sig">
+<tr>
+<td><b>Variable:&#160;_window_during_transitions</b>&#160;=</td>
+<td>False</td>
+</tr>
+</table>
+<span class="anchor" id="line-72" /><span class="anchor" id="line-73" />
+<p class="line874">If set to true, this will show an empty line of narration during transitions, provided you are in the outermost context, and there is nothing transient on the screen. <span class="anchor" id="line-74" /><span class="anchor" id="line-75" /></p>
+<p class="line874">This only works for the default config.with_callback. <span class="anchor" id="line-76" /><span class="anchor" id="line-77" /></p>
+<p class="line874">This variable may be changed outside of an init block, but a "with None" statement should be run after doing so for change to take effect. <span class="anchor" id="line-78" /><span class="anchor" id="line-79" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-80" /><span class="anchor" id="line-81" />
+<p class="line867"><span class="anchor" id="predefined" /> <span class="anchor" id="line-82" /></p>
+<h2 id="head-4fa540879a46fb661eb1586b3f737a22988f13c8">Pre-Defined Transitions</h2>
+<span class="anchor" id="line-83" /><span class="anchor" id="line-84" />
+<p class="line867" />
+<div class="documented"><a id="fade" name="fade" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;fade</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-85" /><span class="anchor" id="line-86" />
+<p class="line862">An instance of the <a href="../reference/functions/Fade.html">Fade</a> transition that takes 0.5 seconds to fade to black, and then 0.5 seconds to fade to the new screen. <span class="anchor" id="line-87" /><span class="anchor" id="line-88" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-89" /><span class="anchor" id="line-90" />
+<p class="line867" />
+<div class="documented"><a id="dissolve" name="dissolve" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;dissolve</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-91" /><span class="anchor" id="line-92" />
+<p class="line862">An instance of the <a href="../reference/functions/Dissolve.html">Dissolve</a> transition that takes 0.5 seconds to complete. <span class="anchor" id="line-93" /><span class="anchor" id="line-94" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-95" /><span class="anchor" id="line-96" />
+<p class="line867" />
+<div class="documented"><a id="pixellate" name="pixellate" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;pixellate</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-97" /><span class="anchor" id="line-98" />
+<p class="line862">An instance of the <a href="../reference/functions/Pixellate.html">Pixellate</a> transition, which takes 1 second to complete, and creates pixels as big as 32x32 over the course of 5 steps in either direction. <span class="anchor" id="line-99" /><span class="anchor" id="line-100" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-101" /><span class="anchor" id="line-102" />
+<p class="line867" />
+<div class="documented"><a id="move" name="move" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;move</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-103" /><span class="anchor" id="line-104" />
+<p class="line862">An instance of the <a href="../reference/functions/MoveTransition.html">MoveTransition</a> transition, this takes 0.5 seconds to move images that changed position to their new locations. <span class="anchor" id="line-105" /><span class="anchor" id="line-106" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-107" /><span class="anchor" id="line-108" />
+<p class="line867" />
+<div class="documented"><a name="moveinright, moveinleft, moveintop, moveinbottom" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;moveinright, moveinleft, moveintop, moveinbottom</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-109" /><span class="anchor" id="line-110" />
+<p class="line874">These move entering images onto the screen from the appropriate side, taking 0.5 seconds to do so. <span class="anchor" id="line-111" /><span class="anchor" id="line-112" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-113" /><span class="anchor" id="line-114" />
+<p class="line867" />
+<div class="documented"><a name="moveoutright, moveoutleft, moveouttop, moveoutbottom" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;moveoutright, moveoutleft, moveouttop, moveoutbottom</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-115" /><span class="anchor" id="line-116" />
+<p class="line874">These move leaving images off the screen via the appropriate side, taking 0.5 seconds to do so. <span class="anchor" id="line-117" /><span class="anchor" id="line-118" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-119" /><span class="anchor" id="line-120" />
+<p class="line867" />
+<div class="documented"><a id="zoomin" name="zoomin" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;zoomin</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-121" /><span class="anchor" id="line-122" />
+<p class="line874">This zooms in entering images, taking 0.5 seconds to do so. <span class="anchor" id="line-123" /><span class="anchor" id="line-124" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-125" /><span class="anchor" id="line-126" />
+<p class="line867" />
+<div class="documented"><a id="zoomout" name="zoomout" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;zoomout</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-127" /><span class="anchor" id="line-128" />
+<p class="line874">This zooms out leaving images, taking 0.5 seconds to do so. <span class="anchor" id="line-129" /><span class="anchor" id="line-130" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-131" /><span class="anchor" id="line-132" />
+<p class="line867" />
+<div class="documented"><a id="zoominout" name="zoominout" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;zoominout</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-133" /><span class="anchor" id="line-134" />
+<p class="line874">This zooms in entering images and zooms out leaving images, taking 0.5 seconds to do so. <span class="anchor" id="line-135" /><span class="anchor" id="line-136" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-137" /><span class="anchor" id="line-138" />
+<p class="line867" />
+<div class="documented"><a id="vpunch" name="vpunch" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;vpunch</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-139" /><span class="anchor" id="line-140" />
+<p class="line874">When invoked, this transition shakes the screen vertically for a quarter second. <span class="anchor" id="line-141" /><span class="anchor" id="line-142" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-143" /><span class="anchor" id="line-144" />
+<p class="line867" />
+<div class="documented"><a id="hpunch" name="hpunch" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;hpunch</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-145" /><span class="anchor" id="line-146" />
+<p class="line874">When invoked, this transition shakes the screen horizontally for a quarter second. <span class="anchor" id="line-147" /><span class="anchor" id="line-148" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-149" /><span class="anchor" id="line-150" />
+<p class="line867" />
+<div class="documented"><a id="blinds" name="blinds" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;blinds</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-151" /><span class="anchor" id="line-152" />
+<p class="line874">Transitions the screen in a vertical blinds effect lasting 1 second. <span class="anchor" id="line-153" /><span class="anchor" id="line-154" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-155" /><span class="anchor" id="line-156" />
+<p class="line867" />
+<div class="documented"><a id="squares" name="squares" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;squares</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-157" /><span class="anchor" id="line-158" />
+<p class="line874">Transitions the screen in a squares effect lasting 1 second. <span class="anchor" id="line-159" /><span class="anchor" id="line-160" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-161" /><span class="anchor" id="line-162" />
+<p class="line867" />
+<div class="documented"><a id="wiperight" name="wiperight" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;wiperight</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-163" /><span class="anchor" id="line-164" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to wipe the screen right. <span class="anchor" id="line-165" /><span class="anchor" id="line-166" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-167" /><span class="anchor" id="line-168" />
+<p class="line867" />
+<div class="documented"><a id="wipeleft" name="wipeleft" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;wipeleft</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-169" /><span class="anchor" id="line-170" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to wipe the screen left. <span class="anchor" id="line-171" /><span class="anchor" id="line-172" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-173" /><span class="anchor" id="line-174" />
+<p class="line867" />
+<div class="documented"><a id="wipeup" name="wipeup" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;wipeup</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-175" /><span class="anchor" id="line-176" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to wipe the screen up. <span class="anchor" id="line-177" /><span class="anchor" id="line-178" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-179" /><span class="anchor" id="line-180" />
+<p class="line867" />
+<div class="documented"><a id="wipedown" name="wipedown" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;wipedown</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-181" /><span class="anchor" id="line-182" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to wipe the screen down. <span class="anchor" id="line-183" /><span class="anchor" id="line-184" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-185" /><span class="anchor" id="line-186" />
+<p class="line867" />
+<div class="documented"><a id="slideright" name="slideright" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;slideright</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-187" /><span class="anchor" id="line-188" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to slide the screen right. <span class="anchor" id="line-189" /><span class="anchor" id="line-190" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-191" /><span class="anchor" id="line-192" />
+<p class="line867" />
+<div class="documented"><a id="slideleft" name="slideleft" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;slideleft</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-193" /><span class="anchor" id="line-194" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to slide the screen left. <span class="anchor" id="line-195" /><span class="anchor" id="line-196" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-197" /><span class="anchor" id="line-198" />
+<p class="line867" />
+<div class="documented"><a id="slideup" name="slideup" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;slideup</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-199" /><span class="anchor" id="line-200" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to slide the screen up. <span class="anchor" id="line-201" /><span class="anchor" id="line-202" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-203" /><span class="anchor" id="line-204" />
+<p class="line867" />
+<div class="documented"><a id="slidedown" name="slidedown" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;slidedown</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-205" /><span class="anchor" id="line-206" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to slide the screen down. <span class="anchor" id="line-207" /><span class="anchor" id="line-208" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-209" /><span class="anchor" id="line-210" />
+<p class="line867" />
+<div class="documented"><a id="slideawayright" name="slideawayright" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;slideawayright</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-211" /><span class="anchor" id="line-212" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to slide the screen away and to the right. <span class="anchor" id="line-213" /><span class="anchor" id="line-214" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-215" /><span class="anchor" id="line-216" />
+<p class="line867" />
+<div class="documented"><a id="slideawayleft" name="slideawayleft" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;slideawayleft</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-217" /><span class="anchor" id="line-218" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to slide the screen away and to the left. <span class="anchor" id="line-219" /><span class="anchor" id="line-220" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-221" /><span class="anchor" id="line-222" />
+<p class="line867" />
+<div class="documented"><a id="slideawayup" name="slideawayup" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;slideawayup</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-223" /><span class="anchor" id="line-224" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to slide the screen away and to the up. <span class="anchor" id="line-225" /><span class="anchor" id="line-226" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-227" /><span class="anchor" id="line-228" />
+<p class="line867" />
+<div class="documented"><a id="slideawaydown" name="slideawaydown" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;slideawaydown</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-229" /><span class="anchor" id="line-230" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that takes 1 second to slide the screen away and to the down. <span class="anchor" id="line-231" /><span class="anchor" id="line-232" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-233" /><span class="anchor" id="line-234" />
+<p class="line867" />
+<div class="documented"><a id="irisout" name="irisout" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;irisout</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-235" /><span class="anchor" id="line-236" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that irises the screen out for 1 second. <span class="anchor" id="line-237" /><span class="anchor" id="line-238" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-239" /><span class="anchor" id="line-240" />
+<p class="line867" />
+<div class="documented"><a id="irisin" name="irisin" />
+<table class="sig">
+<tr>
+<td><b>Definition:&#160;irisin</b></td>
+</tr>
+</table>
+<span class="anchor" id="line-241" /><span class="anchor" id="line-242" />
+<p class="line862">An instance of <a href="../reference/functions/CropMove.html">CropMove</a> that irises the screen in for 1 second. <span class="anchor" id="line-243" /><span class="anchor" id="line-244" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-245" /><span class="anchor" id="line-246" />
+<p class="line867"><span class="anchor" id="constructors" /> <span class="anchor" id="line-247" /></p>
+<h2 id="head-1f2fc553f2a21cf2421d6f5758414c6d9e0e3d84">Transition Constructors</h2>
+<span class="anchor" id="line-248" /><span class="anchor" id="line-249" />
+<p class="line874">The following are functions that return things useful as transitions. The user should not supply the new_widget or old_widget parameters, as these are supplied by Ren'Py when a transition begins. <span class="anchor" id="line-250" /><span class="anchor" id="line-251" /></p>
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/CropMove" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/CropMove" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="CropMove" name="CropMove" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/CropMove.html">CropMove</a></b>(</td>
+<td>time, mode='fromleft', startcrop=(0.0, 0.0, 0.0, 1.0), startpos=(0.0, 0.0), endcrop=(0.0, 0.0, 1.0, 1.0), endpos=(0.0, 0.0), topnew=True, old_widget=None, new_widget=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">The CropMove transition works by placing the old and the new image on two layers, called the top and the bottom. (Normally the new image is on the top, but that can be changed in some modes.) The bottom layer is always drawn in full. The top image is first cropped to a rectangle, and then that rectangle drawn onto the screen at a specified position. Start and end crop rectangles and positions can be selected by the supplied mode, or specified manually. The result is a surprisingly flexible transition. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">This transition has many modes, simplifying its use. We can group these modes into three groups: wipes, slides, and other. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">In a wipe, the image stays fixed, and more of it is revealed as the transition progresses. For example, in "wiperight", a wipe from left to right, first the left edge of the image is revealed at the left edge of the screen, then the center of the image, and finally the right side of the image at the right of the screen. Other supported wipes are "wipeleft", "wipedown", and "wipeup". <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">In a slide, the image moves. So in a "slideright", the right edge of the image starts at the left edge of the screen, and moves to the right as the transition progresses. Other slides are "slideleft", "slidedown", and "slideup". <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">There are also slideaways, in which the old image moves on top of the new image. Slideaways include "slideawayright", "slideawayleft", "slideawayup", and "slideawaydown". <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line874">We also support a rectangular iris in with "irisin" and a rectangular iris out with "irisout". Finally, "custom" lets the user define new transitions, if these ones are not enough. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>time</em> - The time that this transition will last for, in seconds. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>mode</em> - One of the modes given above. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line874">The following parameters are only respected if the mode is "custom". <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>startcrop</em> - The starting rectangle that is cropped out of the top image. A 4-element tuple containing x, y, width, and height. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867"><em>startpos</em> - The starting place that the top image is drawn to the screen at, a 2-element tuple containing x and y. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<p class="line867"><em>startcrop</em> - The starting rectangle that is cropped out of the top image. A 4-element tuple containing x, y, width, and height. <span class="anchor" id="line-28" /><span class="anchor" id="line-29" /></p>
+<p class="line867"><em>startpos</em> - The starting place that the top image is drawn to the screen at, a 2-element tuple containing x and y. <span class="anchor" id="line-30" /><span class="anchor" id="line-31" /></p>
+<p class="line867"><em>topnew</em> - If True, the top layer contains the new image. Otherwise, the top layer contains the old image. <span class="anchor" id="line-32" /><span class="anchor" id="line-33" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-34" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/CropMove" /></div>
+<span class="anchor" id="line-252" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Dissolve" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Dissolve" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Dissolve" name="Dissolve" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Dissolve.html">Dissolve</a></b>(</td>
+<td>time, old_widget=None, new_widget=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This dissolves from the old scene to the new scene, by overlaying the new scene on top of the old scene and varying its alpha from 0 to 255. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>time</em> - The amount of time the dissolve will take. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Dissolve" /></div>
+<span class="anchor" id="line-253" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Fade" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Fade" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Fade" name="Fade" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Fade.html">Fade</a></b>(</td>
+<td>out_time, hold_time, in_time, old_widget=None, new_widget=None, color=None, widget=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This returns an object that can be used as an argument to a with statement to fade the old scene into a solid color, waits for a given amount of time, and then fades from the solid color into the new scene. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>out_time</em> - The amount of time that will be spent fading from the old scene to the solid color. A float, given as seconds. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>hold_time</em> - The amount of time that will be spent displaying the solid color. A float, given as seconds. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>in_time</em> - The amount of time that will be spent fading from the solid color to the new scene. A float, given as seconds. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>color</em> - The solid color that will be fade to. A tuple containing three components, each between 0 or 255. This can also be <tt class="backtick">None</tt>. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>widget</em> - This is a widget that will be faded to, if color is <tt class="backtick">None</tt>. This allows a fade to be to an image rather than just a solid color. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line862">If both <em>color</em> and <em>widget</em> are <tt class="backtick">None</tt>, then the fade is to black. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-20" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Fade" /></div>
+<span class="anchor" id="line-254" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/ImageDissolve" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/ImageDissolve" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ImageDissolve" name="ImageDissolve" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/ImageDissolve.html">ImageDissolve</a></b>(</td>
+<td>image, time, ramplen=8, ramptype='linear', ramp=None, reverse=False, old_widget=None, new_widget=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This dissolves the old scene into the new scene, using an image to control the dissolve process. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">A list of values is used to control this mapping. This list of values consists 256 fully transparent values, a ramp (of a specified number of steps) from full transparency to full opacity, and 256 fully opaque values. A 256 entry window is slid over this list, and the values found within are used to map the red channel of the image onto the opacity of the new scene. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">Basically, this means that white pixels come in first, black last, and the ramp controls the sharpness of the transition. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>image</em> - The image that will be used to control this transition. The image should be the same size as the scene being dissolved. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>time</em> - The amount of time the dissolve will take. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>ramplen</em> - The number of pixels of ramp to use. This defaults to 8. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>ramptype</em> - Type of alpha ramp. Possible types are: linear, cube, dcube, mcube. Default is linear. Non-linear types must have ramplen &gt;= 8. "cube": Ease in, sharp out. "dcube": Sharp in, sharp out. "mcube": Ease in, ease out. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>ramp</em> - If given, this is expected to be a sequence of integers in the range 0 to 255. This sequence explicitly gives the ramp to be used. If given, this overrides <em>ramplen</em> and <em>ramptype</em>. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>reverse</em> - This reverses the ramp and the direction of the window slide. When True, black pixels dissolve in first, and white pixels come in last. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-24" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/ImageDissolve" /></div>
+<span class="anchor" id="line-255" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/MoveTransition" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/MoveTransition" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="MoveTransition" name="MoveTransition" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/MoveTransition.html">MoveTransition</a></b>(</td>
+<td>delay, factory=None, enter_factory=None, leave_factory=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This transition attempts to find images that have changed position, and moves them from the old position to the new transition, taking <em>delay</em> seconds to complete the move. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">If <em>factory</em> is given, it is expected to be a function that takes as arguments: an old position, a new position, the delay, and a displayable, and to return a displayable as an argument. If not given, the default behavior is to move the displayable from the starting to the ending positions. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line862">If <em>enter_factory</em> or <em>leave_factory</em> are given, they are expected to be functions that take as arguments a position, a delay, and a displayable, and return a displayable. They are applied to displayables that are entering or leaving the scene, respectively. The default is to show in place displayables that are entering, and not to show those that are leaving. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">Images are considered to be the same if they have the same tag, in the same way that the tag is used to determine which image to replace or to hide. They are also considered to be the same if they are the same displayable. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">If you use this transition to slide an image off the side of the screen, remember to hide it when you are done. (Or just use it with a leave_factory.) <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line874">There are several constructors that create functions for use with enter_factory and leave_factory: <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+<div class="documented"><a id="MoveIn" name="MoveIn" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;MoveIn</b>(</td>
+<td>pos)</td>
+</tr>
+</table>
+<span class="anchor" id="line-18" /><span class="anchor" id="line-19" />
+<p class="line874">Can be used with enter_factory to move in entering elements. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>pos</em> - An (xpos, ypos, xanchor, yanchor) tuple, giving the position to move from. Any component can be None, to take the corresponding component of the final position. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-24" /><span class="anchor" id="line-25" />
+<p class="line867" />
+<div class="documented"><a id="MoveIn" name="MoveIn" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;MoveIn</b>(</td>
+<td>pos)</td>
+</tr>
+</table>
+<span class="anchor" id="line-26" /><span class="anchor" id="line-27" />
+<p class="line874">Can be used with leave_factory to move in entering elements. <span class="anchor" id="line-28" /><span class="anchor" id="line-29" /></p>
+<p class="line867"><em>pos</em> - An (xpos, ypos, xanchor, yanchor) tuple, giving the position to move to. Any component can be None, to take the corresponding component of the original position. <span class="anchor" id="line-30" /><span class="anchor" id="line-31" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-32" /><span class="anchor" id="line-33" />
+<p class="line867" />
+<div class="documented"><a id="ZoomInOut" name="ZoomInOut" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;ZoomInOut</b>(</td>
+<td>start, end)</td>
+</tr>
+</table>
+<span class="anchor" id="line-34" /><span class="anchor" id="line-35" />
+<p class="line874">Can be used with enter_factory or leave_factory. Used to zoom in or out entering or leaving displayables. <span class="anchor" id="line-36" /><span class="anchor" id="line-37" /></p>
+<p class="line867"><em>start</em> - The zoom factor at the start of the transition. <span class="anchor" id="line-38" /><span class="anchor" id="line-39" /></p>
+<p class="line867"><em>end</em> - The zoom factor at the end of the transition. <span class="anchor" id="line-40" /><span class="anchor" id="line-41" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-42" /><span class="anchor" id="line-43" />
+<p class="line867" />
+<div class="documented"><a id="RemoveInOut" name="RemoveInOut" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;RemoveInOut</b>(</td>
+<td>start, end, **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-44" /><span class="anchor" id="line-45" />
+<p class="line874">Can be used with enter_factory or leave_factory. Used to revolve in or out entering or leaving displayables. <span class="anchor" id="line-46" /><span class="anchor" id="line-47" /></p>
+<p class="line867"><em>start</em> - The clockwise revolution at the start of the transition. <span class="anchor" id="line-48" /><span class="anchor" id="line-49" /></p>
+<p class="line867"><em>end</em> - The clockwise revolution at the end of the transition. <span class="anchor" id="line-50" /><span class="anchor" id="line-51" /></p>
+<p class="line862">Additional keyword arguments are passed to <a href="../reference/functions/Revolve.html">Revolve</a> . <span class="anchor" id="line-52" /><span class="anchor" id="line-53" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-54" /><span class="anchor" id="line-55" /><span class="anchor" id="line-56" />
+<p class="line867" />
+</div>
+<span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /><span class="anchor" id="line-60" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/MoveTransition" /></div>
+<span class="anchor" id="line-256" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Pause" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Pause" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Pause" name="Pause" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Pause.html">Pause</a></b>(</td>
+<td>delay)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">Returns a transition that shows the new screen for <em>delay</em> seconds. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">This is useful for implementing a puase that behaves as a transition does, one that is skipped when transitions are. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Pause" /></div>
+<span class="anchor" id="line-257" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Pixellate" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Pixellate" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Pixellate" name="Pixellate" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Pixellate.html">Pixellate</a></b>(</td>
+<td>time, steps, old_widget=None, new_widget=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This pixellates out the old scene, and then pixellates in the new scene, taking the given amount of time and the given number of pixellate steps in each direction. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Pixellate" /></div>
+<span class="anchor" id="line-258" /><span class="anchor" id="line-259" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/ComposeTransition" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/ComposeTransition" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ComposeTransition" name="ComposeTransition" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/ComposeTransition.html">ComposeTransition</a></b>(</td>
+<td>trans, before=None, after=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This allows transitions to be composed before they are applied. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>trans</em> - The top-level transition. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>before</em> - If not None, a transition that is applied to the old and new screens, and used as the old screen for <em>trans</em>. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>after</em> - If not None, a transitions that is applied to the old and new screens, and used as the old screen for <span class="anchor" id="line-12" /><em>trans</em>. <span class="anchor" id="line-13" /><span class="anchor" id="line-14" /></p>
+<p class="line874">This may not work with all transitions. <span class="anchor" id="line-15" /><span class="anchor" id="line-16" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-17" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/ComposeTransition" /></div>
+<span class="anchor" id="line-260" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/MultipleTransition" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/MultipleTransition" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="MultipleTransition" name="MultipleTransition" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/MultipleTransition.html">MultipleTransition</a></b>(</td>
+<td>args)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates a transition that consists of one or more transitions. <em>args</em> must be a list of odd length, containing at least 3 elements. Odd elements of this list are considered to be displayables, while even elements are transitions. When used, this causes the first element (a displayable) to transition to the third element (a displayable), using the second element as the transition. If the fourth and fifth elements are present, a transition will occur from the third element (a displayable) to the fifth element (a displayable) using the fourth element (a transition). <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">There are two special values that will be recognized as displayables. <em>False</em> will be replaced with a displayable containing the scene before the transition, while <em>True</em> will be replaced with a displayable containing the scene after the transition. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-10" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/MultipleTransition" /></div>
+<span class="anchor" id="line-261" /><span class="anchor" id="line-262" />
+<p class="line862">Some transitions can also be applied to specific layers, using the <a href="../reference/functions/renpy.transition.html">renpy.transition</a> function. Only transitions that are not completely opaque can be used in this way. <span class="anchor" id="line-263" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

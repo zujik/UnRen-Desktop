@@ -1,0 +1,47 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-b769dabddadc4fde8253a57237e3e024c8dd8beb">renpy.input</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.input" name="renpy.input" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.input.html">renpy.input</a></b>(</td>
+<td>prompt, default='', allow=None, exclude='{}', length=None, with_none=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This pops up a window requesting that the user enter in some text. It returns the entered text. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>prompt</em> - A prompt that is used to ask the user for the text. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>default</em> - A default for the text that this input can return. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>length</em> - If given, a limit to the amount of text that this function will return. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>allow</em> - If not None, then if an input character is not in this string, it is ignored. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>exclude</em> - If not None, then if an input character is in this set, it is ignored. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>with_none</em> - If True, causes a "with None" statement to be run after each interaction. If None (the default), checks config.implicit_with_none to determine if a "with None" should be run. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-20" />
+<h2 id="head-d412c4cc2a346681fd99e21940fd7fe6440ade8f">Example</h2>
+<span class="anchor" id="line-21" />
+<p class="line867"><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">$</span> name = renpy.input("<span class="renpy_string">What is your name?</span>", "<span class="renpy_string">Joe User</span>", length=20)
+
+e "<span class="renpy_string">Pleased to meet you, %(name)s.</span>"
+</pre>
+<span class="anchor" id="line-26" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

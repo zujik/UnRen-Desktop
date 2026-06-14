@@ -1,0 +1,44 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-d5930632524ebe2f5201884c860e79fa76d9181d">Style.take</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Style.take" name="Style.take" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../../reference/Functions/Style.take.html">Style.take</a></b>(</td>
+<td>other)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This expects <em>other</em> to be a style object. It takes style customizations from <em>other</em>, and applies them to this style. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="line-9" />
+<p class="line867" />
+<h2 id="head-5e8edb0ea1c20acf1c80c102f165e2b17fbd678a">Example</h2>
+<span class="anchor" id="line-10" />
+<p class="line867"><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> style.mm_button_text.size = 30
+    <span class="renpy_keyword">$</span> style.mm_button_text.yalign = 1.0
+
+    <span class="renpy_keyword">$</span> style.gm_nav_button_text.take(style.mm_button_text)
+</pre>
+<span class="anchor" id="line-17" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

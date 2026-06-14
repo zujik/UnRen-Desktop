@@ -1,0 +1,57 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-241fa19ee24a4f28f0c9913319a736eae6f8cb4a">ui.grid</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ui.grid" name="ui.grid" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/ui.grid.html">ui.grid</a></b>(</td>
+<td>cols, rows, padding=0, transpose=False, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates a layout that places widgets in an evenly spaced grid. New widgets are added to this grid until <a href="../../reference/functions/ui.close.html">ui.close</a> is called. Widgets are added by going from left to right within a single row, and down to the start of the next row when a row is full. All cells must be filled (that is, exactly col * rows widgets must be added to the grid.) <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">The children of this widget should have a fixed size that does not vary based on the space allocated to them. Failure to observe this restriction could lead to really odd layouts, or things being rendered off screen. This condition is relaxed in the appropriate dimension if xfill or yfill is set. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">Each cell of the grid is exactly the same size. By default, the grid is the smallest size that can accommodate all of its children, but it can be expanded to consume all available space in a given dimension by setting xfill or yfill to True, as appropriate. (Otherwise, xfill and yfill are inherited from the style.) <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>cols</em> - The number of columns in this grid. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>rows</em> - The number of rows in this grid. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>padding</em> - The amount of space to leave between rows and columns. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>xfill</em> - True if the grid should consume all available width. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>yfill</em> - True if the grid should consume all available height. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>transpose</em> - If True, grid will fill down columns before filling across rows. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-24" />
+<h2 id="head-2d8727eafdac8a710e262587f8562867c86edfed">Example</h2>
+<span class="anchor" id="line-25" />
+<p class="line867"><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">python</span>:
+    <span class="renpy_comment"># Actually draw a slot.</span>
+    ui.grid(config.file_page_cols,
+            config.file_page_rows,
+             style='<span class="renpy_string">file_picker_grid</span>',
+             transpose=True) <span class="renpy_comment"># slots</span>
+
+    for i in range(0, file_page_length):
+        entry(i)
+
+    ui.close() <span class="renpy_comment"># slots</span>
+</pre>
+<span class="anchor" id="line-38" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

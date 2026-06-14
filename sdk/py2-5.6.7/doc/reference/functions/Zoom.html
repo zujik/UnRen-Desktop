@@ -1,0 +1,54 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-6e8a24e629f4f7442a8bdb267bbfd054fb34196a">Zoom</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Zoom" name="Zoom" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/Zoom.html">Zoom</a></b>(</td>
+<td>size, start, end, time, after_child=None, time_warp=None, bilinear=True, opaque=True, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This causes a zoom to take place, using image scaling. When used as an <tt class="backtick">at</tt> clause, this creates a displayable. The render of this displayable is always of the supplied size. The child displayable is rendered, and a rectangle is cropped out of it. This rectangle is interpolated between the start and end rectangles. The rectangle is then scaled to the supplied size. The zoom will take <em>time</em> seconds, after which it will show the end rectangle, unless an <em>after_child</em> is given. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">The start and end rectangles must fit completely inside the size of the child, otherwise an error will occur. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>size</em> - The size that the rectangle is scaled to, a (width, height) tuple. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>start</em> - The start rectangle, an (xoffset, yoffset, width, height) tuple. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>end</em> - The end rectangle, an (xoffset, yoffset, width, height) tuple. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>time</em> - The amount of time it will take to interpolate from the start to the end rectange. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>after_child</em> - If present, a second child widget. This displayable will be rendered after the zoom completes. Use this to snap to a sharp displayable after the zoom is done. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>time_warp</em> - If not None, a function that takes a fractional period (between 0.0 and 0.1), and returns a fractional period. Use this to implement non-linear zooms. This function may be pickled, so it cannot be a lambda or other non-top-level function. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><em>bilinear</em> - If True, the default, this will use bilinear filtering. If false, this will use ugly yet fast nearest neighbor filtering. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>opaque</em> - If True and bilinear is True, this will use a very efficient method that does not support transparency. If False, this supports transparency, but is less efficient. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-26" />
+<h2 id="head-a54628b04fa6bb5ffc4cb491a679a2b05ddd7c5f">Example</h2>
+<span class="anchor" id="line-27" />
+<p class="line867"><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">at</span> Zoom((800, 600), (0, 0, 800, 600), (225, 150, 400, 300), 1.0)
+
+"<span class="renpy_string">We can zoom into images...</span>"
+
+<span class="renpy_keyword">scene</span> bg whitehouse <span class="renpy_keyword">at</span> Zoom((800, 600), (225, 150, 400, 300), (0, 0, 800, 600), 1.0)
+
+"<span class="renpy_string">... and zoom back out of them again.</span>"
+</pre>
+<span class="anchor" id="line-36" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

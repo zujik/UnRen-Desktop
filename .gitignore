@@ -18,6 +18,19 @@ coverage/
 # Ignore the original Windows script
 UnRen.bat
 
+# Legacy base64 bundle (replaced by tools/ and patches/)
+b64.file
+
+# Generated / local SDK download cache
+.cache/
+.sdk-sources-cache/
+# Legacy: .mirror-staging/ may exist under UnRen-Desktop; canonical path is ../UnRen-Local/.mirror-staging/
+.mirror-staging/
+
+# SDK binaries are tracked with Git LFS (see .gitattributes).
+# If LFS objects are missing after clone: git lfs pull
+# Or run: ./scripts/populate-sdk.sh
+
 # Linux and macOS specific files
 # Ignore hidden backup files created by editors
 *~

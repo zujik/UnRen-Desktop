@@ -1,0 +1,39 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-3e155ee1fc920524981524e6594b33168d26194e">renpy.checkpoint</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.checkpoint" name="renpy.checkpoint" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.checkpoint.html">renpy.checkpoint</a></b>(</td>
+<td>data=None)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This creates a checkpoint that the user can rollback to. The checkpoint is placed at the statement after the last statement that interacted with the user. Once this function has been called, there should be no more interaction with the user in the current Python block. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>data</em> - If not None, this contains data that can be accessed using <a href="../../reference/functions/renpy.roll_forward_info.html">renpy.roll_forward_info</a> if and when the current statement is re-executed due to the user rolling back and then rolling forward again. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line862">renpy.checkpoint should be called after <a href="../../reference/functions/ui.interact.html">ui.interact</a> . <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" /><span class="anchor" id="line-13" />
+<p class="line867" />
+<h2 id="head-3fa84c6f923c1bb1b8b99d34be01c57d89a0182b">Example</h2>
+<span class="anchor" id="line-14" /><span class="anchor" id="line-15" />
+<p class="line862">See the example in <a href="../../reference/functions/renpy.roll_forward_info.html">renpy.roll_forward_info</a> . <span class="anchor" id="line-16" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

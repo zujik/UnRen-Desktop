@@ -1,0 +1,54 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-d7466439b254311dc3eac38dc6e03d7119328185">renpy.imagemap</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.imagemap" name="renpy.imagemap" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.imagemap.html">renpy.imagemap</a></b>(</td>
+<td>ground, selected, hotspots, unselected=None, overlays=False, style='imagemap', with_none=None, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Displays an imagemap. An image map consists of two images and a list of hotspots that are defined on that image. When the user clicks on a hotspot, the value associated with that hotspot is returned. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>ground</em> - The name of the file containing the ground image. The ground image is displayed for areas that are not part of any hotspots. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>selected</em> - The name of the file containing the selected image. This image is displayed in hotspots when the mouse is over them. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>hotspots</em> - A list of tuples defining the hotspots in this image map. Each tuple has the format (x0, y0, x1, y1, result). (x0, y0) gives the coordinates of the upper-left corner of the hotspot, (x1, y1) gives the lower-right corner, and result gives the value returned from this function if the mouse is clicked in the hotspot. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>unselected</em> - If provided, then it is the name of a file containing the image that's used to fill in hotspots that are not selected as part of any image. If not provided, the ground image is used instead. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>overlays</em> - If True, overlays are displayed when this imagemap is active. If False, the overlays are suppressed. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>with_none</em> - If True, causes a "with None" statement to be run after each interaction. If None (the default), checks config.implicit_with_none to determine if a "with None" should be run. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-20" />
+<h2 id="head-88e89f1ae75f46c1d67d4246365d5e0a432a1cfa">Example</h2>
+<span class="anchor" id="line-21" />
+<p class="line867"><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">$</span> result = renpy.imagemap("<span class="renpy_string">ground.png</span>", "<span class="renpy_string">selected.png</span>", [
+                           (100, 100, 300, 400, "<span class="renpy_string">eileen</span>"),
+                           (500, 100, 700, 400, "<span class="renpy_string">lucy</span>")
+                          ])
+
+<span class="renpy_keyword">if</span> result == "<span class="renpy_string">eileen</span>":
+    e "<span class="renpy_string">You picked me!</span>"
+
+<span class="renpy_keyword">elif</span> result == "<span class="renpy_string">lucy</span>":
+    e "<span class="renpy_string">It looks like you picked Lucy.</span>"
+</pre>
+<span class="anchor" id="line-33" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

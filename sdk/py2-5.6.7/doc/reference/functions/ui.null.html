@@ -1,0 +1,59 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-6d95510733fe4922da312757a0fc44109af14f3a">ui.null</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="ui.null" name="ui.null" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/ui.null.html">ui.null</a></b>(</td>
+<td>**properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This widget displays nothing on the screen. Why would one want to do this? If a widget requires contents, but you don't have any contents to provide it. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" />
+<h2 id="head-b5e865cc1715594187e0bfbbad3222c609d3642d">Example</h2>
+<span class="anchor" id="line-9" />
+<p class="line867"><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">python</span>:
+    <span class="renpy_comment"># Stats Window</span>
+    ui.frame(xpos=0,
+             ypos=0,
+             xanchor='<span class="renpy_string">left</span>',
+             yanchor='<span class="renpy_string">top</span>',
+             xfill=True,
+             )
+
+    ui.vbox()
+
+    ui.text('<span class="renpy_string">Statistics</span>')
+    ui.null(height=20)
+
+    for name, range, value in stats:
+        ui.hbox()
+        ui.text(name, minwidth=150)
+        ui.bar(range, value, ypos=0.5, yanchor='<span class="renpy_string">center</span>')
+        ui.close() <span class="renpy_comment"># for the ui.hbox</span>
+
+    ui.close() <span class="renpy_comment"># for the ui.vbox</span>
+</pre>
+<span class="anchor" id="line-32" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

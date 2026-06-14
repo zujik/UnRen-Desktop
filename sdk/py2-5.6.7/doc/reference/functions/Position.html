@@ -1,0 +1,47 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-4af0d56294273e8a19f81976f5d9795720feda3e">Position</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Position" name="Position" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/Position.html">Position</a></b>(</td>
+<td>**properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Position, when given position properties as arguments, returns a callable that can be passed to the "at" clause of a show or scene statement to display the image at the given location. See the Position Properties section to get a full explanation of how they are used to lay things out. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" />
+<h2 id="head-b1570d0cddbbe923f50dcc2092e77d574d0eb7ec">Example</h2>
+<span class="anchor" id="line-9" />
+<p class="line867"><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    left = Position(xpos=0.0, xanchor='<span class="renpy_string">left</span>')
+    center = Position(xpos=0.5, xanchor='<span class="renpy_string">center</span>')
+    right = Position(xpos=1.0, xanchor='<span class="renpy_string">right</span>')
+
+    top = Position(xpos=0.5, xanchor='<span class="renpy_string">center</span>', ypos=0.0,
+                   yanchor='<span class="renpy_string">top</span>')
+
+<span class="renpy_keyword">show</span> eileen happy <span class="renpy_keyword">at</span> left
+</pre>
+<span class="anchor" id="line-20" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

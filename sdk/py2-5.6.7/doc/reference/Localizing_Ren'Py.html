@@ -1,0 +1,33 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-2" />
+<p class="line867" />
+<h1 id="head-c353d0ed15e909dbeb650b402e89d2c9241d2ede">Localizing Ren'Py</h1>
+<span class="anchor" id="line-3" /><span class="anchor" id="line-4" />
+<p class="line874">While Ren'Py is by default set up to operate in an English speaking environment, it is not limited to such settings. Assuming a proper font is loaded, Ren'Py scripts can contain any language expressible in Unicode. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" /></p>
+<p class="line862">There are two things in the Ren'Py library that may need to be translated into a user's language. The first is the main menu. There is no explicit support for doing this, but as the <a href="../reference/Configuration_Variables.html#config.main_menu">config.main_menu</a> variable supports changing the text of the main menu, it also supports translating said text. <span class="anchor" id="line-7" /><span class="anchor" id="line-8" /></p>
+<p class="line862">The second thing that needs to be translated is the game menu. The <a href="../reference/Configuration_Variables.html#config.translations">config.translations</a> dictionary is used to translate text in the game menu into your language. If a key in this map corresponds to the English text that would be displayed, the value corresponding to that key is displayed again. For example: <span class="anchor" id="line-9" /><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> config.translations = {
+        "<span class="renpy_string">Yes</span>" : u"<span class="renpy_string">HIja'</span>",
+        "<span class="renpy_string">No</span>" : u"<span class="renpy_string">ghobe'</span>",
+        <span class="renpy_comment"># etc.</span>
+        }
+</pre>
+<span class="anchor" id="line-17" />
+<p class="line862">The <em>u</em> characters prefixed to the strings on the right, while not strictly necessary in this case, are used to tell Python that the string is in Unicode rather than ASCII. This is useful if your language uses non-ascii characters. <span class="anchor" id="line-18" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

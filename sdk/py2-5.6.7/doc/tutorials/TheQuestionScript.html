@@ -1,0 +1,452 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-58db9b016fb339507795bdbc9131ecc6b75a615a">The Question - Script</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line874">The script is divided over two files. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<ul>
+<li>script.rpy contains the main body of the game. <span class="anchor" id="line-6" /></li>
+<li>options.rpy contains options which customize the display of parts of the game. <span class="anchor" id="line-7" /><span class="anchor" id="line-8" /></li>
+</ul>
+<p class="line867" />
+<h2 id="head-0bc08d8ad52de066d4a6b9addecf8acbf4dc23bd">script.rpy</h2>
+<span class="anchor" id="line-9" /><span class="anchor" id="line-10" />
+<p class="line867"><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /><span class="anchor" id="line-40" /><span class="anchor" id="line-41" /><span class="anchor" id="line-42" /><span class="anchor" id="line-43" /><span class="anchor" id="line-44" /><span class="anchor" id="line-45" /><span class="anchor" id="line-46" /><span class="anchor" id="line-47" /><span class="anchor" id="line-48" /><span class="anchor" id="line-49" /><span class="anchor" id="line-50" /><span class="anchor" id="line-51" /><span class="anchor" id="line-52" /><span class="anchor" id="line-53" /><span class="anchor" id="line-54" /><span class="anchor" id="line-55" /><span class="anchor" id="line-56" /><span class="anchor" id="line-57" /><span class="anchor" id="line-58" /><span class="anchor" id="line-59" /><span class="anchor" id="line-60" /><span class="anchor" id="line-61" /><span class="anchor" id="line-62" /><span class="anchor" id="line-63" /><span class="anchor" id="line-64" /><span class="anchor" id="line-65" /><span class="anchor" id="line-66" /><span class="anchor" id="line-67" /><span class="anchor" id="line-68" /><span class="anchor" id="line-69" /><span class="anchor" id="line-70" /><span class="anchor" id="line-71" /><span class="anchor" id="line-72" /><span class="anchor" id="line-73" /><span class="anchor" id="line-74" /><span class="anchor" id="line-75" /><span class="anchor" id="line-76" /><span class="anchor" id="line-77" /><span class="anchor" id="line-78" /><span class="anchor" id="line-79" /><span class="anchor" id="line-80" /><span class="anchor" id="line-81" /><span class="anchor" id="line-82" /><span class="anchor" id="line-83" /><span class="anchor" id="line-84" /><span class="anchor" id="line-85" /><span class="anchor" id="line-86" /><span class="anchor" id="line-87" /><span class="anchor" id="line-88" /><span class="anchor" id="line-89" /><span class="anchor" id="line-90" /><span class="anchor" id="line-91" /><span class="anchor" id="line-92" /><span class="anchor" id="line-93" /><span class="anchor" id="line-94" /><span class="anchor" id="line-95" /><span class="anchor" id="line-96" /><span class="anchor" id="line-97" /><span class="anchor" id="line-98" /><span class="anchor" id="line-99" /><span class="anchor" id="line-100" /><span class="anchor" id="line-101" /><span class="anchor" id="line-102" /><span class="anchor" id="line-103" /><span class="anchor" id="line-104" /><span class="anchor" id="line-105" /><span class="anchor" id="line-106" /><span class="anchor" id="line-107" /><span class="anchor" id="line-108" /><span class="anchor" id="line-109" /><span class="anchor" id="line-110" /><span class="anchor" id="line-111" /><span class="anchor" id="line-112" /><span class="anchor" id="line-113" /><span class="anchor" id="line-114" /><span class="anchor" id="line-115" /><span class="anchor" id="line-116" /><span class="anchor" id="line-117" /><span class="anchor" id="line-118" /><span class="anchor" id="line-119" /><span class="anchor" id="line-120" /><span class="anchor" id="line-121" /><span class="anchor" id="line-122" /><span class="anchor" id="line-123" /><span class="anchor" id="line-124" /><span class="anchor" id="line-125" /><span class="anchor" id="line-126" /><span class="anchor" id="line-127" /><span class="anchor" id="line-128" /><span class="anchor" id="line-129" /><span class="anchor" id="line-130" /><span class="anchor" id="line-131" /><span class="anchor" id="line-132" /><span class="anchor" id="line-133" /><span class="anchor" id="line-134" /><span class="anchor" id="line-135" /><span class="anchor" id="line-136" /><span class="anchor" id="line-137" /><span class="anchor" id="line-138" /><span class="anchor" id="line-139" /><span class="anchor" id="line-140" /><span class="anchor" id="line-141" /><span class="anchor" id="line-142" /><span class="anchor" id="line-143" /><span class="anchor" id="line-144" /><span class="anchor" id="line-145" /><span class="anchor" id="line-146" /><span class="anchor" id="line-147" /><span class="anchor" id="line-148" /><span class="anchor" id="line-149" /><span class="anchor" id="line-150" /><span class="anchor" id="line-151" /><span class="anchor" id="line-152" /><span class="anchor" id="line-153" /><span class="anchor" id="line-154" /><span class="anchor" id="line-155" /><span class="anchor" id="line-156" /><span class="anchor" id="line-157" /><span class="anchor" id="line-158" /><span class="anchor" id="line-159" /><span class="anchor" id="line-160" /><span class="anchor" id="line-161" /><span class="anchor" id="line-162" /><span class="anchor" id="line-163" /><span class="anchor" id="line-164" /><span class="anchor" id="line-165" /><span class="anchor" id="line-166" /><span class="anchor" id="line-167" /><span class="anchor" id="line-168" /><span class="anchor" id="line-169" /><span class="anchor" id="line-170" /><span class="anchor" id="line-171" /><span class="anchor" id="line-172" /><span class="anchor" id="line-173" /><span class="anchor" id="line-174" /><span class="anchor" id="line-175" /><span class="anchor" id="line-176" /><span class="anchor" id="line-177" /><span class="anchor" id="line-178" /><span class="anchor" id="line-179" /><span class="anchor" id="line-180" /><span class="anchor" id="line-181" /><span class="anchor" id="line-182" /><span class="anchor" id="line-183" /><span class="anchor" id="line-184" /><span class="anchor" id="line-185" /><span class="anchor" id="line-186" /><span class="anchor" id="line-187" /><span class="anchor" id="line-188" /><span class="anchor" id="line-189" /><span class="anchor" id="line-190" /><span class="anchor" id="line-191" /><span class="anchor" id="line-192" /><span class="anchor" id="line-193" /><span class="anchor" id="line-194" /><span class="anchor" id="line-195" /><span class="anchor" id="line-196" /><span class="anchor" id="line-197" /><span class="anchor" id="line-198" /><span class="anchor" id="line-199" /><span class="anchor" id="line-200" /><span class="anchor" id="line-201" /><span class="anchor" id="line-202" /><span class="anchor" id="line-203" /><span class="anchor" id="line-204" /><span class="anchor" id="line-205" /><span class="anchor" id="line-206" /><span class="anchor" id="line-207" /><span class="anchor" id="line-208" /><span class="anchor" id="line-209" /><span class="anchor" id="line-210" /><span class="anchor" id="line-211" /><span class="anchor" id="line-212" /><span class="anchor" id="line-213" /><span class="anchor" id="line-214" /><span class="anchor" id="line-215" /><span class="anchor" id="line-216" /><span class="anchor" id="line-217" /><span class="anchor" id="line-218" /><span class="anchor" id="line-219" /><span class="anchor" id="line-220" /><span class="anchor" id="line-221" /><span class="anchor" id="line-222" /><span class="anchor" id="line-223" /><span class="anchor" id="line-224" /><span class="anchor" id="line-225" /><span class="anchor" id="line-226" /><span class="anchor" id="line-227" /><span class="anchor" id="line-228" /><span class="anchor" id="line-229" /><span class="anchor" id="line-230" /><span class="anchor" id="line-231" /><span class="anchor" id="line-232" /><span class="anchor" id="line-233" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+
+    <span class="renpy_comment"># Declare images used by this game.</span>
+    <span class="renpy_keyword">image</span> bg lecturehall = "<span class="renpy_string">lecturehall.jpg</span>"
+    <span class="renpy_keyword">image</span> bg uni = "<span class="renpy_string">uni.jpg</span>"
+    <span class="renpy_keyword">image</span> bg meadow = "<span class="renpy_string">meadow.jpg</span>"
+    <span class="renpy_keyword">image</span> bg club = "<span class="renpy_string">club.jpg</span>"
+    
+    <span class="renpy_keyword">image</span> sylvie normal = "<span class="renpy_string">sylvie_normal.png</span>"
+    <span class="renpy_keyword">image</span> sylvie giggle = "<span class="renpy_string">sylvie_giggle.png</span>"
+    <span class="renpy_keyword">image</span> sylvie smile = "<span class="renpy_string">sylvie_smile.png</span>"
+    <span class="renpy_keyword">image</span> sylvie surprised = "<span class="renpy_string">sylvie_surprised.png</span>"    
+
+    <span class="renpy_keyword">image</span> sylvie2 normal = "<span class="renpy_string">sylvie2_normal.png</span>"
+    <span class="renpy_keyword">image</span> sylvie2 giggle = "<span class="renpy_string">sylvie2_giggle.png</span>"
+    <span class="renpy_keyword">image</span> sylvie2 smile = "<span class="renpy_string">sylvie2_smile.png</span>"  
+    <span class="renpy_keyword">image</span> sylvie2 surprised = "<span class="renpy_string">sylvie2_surprised.png</span>"    
+
+    <span class="renpy_comment"># Declare characters used by this game.</span>
+    <span class="renpy_keyword">$</span> s = Character('<span class="renpy_string">Sylvie</span>', color="<span class="renpy_string">#c8ffc8</span>")
+    <span class="renpy_keyword">$</span> m = Character('<span class="renpy_string">Me</span>', color="<span class="renpy_string">#c8c8ff</span>")
+
+
+<span class="renpy_comment"># The game starts here.</span>
+<span class="renpy_keyword">label</span> start:
+
+    <span class="renpy_keyword">$</span> bl_game = False
+    
+    <span class="renpy_keyword">play</span> <span class="renpy_keyword">music</span> "<span class="renpy_string">illurock.ogg</span>"
+
+    <span class="renpy_keyword">scene</span> bg lecturehall
+    <span class="renpy_keyword">with</span> fade
+
+    "<span class="renpy_string">Well, professor Eileen's lecture was interesting.</span>"
+    "<span class="renpy_string">But to be honest, I couldn't concentrate on it very much.</span>"
+    "<span class="renpy_string">I had a lot of other thoughts on my mind.</span>"
+    "<span class="renpy_string">And they all ended up with a question.</span>"
+    "<span class="renpy_string">A question, I've been meaning to ask someone.</span>"
+
+    <span class="renpy_keyword">scene</span> bg uni
+    <span class="renpy_keyword">with</span> fade
+
+    "<span class="renpy_string">When we came out of the university, I saw her.</span>"
+    
+    <span class="renpy_keyword">show</span> sylvie normal
+    <span class="renpy_keyword">with</span> dissolve
+    
+    "<span class="renpy_string">She was a wonderful person.</span>"
+    "<span class="renpy_string">I've known her ever since we were children.</span>"
+    "<span class="renpy_string">And she's always been a good friend.</span>"
+    "<span class="renpy_string">But...</span>"
+    "<span class="renpy_string">Recently...</span>"
+    "<span class="renpy_string">I think...</span>"
+    "<span class="renpy_string">... that I wanted more.</span>"
+    "<span class="renpy_string">More just talking... more than just walking home together when our classes ended.</span>"
+    "<span class="renpy_string">And I decided...</span>"
+
+    <span class="renpy_keyword">menu</span>:
+
+        "<span class="renpy_string">... to ask her right away.</span>":
+        
+            <span class="renpy_keyword">jump</span> rightaway
+            
+        "<span class="renpy_string">... to ask her later.</span>":
+        
+            <span class="renpy_keyword">jump</span> later
+       
+
+<span class="renpy_keyword">label</span> rightaway:
+
+    <span class="renpy_keyword">show</span> sylvie smile
+
+    s "<span class="renpy_string">Oh, hi, do we walk home together?</span>"
+    m "<span class="renpy_string">Yes...</span>"
+    "<span class="renpy_string">I said and my voice was already shaking.</span>"
+    
+    <span class="renpy_keyword">scene</span> bg meadow
+    <span class="renpy_keyword">with</span> fade
+    
+    "<span class="renpy_string">We reached the meadows just outside our hometown.</span>"
+    "<span class="renpy_string">Autumn was so beautiful here.</span>"
+    "<span class="renpy_string">When we were children, we often played here.</span>"
+    m "<span class="renpy_string">Hey... ummm...</span>"
+    
+    <span class="renpy_keyword">show</span> sylvie smile
+    <span class="renpy_keyword">with</span> dissolve
+    
+    "<span class="renpy_string">She turned to me and smiled.</span>"
+    "<span class="renpy_string">I'll ask her...</span>"
+    m "<span class="renpy_string">Ummm... will you...</span>"
+    m "<span class="renpy_string">Will you be my artist for a visual novel?</span>"
+    
+    <span class="renpy_keyword">show</span> sylvie surprised
+    
+    "<span class="renpy_string">Silence.</span>"
+    "<span class="renpy_string">She is shocked. And then...</span>"
+    
+    <span class="renpy_keyword">show</span> sylvie smile
+    
+    s "<span class="renpy_string">Sure, but what is a \"visual novel?\"</span>"
+
+    <span class="renpy_keyword">menu</span>:
+
+        "<span class="renpy_string">It's a story with pictures.</span>":
+            <span class="renpy_keyword">jump</span> vn
+            
+        "<span class="renpy_string">It's a hentai game.</span>":
+            <span class="renpy_keyword">jump</span> hentai
+
+<span class="renpy_keyword">label</span> vn:
+
+    m "<span class="renpy_string">It's a story with pictures and music.</span>"
+    m "<span class="renpy_string">And you'll be able to make choices that influence the outcome of the story.</span>"
+    s "<span class="renpy_string">So it's like those choose-your-adventure books?</span>"
+    m "<span class="renpy_string">Exactly! I plan on making a small romantic story.</span>"
+    m "<span class="renpy_string">And I figured you could help me... since I know how you like to draw.</span>"
+    
+    <span class="renpy_keyword">show</span> sylvie normal
+    
+    s "<span class="renpy_string">Well, I can try. I hope I don't disappoint you.</span>"
+    m "<span class="renpy_string">You can't disappoint me, you know that.</span>"
+
+    <span class="renpy_keyword">jump</span> marry
+    
+<span class="renpy_keyword">label</span> hentai:
+
+    <span class="renpy_keyword">$</span> bl_game = True
+    
+    m "<span class="renpy_string">Why it's a game with lots of sex.</span>"
+    s "<span class="renpy_string">You mean, like a boy's love game?</span>"
+    s "<span class="renpy_string">I've always wanted to make one of those.</span>"
+    s "<span class="renpy_string">I'll get right on it!</span>"
+
+    <span class="renpy_keyword">hide</span> sylvie
+    <span class="renpy_keyword">with</span> dissolve
+
+    "<span class="renpy_string">...</span>"
+
+    m "<span class="renpy_string">That wasn't what I meant!</span>"
+
+    <span class="renpy_keyword">jump</span> marry
+    
+<span class="renpy_keyword">label</span> marry:
+    
+    <span class="renpy_keyword">scene</span> black
+    <span class="renpy_keyword">with</span> dissolve
+
+    "<span class="renpy_string">--- years later ---</span>"
+
+    <span class="renpy_keyword">scene</span> bg club
+    <span class="renpy_keyword">with</span> dissolve
+
+    "<span class="renpy_string">And so, we became a visual novel creating team.</span>"
+    "<span class="renpy_string">We made games and had a lot of fun making them.</span>"
+
+    <span class="renpy_keyword">if</span> bl_game:
+        "<span class="renpy_string">Well, apart from that Boy's Love game she insisted on making.</span>"
+
+    "<span class="renpy_string">And one day...</span>"
+        
+    <span class="renpy_keyword">show</span> sylvie2 normal
+    <span class="renpy_keyword">with</span> dissolve
+        
+    s "<span class="renpy_string">Hey...</span>"    
+    m "<span class="renpy_string">Yes?</span>"
+    
+    <span class="renpy_keyword">show</span> sylvie2 giggle
+    
+    s "<span class="renpy_string">Marry me!</span>"
+    m "<span class="renpy_string">What???</span>"
+    
+    <span class="renpy_keyword">show</span> sylvie2 surprised
+    
+    s "<span class="renpy_string">Well, don't you love me?</span>"
+    m "<span class="renpy_string">I do, actually.</span>"
+    
+    <span class="renpy_keyword">show</span> sylvie2 smile
+    
+    s "<span class="renpy_string">See? We've been making romantic visual novels, spending time together, helping each other....</span>"
+    s "<span class="renpy_string">... and when you give love to others, love will come to you.</span>"
+    m "<span class="renpy_string">Hmmm, that's a nice thought.</span>"
+
+    <span class="renpy_keyword">show</span> sylvie2 giggle
+    
+    s "<span class="renpy_string">I just made that up.</span>"
+    m "<span class="renpy_string">But it's good.</span>"
+    
+    <span class="renpy_keyword">show</span> sylvie2 normal
+    
+    s "<span class="renpy_string">I know. So, will you marry me?</span>"
+    m "<span class="renpy_string">Ummm, of course I will. I've actually been meaning to ask you, but since you brought it up...</span>"
+    s "<span class="renpy_string">I know, but you are so indecisive, that I thought I'd take the initiative. </span>"
+    m "<span class="renpy_string">I guess... It's all all about asking the right question... at the right time.</span>"
+    
+    <span class="renpy_keyword">show</span> sylvie2 giggle
+    
+    s "<span class="renpy_string">It is. But now, stop being theoretical, and give me a kiss!</span>"
+
+    <span class="renpy_keyword">scene</span> black
+    <span class="renpy_keyword">with</span> dissolve
+
+    "<span class="renpy_string">And we got married shortly after that.</span>"
+    "<span class="renpy_string">In fact, we made many more visual novels.</span>"
+    "<span class="renpy_string">And together, we lived happily ever after.</span>"
+
+    "<span class="renpy_string">.:. Good Ending.</span>"
+
+    <span class="renpy_keyword">return</span>
+
+<span class="renpy_keyword">label</span> later:
+
+    <span class="renpy_keyword">scene</span> black
+    <span class="renpy_keyword">with</span> dissolve
+
+    "<span class="renpy_string">And so I decided to ask her later.</span>"
+    "<span class="renpy_string">But I was indecisive.</span>"
+    "<span class="renpy_string">I couldn't ask her that day, and I couldn't ask her later.</span>"
+    "<span class="renpy_string">I guess I will never know now.</span>"
+    
+    "<span class="renpy_string">.:. Bad Ending.</span>"
+
+    <span class="renpy_keyword">return</span>
+</pre>
+<span class="anchor" id="line-234" /><span class="anchor" id="line-235" /><span class="anchor" id="line-236" />
+<p class="line867" />
+<h2 id="head-542366e9f0d5a2b70862e392444c2782f41380fb">options.rpy</h2>
+<span class="anchor" id="line-237" /><span class="anchor" id="line-238" />
+<p class="line867"><span class="anchor" id="line-239" /><span class="anchor" id="line-240" /><span class="anchor" id="line-241" /><span class="anchor" id="line-242" /><span class="anchor" id="line-243" /><span class="anchor" id="line-244" /><span class="anchor" id="line-245" /><span class="anchor" id="line-246" /><span class="anchor" id="line-247" /><span class="anchor" id="line-248" /><span class="anchor" id="line-249" /><span class="anchor" id="line-250" /><span class="anchor" id="line-251" /><span class="anchor" id="line-252" /><span class="anchor" id="line-253" /><span class="anchor" id="line-254" /><span class="anchor" id="line-255" /><span class="anchor" id="line-256" /><span class="anchor" id="line-257" /><span class="anchor" id="line-258" /><span class="anchor" id="line-259" /><span class="anchor" id="line-260" /><span class="anchor" id="line-261" /><span class="anchor" id="line-262" /><span class="anchor" id="line-263" /><span class="anchor" id="line-264" /><span class="anchor" id="line-265" /><span class="anchor" id="line-266" /><span class="anchor" id="line-267" /><span class="anchor" id="line-268" /><span class="anchor" id="line-269" /><span class="anchor" id="line-270" /><span class="anchor" id="line-271" /><span class="anchor" id="line-272" /><span class="anchor" id="line-273" /><span class="anchor" id="line-274" /><span class="anchor" id="line-275" /><span class="anchor" id="line-276" /><span class="anchor" id="line-277" /><span class="anchor" id="line-278" /><span class="anchor" id="line-279" /><span class="anchor" id="line-280" /><span class="anchor" id="line-281" /><span class="anchor" id="line-282" /><span class="anchor" id="line-283" /><span class="anchor" id="line-284" /><span class="anchor" id="line-285" /><span class="anchor" id="line-286" /><span class="anchor" id="line-287" /><span class="anchor" id="line-288" /><span class="anchor" id="line-289" /><span class="anchor" id="line-290" /><span class="anchor" id="line-291" /><span class="anchor" id="line-292" /><span class="anchor" id="line-293" /><span class="anchor" id="line-294" /><span class="anchor" id="line-295" /><span class="anchor" id="line-296" /><span class="anchor" id="line-297" /><span class="anchor" id="line-298" /><span class="anchor" id="line-299" /><span class="anchor" id="line-300" /><span class="anchor" id="line-301" /><span class="anchor" id="line-302" /><span class="anchor" id="line-303" /><span class="anchor" id="line-304" /><span class="anchor" id="line-305" /><span class="anchor" id="line-306" /><span class="anchor" id="line-307" /><span class="anchor" id="line-308" /><span class="anchor" id="line-309" /><span class="anchor" id="line-310" /><span class="anchor" id="line-311" /><span class="anchor" id="line-312" /><span class="anchor" id="line-313" /><span class="anchor" id="line-314" /><span class="anchor" id="line-315" /><span class="anchor" id="line-316" /><span class="anchor" id="line-317" /><span class="anchor" id="line-318" /><span class="anchor" id="line-319" /><span class="anchor" id="line-320" /><span class="anchor" id="line-321" /><span class="anchor" id="line-322" /><span class="anchor" id="line-323" /><span class="anchor" id="line-324" /><span class="anchor" id="line-325" /><span class="anchor" id="line-326" /><span class="anchor" id="line-327" /><span class="anchor" id="line-328" /><span class="anchor" id="line-329" /><span class="anchor" id="line-330" /><span class="anchor" id="line-331" /><span class="anchor" id="line-332" /><span class="anchor" id="line-333" /><span class="anchor" id="line-334" /><span class="anchor" id="line-335" /><span class="anchor" id="line-336" /><span class="anchor" id="line-337" /><span class="anchor" id="line-338" /><span class="anchor" id="line-339" /><span class="anchor" id="line-340" /><span class="anchor" id="line-341" /><span class="anchor" id="line-342" /><span class="anchor" id="line-343" /><span class="anchor" id="line-344" /><span class="anchor" id="line-345" /><span class="anchor" id="line-346" /><span class="anchor" id="line-347" /><span class="anchor" id="line-348" /><span class="anchor" id="line-349" /><span class="anchor" id="line-350" /><span class="anchor" id="line-351" /><span class="anchor" id="line-352" /><span class="anchor" id="line-353" /><span class="anchor" id="line-354" /><span class="anchor" id="line-355" /><span class="anchor" id="line-356" /><span class="anchor" id="line-357" /><span class="anchor" id="line-358" /><span class="anchor" id="line-359" /><span class="anchor" id="line-360" /><span class="anchor" id="line-361" /><span class="anchor" id="line-362" /><span class="anchor" id="line-363" /><span class="anchor" id="line-364" /><span class="anchor" id="line-365" /><span class="anchor" id="line-366" /><span class="anchor" id="line-367" /><span class="anchor" id="line-368" /><span class="anchor" id="line-369" /><span class="anchor" id="line-370" /><span class="anchor" id="line-371" /><span class="anchor" id="line-372" /><span class="anchor" id="line-373" /><span class="anchor" id="line-374" /><span class="anchor" id="line-375" /><span class="anchor" id="line-376" /><span class="anchor" id="line-377" /><span class="anchor" id="line-378" /><span class="anchor" id="line-379" /><span class="anchor" id="line-380" /><span class="anchor" id="line-381" /><span class="anchor" id="line-382" /><span class="anchor" id="line-383" /><span class="anchor" id="line-384" /><span class="anchor" id="line-385" /><span class="anchor" id="line-386" /><span class="anchor" id="line-387" /><span class="anchor" id="line-388" /><span class="anchor" id="line-389" /><span class="anchor" id="line-390" /><span class="anchor" id="line-391" /><span class="anchor" id="line-392" /><span class="anchor" id="line-393" /><span class="anchor" id="line-394" /><span class="anchor" id="line-395" /><span class="anchor" id="line-396" /><span class="anchor" id="line-397" /><span class="anchor" id="line-398" /><span class="anchor" id="line-399" /><span class="anchor" id="line-400" /><span class="anchor" id="line-401" /><span class="anchor" id="line-402" /><span class="anchor" id="line-403" /><span class="anchor" id="line-404" /><span class="anchor" id="line-405" /><span class="anchor" id="line-406" /><span class="anchor" id="line-407" /><span class="anchor" id="line-408" /><span class="anchor" id="line-409" /><span class="anchor" id="line-410" /><span class="anchor" id="line-411" /><span class="anchor" id="line-412" /><span class="anchor" id="line-413" /><span class="anchor" id="line-414" /><span class="anchor" id="line-415" /><span class="anchor" id="line-416" /><span class="anchor" id="line-417" /><span class="anchor" id="line-418" /><span class="anchor" id="line-419" /><span class="anchor" id="line-420" /><span class="anchor" id="line-421" /><span class="anchor" id="line-422" /><span class="anchor" id="line-423" /><span class="anchor" id="line-424" /><span class="anchor" id="line-425" /><span class="anchor" id="line-426" /><span class="anchor" id="line-427" /><span class="anchor" id="line-428" /><span class="anchor" id="line-429" /><span class="anchor" id="line-430" /><span class="anchor" id="line-431" /></p>
+<pre class="renpy">
+&#239;&#187;&#191;<span class="renpy_comment">## This file contains some of the options that can be changed to customize</span>
+<span class="renpy_comment">## your Ren'Py game. It only contains the most common options... there</span>
+<span class="renpy_comment">## is quite a bit more customization you can do.</span>
+<span class="renpy_comment">##</span>
+<span class="renpy_comment">## Lines beginning with two '#' marks are comments, and you shouldn't</span>
+<span class="renpy_comment">## uncomment them. Lines beginning with a single '#' mark are</span>
+<span class="renpy_comment">## commented-out code, and you may want to uncomment them when</span>
+<span class="renpy_comment">## appropriate.</span>
+
+<span class="renpy_keyword">init</span> -1:
+    <span class="renpy_keyword">python</span> <span class="renpy_keyword">hide</span>:
+
+        <span class="renpy_comment">## Should we enable the use of developer tools? This should be</span>
+        <span class="renpy_comment">## set to False before the game is released, so the user can't</span>
+        <span class="renpy_comment">## cheat using developer tools.</span>
+
+        config.developer = True
+        
+        <span class="renpy_comment">## These control the width and height of the screen.</span>
+
+        config.screen_width = 800
+        config.screen_height = 600
+
+        <span class="renpy_comment">## This controls the title of the window, when Ren'Py is</span>
+        <span class="renpy_comment">## running in a window.</span>
+
+        config.window_title = u"<span class="renpy_string">The Question</span>"
+
+        <span class="renpy_comment">## We then want to call a theme function. themes.roundrect is</span>
+        <span class="renpy_comment">## a theme that features the use of rounded rectangles. It's</span>
+        <span class="renpy_comment">## the only theme we currently support.</span>
+        <span class="renpy_comment">##</span>
+        <span class="renpy_comment">## The theme function takes a number of parameters that can</span>
+        <span class="renpy_comment">## customize the color scheme.</span>
+        theme.roundrect(
+
+            <span class="renpy_comment">## The color of an idle widget face.</span>
+            widget = "<span class="renpy_string">#F8AD00</span>",
+
+            <span class="renpy_comment">## The color of a focused widget face.</span>
+            widget_hover = "<span class="renpy_string">#E97F00</span>",
+
+            <span class="renpy_comment">## The color of the text in a widget.</span>
+            widget_text = "<span class="renpy_string">#581A00</span>",
+
+            <span class="renpy_comment">## The color of the text in a selected widget. (For</span>
+            <span class="renpy_comment">## example, the current value of a preference.)</span>
+            widget_selected = "<span class="renpy_string">#58A1FF</span>",
+
+            <span class="renpy_comment">## The color of a disabled widget face. </span>
+            disabled = "<span class="renpy_string">#404040</span>",
+
+            <span class="renpy_comment">## The color of disabled widget text.</span>
+            disabled_text = "<span class="renpy_string">#FFC89A</span>",
+
+            <span class="renpy_comment">## The color of informational labels.</span>
+            <span class="renpy_keyword">label</span> = "<span class="renpy_string">#ffffff</span>",
+
+            <span class="renpy_comment">## The color of a frame containing widgets.</span>
+            frame = "<span class="renpy_string">#95850F</span>",
+
+            <span class="renpy_comment">## If this is True, in-game menus are placed in the center</span>
+            <span class="renpy_comment">## the screen. If False, they are placed inside a window</span>
+            <span class="renpy_comment">## at the bottom of the screen.</span>
+            button_menu = True,
+
+            <span class="renpy_comment">## The background of the main menu. This can be a color</span>
+            <span class="renpy_comment">## beginning with '#', or an image filename. The latter</span>
+            <span class="renpy_comment">## should take up the full height and width of the screen.</span>
+            mm_root = "<span class="renpy_string">menu.jpg</span>",
+
+            <span class="renpy_comment">## The background of the game menu. This can be a color</span>
+            <span class="renpy_comment">## beginning with '#', or an image filename. The latter</span>
+            <span class="renpy_comment">## should take up the full height and width of the screen.</span>
+            gm_root = "<span class="renpy_string">menu2.jpg</span>",
+
+            <span class="renpy_comment">## And we're done with the theme. The theme will customize</span>
+            <span class="renpy_comment">## various styles, so if we want to change them, we should</span>
+            <span class="renpy_comment">## do so below.            </span>
+            )
+
+
+        <span class="renpy_comment">#########################################</span>
+        <span class="renpy_comment">## These settings let you customize the window containing the</span>
+        <span class="renpy_comment">## dialogue and narration, by replacing it with an image.</span>
+
+        <span class="renpy_comment">## The background of the window. In a Frame, the two numbers</span>
+        <span class="renpy_comment">## are the size of the left/right and top/bottom borders,</span>
+        <span class="renpy_comment">## respectively.</span>
+
+        <span class="renpy_comment"># style.window.background = Frame("frame.png", 12, 12)</span>
+        
+        <span class="renpy_comment">## Margin is space surrounding the window, where the background</span>
+        <span class="renpy_comment">## is not drawn.</span>
+
+        <span class="renpy_comment"># style.window.left_margin = 6</span>
+        <span class="renpy_comment"># style.window.right_margin = 6</span>
+        <span class="renpy_comment"># style.window.top_margin = 6</span>
+        <span class="renpy_comment"># style.window.bottom_margin = 6</span>
+        
+        <span class="renpy_comment">## Padding is space inside the window, where the background is</span>
+        <span class="renpy_comment">## drawn.</span>
+
+        <span class="renpy_comment"># style.window.left_padding = 6</span>
+        <span class="renpy_comment"># style.window.right_padding = 6</span>
+        <span class="renpy_comment"># style.window.top_padding = 6</span>
+        <span class="renpy_comment"># style.window.bottom_padding = 6</span>
+
+        <span class="renpy_comment">## This is the minimum height of the window, including the margins</span>
+        <span class="renpy_comment">## and padding.</span>
+
+        <span class="renpy_comment"># style.window.yminimum = 250</span>
+
+
+        <span class="renpy_comment">#########################################</span>
+        <span class="renpy_comment">## This lets you change the placement of the main menu.</span>
+        
+        <span class="renpy_comment">## The way placement works is that we find an anchor point</span>
+        <span class="renpy_comment">## inside a displayable, and a position (pos) point on the</span>
+        <span class="renpy_comment">## screen. We then place the displayable so the two points are</span>
+        <span class="renpy_comment">## at the same place.</span>
+
+        <span class="renpy_comment">## An anchor/pos can be given as an integer or a floating point</span>
+        <span class="renpy_comment">## number. If an integer, the number is interpreted as a number</span>
+        <span class="renpy_comment">## of pixels from the upper-left corner. If a floating point,</span>
+        <span class="renpy_comment">## the number is interpreted as a fraction of the size of the</span>
+        <span class="renpy_comment">## displayable or screen.</span>
+
+        <span class="renpy_comment"># style.mm_menu_frame.xpos = 0.5</span>
+        <span class="renpy_comment"># style.mm_menu_frame.xanchor = 0.5</span>
+        <span class="renpy_comment"># style.mm_menu_frame.ypos = 0.75</span>
+        <span class="renpy_comment"># style.mm_menu_frame.yanchor = 0.5</span>
+
+
+        <span class="renpy_comment">#########################################</span>
+        <span class="renpy_comment">## These let you customize the default font used for text in Ren'Py.</span>
+
+        <span class="renpy_comment">## The file containing the default font.</span>
+
+        <span class="renpy_comment"># style.default.font = "DejaVuSans.ttf"</span>
+
+        <span class="renpy_comment">## The default size of text.</span>
+
+        <span class="renpy_comment"># style.default.size = 22</span>
+
+        <span class="renpy_comment">## Note that these only change the size of some of the text. Other</span>
+        <span class="renpy_comment">## buttons have their own styles.</span>
+
+
+        <span class="renpy_comment">#########################################</span>
+        <span class="renpy_comment">## These settings let you change some of the sounds that are used by</span>
+        <span class="renpy_comment">## Ren'Py.</span>
+
+        <span class="renpy_comment">## Set this to False if the game does not have any sound effects.</span>
+
+        config.has_sound = True
+
+        <span class="renpy_comment">## Set this to False if the game does not have any music.</span>
+
+        config.has_music = True
+
+        <span class="renpy_comment">## Set this to False if the game does not have voicing.</span>
+
+        config.has_voice = True
+
+        <span class="renpy_comment">## Sounds that are used when button and imagemaps are clicked.</span>
+
+        <span class="renpy_comment"># style.button.activate_sound = "click.wav"</span>
+        <span class="renpy_comment"># style.imagemap.activate_sound = "click.wav"</span>
+
+        <span class="renpy_comment">## Sounds that are used when entering and exiting the game menu.</span>
+
+        <span class="renpy_comment"># config.enter_sound = "click.wav"</span>
+        <span class="renpy_comment"># config.exit_sound = "click.wav"</span>
+
+        <span class="renpy_comment">## A sample sound that can be played to check the sound volume.</span>
+
+        <span class="renpy_comment"># config.sample_sound = "click.wav"</span>
+
+        <span class="renpy_comment">## Music that is played while the user is at the main menu.</span>
+
+        <span class="renpy_comment"># config.main_menu_music = "main_menu_theme.ogg"</span>
+
+        
+        <span class="renpy_comment">#########################################</span>
+        <span class="renpy_comment">## Miscellaneous customizations</span>
+
+        <span class="renpy_comment">## These let you change the transitions that are used when entering</span>
+        <span class="renpy_comment">## and exiting the game menu.</span>
+
+        config.enter_transition = dissolve
+        config.exit_transition = dissolve
+</pre>
+<span class="anchor" id="line-432" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

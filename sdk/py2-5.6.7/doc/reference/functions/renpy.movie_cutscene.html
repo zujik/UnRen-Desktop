@@ -1,0 +1,49 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-29dc0c128dad3b39de7112011c0d70c3c41e47fb">renpy.movie_cutscene</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.movie_cutscene" name="renpy.movie_cutscene" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.movie_cutscene.html">renpy.movie_cutscene</a></b>(</td>
+<td>filename, delay, loops=0)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This displays an MPEG-1 cutscene for the specified number of seconds. The user can click to interrupt the cutscene. Overlays and Underlays are disabled for the duration of the cutscene. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>filename</em> - The name of a file containing an MPEG-1 movie. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>delay</em> - The number of seconds to wait before ending the cutscene. Normally the length of the movie, in seconds. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>loops</em> - The number of extra loops to show, -1 to loop forever. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">Returns True if the movie was terminated by the user, or False if the given delay elapsed uninterrupted. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-16" />
+<h2 id="head-3c11260382ec9497205f663ce4e30d0209dbe8ac">Example</h2>
+<span class="anchor" id="line-17" />
+<p class="line867"><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<pre class="renpy">
+e "<span class="renpy_string">Since you downloaded the Eisenhower commercial, I can show
+   it to you as a cutscene.</span>"
+
+e "<span class="renpy_string">You can click to continue if it gets on your nerves too
+                   much.</span>"
+
+<span class="renpy_keyword">$</span> renpy.movie_cutscene('<span class="renpy_string">Eisenhow1952.mpg</span>', 63.0)
+</pre>
+<span class="anchor" id="line-26" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

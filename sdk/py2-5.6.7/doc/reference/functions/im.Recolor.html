@@ -1,0 +1,40 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-635e04e0c51da3d40af013adea7ea3ee88c63b79">im.Recolor</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Recolor" name="im.Recolor" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/im.Recolor.html">im.Recolor</a></b>(</td>
+<td>im, rmul=255, gmul=255, bmul=255, amul=255, force_alpha=False, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This adjusts the colors of the supplied image, <em>im</em>. It takes four arguments, <em>rmul</em>, <em>gmul</em>, <em>bmul</em> and <em>amul</em>, corresponding to the red, green, blue and alpha channels, with each being an integer between 0 and 255. Each channel has its value mapped so that 0 is 0, 255 is the argument supplied for that channel, and other values are linearly mapped in-between. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" />
+<h2 id="head-e587e111ed7cf8e92a3de6f7032ff1a662a8134b">Example</h2>
+<span class="anchor" id="line-9" />
+<p class="line867"><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> cyan green2 = im.Recolor("<span class="renpy_string">cyan.png</span>", 255, 255, 0, 255)
+</pre>
+<span class="anchor" id="line-13" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

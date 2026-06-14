@@ -1,0 +1,11 @@
+altrpatool (modified rpatool)
+Author: JoeLurmel @ f95zone.to
+Origin: Embedded in UnRen-forall; Python 3 port in tools/altrpatool-py3/
+
+Licensed under the GNU GENERAL PUBLIC LICENSE Version 3 (GPL-3.0).
+
+The full GPL-3.0 text is in:
+  licenses/GPL-3.0.txt
+  tools/altrpatool-py3/COPYING
+
+Lineage: rpatool (Shizmob) → UnRen.bat (Sam/Gideon) → VepsrP → JoeLurmel.

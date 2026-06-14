@@ -1,0 +1,23 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-5317051018186633e313cf97ec6e5d1f9063d54b">Obfuscating Your Game</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line874">For some reason, many people seem to want to distribute their games in an obfuscated form, making it difficult to read the script, or to view the images associated with a game. Ren'Py supports this, to a point, by compiling scripts and allowing images to be archived. While a moderately skilled programmer could easily crack this obfuscation, it should be enough to protect a game from casual browsing. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line874">Obfuscating the script is practically automatic. Every time the game runs, any .rpy file in the game directory is written out as an .rpyc file. These .rpyc files are enough to run the game, so simply running the game once (to create the .rpyc files) and then deleting (or more appropriately, moving away) the .rpy files will leave you with a runnable game with an obfuscated script. As a bonus, the .rpyc files are already parsed, improving game load time. (If a directory contains .rpy and .rpyc files with the same stem, the newer one of them is chosen, meaning all games get this performance improvement.) <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Images can be archived using the Ren'Py launcher. Just choose "Archive Images" from the "Tools" menu, and Ren'Py will create an archive containing your images. It will also add a script file that contains code telling Ren'Py where to look for the archived images. <span class="anchor" id="line-8" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

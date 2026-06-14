@@ -1,0 +1,38 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-2" />
+<p class="line867" />
+<h1 id="head-1585d4b3868ea0d1672e8a8cef1763be7886ee0d">Overlays</h1>
+<span class="anchor" id="line-3" /><span class="anchor" id="line-4" />
+<p class="line874">Overlays are used to display information above the scene currently displayed. The overlay is regenerated each time an interaction with the user begins, making it suitable for displaying to the user things like statistics or dates. The overlay is generally displayed whenever transient things (like dialogue, thoughts and menus) are. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" /></p>
+<p class="line862">Overlays are set up by adding to the <a href="../reference/Configuration_Variables.html#config.overlay_functions">config.overlay_functions</a> list a Python function which, when called, uses the ui functions to add widgets to the screen. By default, such widgets are added to the 'overlay' layer, but a call to <a href="../reference/functions/ui.layer.html">ui.layer</a> can change the layer to any of the layers listed in <a href="../reference/Configuration_Variables.html#config.overlay_layers">config.overlay_layers</a> . These functions are called for each interaction, which allows the overlay to change to reflect the status of game variables. If a variable affecting the overlay changes during an interaction, <a href="../reference/functions/renpy.restart_interaction.html">renpy.restart_interaction</a> should be called to regenerate the overlay. <span class="anchor" id="line-7" /><span class="anchor" id="line-8" /></p>
+<p class="line874">As an example, take the following code fragement. When added to a program, this displays a date image in the upper-right corner of the screen (as is done in Kanon). The image shown is based on the variable date. If date is None, then no date is shown. Otherwise, a png file beginning with the value of date is shown. <span class="anchor" id="line-9" /><span class="anchor" id="line-10" /><span class="anchor" id="line-11" /><span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> date = "<span class="renpy_string">mar25</span>"
+
+    <span class="renpy_keyword">python</span> <span class="renpy_keyword">hide</span>:
+        def date_overlay():
+            <span class="renpy_keyword">if</span> date:
+                ui.<span class="renpy_keyword">image</span>(date + "<span class="renpy_string">.png</span>",
+                         xpos=1.0, xanchor="<span class="renpy_string">right</span>",
+                         ypos=0.0, yanchor="<span class="renpy_string">top</span>")
+
+        config.overlay_functions.append(date_overlay)
+</pre>
+<span class="anchor" id="line-22" />
+<p class="line862">Like all config variables, <a href="../reference/Configuration_Variables.html#config.overlay_functions">config.overlay_functions</a> should only be changed in an init block. If you need to toggle an overlay on and off, then the overlay function should be conditioned on some normal variable. This is done in the example above when date is None. <span class="anchor" id="line-23" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

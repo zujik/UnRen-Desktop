@@ -1,0 +1,48 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-80d858292d019c64ed9aff6a348ac246d20034d7">anim.Filmstrip</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="anim.Filmstrip" name="anim.Filmstrip" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/anim.Filmstrip.html">anim.Filmstrip</a></b>(</td>
+<td>image, framesize, gridsize, delay, frames=None, loop=True, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This creates an animation from a single image. This image must consist of a grid of frames, with the number of columns and rows in the grid being taken from gridsize, and the size of each frame in the grid being taken from framesize. This takes frames and sticks them into an <a href="../../reference/functions/Animation.html">Animation</a> , with the given delay between each frame. The frames are taken by going from left-to-right across the first row, left-to-right across the second row, and so on until all frames are consumed, or a specified number of frames are taken. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>image</em> - The image that the frames must be taken from. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>framesize</em> - A (width, height) tuple giving the size of each of the frames in the animation. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>gridsize</em> - A (columns, rows) tuple giving the number of columns and rows in the grid. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>delay</em> - The delay, in seconds, between frames. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>frames</em> - The number of frames in this animation. If None, then this defaults to colums * rows frames, that is, taking every frame in the grid. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>loop</em> - If True, loop at the end of the animation. If False, this performs the animation once, and then stops. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line862">Other keyword arguments are as for <a href="../../reference/functions/anim.SMAnimation.html">anim.SMAnimation</a> . <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-22" />
+<h2 id="head-278ed1317b39525edd02bedc6137c4c4d4706742">Example</h2>
+<span class="anchor" id="line-23" />
+<p class="line867"><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> ctc = anim.Filmstrip("<span class="renpy_string">sakura.png</span>", (20, 20), (2, 1), .30,
+                               xpos=760, ypos=560, xanchor=0, yanchor=0)
+</pre>
+<span class="anchor" id="line-28" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

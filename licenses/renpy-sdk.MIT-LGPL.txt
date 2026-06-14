@@ -1,0 +1,14 @@
+Ren'Py SDK runtime slices (bundled under sdk/)
+Copyright (c) 2004-2026 Tom Rothamel and contributors
+Official: https://www.renpy.org · https://github.com/renpy/renpy
+
+License: Mostly MIT for engine source; bundled binaries (FFmpeg, SDL2, etc.)
+under LGPL where noted in each slice.
+
+Per-slice license files in this repository:
+  sdk/py3-8.5.3/LICENSE.txt
+  sdk/py2-7.8.7/LICENSE.txt
+  sdk/py2-6.99.14.3/LICENSE.txt
+  sdk/py2-5.6.7/LICENSE.txt
+
+When redistributing trimmed SDK binaries, include the matching LICENSE.txt.

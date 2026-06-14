@@ -1,0 +1,45 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-108fecdfd76613d8d2c07d85457f171ca9f4c934">im.Composite</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="im.Composite" name="im.Composite" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/im.Composite.html">im.Composite</a></b>(</td>
+<td>size, *args, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This image manipulator composites one or more images together. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">This takes a variable number of arguments. The first argument is size, which is either the desired size of the image (in pixels), or None to indicate that the size should be the size of the first image. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">It then takes an even number of further arguments. (For an odd number of total arguments.) The second and other even numbered arguments contain position tuples, while the third and further odd-numbered arguments give images (or image manipulators). A position argument gives the position of the image immediately following it, with the position expressed as a tuple giving an offset from the upper-left corner of the image. The images are composited in bottom-to-top order, with the last image being closest to the user. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" />
+<h2 id="head-f27053645dd00aaa4906d545912b6b16075c999b">Example</h2>
+<span class="anchor" id="line-13" />
+<p class="line867"><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> cyan composite = im.Composite((200, 300),
+                                        (0, 0), "<span class="renpy_string">cyan.png</span>",
+                                        (0, 50), "<span class="renpy_string">cyan.png</span>",
+                                        (0, 100), "<span class="renpy_string">cyan.png</span>")
+</pre>
+<span class="anchor" id="line-20" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

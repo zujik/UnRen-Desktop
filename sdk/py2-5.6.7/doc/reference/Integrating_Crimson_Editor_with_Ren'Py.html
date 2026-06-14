@@ -1,0 +1,226 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-84c2ab514fa26cda89e1f76af3575cf79e418aa6">Integrating Crimson Editor with Ren'Py</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line862">Crimson Editor is a freeware Windows text editor, available <a class="http" href="http://www.renpy.org//www.crimsoneditor.com/">here</a>. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line867" />
+<h2 id="head-f33ddbc86af53e74bbeb453c8ec7c99b115a22f1">Editor Preferences</h2>
+<span class="anchor" id="line-6" /><span class="anchor" id="line-7" />
+<p class="line874">In the program's Preferences dialog, General category, tab size should be set to 4 and "Use spaces in place of tab" should be checked. "Allow multiple instances" should not be checked. "Enable auto indent" should be checked. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">In the General/Visual category, "Show tab characters" should be checked. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">In the File category, "Convert tabs to spaces before saving" should be checked. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+<h2 id="head-b44036e08c1d3bb5ba1548745c6d290df42fa061">Syntax Highlighting</h2>
+<span class="anchor" id="line-14" /><span class="anchor" id="line-15" />
+<p class="line874">To setup Ren'Py syntax highlighting with Crimson Editor, three configuration files must be created. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line862">First, create a text file named <tt class="backtick">extension.rpy</tt> in the <tt class="backtick">link</tt> subdirectory of the main Crimson Editor program directory. The <tt class="backtick">extension.rpy</tt> file should contain the lines: <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<pre>
+LANGSPEC:RENPY.SPC
+<span class="anchor" id="line-20" />KEYWORDS:RENPY.KEY
+<span class="anchor" id="line-21" />
+</pre>
+<span class="anchor" id="line-22" />
+<p class="line874">This file directs Crimson Editor to apply Ren'Py syntax highlighting to all files it opens with the ".rpy" extension. <span class="anchor" id="line-23" /><span class="anchor" id="line-24" /></p>
+<p class="line862">Second, create a text file named <tt class="backtick">renpy.spc</tt> in the <tt class="backtick">spec</tt> subdirectory of the main Crimson Editor program directory. The <tt class="backtick">renpy.spc</tt> file should contain the lines: <span class="anchor" id="line-25" /><span class="anchor" id="line-26" /></p>
+<pre>
+# Ren'PY LANGUAGE SPECIFICATION FILE FOR CRIMSON EDITOR
+<span class="anchor" id="line-27" /># Derived from the Python language specification file
+<span class="anchor" id="line-28" /># FIRST EDITED BY IGKANG 2000.11.11
+<span class="anchor" id="line-29" /># derived from PHP.SPC, Geert van Boven (g.vanboven@dignion.com or gvb@vbit.nl) 26 sept. 2001
+<span class="anchor" id="line-30" />
+<span class="anchor" id="line-31" />$CASESENSITIVE=YES
+<span class="anchor" id="line-32" />$MULTILINESTRINGCONSTANT=YES
+<span class="anchor" id="line-33" />$DELIMITERS=(){}[]&lt;&gt;+-*/%="'~!@#&amp;$^&amp;|\?:;,.
+<span class="anchor" id="line-34" />$KEYWORDPREFIX=&amp;
+<span class="anchor" id="line-35" />$ESCAPECHAR=\
+<span class="anchor" id="line-36" />$QUOTATIONMARK1="
+<span class="anchor" id="line-37" />$QUOTATIONMARK2='
+<span class="anchor" id="line-38" />$LINECOMMENT=#
+<span class="anchor" id="line-39" />$PAIRS1=()
+<span class="anchor" id="line-40" />$PAIRS2=[]
+<span class="anchor" id="line-41" />$PAIRS3={}
+<span class="anchor" id="line-42" />
+</pre>
+<span class="anchor" id="line-43" /><span class="anchor" id="line-44" />
+<p class="line862">Third, create a text file named <tt class="backtick">renpy.key</tt> in the <tt class="backtick">spec</tt> subdirectory of the main Crimson Editor program directory. The <tt class="backtick">renpy.key</tt> file should contain the lines: <span class="anchor" id="line-45" /><span class="anchor" id="line-46" /></p>
+<pre>
+[-COMMENT-:GLOBAL]
+<span class="anchor" id="line-47" /># Ren'Py LANGUAGE KEYWORDS FILE FOR CRIMSON EDITOR
+<span class="anchor" id="line-48" /># Derived from the Python keywords file, updated bst 2006/9/16
+<span class="anchor" id="line-49" /># FIRST EDITED BY Geert van Boven (g.vanboven@dignion.com or gvb@vbit.nl) 26 sept. 2001
+<span class="anchor" id="line-50" />
+<span class="anchor" id="line-51" />[KEYWORDS0:GLOBAL]
+<span class="anchor" id="line-52" /># ===== program flow control =====
+<span class="anchor" id="line-53" />break
+<span class="anchor" id="line-54" />continue
+<span class="anchor" id="line-55" />elif else
+<span class="anchor" id="line-56" />for from
+<span class="anchor" id="line-57" />if import
+<span class="anchor" id="line-58" />pass
+<span class="anchor" id="line-59" />reload return
+<span class="anchor" id="line-60" />while
+<span class="anchor" id="line-61" />
+<span class="anchor" id="line-62" /># ===== built in functions and other reserved words =====
+<span class="anchor" id="line-63" />abs and apply assert
+<span class="anchor" id="line-64" />buffer
+<span class="anchor" id="line-65" />callable chr class cmp coerce compile complex
+<span class="anchor" id="line-66" />def del delattr dir divmod
+<span class="anchor" id="line-67" />eval exec execfile
+<span class="anchor" id="line-68" />filter float
+<span class="anchor" id="line-69" />getattr global globals
+<span class="anchor" id="line-70" />hasattr hash hex
+<span class="anchor" id="line-71" />id in input int intern is isinstance issubclass
+<span class="anchor" id="line-72" />lambda len list locals long
+<span class="anchor" id="line-73" />map max min
+<span class="anchor" id="line-74" />not
+<span class="anchor" id="line-75" />oct open or ord
+<span class="anchor" id="line-76" />pow print
+<span class="anchor" id="line-77" />range raw_input reduce repr round
+<span class="anchor" id="line-78" />setattr slice str
+<span class="anchor" id="line-79" />tuple type
+<span class="anchor" id="line-80" />unichr unicode
+<span class="anchor" id="line-81" />vars
+<span class="anchor" id="line-82" />xrange
+<span class="anchor" id="line-83" />zip
+<span class="anchor" id="line-84" />
+<span class="anchor" id="line-85" /># ===== additional RenPy keywords =====
+<span class="anchor" id="line-86" />as at call expression hide image init jump label menu
+<span class="anchor" id="line-87" />onlayer python return scene set show with zorder
+<span class="anchor" id="line-88" />
+<span class="anchor" id="line-89" /># ===== exception handling =====
+<span class="anchor" id="line-90" />except
+<span class="anchor" id="line-91" />finally
+<span class="anchor" id="line-92" />raise
+<span class="anchor" id="line-93" />try
+<span class="anchor" id="line-94" />
+</pre>
+<span class="anchor" id="line-95" /><span class="anchor" id="line-96" />
+<p class="line867" />
+<h2 id="head-fb8d9d0097d1ec9eb58367c49d1ea792a0d3d9f7">Running Ren'Py from Crimson Editor</h2>
+<span class="anchor" id="line-97" /><span class="anchor" id="line-98" />
+<p class="line874">Ren'Py may be launched directly from Crimson Editor as a User Tool. <span class="anchor" id="line-99" /><span class="anchor" id="line-100" /></p>
+<p class="line867" />
+<h3 id="head-3de2ea3b93ad4ec992652dee906cf2ba775104e9">Default options</h3>
+<span class="anchor" id="line-101" />
+<p class="line874">To run Ren'Py with default launching options, use these User Tool options: <span class="anchor" id="line-102" /></p>
+<ul>
+<li>
+<p class="line891"><strong>Menu Text:</strong> <tt class="backtick">RenPy&#160;Run&#160;Game&#160;Default&#160;Dir</tt> <span class="anchor" id="line-103" /></p>
+</li>
+<li>
+<p class="line891"><strong>Command:</strong> <tt class="backtick">C:\devel\renpy\run_game.exe</tt> (Change to your Ren'Py installation directory) <span class="anchor" id="line-104" /></p>
+</li>
+<li>
+<p class="line891"><strong>Argument:</strong> (blank) <span class="anchor" id="line-105" /></p>
+</li>
+<li>
+<p class="line891"><strong>Initial Dir:</strong> (blank) <span class="anchor" id="line-106" /></p>
+</li>
+<li>
+<p class="line891"><strong>Hot Key:</strong> (blank or as desired) <span class="anchor" id="line-107" /></p>
+</li>
+<li>The "Save before execute" box should be checked. <span class="anchor" id="line-108" /><span class="anchor" id="line-109" /></li>
+</ul>
+<p class="line867" />
+<h3 id="head-c7ba208716505aef58c11d65d9fbe6d352e2bdc1">Custom game directory</h3>
+<span class="anchor" id="line-110" />
+<p class="line874">To run Ren'Py with a custom game directory, use these User Tool options: <span class="anchor" id="line-111" /></p>
+<ul>
+<li>
+<p class="line891"><strong>Menu Text:</strong> <tt class="backtick">RenPy&#160;Run&#160;Game&#160;Custom&#160;Dir</tt> <span class="anchor" id="line-112" /></p>
+</li>
+<li>
+<p class="line891"><strong>Command:</strong> <tt class="backtick">C:\devel\renpy\run_game.exe</tt> (Change to your Ren'Py installation directory) <span class="anchor" id="line-113" /></p>
+</li>
+<li>
+<p class="line891"><strong>Argument:</strong> <tt class="backtick">--game&#160;$(FileDir)</tt> <span class="anchor" id="line-114" /></p>
+</li>
+<li>
+<p class="line891"><strong>Initial Dir:</strong> <tt class="backtick">$(FileDir)</tt> <span class="anchor" id="line-115" /></p>
+</li>
+<li>
+<p class="line891"><strong>Hot Key:</strong> (blank or as desired) <span class="anchor" id="line-116" /></p>
+</li>
+<li>The "Save before execute" box should be checked. <span class="anchor" id="line-117" /><span class="anchor" id="line-118" /></li>
+</ul>
+<p class="line867" />
+<h3 id="head-9de22089502925bc7e9b585b3a437df939feca2a">Warp to script line</h3>
+<span class="anchor" id="line-119" />
+<p class="line874">To run Ren'Py with a custom game directory, use these User Tool options: <span class="anchor" id="line-120" /></p>
+<ul>
+<li>
+<p class="line891"><strong>Menu Text:</strong> <tt class="backtick">RenPy&#160;Run&#160;Game&#160;Warp&#160;to&#160;Line</tt> <span class="anchor" id="line-121" /></p>
+</li>
+<li>
+<p class="line891"><strong>Command:</strong> <tt class="backtick">C:\devel\renpy\run_game.exe</tt> (Change to your Ren'Py installation directory) <span class="anchor" id="line-122" /></p>
+</li>
+<li>
+<p class="line891"><strong>Argument:</strong> <tt class="backtick">--game&#160;$(FileDir)&#160;--warp&#160;$(FileName):$(LineNum)</tt> <span class="anchor" id="line-123" /></p>
+</li>
+<li>
+<p class="line891"><strong>Initial Dir:</strong> <tt class="backtick">$(FileDir)</tt> <span class="anchor" id="line-124" /></p>
+</li>
+<li>
+<p class="line891"><strong>Hot Key:</strong> (blank or as desired) <span class="anchor" id="line-125" /></p>
+</li>
+<li>The "Save before execute" box should be checked. <span class="anchor" id="line-126" /><span class="anchor" id="line-127" /></li>
+</ul>
+<p class="line867" />
+<h3 id="head-703f207550687bd8a534798dd857d5f94f49d6f6">Open Explorer to game data directory</h3>
+<span class="anchor" id="line-128" />
+<p class="line874">It may be useful to open Explorer to the game data directory, to show the non-script resources. <span class="anchor" id="line-129" />Use these User Tool options: <span class="anchor" id="line-130" /></p>
+<ul>
+<li>
+<p class="line891"><strong>Menu Text:</strong> <tt class="backtick">RenPy&#160;Show&#160;Game&#160;Data&#160;Dir</tt> <span class="anchor" id="line-131" /></p>
+</li>
+<li>
+<p class="line891"><strong>Command:</strong> <tt class="backtick">C:\windows\explorer.exe</tt> (Or your non-default Windows directory) <span class="anchor" id="line-132" /></p>
+</li>
+<li>
+<p class="line891"><strong>Argument:</strong> <tt class="backtick">$(FileDir)</tt> <span class="anchor" id="line-133" /></p>
+</li>
+<li>
+<p class="line891"><strong>Initial Dir:</strong> (blank) <span class="anchor" id="line-134" /></p>
+</li>
+<li>
+<p class="line891"><strong>Hot Key:</strong> (blank or as desired) <span class="anchor" id="line-135" /><span class="anchor" id="line-136" /></p>
+</li>
+</ul>
+<p class="line867" />
+<h2 id="head-a971d139f3a890abca59721ac643a21bf907b359">Running Crimson Editor from Ren'Py</h2>
+<span class="anchor" id="line-137" /><span class="anchor" id="line-138" />
+<p class="line874">It is also possible to run Crimson Editor from Ren'Py. To do this, you'll need to add code like: <span class="anchor" id="line-139" /><span class="anchor" id="line-140" /></p>
+<pre>
+init:
+<span class="anchor" id="line-141" />    $ config.editor = '"c:\\Program Files\\Crimson Editor\\cedt.exe" /L:%(line)d %(filename)s'
+<span class="anchor" id="line-142" />
+</pre>
+<span class="anchor" id="line-143" />
+<p class="line874">You'll need to chage c:\\Program Files\\Crimson Editor\\cedt.exe to the path to your installed Crimson Editor path. Backslashes in the path need to be doubled, as you're in a python string. <span class="anchor" id="line-144" /><span class="anchor" id="line-145" /></p>
+<p class="line874">Once the game has had this line added to it, start it up. Pressing shift-e in the game will start an editor at the line corresponding to the currently executing Ren'Py statement. <span class="anchor" id="line-146" /><span class="anchor" id="line-147" /></p>
+<p class="line867" />
+<h2 id="head-4324c1806b802ceca9286763e020c334c2e5f1ff">Crimson Editor usage notes</h2>
+<span class="anchor" id="line-148" /><span class="anchor" id="line-149" />
+<p class="line862">To increase the indent level of a block of text, select the lines making up the block, and hit <tt class="backtick">Ctrl+.</tt> <span class="anchor" id="line-150" /><span class="anchor" id="line-151" /></p>
+<p class="line862">To decrease the indent level of a block of text, select the lines making up the block, and hit <tt class="backtick">Ctrl+,</tt> <span class="anchor" id="line-152" /><span class="anchor" id="line-153" /></p>
+<p class="line862">To comment out a block of text, select the lines making up the block, and hit <tt class="backtick">Ctrl+m</tt> <span class="anchor" id="line-154" /><span class="anchor" id="line-155" /></p>
+<p class="line862">To uncomment a previously commented block of text, select the lines making up the block, and hit <tt class="backtick">Ctrl+Shift+m</tt> <span class="anchor" id="line-156" /><span class="anchor" id="line-157" /></p>
+<p class="line874">User macros may be defined and hotkeyed to, for instance, insert a commonly used show statement. <span class="anchor" id="line-158" /><span class="anchor" id="line-159" /></p>
+<p class="line874">Projects may be defined for easy access to all the script files making up a game project. <span class="anchor" id="line-160" /><span class="anchor" id="line-161" /></p>
+<p class="line862">Line bookmarks are toggled with <tt class="backtick">Ctrl+F2</tt>. Jump to the next bookmark with <tt class="backtick">F2</tt>, or previous with <tt class="backtick">Shift+F2</tt> <span class="anchor" id="line-162" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

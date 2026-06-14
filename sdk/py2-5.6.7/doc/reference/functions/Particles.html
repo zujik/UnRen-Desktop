@@ -1,0 +1,44 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-2cc02d0d27658815d6dba8c0e7b36a023aad67e6">Particles</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Particles" name="Particles" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/Particles.html">Particles</a></b>(</td>
+<td>factory, style='default', **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Supports particle motion. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>factory</em> - A factory object. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">The particles function expects to take as an argument a factory object. This object (which should be pickleable) must support two methods. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">The create method of the factory object is called once per frame with two arguments. The first is either a list of existing particles, or None if this is the first time this Particles is shown (and hence there are no particles on the screen). The second argument is the time in seconds from some arbitrary point, increasing each time create is called. The method is expected to return a list of new particles created for this frame, or an empty list if no particles are to be created this frame. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line874">The predict method of the factory object is called when image prediction is requested for the Particles. It is expected to return a list of displayables and/or image filenames that will be used. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line874">Particles are represented by the objects returned from each factory function. Each particle object must have an update method. This method is called once per frame per particle, usually with the time from the same arbitrary point as was used to create the object. (The arbitrary point may change when hidden and shown, so particle code should be prepared to deal with this.) The update method may return None to indicate that the particle is dead. Nothing is shown for a dead particle, and update is never called on it. The update method can also return an (xpos, ypos, time, displayable) tuple. The xpos and ypos parameters are a position on the screen to show the particle at, interpreted in the same way as the xpos and ypos style properties. The time is the time of display. This should start with the time parameter, but it may make sense to offset it to make multiple particle animations out of phase. Finally, the displayable is a displayable or image filename that is shown as the particle. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-18" />
+<h2 id="head-625fa8a3a94bb4cccf5de2e7d8ea054f6f9b7a30">Example</h2>
+<span class="anchor" id="line-19" />
+<p class="line867"><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<pre class="renpy">
+TODO
+</pre>
+<span class="anchor" id="line-22" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

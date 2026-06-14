@@ -1,0 +1,51 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-dc4f88a151fd01450873d2f07fa47634246d2d48">renpy.image</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.image" name="renpy.image" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.image.html">renpy.image</a></b>(</td>
+<td>name, img)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This is used to execute the image statment. It takes as arguments an image name and an image object, and associates the image name with the image object. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Like the image statment, this function should only be executed in init blocks. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>name</em> - The image name, a tuple of strings. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>img</em> - The displayable that is associated with that name. If this is a string or tuple, it is interpreted as an argument to Image. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" />
+<h2 id="head-4a023165335986c70df8ae8b87fffacdc3dc6413">Example</h2>
+<span class="anchor" id="line-15" />
+<p class="line867"><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">python</span>:
+        for character in ['<span class="renpy_string">eileen</span>', '<span class="renpy_string">alice</span>', '<span class="renpy_string">lucy</span>']:
+            for expression in ['<span class="renpy_string">happy</span>', '<span class="renpy_string">concerned</span>', '<span class="renpy_string">vhappy</span>']:
+                <span class="renpy_comment"># image files are named as eileen_happy.png, etc.</span>
+                renpy.<span class="renpy_keyword">image</span>((character, expression),
+                            "<span class="renpy_string">%s_%s.png</span>" % (character, expression))
+            
+<span class="renpy_keyword">show</span> eileen happy
+"<span class="renpy_string">I find myself strangely happy to see Eileen in this example.</span>"
+</pre>
+<span class="anchor" id="line-27" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

@@ -1,0 +1,145 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-2" />
+<p class="line867" />
+<h1 id="head-18d70c6963f0b4d7f6ca1b545ec4b5c2c66dc610">Defining Characters</h1>
+<span class="anchor" id="line-3" /><span class="anchor" id="line-4" />
+<p class="line874">When showing dialogue to the user using the two-argument form of the say statement, the first argument to the say statement should almost always be a variable bound to a Character object. These objects implement (or call functions that implement) much of the logic required to show dialogue to the user. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" /></p>
+<p class="line874">Characters are declared by binding variables to the Character objects. Such declarations should take place inside init blocks, to ensure that the bindings are not saved with the game state, as this would prevent revised versions of a game from picking up changes to the init block. Perhaps the simplest definition is: <span class="anchor" id="line-7" /><span class="anchor" id="line-8" /><span class="anchor" id="line-9" /><span class="anchor" id="line-10" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> e = Character("<span class="renpy_string">Eileen</span>")
+</pre>
+<span class="anchor" id="line-11" />
+<p class="line862">This creates a new character object and binds it to the <tt class="backtick">e</tt> variable. When the say statement: <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /><span class="anchor" id="line-14" /></p>
+<pre class="renpy">
+e "<span class="renpy_string">Hello, World!</span>"
+</pre>
+<span class="anchor" id="line-15" />
+<p class="line862">runs, the line of text "Hello, World!" will be preceded by the label "Eileen", indicating who is talking. It's common to customize the color of this label. This can be done by supplying the <tt class="backtick">color</tt> keyword argument to Character, as in: <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">$</span> e = Character("<span class="renpy_string">Eileen</span>", color=(200, 255, 200, 255))
+</pre>
+<span class="anchor" id="line-20" />
+<p class="line862">The color argument is actually setting the <a class="nonexistent" href="../reference/Properties.html#color">color</a> property on the label. The color property takes an RGBA tuple consisting of four numbers, enclosed in parenthesis and separated by commas, with each number ranging from 0 to 255. <span class="anchor" id="line-21" /><span class="anchor" id="line-22" /></p>
+<p class="line862">The <a href="../reference/functions/Character.html">Character</a> function is defined as follows: <span class="anchor" id="line-23" /></p>
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Character" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Character" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Character" name="Character" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/Character.html">Character</a></b>(</td>
+<td>name, **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">Creates a new character object. This object is suitable for use as the first argument of a two-argument say statement. When it is used as such, it shows a window containing the character name and the second argument to the say statement. This behavior is customized by passing parameters to this function. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>name</em> is the name of the character that is speaking. It can be either a string containing the character name, or None to indicate that the label should not be shown. A name value consisting of a single space (" ") indicates that the label should be a blank line, which allows a narrator character to line up narration with character dialogue. name is the only requirement to Character. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><strong>Keyword Arguments.</strong> In addition to name, <tt>Character</tt> takes keyword arguments that control its behavior. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867"><em>dynamic</em> - If true, then <em>name</em> is interpreted as a string containing a python expression that is evaluated to yield the name of the character. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867"><em>image</em> - If true, then <em>name</em> is interpreted as an image. This image is added to the dialogue window in place of the label. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>condition</em> - If present, this should be a string containing a python expression. This expression is evaluated whenever a line is said through this character object. If it evaluates to false, the line is not shown to the user. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>interact</em> - If true, the default, causes an interaction to occur when a line is shown to the user. If false, the interaction does not take place, and ui.interact (or some other means) must be called to cause an interaction to occur. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line867"><em>with_none</em> - If True, causes a "with None" statement to be run after each interaction. If None (the default), checks config.implicit_with_none to determine if a "with None" should be run. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line867"><strong>Prefixes and Suffixes.</strong> The following keyword arguments can be used to add a prefix or suffix to everything said through a character object. These can be used when lines of dialogue need to be enclosed in quotes, as the preferred alternative to adding those quotes to every line of dialogue in the script. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867"><em>who_prefix</em> - Text that is prepended to the name of the character when forming the label of the dialogue. <span class="anchor" id="line-24" /><span class="anchor" id="line-25" /></p>
+<p class="line867"><em>who_suffix</em> - Text that is appended to the name of the character when forming the label of the dialogue. <span class="anchor" id="line-26" /><span class="anchor" id="line-27" /></p>
+<p class="line867"><em>what_prefix</em> - Text that is prepended to the line of dialogue before it is shown to the user. <span class="anchor" id="line-28" /><span class="anchor" id="line-29" /></p>
+<p class="line867"><em>what_suffix</em> - Thext that is appended to the line of dialogue before it is shown to the user. <span class="anchor" id="line-30" /><span class="anchor" id="line-31" /></p>
+<p class="line867"><strong>Click-to-continue.</strong> These keyword arguements are used to control the click-to-continue indicator: <span class="anchor" id="line-32" /><span class="anchor" id="line-33" /></p>
+<p class="line867"><em>ctc</em> - If present, this argument takes a displayable that is used as the click-to-continue indicator. If not present or None, then no click-to-continue indicator is displayed. <span class="anchor" id="line-34" /><span class="anchor" id="line-35" /></p>
+<p class="line867"><em>ctc_position</em> - If "nestled", the click-to-continue indicator is displayed nestled in with the end of the text. If "fixed", the click-to-continue indicator is displayed directly on the screen, with its various position properties determining where it is actually shown. <span class="anchor" id="line-36" /><span class="anchor" id="line-37" /></p>
+<p class="line867"><strong>Functions.</strong> The following are keyword arguments that allow one to massively customize the behavior of a character object: <span class="anchor" id="line-38" /><span class="anchor" id="line-39" /></p>
+<p class="line867"><em>show_function</em> - The function that is called to display each step of a dialogue to the user. (A dialogue may be broken down into steps by pause text tags.) It should have the same signature as renpy.show_display_say. <span class="anchor" id="line-40" /><span class="anchor" id="line-41" /></p>
+<p class="line867"><em>predict_function</em> - The function that is called to predict the images from this dialogue. It should have the signature of renpy.predict_display_say. <span class="anchor" id="line-42" /><span class="anchor" id="line-43" /></p>
+<p class="line867"><em>callback</em> - A function that is called at various points during the the process of displaying dialogue. The callback is called with a single positional argument, which indicates the event that occured, and one keyword argument <em>interact</em>, which indicates if the dialogue is being displayed interactively. Additional keyword arguments and unknown events should be ignored, for future expansion. The events that cause the callback to be called are: <span class="anchor" id="line-44" /><span class="anchor" id="line-45" /></p>
+<ul>
+<li>"begin" - called at the start of showing dialogue. <span class="anchor" id="line-46" /></li>
+<li>"show" - called before each segment of dialogue is shown. <span class="anchor" id="line-47" /></li>
+<li>"show_done" - called after each segment of dialog is shown (but before the interaction occurs). <span class="anchor" id="line-48" /></li>
+<li>"slow_done" - called when slow text finishes showing. <span class="anchor" id="line-49" /></li>
+<li>"end" - called at the end of showing dialogue. <span class="anchor" id="line-50" /><span class="anchor" id="line-51" /></li>
+</ul>
+<p class="line862">Note that when interact=False, slow_done can occur after end. If <em>callback</em> is not given or None, it defaults to <a href="../reference/Configuration_Variables.html#config.character_callback">config.character_callback</a> . If that's None, then nothing is called. <span class="anchor" id="line-52" /><span class="anchor" id="line-53" /></p>
+<p class="line867"><strong>Default Show Function</strong> The following are keyword arguments that are processed by the default show_function. <span class="anchor" id="line-54" /><span class="anchor" id="line-55" /></p>
+<p class="line867"><em>show_two_window</em> - Places the name of the character saying the dialogue into its own window. <span class="anchor" id="line-56" /><span class="anchor" id="line-57" /></p>
+<p class="line867"><em>show_side_image</em> - Specifies a displayable that is show with this dialogue. The displayable should set its position properties in a way to place it where the user wants it. Similarly, the window properties should be set in a way that provides room for the side image. <span class="anchor" id="line-58" /><span class="anchor" id="line-59" /></p>
+<p class="line867"><em>show_two_window_vbox_properties</em> - If supplied, a dictionary containing properties that are added to the vbox containing both windows, when show_two_window is true. <span class="anchor" id="line-60" /><span class="anchor" id="line-61" /></p>
+<p class="line867"><em>show_who_window_properties</em> - If supplied, a dictionary containing properties that are added to the window containing the name of who is speaking, when show_two_window is true. <span class="anchor" id="line-62" /><span class="anchor" id="line-63" /></p>
+<p class="line867"><em>show_say_vbox_properties</em> - If supplied, a dictionary containing properties that are added to the vbox inside the main window. <span class="anchor" id="line-64" /><span class="anchor" id="line-65" /></p>
+<p class="line867"><strong>Styles.</strong> The following keyword arguments control the styles used by parts of the dialogue: <span class="anchor" id="line-66" /><span class="anchor" id="line-67" /></p>
+<p class="line867"><em>who_style</em> - Defaults to 'say_label', the style of the label. <span class="anchor" id="line-68" /><span class="anchor" id="line-69" /></p>
+<p class="line867"><em>what_style</em> - Defaults to 'say_dialogue', the style of the text being said. <span class="anchor" id="line-70" /><span class="anchor" id="line-71" /></p>
+<p class="line867"><em>window_style</em> - Defaults to 'say_window', the style of the window containing the dialogue. <span class="anchor" id="line-72" /><span class="anchor" id="line-73" /></p>
+<p class="line867"><strong>Additional Keyword Arguments.</strong> Additional keyword arguments are interpreted as follows: <span class="anchor" id="line-74" /><span class="anchor" id="line-75" /></p>
+<ul>
+<li>Keyword arguments beginning with "window_" are intepreted as properties of the window containing the dialogue, with the window_" prefix stripped off. <span class="anchor" id="line-76" /></li>
+<li>Keyword arguments beginning with "what_" are interpreted as properties of the text being said, with the "what_" prefix stripped off. <span class="anchor" id="line-77" /></li>
+<li>
+<p class="line862">Keyword arguments begining with "show_" are supplied as keyword arguments to the <em>show_function</em> and <em>predict_function</em>, with the "show_" prefix stripped off. <span class="anchor" id="line-78" /></p>
+</li>
+<li>
+<p class="line862">All other keyword arguments are interpreted as <a class="nonexistent" href="../reference/functions/../List_of_Properties.html">properties</a> of the label. (<strong>color</strong> is the most common property passed as a keyword in this function.) <span class="anchor" id="line-79" /><span class="anchor" id="line-80" /></p>
+</li>
+</ul>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-81" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Character" /></div>
+<span class="anchor" id="line-24" />There is also a <a href="../reference/functions/DynamicCharacter.html">DynamicCharacter</a> function: <span class="anchor" id="line-25" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/DynamicCharacter" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/DynamicCharacter" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="DynamicCharacter" name="DynamicCharacter" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../reference/functions/DynamicCharacter.html">DynamicCharacter</a></b>(</td>
+<td>name, **kwargs)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" />Equivalent to calling Character with the same arguments, and with the dynamic argument set to true. <span class="anchor" id="line-5" /><span class="anchor" id="line-6" />
+<p class="line867" />
+</div>
+<span class="anchor" id="line-7" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/DynamicCharacter" /></div>
+<span class="anchor" id="line-26" /><span class="anchor" id="line-27" />
+<p class="line867" />
+<div dir="ltr" id="Include_renpy/doc/reference/functions/Character.copy" lang="en" xml:lang="en"><span class="anchor" id="top_Include_renpy/doc/reference/functions/Character.copy" /> <span class="anchor" id="line-1" /><span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="Character.copy" name="Character.copy" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/Character.copy.html">Character.copy</a></b>(</td>
+<td>...)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">The copy method on Characters takes the same arguments as the <tt>funcref&#160;Character</tt> constructor, with the exception that the <em>name</em> argument is optional. This method returns a new Character object, one that is created by combining the arguments of the original constructor and this method, with the arguments provided by this method taking precedence. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-8" /><span class="anchor" id="bottom_Include_renpy/doc/reference/functions/Character.copy" /></div>
+<span class="anchor" id="line-28" /><span class="anchor" id="line-29" />
+<p class="line867" />
+<h2 id="head-fb684dea6e9ba0dafc3a2231707b85723e09ff96">Calling Character Objects</h2>
+<span class="anchor" id="line-30" />
+<p class="line862">Character objects may be called directly, as if they were functions. They take one positional parameter, the line of dialogue to be show to the user. They also take one keyword parameter, <em>interact</em>, which determines if an interaction should take place. This use can programatically replace say statements. For example, the say statement: <span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /></p>
+<pre class="renpy">
+e "<span class="renpy_string">Hello, World!</span>"
+</pre>
+<span class="anchor" id="line-34" />
+<p class="line874">is equivalent to: <span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">$</span> e("<span class="renpy_string">Hello, World!</span>")
+</pre>
+<span class="anchor" id="line-38" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

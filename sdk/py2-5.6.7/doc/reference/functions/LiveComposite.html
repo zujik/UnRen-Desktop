@@ -1,0 +1,48 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-8d412e61c6b96f09a377462e4b4a732197599772">LiveComposite</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="LiveComposite" name="LiveComposite" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/LiveComposite.html">LiveComposite</a></b>(</td>
+<td>size, *args, **properties)</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line862">This is similar to <a href="../../reference/functions/im.Composite.html">im.Composite</a> , but can be used with displayables instead of images. This allows it to be used to composite, for example, an animation on top of the image. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line862">This is less efficient than <a href="../../reference/functions/im.Composite.html">im.Composite</a> , as it needs to draw all of the displayables on the screen. On the other hand, it allows displayables to change while they are on the screen, which is necessary for animation. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line874">This takes a variable number of arguments. The first argument is size, which must be a tuple giving the width and height of the composited widgets, for layout purposes. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line874">It then takes an even number of further arguments. (For an odd number of total arguments.) The second and other even numbered arguments contain position tuples, while the third and further odd-numbered arguments give displayables. A position argument gives the position of the displayable immediately following it, with the position expressed as a tuple giving an offset from the upper-left corner of the LiveComposite. The displayables are drawn in bottom-to-top order, with the last being closest to the user. <span class="anchor" id="line-12" /><span class="anchor" id="line-13" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-14" />
+<h2 id="head-da95b5aff5cd58f25c6f0eef56a45f1081bf039b">Example</h2>
+<span class="anchor" id="line-15" />
+<p class="line867"><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">image</span> cyan livecomposite = LiveComposite((200, 300),
+                                             (0, 0), anim.Blink(Image("<span class="renpy_string">cyan.png</span>")),
+                                             (0, 50), "<span class="renpy_string">cyan.png</span>",
+                                             (0, 100), "<span class="renpy_string">cyan.png</span>")
+
+<span class="renpy_keyword">show</span> cyan livecomposite <span class="renpy_keyword">at</span> cyanpos <span class="renpy_keyword">with</span> dissolve
+</pre>
+<span class="anchor" id="line-24" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

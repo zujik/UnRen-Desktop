@@ -1,0 +1,171 @@
+<html><head><link href="../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h2 id="head-f264f969635544f351c89f1581cd91c6f18c551d">Minigame Interface</h2>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line862">The minigame interface exists to let one integrate non-visual-novel segments into Ren'Py games. It's expected that minigame creators will be comfortable programming in Python. The minigame interface provides a documented and supported set of functions the programmer can use to access the functionality needed to create minigames. The minigame interface assumes a familiarity with <a class="http" href="http://www.renpy.org//www.pygame.org">pygame</a>. <span class="anchor" id="line-4" /><span class="anchor" id="line-5" /></p>
+<p class="line874">The minigame interface uses Ren'Py's built-in screen update management system. This system compares lists of blits between frames, to find the areas of the screen that have changed between frames. Only these areas are drawn. This makes it unnecessary to do such update management by hand. To ensure optimal peformance of this system, the same surfaces should be used for each frame. (This can often be accomplished by using Minigame.load_image, which uses Ren'Py's image cache.) <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line874">Ren'Py supports loading, saving, and rollback during minigames, unless the key/mouse bindings used are overridden by the minigame. Loads, saves, and rollback bring the user to the start of the minigame, or to a Ren'Py statement before the minigame. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867" />
+<h3 id="head-ae1559baf41142ab559044311d8f543066845561">Minigame Object</h3>
+<span class="anchor" id="line-10" /><span class="anchor" id="line-11" />
+<p class="line867" />
+<div class="documented"><a id="renpy.Minigame" name="renpy.Minigame" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;renpy.Minigame</b>(</td>
+<td>render_callback, event_callback)</td>
+</tr>
+</table>
+<span class="anchor" id="line-12" /><span class="anchor" id="line-13" />
+<p class="line874">Constructs a new Minigame object, using the given callbacks. <span class="anchor" id="line-14" /><span class="anchor" id="line-15" /></p>
+<p class="line867"><em>render_callback</em> is called each time a frame is drawn. It is called with four arguments. The first is a Render object, into which the new frame should be drawn. The second is the frame time, in fractional seconds from some arbitrary point in time. Its return value is ignored. <span class="anchor" id="line-16" /><span class="anchor" id="line-17" /></p>
+<p class="line867"><em>event_callback</em> is called to indicate that an event has occured. It is called once per event, with four parameters. The first is the event, a pygame event object. The second and third are the x and y coordinates of the mouse at the time of the event. The last is the time of the event, in seconds from the same arbitrary point in time used by the render_callback. <span class="anchor" id="line-18" /><span class="anchor" id="line-19" /></p>
+<p class="line874">If the event callback returns a non-None value, then that value will be returned from the Minigame.run method. If it returns None, then the event is passed to other displayables. (And so can cause rollback, menu entry, full-screen toggling, and the like.) If it calls the Minigame.ignore_event method, then processing of the event is terminated. <span class="anchor" id="line-20" /><span class="anchor" id="line-21" /></p>
+<p class="line874">Most events are standard pygame events. If an event is unknown, it should be passed to other displayables, unless it causes a timeout to occur. <span class="anchor" id="line-22" /><span class="anchor" id="line-23" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-24" /><span class="anchor" id="line-25" />
+<p class="line867" />
+<div class="documented"><a id="Minigame.run" name="Minigame.run" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/Minigame.run.html">Minigame.run</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-26" /><span class="anchor" id="line-27" />
+<p class="line874">This is the function that is called by user code to run the minigame. It adds the minigame to the screen, and handles events until the event_callback returns a value. It then returns that value. <span class="anchor" id="line-28" /><span class="anchor" id="line-29" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-30" /><span class="anchor" id="line-31" />
+<p class="line867" />
+<div class="documented"><a id="Minigame.load_image" name="Minigame.load_image" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/Minigame.load_image.html">Minigame.load_image</a></b>(</td>
+<td>image)</td>
+</tr>
+</table>
+<span class="anchor" id="line-32" /><span class="anchor" id="line-33" />
+<p class="line862">This loads <em>image</em>, which may be a string image file name, or an image manipulator. The image is added to Ren'Py's image cache, which makes future loads of it fast. This returns a pygame.Surface object, which should not be mutated. <span class="anchor" id="line-34" /><span class="anchor" id="line-35" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-36" /><span class="anchor" id="line-37" />
+<p class="line867" />
+<div class="documented"><a id="Minigame.mutated_surface" name="Minigame.mutated_surface" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/Minigame.mutated_surface.html">Minigame.mutated_surface</a></b>(</td>
+<td>surf)</td>
+</tr>
+</table>
+<span class="anchor" id="line-38" /><span class="anchor" id="line-39" />
+<p class="line874">This informs the screen update management system that the supplied pygame surface has been mutated. This should be called after create a new pygame surface, either directly or by using one of pygame's transformation functions. <span class="anchor" id="line-40" /><span class="anchor" id="line-41" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-42" /><span class="anchor" id="line-43" />
+<p class="line867" />
+<div class="documented"><a name="" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/.html" /></b>(</td>
+<td>Minigame.render_text(text, font, size, color, bold=False, italics=False, underline=False, antialias=True)</td>
+</tr>
+</table>
+<span class="anchor" id="line-44" /><span class="anchor" id="line-45" />
+<p class="line874">This renders the given text to a pygame surface. A cache is used to ensure the same surface is created when rendering the same text in multiple frames. <span class="anchor" id="line-46" /><span class="anchor" id="line-47" /></p>
+<p class="line867"><em>text</em> is the text to be rendered. <span class="anchor" id="line-48" /><span class="anchor" id="line-49" /></p>
+<p class="line867"><em>font</em> is the name of the font to use. <span class="anchor" id="line-50" /><span class="anchor" id="line-51" /></p>
+<p class="line867"><em>size</em> is the size of the text in pixels. <span class="anchor" id="line-52" /><span class="anchor" id="line-53" /></p>
+<p class="line867"><em>color</em> is the color of the font, either as a string or an rgba tuple. <span class="anchor" id="line-54" /><span class="anchor" id="line-55" /></p>
+<p class="line867"><em>bold</em> determines if the font is to be bolded. <span class="anchor" id="line-56" /><span class="anchor" id="line-57" /></p>
+<p class="line867"><em>italics</em> determines if the font is to be italicized. <span class="anchor" id="line-58" /><span class="anchor" id="line-59" /></p>
+<p class="line867"><em>underline</em> determines if the font is to be underlined. <span class="anchor" id="line-60" /><span class="anchor" id="line-61" /></p>
+<p class="line867"><em>antialias</em> determines if the rendered text is to be antialiased. <span class="anchor" id="line-62" /><span class="anchor" id="line-63" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-64" /><span class="anchor" id="line-65" />
+<p class="line867" />
+<div class="documented"><a name="" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/.html" /></b>(</td>
+<td>Minigame.redraw()</td>
+</tr>
+</table>
+<span class="anchor" id="line-66" /><span class="anchor" id="line-67" />
+<p class="line874">This can be called from the render or event callbacks. It causes a render to occur as soon as possible. <span class="anchor" id="line-68" /><span class="anchor" id="line-69" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-70" /><span class="anchor" id="line-71" />
+<p class="line867" />
+<div class="documented"><a id="Minigame.timeout" name="Minigame.timeout" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/Minigame.timeout.html">Minigame.timeout</a></b>(</td>
+<td>seconds)</td>
+</tr>
+</table>
+<span class="anchor" id="line-72" /><span class="anchor" id="line-73" />
+<p class="line862">This causes an event to be delivered before <em>seconds</em> seconds has elapsed. The nature of the event is undefined, but we do promise it will be delivered sometime between now and now+seconds. (Often, the event is one that we will have delivered anyway, like MOUSEMOTION.) <span class="anchor" id="line-74" /><span class="anchor" id="line-75" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-76" /><span class="anchor" id="line-77" />
+<p class="line867" />
+<div class="documented"><a id="Minigame.load" name="Minigame.load" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/Minigame.load.html">Minigame.load</a></b>(</td>
+<td>filename)</td>
+</tr>
+</table>
+<span class="anchor" id="line-78" /><span class="anchor" id="line-79" />
+<p class="line874">This uses the standard Ren'Py loader to return an open file-like object with the given filename. The standard loader performs a search through directories and archives while looking for the filename. <span class="anchor" id="line-80" /><span class="anchor" id="line-81" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-82" /><span class="anchor" id="line-83" />
+<p class="line867" />
+<div class="documented"><a id="Minigame.ignore_event" name="Minigame.ignore_event" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/Minigame.ignore_event.html">Minigame.ignore_event</a></b>(</td>
+<td>)</td>
+</tr>
+</table>
+<span class="anchor" id="line-84" /><span class="anchor" id="line-85" />
+<p class="line874">Calling this method from the event callback will cause the current event to be ignored. (This method raises an exception, and will not return.) <span class="anchor" id="line-86" /><span class="anchor" id="line-87" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-88" /><span class="anchor" id="line-89" />
+<p class="line867" />
+<h3 id="head-05720fe582d201e3c067db0f5ee2bbd5fd07e066">Render Object</h3>
+<span class="anchor" id="line-90" /><span class="anchor" id="line-91" />
+<p class="line874">Right now, the render object is mostly undocumented. We will assert it has height and width fields, and the following methods: <span class="anchor" id="line-92" /><span class="anchor" id="line-93" /></p>
+<p class="line867" />
+<div class="documented"><a id="Render.blit" name="Render.blit" />
+<table class="sig">
+<tr>
+<td><b>Method:&#160;<a href="../reference/Functions/Render.blit.html">Render.blit</a></b>(</td>
+<td>surf, (x, y))</td>
+</tr>
+</table>
+<span class="anchor" id="line-94" /><span class="anchor" id="line-95" />
+<p class="line874">This draws the surface to the render at the given location from the upper-left corner. Once it has been blitted to a render, surf should not be mutated. (This is because the actual drawing to the screen occurs shortly after the render_callback exits.) <span class="anchor" id="line-96" /><span class="anchor" id="line-97" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-98" /><span class="anchor" id="bottom" /></div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>

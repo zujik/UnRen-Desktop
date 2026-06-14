@@ -1,0 +1,69 @@
+<html><head><link href="../../screen.css" rel="stylesheet" type="text/css" /></head><body><div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div><div dir="ltr" id="content" lang="en" xml:lang="en"><span class="anchor" id="top" /> <span class="anchor" id="line-1" />
+<p class="line867" />
+<h1 id="head-e200c2a9ebe26f4110f493d6a1b3c5e58dfc9676">renpy.hide</h1>
+<span class="anchor" id="line-2" /><span class="anchor" id="line-3" />
+<p class="line867" />
+<div class="documented"><a id="renpy.hide" name="renpy.hide" />
+<table class="sig">
+<tr>
+<td><b>Function:&#160;<a href="../../reference/functions/renpy.hide.html">renpy.hide</a></b>(</td>
+<td>name, layer='master')</td>
+</tr>
+</table>
+<span class="anchor" id="line-4" /><span class="anchor" id="line-5" />
+<p class="line874">This finds items in the given layer (or 'master' if no layer is given) that have the same name as the first component of the given name, and removes them from the layer. This is used to execute the hide statement. <span class="anchor" id="line-6" /><span class="anchor" id="line-7" /></p>
+<p class="line867"><em>name</em> - The name of the image to hide from the screen. This may be a tuple of strings, or a single string. In the latter case, it is split on whitespace to make a tuple. Only the first element of the tuple is used. <span class="anchor" id="line-8" /><span class="anchor" id="line-9" /></p>
+<p class="line867"><em>layer</em> - The layer this operates on. <span class="anchor" id="line-10" /><span class="anchor" id="line-11" /></p>
+<p class="line867" />
+</div>
+<span class="anchor" id="line-12" />
+<h2 id="head-9919084f105993db0b70456cd8238bd55e72497d">Example</h2>
+<span class="anchor" id="line-13" />
+<p class="line867"><span class="anchor" id="line-14" /><span class="anchor" id="line-15" /><span class="anchor" id="line-16" /><span class="anchor" id="line-17" /><span class="anchor" id="line-18" /><span class="anchor" id="line-19" /><span class="anchor" id="line-20" /><span class="anchor" id="line-21" /><span class="anchor" id="line-22" /><span class="anchor" id="line-23" /><span class="anchor" id="line-24" /><span class="anchor" id="line-25" /><span class="anchor" id="line-26" /><span class="anchor" id="line-27" /><span class="anchor" id="line-28" /><span class="anchor" id="line-29" /><span class="anchor" id="line-30" /><span class="anchor" id="line-31" /><span class="anchor" id="line-32" /><span class="anchor" id="line-33" /><span class="anchor" id="line-34" /><span class="anchor" id="line-35" /><span class="anchor" id="line-36" /><span class="anchor" id="line-37" /><span class="anchor" id="line-38" /><span class="anchor" id="line-39" /><span class="anchor" id="line-40" /><span class="anchor" id="line-41" /></p>
+<pre class="renpy">
+<span class="renpy_keyword">init</span>:
+    <span class="renpy_keyword">python</span>:
+        renpy.<span class="renpy_keyword">image</span>(('<span class="renpy_string">ctc</span>',), anim.Blink("<span class="renpy_string">arrow.png</span>"))
+        for slideindex in range(10):
+            <span class="renpy_comment"># images are named slide0.png...slide9.png</span>
+            renpy.<span class="renpy_keyword">image</span>('<span class="renpy_string">slide%d</span>' % slideindex,
+                        '<span class="renpy_string">slide%d.png</span>' % slideindex)
+
+"<span class="renpy_string">And now, a slideshow</span>"
+<span class="renpy_keyword">python</span>:
+    for slideindex in range(10):
+        <span class="renpy_comment"># clear all images</span>
+        renpy.<span class="renpy_keyword">scene</span>()
+        
+        renpy.<span class="renpy_keyword">show</span>('<span class="renpy_string">slide%d</span>' % slideindex)
+        <span class="renpy_keyword">if</span> slideindex % 2:
+            renpy.<span class="renpy_keyword">show</span>('<span class="renpy_string">ctc</span>', at_list=[right])
+
+        <span class="renpy_comment"># set the transition for the pause interaction</span>
+        renpy.transition(dissolve)
+
+        renpy.pause(3.0)
+        
+        renpy.<span class="renpy_keyword">hide</span>('<span class="renpy_string">ctc</span>')
+
+<span class="renpy_keyword">scene</span> bg washington
+"<span class="renpy_string">Wasn't that nice?</span>"
+</pre>
+<span class="anchor" id="line-42" />
+<p class="line867"><em>Note: in 5.5.4, the renpy.image line should be: renpy.image(('slide%d' % slideindex,), 'slide%d.jpg' % slideindex)</em> <span class="anchor" id="line-43" /><span class="anchor" id="bottom" /></p>
+</div>
+<div align="center">
+<b>Reference Manual:</b>
+(<a href="../../reference/Reference_Manual.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/reference/">online</a>)
+<b>Quickstart:</b>
+(<a href="../../tutorials/Quickstart.html">offline</a>
+| <a href="http://www.renpy.org/wiki/renpy/doc/tutorials/Quickstart">online</a>)
+</div></body></html>
