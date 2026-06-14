@@ -19,6 +19,10 @@ unren_run_decompile_fixes() {
         env -u PYTHONHOME -u PYTHONPATH -u UNREN_PYTHON python3 \
             "${root}/tools/decompile-fixes/fix-py2-print.py" "$game" || true
     fi
+    if [ -f "${root}/tools/decompile-fixes/fix-dotted-image-ext.py" ]; then
+        env -u PYTHONHOME -u PYTHONPATH -u UNREN_PYTHON python3 \
+            "${root}/tools/decompile-fixes/fix-dotted-image-ext.py" "$game" || true
+    fi
 }
 
 if [ "${0##*/}" = "run-all.sh" ]; then

@@ -40,7 +40,7 @@ Extract fresh from zip, flat-copy UnRen, option **8** or **g**:
 | Game | Why |
 |------|-----|
 | **Magic Shop 1.03** | py2 Win-only, SDK `py2-6.99.14.3`, RPC3, Wayland/SDL |
-| **Hollow** | py3 native Linux `lib/py3-linux-x86_64` |
+| **Hollow** | py3 native Linux `lib/py3-linux-x86_64`; after full decompile fix `tip.png.` splash (auto via `fix-dotted-image-ext.py`) |
 
 ---
 
