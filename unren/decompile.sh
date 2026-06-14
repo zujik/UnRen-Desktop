@@ -171,14 +171,26 @@ unren_decompile() {
 
     _unren_decompile_targets "$want_clobber" "$force_all" targets
     if [[ ${#targets[@]} -eq 0 ]]; then
-        if (( skipped > 0 )); then
-            echo "  All compiled scripts already have matching .rpy/.rpym — skipping decompile (${skipped} file(s))."
-            echo "  Use UNREN_DECOMPILE_FORCE_ALL=1 to overwrite existing sources."
-        else
-            echo "  No compiled scripts to decompile."
+        if (( try_harder && skipped > 0 )); then
+            echo "  All compiled scripts already have matching .rpy/.rpym (${skipped} file(s))."
+            echo "  Running --try-harder deobfuscate pass (overwriting existing sources)."
+            echo
+            force_all=1
+            want_clobber=1
+            opts+=(--clobber)
+            skipped=0
+            _unren_decompile_targets "$want_clobber" "$force_all" targets
         fi
-        echo
-        return 0
+        if [[ ${#targets[@]} -eq 0 ]]; then
+            if (( skipped > 0 )); then
+                echo "  All compiled scripts already have matching .rpy/.rpym — skipping decompile (${skipped} file(s))."
+                echo "  Use UNREN_DECOMPILE_FORCE_ALL=1 to overwrite existing sources."
+            else
+                echo "  No compiled scripts to decompile."
+            fi
+            echo
+            return 0
+        fi
     fi
 
     if (( skipped > 0 )); then
