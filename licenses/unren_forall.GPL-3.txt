@@ -1,0 +1,21 @@
+UnRen-forall la_0.77 (tag: UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80)
+Author: JoeLurmel / Lurmel
+Upstream: https://github.com/Lurmel/UnRen-forall
+Forum: https://f95zone.to/threads/unrengui-unren-forall-v9-4-unren-powershell-forall-v9-4-unren-old.92717/
+
+Copyright (C) 2025 JoeLurmel
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+The full GPL-3.0 text is in licenses/GPL-3.0.txt and at:
+https://github.com/Lurmel/UnRen-forall/blob/main/LICENSE
+
+Staging scripts vendored under tools/forall/ — see tools/forall/ATTRIBUTION.md.

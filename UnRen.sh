@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # UnRen-Desktop — Ren'Py unpack / decompile / patch tool for Linux and macOS
+# Copyright (C) 2022-2026 Kijuz — licensed under GPL-3.0-only (see LICENSE)
 # https://github.com/zujik/UnRen-Desktop
 
 set -euo pipefail
@@ -64,7 +65,11 @@ source "${UNREN_ROOT}/unren/mac.sh"
 source "${UNREN_ROOT}/unren/launch-game.sh"
 # shellcheck source=unren/menu-state.sh
 source "${UNREN_ROOT}/unren/menu-state.sh"
+# shellcheck source=unren/compliance.sh
+source "${UNREN_ROOT}/unren/compliance.sh"
 # shellcheck source=unren/menu.sh
 source "${UNREN_ROOT}/unren/menu.sh"
+
+_unren_verify_compliance || true
 
 unren_main "$@"

@@ -1,105 +1,214 @@
-# Deployment roadmap (future)
+# Deployment and license compliance
 
-**Not implemented.** Current releases are the full `UnRen-Desktop/` folder (flat or `UnRen/` subfolder).
+**Status:** Layout spec for post-matrix refactor. Bootstrap download is **not**
+implemented yet. Current workflow remains: copy full `UnRen-Desktop/` into the
+game, then `./UnRen.sh`.
 
-## Milestone order (before public GitHub upload)
-
-1. **Bulk game testing** — `docs/TESTING.md` matrix; log every run in per-game log
-2. **Patch** — fix failures found in testing (minimal diffs per game class)
-3. **Refactor** — cleanup only after matrix is stable (no behaviour changes mid-test)
-4. **Slim deploy** — bootstrap `UnRen.sh` + optional `unren-desktop/` bundle (this doc)
-5. **Final upload** — GitHub repo, LFS for `sdk/`, release tarballs, forum post
-
-Do not implement step 4 until steps 1–3 are done.
+**Maintainer:** Kijuz (F95zone) · GitHub: [zujik](https://github.com/zujik)
 
 ---
 
-## Target layouts (step 4)
+## License posture (summary)
 
-### Online — small drop into game
+| Question | Answer |
+|----------|--------|
+| Is UnRen-Desktop itself covered? | **Yes** — GPL-3.0-only, `LICENSE` + `NOTICE` |
+| Must the whole project be GPL? | **Yes** for offline bundles — UnRen-forall and altrpatool are GPL-3.0 |
+| Bootstrap-only `UnRen.sh`? | Still GPL-3.0 orchestrator; deps fetched at runtime keep own licenses |
+| Ren'Py SDK in `sdk/`? | **Yes** — ship `sdk/*/LICENSE.txt` with any binary SDK pack |
+| rpycCorrector? | **BSD-2-Clause** — header in source + `licenses/rpyc_corrector.BSD-2-Clause.txt` |
+| Game assets? | **Not included** — user’s own installs; disclaimer in `THIRD_PARTY_LICENSES.md` |
 
-User copies **one file** into the game root:
-
-```
-GameFolder/
-├── game/ renpy/ lib/
-└── UnRen.sh          ← bootstrap only (~few KB)
-```
-
-First run:
-
-1. Bootstrap checks for `unren-desktop/unren/config.sh` (offline bundle present).
-2. If missing: download release asset from GitHub (`unren-desktop-VERSION.tar.*`) into `unren-desktop/`.
-3. Verify checksum from `manifest.json` (or release `SHA256SUMS`).
-4. `source unren-desktop/unren/...` and show the normal menu.
-
-Optional menu entry later: **“Download offline bundle”** — same tarball, for air-gapped reuse.
-
-### Offline — road / no network
-
-User copies **two items**:
-
-```
-GameFolder/
-├── game/ renpy/
-├── UnRen.sh
-└── unren-desktop/       ← full tree (unren/, tools/, patches/, sdk/)
-    ├── unren/
-    ├── tools/
-    ├── patches/
-    └── sdk/
-```
-
-No curl on first run. Same code paths as today’s full-folder tool.
-
-### Maintainer — git clone
-
-Unchanged: clone repo, `git lfs pull`, `./scripts/populate-sdk.sh` if rebuilding slices from `sdk-sources/`.
+Full detail: `THIRD_PARTY_LICENSES.md`, `manifest.json`, `docs/SOURCE_INVENTORY.md`.
 
 ---
 
-## Bootstrap `UnRen.sh` sketch (pseudocode)
+## What every redistribution must include
+
+Whether you ship **git clone**, **full tarball**, or **bootstrap download**, the
+user must end up with:
+
+| File / path | Required when |
+|-------------|---------------|
+| `LICENSE` | Always |
+| `NOTICE` | Always |
+| `THIRD_PARTY_LICENSES.md` | Always |
+| `tools/altrpatool-py3/COPYING` | Whenever `tools/altrpatool-py3/` is present |
+| `sdk/*/LICENSE.txt` | Whenever `sdk/` binaries are present |
+| `tools/*/README.md` | Recommended (per-tool attribution) |
+
+**Release checklist** (maintainer, before uploading to GitHub Releases):
+
+```bash
+# Verify license files exist in tree
+test -f LICENSE NOTICE THIRD_PARTY_LICENSES.md
+test -f tools/altrpatool-py3/COPYING
+for slice in py3-8.5.3 py2-7.8.7 py2-6.99.14.3 py2-5.6.7; do
+  test -f "sdk/${slice}/LICENSE.txt" || echo "MISSING sdk/${slice}/LICENSE.txt"
+done
+```
+
+---
+
+## Download-on-first-run: compliance rules
+
+When bootstrap `UnRen.sh` downloads payloads (future), **each download must
+preserve license files**. Never fetch “code only” without legal notices.
+
+### Bundle types
+
+| Download | Contents | License files to verify after extract |
+|----------|----------|--------------------------------------|
+| **Full bundle** (`unren-desktop-full-*.tar.*`) | `unren/`, `tools/`, `patches/`, `sdk/` | All rows in table above |
+| **Slim bundle** (`unren-desktop-slim-*.tar.*`) | `unren/`, `tools/`, `patches/` (no `sdk/`) | LICENSE, NOTICE, THIRD_PARTY, COPYING |
+| **SDK pack** (`unren-sdk-<slice>-*.tar.*`) | `sdk/<slice>/` only | `sdk/<slice>/LICENSE.txt` |
+| **Ren'Py SDK fetch** (`ensure-sdk-runtime.sh`) | Merges from renpy.org tarball | Copy `LICENSE.txt` into slice after populate |
+
+### Bootstrap pseudocode (with compliance)
 
 ```bash
 UNREN_ROOT="$(cd "$(dirname "$0")" && pwd)"
 BUNDLE="${UNREN_ROOT}/unren-desktop"
-MANIFEST_URL="https://raw.githubusercontent.com/zujik/UnRen-Desktop/main/manifest.json"
-RELEASE_BASE="https://github.com/zujik/UnRen-Desktop/releases/download"
+
+download_and_verify() {
+  local url="$1" sha256="$2" dest="$3"
+  # curl -L "$url" → tar -xf into "$dest"
+  # verify sha256
+  _unren_verify_license_files "$dest"
+}
+
+_unren_verify_license_files() {
+  local root="$1"
+  local missing=0
+  for f in LICENSE NOTICE THIRD_PARTY_LICENSES.md; do
+    [[ -f "${root}/${f}" ]] || { echo "missing ${f}"; missing=1; }
+  done
+  [[ -f "${root}/tools/altrpatool-py3/COPYING" ]] || { echo "missing altrpatool COPYING"; missing=1; }
+  if [[ -d "${root}/sdk" ]]; then
+    for slice in "${root}"/sdk/*/; do
+      [[ -f "${slice}/LICENSE.txt" ]] || { echo "missing ${slice}/LICENSE.txt"; missing=1; }
+    done
+  fi
+  (( missing )) && { echo "Download incomplete — license files missing. Refusing to run."; exit 1; }
+}
 
 if [[ ! -f "${BUNDLE}/unren/config.sh" ]]; then
-  # fetch manifest → version + tarball URL + sha256
-  # curl -L tarball → tar -xf into unren-desktop/
-  # verify sha256
+  download_and_verify "$RELEASE_URL" "$RELEASE_SHA256" "$BUNDLE"
 fi
 
 export UNREN_ROOT="${BUNDLE}"
-source "${BUNDLE}/unren/config.sh"
-# ... same module chain as today ...
-unren_main "$@"
+# source module chain …
 ```
 
-Repo layout after step 4:
+### `manifest.json` compliance fields
 
-- **`UnRen.sh`** at repo root = bootstrap (also the file users copy)
-- **`unren-desktop/`** = payload directory inside release tarball (or git subtree)
-- **`sdk/`** may stay in tarball + LFS, or separate “SDK pack” download on first launch (heavier games only)
+Implemented in `manifest.json`:
+
+```json
+"compliance_block": {
+  "project_license": "GPL-3.0-only",
+  "required_files": ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "docs/SOURCE_INVENTORY.md"],
+  "mirror_repository": "https://github.com/zujik/UnRen-Dependencies"
+},
+"dependencies": {
+  "unrpyc": { "expected_license_file": "licenses/unrpyc.MIT.txt", ... },
+  "unren_forall": { ... },
+  "rpyc_corrector": { ... }
+}
+```
+
+Startup audit: `scripts/verify_compliance.py` (invoked from `unren/compliance.sh`).
+Set `UNREN_STRICT_COMPLIANCE=1` to refuse running on audit failure.
 
 ---
 
-## Release artefacts (step 5)
+## Target layouts
 
-| Asset | Contents | Audience |
-|-------|----------|----------|
-| `unren-desktop-full-*.tar.xz` | bootstrap `UnRen.sh` + `unren-desktop/` incl. `sdk/` | Offline / forum zip |
-| `unren-desktop-slim-*.tar.xz` | bootstrap + tools/unren/patches; SDK via download | Small download |
-| Git clone + LFS | Full dev tree | Contributors |
+### A — Today (full copy)
 
-`personal/sdk-sources/` stays **local maintainer input** — never published (see `sdk/README.md`).
+```
+GameFolder/
+├── game/ renpy/ lib/
+├── UnRen.sh
+├── unren/ tools/ patches/ sdk/
+```
+
+No download. All license files already on disk.
+
+### B — Future online (bootstrap)
+
+```
+GameFolder/
+├── game/ renpy/ lib/
+└── UnRen.sh                    ← small bootstrap only
+```
+
+First run downloads `unren-desktop/` (or extracts from cached tarball next to
+`UnRen.sh`). Bootstrap **must** run `_unren_verify_compliance` before menu.
+
+### C — Future offline (two-item copy)
+
+```
+GameFolder/
+├── UnRen.sh
+└── unren-desktop/              ← full payload, same as today’s tree
+```
+
+No network. Same compliance files as layout A.
+
+### D — Maintainer git clone
+
+```bash
+git clone https://github.com/zujik/UnRen-Desktop.git
+cd UnRen-Desktop
+git lfs pull
+./UnRen.sh /path/to/GameFolder
+```
+
+Optional: `./scripts/populate-sdk.sh` / `ensure-sdk-runtime.sh` — after fetch,
+confirm `LICENSE.txt` landed in each `sdk/<slice>/`.
 
 ---
 
-## Open decisions (defer until after testing)
+## Release artefacts
 
-- Single tarball vs SDK-on-demand (size vs first-run network)
-- Whether bootstrap lives in same repo or `UnRen-Desktop-releases` asset-only repo
-- macOS `UnRen.command` wrapper for bootstrap vs double-click `UnRen.sh`
+| Asset | Audience | SDK included | Size tradeoff |
+|-------|----------|--------------|---------------|
+| `unren-desktop-full-*.tar.xz` | Forum / offline | Yes (LFS binaries) | Large |
+| `unren-desktop-slim-*.tar.xz` | Quick download | No — SDK on demand | Small first fetch |
+| `unren-sdk-<slice>-*.tar.bz2` | SDK-only refresh | One slice | Medium |
+| Git + LFS | Developers | Full tree | Clone + `git lfs pull` |
+
+`personal/sdk-sources/` and `.sdk-sources-cache/` are **local maintainer caches**
+— never publish (see `.gitignore`).
+
+---
+
+## Open decisions (defer until bootstrap is coded)
+
+- Single tarball vs separate SDK pack download
+- Bootstrap in main repo vs release-assets-only repo
+- macOS `UnRen.command` wrapper
+- Whether slim bundle omits `sdk/` entirely or ships py3-only slice
+
+---
+
+## Milestone order
+
+1. ~~Bulk game testing~~ — done (`docs/TESTING.md`)
+2. ~~License / attribution audit~~ — done (`THIRD_PARTY_LICENSES.md`, `NOTICE`)
+3. **Refactor layout** — bootstrap + optional `unren-desktop/` subfolder (this doc)
+4. **Implement bootstrap** — download, sha256, `_unren_verify_license_files`
+5. **GitHub release** — full + slim tarballs with license checklist
+6. Forum post (Kijuz) — link repo + quick start
+
+---
+
+## Related docs
+
+- `docs/TESTING.md` — game matrix and regression anchors
+- `docs/SOURCE_INVENTORY.md` — your download provenance (fill from your list)
+- `docs/MIRROR_SETUP.md` — two-repo mirror setup (UnRen-Dependencies)
+- `THIRD_PARTY_LICENSES.md` — component licenses
+- `tools/SOURCES.md` — tool paths and upstream URLs
+- `sdk/README.md` — SDK slice layout and LFS
