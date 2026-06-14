@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Populate sdk/py3-8.5.3 and sdk/py2-7.8.7 from UnRen-Local/sdk-sources tarballs.
+# Populate sdk/py3-8.5.3 and sdk/py2-7.8.7 from full SDK trees under RENPY_SDK_SOURCES.
 # Safe to re-run: uses .linux-full extract; populate skips if dest already OK
 # unless FORCE_POPULATE_SDK=1.
 

@@ -1,163 +1,138 @@
-# UnRen-Dependencies mirror setup 
+# UnRen-Dependencies mirror setup
 
-**Two-repo model:** pristine upstream archives live in **UnRen-Dependencies**.
-Patched, py3-ported, and orchestration code stays in **UnRen-Desktop**.
+UnRen-Desktop and **UnRen-Dependencies** are separate repositories:
 
+| Repository | Role |
+|------------|------|
+| **UnRen-Dependencies** | Pristine upstream archives and license texts for compliance re-fetch |
+| **UnRen-Desktop** | Patched tools, orchestration (`UnRen.sh`, `unren/`), SDK slices, and game workflows |
+
+When you change behaviour, patch **UnRen-Desktop** only. Refresh the mirror when you bump an upstream version or publish a new compliance snapshot.
 
 ---
 
 ## What goes where
 
-| | UnRen-Dependencies | UnRen-Desktop |
-|---|-------------------|---------------|
-| **Purpose** | Compliance mirror; dead-link fallback | What users actually run |
+| Component | UnRen-Dependencies (mirror) | UnRen-Desktop (runtime) |
+|-----------|----------------------------|-------------------------|
 | **unrpyc** | Upstream v2.0.4 (unmodified) | `tools/unrpyc-py3/` + `PATCHES.md` |
 | **rpatool** | Upstream shiz/rpatool | `tools/rpatool-py3/` |
 | **UnRen-forall** | Lurmel bat bundle + b64-decoded staging scripts | `tools/forall/` + local patches |
-| **altrpatool** | Decoded from `UnRen-current.bat` b64 (JoeLurmel embed) | `tools/altrpatool-py3/` py3 port |
+| **altrpatool** | Decoded from `UnRen-current.bat` embed | `tools/altrpatool-py3/` py3 port |
 | **rpycCorrector** | Original AON/SC4X v1.04 | `tools/rpyccorrect-py3/` py3 port |
 | **Licenses** | Same texts as `licenses/` (for re-fetch) | `licenses/` + `verify_compliance.py` |
 | **UnRen.sh / sdk / patches** | Never | Always |
 
-**Rule:** If you change behaviour, patch in **UnRen-Desktop** only. Refresh the mirror
-when you bump an upstream version or need a new compliance snapshot.
+---
+
+## Repository layout
+
+Clone both repositories as **siblings** (independent git clones — no submodule required):
+
+```
+work/
+├── UnRen-Desktop/       # this project
+└── UnRen-Dependencies/  # mirror metadata + release assets
+```
+
+Each repository has its own remote, branches, and releases.
+
+**Optional local cache** (not published): mirror packaging scripts read upstream trees from a staging directory. Set `MIRROR_STAGING` to any writable path, or let scripts default to a directory resolved via `UNREN_LOCAL` (see `scripts/unren-local.sh`).
 
 ---
 
-## Directory layout on your machine
+## Initial mirror repository
 
-Keep both repos as **siblings** (two independent git clones — no submodule required):
-
-```
-/path/to/work/
-├── UnRen-Desktop/          ← daily development (git)
-├── UnRen-Dependencies/     ← mirror metadata + release assets (git)
-└── UnRen-Local/            ← local caches (not git): _archive, sdk-sources, .mirror-staging
-```
-
-`git remote`, branches, and releases.
-
----
-
-## Step 1 — Create the GitHub repo
-
-From your machine (after the local folder exists — Step 2):
+Create the GitHub repository and push the scaffold:
 
 ```bash
-cd /path/to/work/UnRen-Dependencies
+git clone https://github.com/zujik/UnRen-Dependencies.git
+cd UnRen-Dependencies
+# README.md, LICENSE, NOTICE, manifest.json, docs/SOURCE_MAP.md
+git init -b main   # if starting from a fresh folder
+git add README.md LICENSE NOTICE manifest.json docs/
+git commit -m "Initial vendor mirror scaffold for UnRen-Desktop compliance"
 gh repo create zujik/UnRen-Dependencies --public --source=. --remote=origin \
-  --description "Vendor mirror for UnRen-Desktop bootstrap compliance (per-upstream licenses)"
+  --description "Vendor mirror for UnRen-Desktop compliance (per-upstream licenses)"
 git push -u origin main
 ```
 
-Use `--private` if you prefer; public mirror is fine for GPL/MIT/BSD redistribution
-when license files are preserved.
+Public mirror is fine for GPL/MIT/BSD redistribution when license files are preserved.
 
-**Repo license on GitHub:** choose **GNU GPLv3** for the *repository curation work*.
-Add a one-line note in the repo description: *Component archives retain upstream licenses.*
+**GitHub repo license:** choose **GNU GPLv3** for the repository curation work. Component archives retain their upstream licenses.
 
 ---
 
-## Step 2 — Initialise local UnRen-Dependencies
+## Stage pristine upstream (one-time per version)
 
-Already scaffolded at `../UnRen-Dependencies/` next to UnRen-Desktop:
-
-- `README.md` — mirror purpose
-- `LICENSE` — GPL-3.0 (your curation/index work)
-- `NOTICE` — attribution
-- `manifest.json` — what each release contains
-- `docs/SOURCE_MAP.md` — upstream URL per asset
+From your **UnRen-Desktop** clone, download upstream into a staging directory:
 
 ```bash
-cd /path/to/work/UnRen-Dependencies
-git init -b main
-git add README.md LICENSE NOTICE manifest.json docs/
-git commit -m "Initial vendor mirror scaffold for UnRen-Desktop compliance"
-```
-
----
-
-## Step 3 — Stage pristine upstream (one-time per version)
-
-In **UnRen-Desktop**, download upstream into `${UNREN_LOCAL}/.mirror-staging/`:
-
-```bash
-cd /path/to/work/UnRen-Desktop
-LOCAL="../UnRen-Local"
-mkdir -p "${LOCAL}/.mirror-staging"
+cd /path/to/UnRen-Desktop
+STAGING="${MIRROR_STAGING:-/tmp/unren-mirror-staging}"
+mkdir -p "${STAGING}"
 
 # unrpyc 2.0.4
 git clone --depth 1 --branch v2.0.4 \
-  https://github.com/CensoredUsername/unrpyc.git "${LOCAL}/.mirror-staging/unrpyc-2.0.4"
+  https://github.com/CensoredUsername/unrpyc.git "${STAGING}/unrpyc-2.0.4"
 
-# rpatool — canonical upstream (NOT the older embed inside the .bat)
-git clone --depth 1 https://codeberg.org/shiz/rpatool.git "${LOCAL}/.mirror-staging/rpatool"
+# rpatool — canonical upstream (not the older embed inside the .bat)
+git clone --depth 1 https://codeberg.org/shiz/rpatool.git "${STAGING}/rpatool"
 
 # UnRen-forall — clone repo (provenance + bat files on main)
-git clone --depth 1 https://github.com/Lurmel/UnRen-forall.git "${LOCAL}/.mirror-staging/unren-forall-repo"
+git clone --depth 1 https://github.com/Lurmel/UnRen-forall.git "${STAGING}/unren-forall-repo"
 
-# The release zip is NOT inside the git tree — it lives on GitHub Releases only.
-# Option A (simplest): copy the five release bats from the clone (same content as the zip)
-mkdir -p "${LOCAL}/.mirror-staging/unren-forall-la_0.77"
-cp -a "${LOCAL}/.mirror-staging/unren-forall-repo/UnRen-forall.bat" \
-      "${LOCAL}/.mirror-staging/unren-forall-repo/UnRen-current.bat" \
-      "${LOCAL}/.mirror-staging/unren-forall-repo/UnRen-legacy.bat" \
-      "${LOCAL}/.mirror-staging/unren-forall-repo/UnRen-cfg.txt" \
-      "${LOCAL}/.mirror-staging/unren-forall-repo/UnRen-link.txt" \
-      "${LOCAL}/.mirror-staging/unren-forall-la_0.77/"
+# Copy release bat files from the clone (same content as the GitHub release zip)
+mkdir -p "${STAGING}/unren-forall-la_0.77"
+cp -a "${STAGING}/unren-forall-repo/UnRen-forall.bat" \
+      "${STAGING}/unren-forall-repo/UnRen-current.bat" \
+      "${STAGING}/unren-forall-repo/UnRen-legacy.bat" \
+      "${STAGING}/unren-forall-repo/UnRen-cfg.txt" \
+      "${STAGING}/unren-forall-repo/UnRen-link.txt" \
+      "${STAGING}/unren-forall-la_0.77/"
 
-# Option B (exact release artifact): download + unzip instead of Option A
-# curl -L -o "${LOCAL}/.mirror-staging/unren-forall-release.zip" \
-#   https://github.com/Lurmel/UnRen-forall/releases/download/main/UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80.zip
-# unzip -q "${LOCAL}/.mirror-staging/unren-forall-release.zip" -d "${LOCAL}/.mirror-staging/"
-# cp -a "${LOCAL}/.mirror-staging/UnRen-forall-la_0.77-le_9.7.60-cu_9.7.80" \
-#       "${LOCAL}/.mirror-staging/unren-forall-la_0.77"
+# Alternative: download the exact release zip from Lurmel/UnRen-forall Releases
+# and unzip into ${STAGING}/
 
-# Decode embedded Python from UnRen-current.bat (NOT tools/forall/ — those are patched)
+# Decode embedded Python from UnRen-current.bat (upstream copy, not tools/forall/)
 chmod +x scripts/extract-unren-forall-b64.py
 python3 scripts/extract-unren-forall-b64.py \
-  "${LOCAL}/.mirror-staging/unren-forall-la_0.77/UnRen-current.bat" \
-  "${LOCAL}/.mirror-staging/unren-forall-scripts"
+  "${STAGING}/unren-forall-la_0.77/UnRen-current.bat" \
+  "${STAGING}/unren-forall-scripts"
 
-# altrpatool upstream = decoded script only
-mkdir -p "${LOCAL}/.mirror-staging/altrpatool-upstream"
-cp "${LOCAL}/.mirror-staging/unren-forall-scripts/altrpatool.py" "${LOCAL}/.mirror-staging/altrpatool-upstream/"
+mkdir -p "${STAGING}/altrpatool-upstream"
+cp "${STAGING}/unren-forall-scripts/altrpatool.py" "${STAGING}/altrpatool-upstream/"
 
-# rpycCorrector — from F95 forum download (not in Lurmel repo)
-# Place under: ${LOCAL}/.mirror-staging/rpyc-corrector-1.04/
+# rpycCorrector — obtain from the F95 forum release (not in the Lurmel repo)
+# Place under: ${STAGING}/rpyc-corrector-1.04/
 ```
 
-If you lack the original rpycCorrector zip, note that in `SOURCE_INVENTORY.md` and
-use the forum download when available; the **license file** in `licenses/` is still
-valid for compliance re-fetch.
+If the original rpycCorrector archive is unavailable, note that in `docs/SOURCE_INVENTORY.md`. The **license file** in `licenses/` remains valid for compliance re-fetch.
 
 ---
 
-## Step 4 — Build release assets
-
-From UnRen-Desktop:
+## Build release assets
 
 ```bash
-./scripts/package-mirror-release.sh
+cd /path/to/UnRen-Desktop
+MIRROR_STAGING=/path/to/staging ./scripts/package-mirror-release.sh
 ```
 
 Output: `dist/mirror-v1.0.0/` containing:
 
 - `*.txt` license files (flat names — copied from UnRen-Desktop `licenses/`)
-- `*.tar.xz` per component (from `MIRROR_STAGING/` when present)
+- `*.tar.xz` per component (from the staging directory when present)
 
-**Note:** GitHub Releases store assets by **basename only** (no `licenses/` folder in
-download URLs). `manifest.json` → `license_download_url` must match, e.g.
-`.../v1.0.0/unrpyc.MIT.txt` not `.../licenses/unrpyc.MIT.txt`.
+**Important:** GitHub Releases store assets by **basename only** (no `licenses/` folder in download URLs). `manifest.json` → `license_download_url` must match, e.g. `.../v1.0.0/unrpyc.MIT.txt` not `.../licenses/unrpyc.MIT.txt`.
 
 Review the script summary for any `SKIP` lines before publishing.
 
 ---
 
-## Step 5 — Publish GitHub Release v1.0.0
+## Publish a GitHub Release
 
 ```bash
-cd /path/to/work/UnRen-Desktop
+cd /path/to/UnRen-Desktop
 gh release create v1.0.0 \
   dist/mirror-v1.0.0/unrpyc-2.0.4.tar.xz \
   dist/mirror-v1.0.0/rpatool.tar.xz \
@@ -170,86 +145,45 @@ gh release create v1.0.0 \
   --notes "Pristine upstream snapshots + license texts for UnRen-Desktop manifest.json"
 ```
 
-Or upload via GitHub web UI: Release → v1.0.0 → attach all files from `dist/mirror-v1.0.0/`.
+Or upload via GitHub web UI: Release → attach all files from `dist/mirror-v1.0.0/`.
 
-URLs must match `manifest.json` in UnRen-Desktop (already pointed at `v1.0.0`).
+URLs must match `manifest.json` in UnRen-Desktop.
 
 ---
 
-## Step 6 — Verify
+## Verify
 
 ```bash
-cd /path/to/work/UnRen-Desktop
-# Optional: delete one license and confirm re-download works
+cd /path/to/UnRen-Desktop
 python3 scripts/verify_compliance.py .
 ```
 
-All `[✓]` — mirror is live.
-
-Add a row to `docs/SOURCE_INVENTORY.md` audit log with the release date.
+All checks should pass. Add a row to `docs/SOURCE_INVENTORY.md` audit log with the release date.
 
 ---
 
-## Step 7 — Commit UnRen-Desktop license work
+## Ongoing maintenance
 
-When ready:
-
-```bash
-cd /path/to/work/UnRen-Desktop
-git add -A
-git status   # review
-git commit -m "Relicense to GPL-3.0; add compliance manifest and mirror docs"
-git push
-```
-
----
-
-## Day-to-day workflow (two repos)
-
-```mermaid
-flowchart TD
-  subgraph daily [Every day]
-    A[Edit patches / unren / tools in UnRen-Desktop]
-    B[Test games with full folder copy]
-    C[Commit + push UnRen-Desktop]
-  end
-  subgraph occasional [Occasionally]
-    D[New upstream version?]
-    E[Refresh MIRROR_STAGING]
-    F[package-mirror-release.sh]
-    G[New tag on UnRen-Dependencies]
-    H[Bump manifest.json URLs in UnRen-Desktop]
-  end
-  A --> B --> C
-  D --> E --> F --> G --> H
-```
-
-| Action | Repo |
-|--------|------|
+| Action | Repository |
+|--------|------------|
 | Fix decompile / menu / SDK | UnRen-Desktop |
 | Patch unrpyc / forall | UnRen-Desktop |
-| Forum release zip of full tool | UnRen-Desktop Releases |
+| Release full tool zip | UnRen-Desktop Releases |
 | Upstream version bump snapshot | UnRen-Dependencies |
 | License text correction | Both (Desktop first, then re-package mirror) |
 
-**Do not** submodule-link the repos unless you enjoy extra git friction. Sibling
-clones + `package-mirror-release.sh` is enough until bootstrap download is coded.
+When a dependency version changes:
 
----
-
-## What waits for refactor 
-
-- Bootstrap `UnRen.sh` that downloads `unren-desktop/` on first run
-- Auto-extract mirror tarballs inside `verify_compliance.py`
-- Slim vs full release split
-
-None of that blocks mirror setup or current full-copy usage.
+1. Refresh the staging directory with the new upstream tree.
+2. Run `scripts/package-mirror-release.sh`.
+3. Publish a new tag on **UnRen-Dependencies**.
+4. Update `manifest.json` URLs in **UnRen-Desktop**.
 
 ---
 
 ## Related
 
-- `docs/SOURCE_INVENTORY.md` — audit trail
+- `docs/SOURCE_INVENTORY.md` — provenance audit trail
 - `manifest.json` — `dependencies.*.download_url`
 - `scripts/package-mirror-release.sh` — build release folder
-- `../UnRen-Dependencies/docs/SOURCE_MAP.md` — per-asset upstream map
+- `UnRen-Dependencies/docs/SOURCE_MAP.md` — per-asset upstream map

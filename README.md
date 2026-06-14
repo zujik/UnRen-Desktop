@@ -162,23 +162,19 @@ cd UnRen-Desktop
 git lfs pull
 ```
 
-**Local rebuild** (full SDK trees live in `${UNREN_LOCAL}/sdk-sources/`):
+**Rebuild SDK slices** (when `git lfs pull` is insufficient):
 
 ```bash
-# Default: ${UNREN_LOCAL}/sdk-sources/renpy-8.5.3-sdk and renpy-7.8.7-sdk
-./scripts/populate-sdk.sh
-```
-
-Or custom paths:
-
-```bash
+# Download full SDKs from renpy.org, then point populate-sdk.sh at them:
 RENPY_SDK_SOURCES=/path/to/sdk-sources \
 RENPY_PY3_SRC=/path/to/renpy-8.5.3-sdk \
 RENPY_PY2_SRC=/path/to/renpy-7.8.7-sdk \
 ./scripts/populate-sdk.sh
 ```
 
-Download full SDKs from [renpy.org](https://www.renpy.org/) into `RENPY_SDK_SOURCES/` when rebuilding trimmed `sdk/` slices. Once `git lfs pull` has populated `sdk/`, you rarely need the full trees.
+Or use the default paths resolved by `scripts/unren-local.sh` (`RENPY_SDK_SOURCES` / `UNREN_LOCAL`).
+
+Download full SDKs from [renpy.org](https://www.renpy.org/) when rebuilding trimmed `sdk/` slices. Once `git lfs pull` has populated `sdk/`, you rarely need the full trees.
 
 **Release tarballs** (optional, for non-git users):
 
@@ -192,7 +188,7 @@ Download full SDKs from [renpy.org](https://www.renpy.org/) into `RENPY_SDK_SOUR
 - [UnRen-Ultrahack](https://f95zone.to/threads/92717/) — VepsrP
 - [UnRen-Linux.sh](https://github.com/zujik/UnRen-Linux.sh) — Troy Dallas
 - [UnRen for Mac 0.9.0](https://f95zone.to/threads/16887/) — huchukato (Python 3 / unrpyc v2)
-- [dikau-UnRen-sh](https://github.com/dikau/UnRen-sh) — cleaner bash structure (reference: `${UNREN_LOCAL}/_archive/unren-legacy/dikau-UnRen-sh/`)
+- [dikau-UnRen-sh](https://github.com/dikau/UnRen-sh) — cleaner bash structure (reference)
 
 ## Third-party tools
 

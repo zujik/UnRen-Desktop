@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Download a full Ren'Py SDK from renpy.org into UnRen-Local/sdk-sources/ for populate-sdk.sh.
+# Download a full Ren'Py SDK from renpy.org into RENPY_SDK_SOURCES for populate-sdk.sh.
 #
 # Version detection borrows from rpmac.sh by F.Rvv3 (f95zone thread 287097, pastebin).
 # UnRen-Desktop does not repackage games onto macOS — only fetches SDK trees for trimming.

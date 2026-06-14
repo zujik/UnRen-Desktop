@@ -1,7 +1,6 @@
 # unrpyc patches (UnRen-Desktop)
 
-Base: upstream **unrpyc 2.0.4** (see `manifest.json`). Archived reference:
-`../../${UNREN_LOCAL}/_archive/unren-legacy/unrpyc/unrpyc-2.0.4/`
+Base: upstream **unrpyc 2.0.4** (see `manifest.json`).
 
 ## Files added or modified vs upstream
 
@@ -15,9 +14,11 @@ Base: upstream **unrpyc 2.0.4** (see `manifest.json`). Archived reference:
 
 ## Upgrading from upstream
 
+Clone upstream v2.0.4 beside this tree, then diff:
+
 ```bash
-# From /path/to/work/UnRen-Local:
-diff -ru _archive/unren-legacy/unrpyc/unrpyc-2.0.4/ ../UnRen-Desktop/tools/unrpyc-py3/
+git clone --depth 1 --branch v2.0.4 https://github.com/CensoredUsername/unrpyc.git /tmp/unrpyc-2.0.4
+diff -ru /tmp/unrpyc-2.0.4/ tools/unrpyc-py3/
 ```
 
 Do **not** blind-copy upstream over `tools/unrpyc-py3/` — keep `codegen.py` and `screendecompiler.py`.

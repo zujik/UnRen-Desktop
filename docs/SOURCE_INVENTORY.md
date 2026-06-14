@@ -1,9 +1,8 @@
 # Source Inventory & Dependency Provenance
 
-This inventory is maintained for license compliance and bootstrap auditing. The
-**full-tree copy** workflow is what ships today; a thin bootstrap download 
-is planned. `verify_compliance.py` can already re-fetch license texts (and cache
-tool archives) from the live mirror when local files are missing.
+This inventory records upstream sources for license compliance and redistribution
+audits. `verify_compliance.py` re-fetches license texts (and can cache tool archives)
+from the **UnRen-Dependencies** mirror when local files are missing.
 
 **Maintainer:** Kijuz · GitHub: [zujik](https://github.com/zujik)
 
@@ -37,5 +36,5 @@ See `manifest.json` → `dependencies` for per-component `download_url` and
 | Date | Auditor | Notes |
 |------|---------|-------|
 | 2026-06-15 | Kijuz | Hollow smoke re-confirmed (3-6+g, 1+8+9+g); TESTING.md extract caution + UNREN_KEEP_RPA |
-| 2026-06-15 | Kijuz | UnRen-Dependencies v1.0.0 published; mirror URLs verified; UnRen-Local layout for maintainer caches |
+| 2026-06-15 | Kijuz | UnRen-Dependencies v1.0.0 published; mirror URLs verified |
 | 2026-06-13 | Kijuz | Verified UnRen-forall GPL-3.0 (`Lurmel/UnRen-forall` LICENSE); rpycCorrector BSD-2-Clause (F95 header); project relicensed GPL-3.0 for offline bundle distribution |

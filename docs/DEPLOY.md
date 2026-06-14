@@ -1,8 +1,8 @@
 # Deployment and license compliance
 
-**Status:** Layout spec for post-matrix refactor. Bootstrap download is **not**
-implemented yet. Current workflow remains: copy full `UnRen-Desktop/` into the
-game, then `./UnRen.sh`.
+**Current workflow:** copy the full `UnRen-Desktop/` tree into the game folder,
+then run `./UnRen.sh`. A single-script bootstrap download is described below as a
+future packaging option.
 
 **Maintainer:** Kijuz (F95zone) · GitHub: [zujik](https://github.com/zujik)
 
@@ -179,28 +179,20 @@ confirm `LICENSE.txt` landed in each `sdk/<slice>/`.
 | `unren-sdk-<slice>-*.tar.bz2` | SDK-only refresh | One slice | Medium |
 | Git + LFS | Developers | Full tree | Clone + `git lfs pull` |
 
-`.sdk-sources-cache/` and `${UNREN_LOCAL}/.mirror-staging/` are **local maintainer caches**
-— never publish (see `.gitignore`).
+`.sdk-sources-cache/` and mirror staging directories (see `MIRROR_STAGING` in
+`scripts/package-mirror-release.sh`) are **local build caches** — never publish
+(see `.gitignore`).
 
 ---
 
-## Open decisions (defer until bootstrap is coded)
+## Future packaging work
 
-- Single tarball vs separate SDK pack download
-- Bootstrap in main repo vs release-assets-only repo
-- macOS `UnRen.command` wrapper
-- Whether slim bundle omits `sdk/` entirely or ships py3-only slice
+- Bootstrap `UnRen.sh` with download, sha256 verification, and license checks
+- Full vs slim release tarballs (with and without `sdk/`)
+- Optional `unren-desktop/` subfolder layout for game installs
 
----
-
-## Milestone order
-
-1. ~~Bulk game testing~~ — done (`docs/TESTING.md`)
-2. ~~License / attribution audit~~ — done (`THIRD_PARTY_LICENSES.md`, `NOTICE`)
-3. **Refactor layout** — bootstrap + optional `unren-desktop/` subfolder (this doc)
-4. **Implement bootstrap** — download, sha256, `_unren_verify_license_files`
-5. **GitHub release** — full + slim tarballs with license checklist
-6. Forum post (Kijuz) — link repo + quick start
+See `docs/MIRROR_SETUP.md` for the compliance mirror; `docs/TESTING.md` for the
+game compatibility matrix.
 
 ---
 

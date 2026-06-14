@@ -2,6 +2,7 @@
 
 Run after toolchain or launcher changes. Copy **all** of `UnRen-Desktop/` into each game root (flat layout), then `./UnRen.sh`.
 
+Linux compatibility matrix **complete** as of v2.0.0-alpha.1 (2026-06-15). See **Per-game log** below.
 
 ## How to run each game
 
@@ -69,7 +70,7 @@ Details: `patches/decompile-fixes/README.md`.
 
 **Status:** Regression anchor — **fully playable** on Linux with native `lib/py3-linux-x86_64`.
 
-**Minimal smoke (pre-merge):**
+**Minimal smoke test:**
 
 ```
 fresh unzip → flat-copy UnRen → 3–6 → g
@@ -240,10 +241,6 @@ UNREN_KEEP_RPA=1 ./UnRen.sh      # then option 1
 
 ---
 
-## Next steps (project)
+## Re-testing after changes
 
-1. ~~Linux smoke matrix~~ — **complete** (Magic Shop, Innocent Witches guarded, Hollow both workflows).
-2. Merge PR #1 → tag `v2.0.0-alpha.1` → set GitHub repo license to **GPLv3**.
-3. **Track B:** bootstrap `UnRen.sh` + slim release (game folder + script only).
-
-See `docs/DEPLOY.md` when starting slim packaging.
+After toolchain, SDK, or launcher changes, re-run the [regression anchors](#regression-anchors-re-test-after-toolchain-changes) (Magic Shop + Hollow) before publishing a release.
