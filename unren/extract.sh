@@ -15,7 +15,7 @@ _unren_run_altrpatool() {
     "${py}" "${PYARGS[@]}" "${ALTRPATOOL}" \
         -x "$(realpath --relative-to="${UNREN_APP}" "$rel_arch")" \
         -o "$(realpath --relative-to="${UNREN_APP}" "$rel_out")" -r 2>&1 \
-        | awk '!/^Co.*exec_prefix/{ if (length) print "  > "$0 }'
+        | awk '!/^Co.*exec_prefix/ && !/Could not extract file  from archive:/{ if (length) print "  > "$0 }'
     rc=$?
     set -e
     popd >/dev/null || return 1
@@ -31,7 +31,7 @@ _unren_run_rpatool() {
     pushd "$out_dir" >/dev/null || return 1
     set +e
     "${py_runner[@]}" "$rpatool_py" "$RPATOOL" -x -v "$base" 2>&1 \
-        | awk '!/^Co.*exec_prefix/{ if (length) print "  > "$0 }'
+        | awk '!/^Co.*exec_prefix/ && !/Could not extract file  from archive:/{ if (length) print "  > "$0 }'
     local rc=$?
     set -e
     popd >/dev/null || return 1

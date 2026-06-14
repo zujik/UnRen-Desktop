@@ -22,33 +22,6 @@ _unren_menu_has_archives() {
     ((${#archives[@]} > 0))
 }
 
-_unren_menu_has_mangled_rpyc() {
-    local script="${UNREN_APP}/renpy/script.py"
-    [[ -f "$script" ]] || return 1
-    env -u PYTHONHOME -u PYTHONPATH python3 - "$script" <<'PY'
-import sys
-
-path = sys.argv[1]
-sig = None
-enc = None
-with open(path, encoding="utf-8", errors="replace") as fh:
-    for line in fh:
-        if line.startswith("RPYC2_HEADER") and sig is None:
-            q = '"' if '"' in line else "'"
-            sig = line[line.find(q) + 1 : line.rfind(q)]
-        stripped = line.strip()
-        if stripped == "data = zlib.compress(data, 9)":
-            enc = "original"
-        elif 'zlib.compress(data, 9).encode("hex")' in line:
-            enc = "nbd"
-        elif stripped == 'f.write(struct.pack("IIII", 0, 0, 0, 0))':
-            enc = "nkt"
-if sig != "RENPY RPC2" or enc != "original":
-    raise SystemExit(0)
-raise SystemExit(1)
-PY
-}
-
 _unren_menu_format_opt_list() {
     local -a nums=("$@")
     local -a ranges=()
@@ -137,7 +110,7 @@ _unren_menu_refresh_state() {
         \( -name '*.rpa.org' -o -name '*.rpy.org' -o -name '*.rpyc.org' \
            -o -name '*.rpa.bak' -o -name '*.rpy.bak' -o -name '*.rpyc.bak' \) \
         -type f && UNREN_MENU_HAS_RESTORE=1
-    _unren_menu_has_mangled_rpyc && UNREN_MENU_HAS_MANGLED_RPYC=1
+    _unren_has_mangled_rpyc && UNREN_MENU_HAS_MANGLED_RPYC=1
 
     [[ -f "${UNREN_GAME}/unren-dev.rpy" ]] && UNREN_MENU_PATCH_DEV=1
     [[ -f "${UNREN_GAME}/unren-quick.rpy" ]] && UNREN_MENU_PATCH_QUICK=1
