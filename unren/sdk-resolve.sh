@@ -107,6 +107,15 @@ _unren_sdk_slice_py_major() {
     esac
 }
 
+_unren_sdk_slice_matches_py_major() {
+    local slice="$1" py_major="$2"
+    local slice_py
+
+    [[ -n "$py_major" ]] || return 0
+    slice_py="$(_unren_sdk_slice_py_major "$slice")"
+    [[ "$slice_py" == "$py_major" ]]
+}
+
 _unren_pythonhome_has_stdlib() {
     local pyhome="$1"
     [[ -n "$pyhome" && -d "$pyhome" ]] && {
@@ -284,7 +293,7 @@ _unren_sdk_fallback_chain() {
         major="$(_unren_script_version_major_from_app "$app")"
         case "$major" in
             8|9|10)
-                wanted=(py3-8.5.3 py2-7.8.7)
+                wanted=(py3-8.5.3)
                 ;;
             7)
                 wanted=(py2-7.8.7 py2-6.99.14.3)
@@ -321,6 +330,7 @@ _unren_resolve_sdk_runtime() {
     while IFS= read -r slice; do
         [[ -n "$slice" ]] || continue
         local slice_py phome
+        _unren_sdk_slice_matches_py_major "$slice" "$py_major" || continue
         resolved_root="$(_unren_sdk_slice_dir "$slice" "$app")"
         slice_py="$(_unren_sdk_slice_py_major "$slice")"
         resolved_lib="$(_unren_sdk_lib_dir "$resolved_root" "$slice_py" "$platform")" || continue
