@@ -82,4 +82,7 @@ Temporary Items
 .apdisk
 
 # iCloud generated files on macOS
-*.icloud.unren-compliance-cache/
+*.icloud
+
+# Local compliance audit cache
+.unren-compliance-cache/

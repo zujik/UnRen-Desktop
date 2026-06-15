@@ -135,16 +135,28 @@ GameFolder/
 
 No download. All license files already on disk.
 
-### B — Future online (bootstrap)
+### B — Bootstrap download (releases)
+
+**Linux** — `UnRen.sh` in the game folder:
 
 ```
 GameFolder/
 ├── game/ renpy/ lib/
-└── UnRen.sh                    ← small bootstrap only
+├── UnRen.sh
+└── unren-desktop/              ← downloaded on first run
 ```
 
-First run downloads `unren-desktop/` (or extracts from cached tarball next to
-`UnRen.sh`). Bootstrap **must** run `_unren_verify_compliance` before menu.
+**macOS** — `UnRen.command` in `~/UnRen-Desktop` (or home); drag game onto it:
+
+```
+~/UnRen-Desktop/
+├── UnRen.command
+├── UnRen.sh                    ← fetched on first run
+└── unren-desktop/
+```
+
+First run downloads the slim payload. SDK slices fetch on demand into
+`unren-desktop/sdk/`. Bootstrap runs `_unren_verify_compliance` before menu.
 
 ### C — Future offline (two-item copy)
 
@@ -175,7 +187,10 @@ confirm `LICENSE.txt` landed in each `sdk/<slice>/`.
 | Asset | Audience | SDK included | Size tradeoff |
 |-------|----------|--------------|---------------|
 | `unren-desktop-full-*.tar.xz` | Forum / offline | Yes (LFS binaries) | Large |
-| `unren-desktop-slim-*.tar.xz` | Quick download | No — SDK on demand | Small first fetch |
+| `unren-desktop-slim-*.tar.xz` | Bootstrap payload | No — SDK on demand | Small |
+| `unren-desktop-starter-*.tar.xz` | Linux download | No — bootstrap `UnRen.sh` only | One file |
+| `unren-desktop-starter-mac-*.tar.xz` | macOS download | No — `UnRen.command` only | One file; fetches `UnRen.sh` |
+| `UnRen.sh` | macOS fetch / Linux starter | No | Standalone script asset |
 | `unren-sdk-<slice>-*.tar.bz2` | SDK-only refresh | One slice | Medium |
 | Git + LFS | Developers | Full tree | Clone + `git lfs pull` |
 
@@ -187,9 +202,9 @@ confirm `LICENSE.txt` landed in each `sdk/<slice>/`.
 
 ## Future packaging work
 
-- Bootstrap `UnRen.sh` with download, sha256 verification, and license checks
-- Full vs slim release tarballs (with and without `sdk/`)
-- Optional `unren-desktop/` subfolder layout for game installs
+- ~~Bootstrap `UnRen.sh` with download, sha256 verification, and license checks~~ (done)
+- ~~Full vs slim release tarballs~~ (done)
+- ~~Starter tarballs (Linux `UnRen.sh`, macOS `UnRen.command`)~~ (done)
 
 See `docs/MIRROR_SETUP.md` for the compliance mirror; `docs/TESTING.md` for the
 game compatibility matrix.

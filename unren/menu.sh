@@ -197,11 +197,31 @@ unren_splash() {
     echo
 }
 
+unren_strip_path_input() {
+    local raw="$1"
+    raw="${raw//$'\r'/}"
+    raw="${raw//$'\n'/}"
+    raw="${raw#"${raw%%[![:space:]]*}"}"
+    raw="${raw%"${raw##*[![:space:]]}"}"
+    while [[ "$raw" =~ ^\'.*\'$ ]] || [[ "$raw" =~ ^\".*\"$ ]]; do
+        raw="${raw:1:-1}"
+        raw="${raw#"${raw%%[![:space:]]*}"}"
+        raw="${raw%"${raw##*[![:space:]]}"}"
+    done
+    if [[ "$raw" == file://* ]]; then
+        raw="${raw#file://}"
+        if command -v python3 >/dev/null 2>&1; then
+            raw="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))' "$raw" 2>/dev/null || printf '%s' "$raw")"
+        fi
+    fi
+    printf '%s' "$raw"
+}
+
 unren_resolve_target_path() {
     local raw="$1"
     local dir base
-    raw="${raw%\'}"
-    raw="${raw#\'}"
+    raw="$(unren_strip_path_input "$raw")"
+    [[ -n "$raw" ]] || return 1
     if [[ -d "$raw" ]]; then
         (cd -P -- "$raw" && pwd)
     elif [[ -d "$(dirname -- "$raw")" ]]; then
@@ -213,6 +233,19 @@ unren_resolve_target_path() {
     fi
 }
 
+unren_pick_target_arg() {
+    local arg resolved
+    for arg in "$@"; do
+        [[ -n "$arg" ]] || continue
+        resolved="$(unren_resolve_target_path "$arg" 2>/dev/null || true)"
+        [[ -n "$resolved" && -e "$resolved" ]] && {
+            printf '%s\n' "$resolved"
+            return 0
+        }
+    done
+    return 1
+}
+
 unren_main() {
     trap 'printf -- %s\\n "Interrupted."; exit 1' INT TERM
 
@@ -220,7 +253,11 @@ unren_main() {
     unren_splash
 
     if [[ $# -ge 1 ]]; then
-        UNREN_TARGET="$(unren_resolve_target_path "$1")"
+        if UNREN_TARGET="$(unren_pick_target_arg "$@")"; then
+            :
+        else
+            UNREN_TARGET="$(unren_resolve_target_path "$1")"
+        fi
         echo "Working with: ${UNREN_TARGET}"
     elif [[ -e "${UNREN_ROOT}/Contents/Resources/autorun/game" ]]; then
         UNREN_TARGET="${UNREN_ROOT}"
@@ -232,8 +269,9 @@ unren_main() {
         UNREN_TARGET="$(cd "${UNREN_ROOT}/.." && pwd)"
         echo "Working with (parent of UnRen folder): ${UNREN_TARGET}"
     else
-        echo "Drag-and-drop the game folder or .app here, then press ENTER:"
+        echo "Enter the path to the game folder, then press ENTER:"
         read -r input_path
+        input_path="$(unren_strip_path_input "$input_path")"
         UNREN_TARGET="$(unren_resolve_target_path "$input_path")"
     fi
     echo

@@ -280,36 +280,32 @@ _unren_sdk_fallback_chain() {
 
     if _unren_is_rpc3_game "$app"; then
         wanted=(py2-6.99.14.3 py2-7.8.7 py2-5.6.7)
-        for slice in "${wanted[@]}"; do
-            _unren_sdk_slice_exists "$slice" "$app" && printf '%s\n' "$slice"
-        done
-        return 0
+    else
+        major="$(_unren_script_version_major_from_app "$app")"
+        case "$major" in
+            8|9|10)
+                wanted=(py3-8.5.3 py2-7.8.7)
+                ;;
+            7)
+                wanted=(py2-7.8.7 py2-6.99.14.3)
+                ;;
+            6)
+                wanted=(py2-6.99.14.3 py2-7.8.7)
+                ;;
+            5)
+                wanted=(py2-5.6.7 py2-6.99.14.3 py2-7.8.7)
+                ;;
+            4|3|2|1)
+                wanted=(py2-5.6.7 py2-6.99.14.3)
+                ;;
+            *)
+                wanted=(py3-8.5.3 py2-7.8.7 py2-6.99.14.3 py2-5.6.7)
+                ;;
+        esac
     fi
 
-    major="$(_unren_script_version_major_from_app "$app")"
-    case "$major" in
-        8|9|10)
-            wanted=(py3-8.5.3 py2-7.8.7)
-            ;;
-        7)
-            wanted=(py2-7.8.7 py2-6.99.14.3)
-            ;;
-        6)
-            wanted=(py2-6.99.14.3 py2-7.8.7)
-            ;;
-        5)
-            wanted=(py2-5.6.7 py2-6.99.14.3 py2-7.8.7)
-            ;;
-        4|3|2|1)
-            wanted=(py2-5.6.7 py2-6.99.14.3)
-            ;;
-        *)
-            wanted=(py3-8.5.3 py2-7.8.7 py2-6.99.14.3 py2-5.6.7)
-            ;;
-    esac
-
     for slice in "${wanted[@]}"; do
-        _unren_sdk_slice_exists "$slice" "$app" && printf '%s\n' "$slice"
+        printf '%s\n' "$slice"
     done
 }
 

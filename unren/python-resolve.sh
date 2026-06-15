@@ -274,6 +274,20 @@ resolve_game_and_python() {
         return 0
     fi
 
+    if _unren_try_auto_fetch_sdk_slices "$UNREN_APP" "$py_major" "$platform" &&
+        _unren_resolve_sdk_runtime "$UNREN_APP" "$py_major" "$platform" sdk_root sdk_lib; then
+        sdk_py="$(_unren_sdk_python_runner "$sdk_lib" "$sdk_root")"
+        [[ -z "$sdk_py" || ! -x "$sdk_py" ]] && sdk_py="${sdk_lib}/python"
+        if [[ ! -x "$sdk_py" ]]; then
+            unren_die "Bundled SDK Python missing under ${sdk_lib}"
+        fi
+        UNREN_SDK_ROOT="${sdk_root}"
+        UNREN_SDK_LIB="${sdk_lib}"
+        UNREN_PYTHON="${sdk_py}"
+        _unren_configure_sdk_python_env "$UNREN_PYTHON" "${sdk_root}" "${sdk_lib}"
+        return 0
+    fi
+
     unren_die "No game Python found and no usable bundled SDK runtime in sdk/. See sdk/README.md"
 }
 

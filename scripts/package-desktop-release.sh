@@ -11,13 +11,18 @@ CHECKSUMS="${OUT}/SHA256SUMS-desktop"
 
 INCLUDE=(
     LICENSE NOTICE THIRD_PARTY_LICENSES.md manifest.json
-    UnRen.sh UnRen.command
+    docs/README-bootstrap.txt
     unren tools patches licenses docs
     scripts/bootstrap.sh scripts/verify_compliance.py
 )
 
 INCLUDE_SLIM=( "${INCLUDE[@]}" )
-INCLUDE_FULL=( "${INCLUDE[@]}" sdk )
+INCLUDE_FULL=(
+    LICENSE NOTICE THIRD_PARTY_LICENSES.md manifest.json
+    UnRen.sh UnRen.command
+    unren tools patches licenses docs sdk
+    scripts/bootstrap.sh scripts/verify_compliance.py
+)
 
 log() { printf '%s\n' "$*"; }
 die() { log "ERROR: $*" >&2; exit 1; }

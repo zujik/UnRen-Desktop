@@ -14,3 +14,12 @@ for slice in py3-8.5.3 py2-7.8.7 py2-6.99.14.3 py2-5.6.7; do
     tar -cjf "$out" -C "${ROOT}/sdk" "${slice}"
     echo "Created ${out}"
 done
+
+CHECKSUMS="${OUT}/SHA256SUMS-sdk"
+: > "$CHECKSUMS"
+for f in "${OUT}"/unren-sdk-*.tar.bz2; do
+    [[ -f "$f" ]] || continue
+    (cd "$OUT" && sha256sum "$(basename "$f")") >> "$CHECKSUMS"
+done
+echo "Checksums: ${CHECKSUMS}"
+cat "$CHECKSUMS"
