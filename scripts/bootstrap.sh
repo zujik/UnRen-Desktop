@@ -114,30 +114,36 @@ _unren_bootstrap_install() {
     local payload url archive expected sha_file tmp
 
     payload="$(_unren_bootstrap_payload_dir "$script_dir")"
-    url="$(_unren_bootstrap_bundle_url)"
-    archive="${payload}/.download-$(_unren_bootstrap_bundle_name)"
     expected="${UNREN_BUNDLE_SHA256:-}"
     sha_file="$(_unren_bootstrap_sha256_file "$script_dir")"
     [[ -z "$expected" && -n "$sha_file" ]] && expected="$sha_file"
-
-    echo "  Installing UnRen payload (${UNREN_BUNDLE}) ..."
-    echo "  URL: ${url}"
     mkdir -p "$payload"
-    tmp="${archive}.part"
-    if ! _unren_bootstrap_download "$url" "$tmp"; then
-        rm -f "$tmp"
-        return 1
+
+    if [[ -n "${UNREN_BOOTSTRAP_ARCHIVE:-}" && -f "${UNREN_BOOTSTRAP_ARCHIVE}" ]]; then
+        archive="${UNREN_BOOTSTRAP_ARCHIVE}"
+        echo "  Using local archive: ${archive}" >&2
+    else
+        url="$(_unren_bootstrap_bundle_url)"
+        archive="${payload}/.download-$(_unren_bootstrap_bundle_name)"
+        echo "  Installing UnRen payload (${UNREN_BUNDLE}) ..." >&2
+        echo "  URL: ${url}" >&2
+        mkdir -p "$payload"
+        tmp="${archive}.part"
+        if ! _unren_bootstrap_download "$url" "$tmp"; then
+            rm -f "$tmp"
+            return 1
+        fi
+        mv -f "$tmp" "$archive"
     fi
-    mv -f "$tmp" "$archive"
     _unren_bootstrap_verify_sha256 "$archive" "$expected" || return 1
     _unren_bootstrap_extract "$archive" "$payload" || return 1
-    rm -f "$archive"
+    rm -f "${payload}/.download-"*.tar.xz 2>/dev/null || true
     if ! _unren_bootstrap_verify_license_files "$payload"; then
         echo "[!] Download incomplete — license files missing. Refusing to run." >&2
         return 1
     fi
     printf '%s\n' "${expected}" > "${payload}/.unren-bundle.sha256" 2>/dev/null || true
-    echo "  Payload ready: ${payload}"
+    echo "  Payload ready: ${payload}" >&2
     return 0
 }
 

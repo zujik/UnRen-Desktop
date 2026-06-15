@@ -4,7 +4,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-VERSION="$(grep UNREN_VERSION "${ROOT}/unren/config.sh" | cut -d'"' -f2)"
+VERSION="$(grep '^UNREN_VERSION=' "${ROOT}/unren/config.sh" | head -1 | cut -d'"' -f2)"
 OUT="${ROOT}/dist"
 STAGING="${OUT}/desktop-staging"
 CHECKSUMS="${OUT}/SHA256SUMS-desktop"
@@ -54,7 +54,7 @@ build_one() {
 
     mkdir -p "$OUT"
     tar -cJf "$archive" -C "$work" .
-    log "Created ${archive} ($(du -h "$archive" | awk '{print $1}'))"
+    log "Created ${archive} ($(du -h "$archive" | awk '{print $1}'))" >&2
     if command -v sha256sum >/dev/null 2>&1; then
         (cd "$OUT" && sha256sum "$name")
     fi
@@ -65,14 +65,14 @@ main() {
     mkdir -p "$OUT"
     : > "$CHECKSUMS"
 
-    log "Packaging UnRen-Desktop ${VERSION} ..."
+    log "Packaging UnRen-Desktop ${VERSION} ..." >&2
     build_one slim "${INCLUDE_SLIM[@]}" >> "$CHECKSUMS"
     build_one full "${INCLUDE_FULL[@]}" >> "$CHECKSUMS"
 
-    log ""
-    log "Checksums: ${CHECKSUMS}"
+    log "" >&2
+    log "Checksums: ${CHECKSUMS}" >&2
     cat "$CHECKSUMS"
-    log ""
+    log "" >&2
     log "Publish to GitHub Releases tag v${VERSION}."
     log "Update manifest.json releases.bundles.*.sha256 from ${CHECKSUMS}."
 }

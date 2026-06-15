@@ -7,11 +7,20 @@ set -euo pipefail
 set +H
 
 UNREN_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+UNREN_BOOTSTRAP_LIB=""
+for _unren_bootstrap_candidate in \
+    "${UNREN_SCRIPT_DIR}/scripts/bootstrap.sh" \
+    "${UNREN_SCRIPT_DIR}/bootstrap.sh"; do
+    if [[ -f "$_unren_bootstrap_candidate" ]]; then
+        UNREN_BOOTSTRAP_LIB="${_unren_bootstrap_candidate}"
+        break
+    fi
+done
+unset _unren_bootstrap_candidate
 
-# Bootstrap: full tree beside script, unren-desktop/ payload, or download on first run.
-if [[ -f "${UNREN_SCRIPT_DIR}/scripts/bootstrap.sh" ]]; then
+if [[ -n "$UNREN_BOOTSTRAP_LIB" ]]; then
     # shellcheck source=scripts/bootstrap.sh
-    source "${UNREN_SCRIPT_DIR}/scripts/bootstrap.sh"
+    source "${UNREN_BOOTSTRAP_LIB}"
     UNREN_ROOT="$(_unren_resolve_install_root "${UNREN_SCRIPT_DIR}")" || exit 1
 else
     UNREN_ROOT="${UNREN_SCRIPT_DIR}"
