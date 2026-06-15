@@ -16,7 +16,7 @@ INCLUDE=(
     scripts/bootstrap.sh scripts/verify_compliance.py
 )
 
-INCLUDE_SLIM=( "${INCLUDE[@]}" )
+INCLUDE_SLIM=( "${INCLUDE[@]}" sdk/stdlib-shims )
 INCLUDE_FULL=(
     LICENSE NOTICE THIRD_PARTY_LICENSES.md manifest.json
     UnRen.sh UnRen.command
