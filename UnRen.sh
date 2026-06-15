@@ -6,7 +6,16 @@
 set -euo pipefail
 set +H
 
-UNREN_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+UNREN_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Bootstrap: full tree beside script, unren-desktop/ payload, or download on first run.
+if [[ -f "${UNREN_SCRIPT_DIR}/scripts/bootstrap.sh" ]]; then
+    # shellcheck source=scripts/bootstrap.sh
+    source "${UNREN_SCRIPT_DIR}/scripts/bootstrap.sh"
+    UNREN_ROOT="$(_unren_resolve_install_root "${UNREN_SCRIPT_DIR}")" || exit 1
+else
+    UNREN_ROOT="${UNREN_SCRIPT_DIR}"
+fi
 export UNREN_ROOT
 
 if [[ ! -f "${UNREN_ROOT}/unren/config.sh" ]]; then
@@ -16,6 +25,11 @@ Error: incomplete UnRen-Desktop install.
 Missing: ${UNREN_ROOT}/unren/config.sh
 
 Copy the full UnRen-Desktop folder into the game (all of tools/, patches/, sdk/, unren/, etc.).
+
+Or use bootstrap mode: keep UnRen.sh in Downloads and pass/drop the game path:
+  ./UnRen.sh /path/to/GameFolder
+
+First run downloads the payload into unren-desktop/ beside this script (slim bundle by default).
 
 Ren'Py games already use lib/ for Python — UnRen bash modules live in unren/, not lib/.
 

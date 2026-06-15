@@ -23,6 +23,25 @@
     ],
     "mirror_repository": "https://github.com/zujik/UnRen-Dependencies"
   },
+  "releases": {
+    "repository": "https://github.com/zujik/UnRen-Desktop",
+    "tag": "v2.0.0-alpha.1",
+    "default_bundle": "slim",
+    "bundles": {
+      "slim": {
+        "filename": "unren-desktop-slim-2.0.0-alpha.1.tar.xz",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-slim-2.0.0-alpha.1.tar.xz",
+        "sha256": "",
+        "includes_sdk": false
+      },
+      "full": {
+        "filename": "unren-desktop-full-2.0.0-alpha.1.tar.xz",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-full-2.0.0-alpha.1.tar.xz",
+        "sha256": "",
+        "includes_sdk": true
+      }
+    }
+  },
   "dependencies": {
     "unrpyc": {
       "version": "2.0.4",

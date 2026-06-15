@@ -24,6 +24,8 @@ b64.file
 # Generated / local SDK download cache
 .cache/
 .sdk-sources-cache/
+# Bootstrap payload (download-on-first-run)
+unren-desktop/
 # Local mirror/SDK staging (override with MIRROR_STAGING / UNREN_LOCAL — see scripts/)
 .mirror-staging/
 
