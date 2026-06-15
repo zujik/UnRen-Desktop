@@ -1,22 +1,31 @@
 UnRen-Desktop
-Copyright (c) 2022-2026 Kijuz (F95zone: Kijuz · GitHub: zujik)
+Copyright (c) 2022-2026 Kijuz (F95zone: Kijuz · GitHub: https://github.com/zujik)
 
-Licensed under the GNU General Public License v3.0 (GPL-3.0-only). See LICENSE
-for the full text.
+Licensed under the GNU General Public License v3.0 or later (GPL-3.0). See the
+LICENSE file for the full legal text. A copy is also kept at licenses/GPL-3.0.txt.
+
+UnRen-Desktop is a Ren'Py unpack, decompile, and patch tool for Linux and macOS.
+It is a desktop port of community Windows tools (UnRen.bat, UnRen-forall) with
+updated Python 3 toolchains.
 
 This repository bundles or invokes third-party tools and Ren'Py SDK runtime
 slices. Each component remains under its own license. See:
 
   THIRD_PARTY_LICENSES.md     — attribution and license summary
-  docs/SOURCE_INVENTORY.md  — provenance audit trail
-  manifest.json             — pinned versions and compliance metadata
-  licenses/                 — per-component license texts for runtime audit
-  tools/SOURCES.md          — upstream paths and versions
+  docs/SOURCE_INVENTORY.md    — provenance audit trail
+  manifest.json               — pinned versions and compliance metadata
+  licenses/                   — per-component license texts for runtime audit
+  tools/SOURCES.md            — upstream paths and versions
   tools/forall/ATTRIBUTION.md
-  sdk/*/LICENSE.txt         — Ren'Py SDK (per runtime slice)
+  sdk/*/LICENSE.txt           — Ren'Py SDK (per runtime slice)
 
 When redistributing UnRen-Desktop (source or release archives), include this
 NOTICE file, LICENSE, THIRD_PARTY_LICENSES.md, and docs/SOURCE_INVENTORY.md.
 
-Prior Linux port UnRen-Linux.sh (Troy Dallas, MIT) is credited as lineage only;
-UnRen-Desktop is a distinct GPL-3.0 work when distributed as a full bundle.
+Lineage (not part of this combined work's copyright):
+
+  UnRen.bat — Sam / Gideon (F95Sam), forum distribution
+  UnRen-Linux.sh — Troy Dallas, MIT (prior Linux port; credited only)
+  UnRen-forall — JoeLurmel / Lurmel, GPL-3.0
+  dikau-UnRen-sh — macOS / drag-and-drop shell patterns (reference)
+  UnRen for Mac 0.8.x / 0.9.x — goobdoob, huchukato (forum lineage)

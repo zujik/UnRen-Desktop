@@ -207,7 +207,7 @@ Origins and versions: `tools/SOURCES.md`, `manifest.json`, `docs/SOURCE_INVENTOR
 
 ## Legal notes
 
-- **UnRen-Desktop** is **GPL-3.0-only** (`LICENSE`). Third-party tools keep their own licenses.
+- **UnRen-Desktop** is **GPL-3.0** (`LICENSE`). Third-party tools keep their own licenses.
 - Offline bundles that include GPL tools (forall, altrpatool) must ship under GPL-3.0.
 - **altrpatool** and **UnRen-forall** staging are **GPL-3** — full text in `licenses/GPL-3.0.txt`.
 - **rpycCorrector** is **BSD-2-Clause** — Anne O'nymous copyright preserved in source and `licenses/`.

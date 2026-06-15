@@ -12,7 +12,7 @@ and how UnRen-Desktop complies in good faith.
 
 ## UnRen-Desktop (this project)
 
-**License:** GNU GPL v3.0-only (GPL-3.0-only)  
+**License:** GNU GPL v3.0 (GPL-3.0, or later)  
 **Copyright:** (c) 2022–2026 Kijuz (F95zone: Kijuz · GitHub: [zujik](https://github.com/zujik))  
 **Text:** `LICENSE` (full GPL-3.0)
 

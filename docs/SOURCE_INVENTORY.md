@@ -35,6 +35,6 @@ See `manifest.json` → `dependencies` for per-component `download_url` and
 
 | Date | Auditor | Notes |
 |------|---------|-------|
-| 2026-06-15 | Kijuz | Hollow smoke re-confirmed (3-6+g, 1+8+9+g); TESTING.md extract caution + UNREN_KEEP_RPA |
+| 2026-06-15 | Kijuz | LICENSE standardized for GitHub SPDX detection; custom text moved to NOTICE; project license aligned to GPL-3.0 |
 | 2026-06-15 | Kijuz | UnRen-Dependencies v1.0.0 published; mirror URLs verified |
 | 2026-06-13 | Kijuz | Verified UnRen-forall GPL-3.0 (`Lurmel/UnRen-forall` LICENSE); rpycCorrector BSD-2-Clause (F95 header); project relicensed GPL-3.0 for offline bundle distribution |

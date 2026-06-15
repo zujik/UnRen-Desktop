@@ -12,7 +12,7 @@ future packaging option.
 
 | Question | Answer |
 |----------|--------|
-| Is UnRen-Desktop itself covered? | **Yes** — GPL-3.0-only, `LICENSE` + `NOTICE` |
+| Is UnRen-Desktop itself covered? | **Yes** — GPL-3.0, `LICENSE` + `NOTICE` |
 | Must the whole project be GPL? | **Yes** for offline bundles — UnRen-forall and altrpatool are GPL-3.0 |
 | Bootstrap-only `UnRen.sh`? | Still GPL-3.0 orchestrator; deps fetched at runtime keep own licenses |
 | Ren'Py SDK in `sdk/`? | **Yes** — ship `sdk/*/LICENSE.txt` with any binary SDK pack |
@@ -106,7 +106,7 @@ Implemented in `manifest.json`:
 
 ```json
 "compliance_block": {
-  "project_license": "GPL-3.0-only",
+  "project_license": "GPL-3.0",
   "required_files": ["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md", "docs/SOURCE_INVENTORY.md"],
   "mirror_repository": "https://github.com/zujik/UnRen-Dependencies"
 },

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # UnRen-Desktop — Ren'Py unpack / decompile / patch tool for Linux and macOS
-# Copyright (C) 2022-2026 Kijuz — licensed under GPL-3.0-only (see LICENSE)
+# Copyright (C) 2022-2026 Kijuz — licensed under GPL-3.0 (see LICENSE)
 # https://github.com/zujik/UnRen-Desktop
 
 set -euo pipefail
