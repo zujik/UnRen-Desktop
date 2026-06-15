@@ -19,7 +19,6 @@ make_sdk_slice() {
 test_py3_does_not_use_stale_py2_slice() {
     local tmp app sdk_root sdk_lib
     tmp="$(mktemp -d)"
-    trap 'rm -rf "$tmp"' RETURN
 
     app="${tmp}/game-root"
     UNREN_ROOT="${tmp}/unren-desktop"
@@ -45,6 +44,8 @@ test_py3_does_not_use_stale_py2_slice() {
         fail "failed to resolve py3 SDK after it became available"
     [[ "$sdk_root" == "${UNREN_ROOT}/sdk/py3-8.5.3" ]] ||
         fail "resolved unexpected SDK root: ${sdk_root}"
+
+    rm -rf "$tmp"
 }
 
 make_payload_tree() {
@@ -67,7 +68,6 @@ make_payload_archive() {
 test_bootstrap_preserves_sdk_and_rejects_partial_payloads() {
     local tmp script_dir payload good_src good_archive bad_src bad_archive
     tmp="$(mktemp -d)"
-    trap 'rm -rf "$tmp"' RETURN
 
     script_dir="${tmp}/starter"
     payload="${script_dir}/unren-desktop"
@@ -76,9 +76,11 @@ test_bootstrap_preserves_sdk_and_rejects_partial_payloads() {
     good_archive="${tmp}/good.tar.xz"
     bad_archive="${tmp}/bad.tar.xz"
 
-    mkdir -p "${payload}/sdk/cached-slice" "$script_dir"
-    printf 'cached\n' > "${payload}/sdk/cached-slice/sentinel"
+    mkdir -p "${payload}/sdk/py2-7.8.7" "$script_dir"
+    printf 'cached\n' > "${payload}/sdk/py2-7.8.7/sentinel"
     make_payload_tree "$good_src" 1
+    mkdir -p "${good_src}/sdk/stdlib-shims/py2"
+    printf 'shim\n' > "${good_src}/sdk/stdlib-shims/py2/md5.py"
     make_payload_tree "$bad_src" 0
     make_payload_archive "$good_src" "$good_archive"
     make_payload_archive "$bad_src" "$bad_archive"
@@ -86,21 +88,25 @@ test_bootstrap_preserves_sdk_and_rejects_partial_payloads() {
     # shellcheck source=../scripts/bootstrap.sh
     source "${ROOT}/scripts/bootstrap.sh"
 
-    UNREN_PAYLOAD_DIR="$payload" UNREN_BOOTSTRAP_ARCHIVE="$good_archive" \
-        _unren_bootstrap_install "$script_dir" ||
+    export UNREN_PAYLOAD_DIR="$payload" UNREN_BOOTSTRAP_ARCHIVE="$good_archive"
+    _unren_bootstrap_install "$script_dir" ||
         fail "good payload did not install"
-    [[ -f "${payload}/sdk/cached-slice/sentinel" ]] ||
+    [[ -f "${payload}/sdk/py2-7.8.7/sentinel" ]] ||
         fail "slim reinstall removed cached SDK slice"
+    [[ -f "${payload}/sdk/stdlib-shims/py2/md5.py" ]] ||
+        fail "slim reinstall lost packaged SDK support files"
 
     rm -rf "${payload}/unren"
-    if UNREN_PAYLOAD_DIR="$payload" UNREN_BOOTSTRAP_ARCHIVE="$bad_archive" \
-        _unren_bootstrap_install "$script_dir"; then
+    export UNREN_BOOTSTRAP_ARCHIVE="$bad_archive"
+    if _unren_bootstrap_install "$script_dir"; then
         fail "bad payload without license files installed successfully"
     fi
     [[ ! -e "${payload}/unren/config.sh" ]] ||
         fail "failed bootstrap left a valid-looking config.sh"
-    [[ -f "${payload}/sdk/cached-slice/sentinel" ]] ||
+    [[ -f "${payload}/sdk/py2-7.8.7/sentinel" ]] ||
         fail "failed bootstrap removed cached SDK slice"
+
+    rm -rf "$tmp"
 }
 
 test_py3_does_not_use_stale_py2_slice
