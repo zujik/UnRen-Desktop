@@ -69,6 +69,7 @@ _unren_bootstrap_sha256_file() {
     local payload
     payload="$(_unren_bootstrap_payload_dir "$script_dir")"
     [[ -f "${payload}/.unren-bundle.sha256" ]] && cat "${payload}/.unren-bundle.sha256"
+    return 0
 }
 
 _unren_bootstrap_verify_sha256() {
