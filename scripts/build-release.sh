@@ -8,6 +8,9 @@ VERSION="$(grep '^UNREN_VERSION=' "${ROOT}/unren/config.sh" | head -1 | cut -d'"
 OUT="${ROOT}/dist"
 ARCHIVE="${OUT}/UnRen-Desktop-${VERSION}.zip"
 
+command -v python3 >/dev/null 2>&1 || { echo "ERROR: python3 required" >&2; exit 1; }
+python3 -m json.tool "${ROOT}/manifest.json" >/dev/null
+
 mkdir -p "$OUT"
 rm -f "$ARCHIVE"
 

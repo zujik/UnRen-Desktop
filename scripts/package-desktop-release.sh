@@ -27,6 +27,11 @@ need_tar() {
     tar --help 2>&1 | grep -q -- '-J' || die "tar must support xz (-J)"
 }
 
+validate_manifest() {
+    command -v python3 >/dev/null 2>&1 || die "python3 required"
+    python3 -m json.tool "${ROOT}/manifest.json" >/dev/null || die "manifest.json is invalid JSON"
+}
+
 build_one() {
     local label="$1"
     shift
@@ -62,6 +67,7 @@ build_one() {
 
 main() {
     need_tar
+    validate_manifest
     mkdir -p "$OUT"
     : > "$CHECKSUMS"
 
