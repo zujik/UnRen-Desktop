@@ -31,7 +31,7 @@
       "slim": {
         "filename": "unren-desktop-slim-2.0.0-alpha.1.tar.xz",
         "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-slim-2.0.0-alpha.1.tar.xz",
-        "sha256": "da0c9b69110019e536faaad3bc2fc19e8b37230f535d63d69ceda474716fc9d2",
+        "sha256": "da0c9b69110019e536faaad3bc2fc19e8b37230f535d63d69ceda474716fc9d2"
       },
       "full": {
         "filename": "unren-desktop-full-2.0.0-alpha.1.tar.xz",

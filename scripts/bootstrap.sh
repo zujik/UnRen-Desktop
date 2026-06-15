@@ -5,6 +5,10 @@
 UNREN_RELEASE_REPO="${UNREN_RELEASE_REPO:-https://github.com/zujik/UnRen-Desktop}"
 UNREN_RELEASE_TAG="${UNREN_RELEASE_TAG:-v2.0.0-alpha.1}"
 UNREN_BUNDLE="${UNREN_BUNDLE:-slim}"
+UNREN_DEFAULT_RELEASE_REPO="https://github.com/zujik/UnRen-Desktop"
+UNREN_DEFAULT_RELEASE_TAG="v2.0.0-alpha.1"
+UNREN_DEFAULT_SLIM_SHA256="da0c9b69110019e536faaad3bc2fc19e8b37230f535d63d69ceda474716fc9d2"
+UNREN_DEFAULT_FULL_SHA256="c958ef1627e047a2d160ea07f176cbf81727372fa7fdcc46f81b7d60dc572def"
 
 _unren_bootstrap_version() {
     printf '%s' "${UNREN_RELEASE_TAG#v}"
@@ -66,16 +70,35 @@ _unren_bootstrap_sha256_file() {
     [[ -f "${payload}/.unren-bundle.sha256" ]] && cat "${payload}/.unren-bundle.sha256"
 }
 
+_unren_bootstrap_default_sha256() {
+    [[ "${UNREN_RELEASE_REPO}" == "${UNREN_DEFAULT_RELEASE_REPO}" ]] || return 0
+    [[ "${UNREN_RELEASE_TAG}" == "${UNREN_DEFAULT_RELEASE_TAG}" ]] || return 0
+
+    case "${UNREN_BUNDLE:-slim}" in
+        full) printf '%s\n' "${UNREN_DEFAULT_FULL_SHA256}" ;;
+        slim|*) printf '%s\n' "${UNREN_DEFAULT_SLIM_SHA256}" ;;
+    esac
+}
+
 _unren_bootstrap_verify_sha256() {
     local archive="${1:?}" expected="${2:-}"
     local actual
 
-    [[ -n "$expected" ]] || return 0
-    if ! command -v sha256sum >/dev/null 2>&1; then
-        echo "[!] sha256sum not found — skipping checksum verify." >&2
-        return 0
+    if [[ -z "$expected" ]]; then
+        echo "[!] No SHA256 available for $(basename -- "$archive"); refusing unverified payload." >&2
+        echo "    Set UNREN_BUNDLE_SHA256 for custom release assets." >&2
+        return 1
     fi
-    actual="$(sha256sum "$archive" | awk '{print $1}')"
+    if ! command -v sha256sum >/dev/null 2>&1; then
+        if command -v shasum >/dev/null 2>&1; then
+            actual="$(shasum -a 256 "$archive" | awk '{print $1}')"
+        else
+            echo "[!] Need sha256sum or shasum to verify UnRen payload." >&2
+            return 1
+        fi
+    else
+        actual="$(sha256sum "$archive" | awk '{print $1}')"
+    fi
     if [[ "$actual" != "$expected" ]]; then
         echo "[!] SHA256 mismatch for $(basename -- "$archive")" >&2
         echo "    expected: $expected" >&2
@@ -111,16 +134,18 @@ _unren_bootstrap_extract() {
 
 _unren_bootstrap_install() {
     local script_dir="${1:?}"
-    local payload url archive expected sha_file tmp
+    local payload url archive expected sha_file tmp local_archive=0
 
     payload="$(_unren_bootstrap_payload_dir "$script_dir")"
     expected="${UNREN_BUNDLE_SHA256:-}"
     sha_file="$(_unren_bootstrap_sha256_file "$script_dir")"
     [[ -z "$expected" && -n "$sha_file" ]] && expected="$sha_file"
+    [[ -z "$expected" ]] && expected="$(_unren_bootstrap_default_sha256)"
     mkdir -p "$payload"
 
     if [[ -n "${UNREN_BOOTSTRAP_ARCHIVE:-}" && -f "${UNREN_BOOTSTRAP_ARCHIVE}" ]]; then
         archive="${UNREN_BOOTSTRAP_ARCHIVE}"
+        local_archive=1
         echo "  Using local archive: ${archive}" >&2
     else
         url="$(_unren_bootstrap_bundle_url)"
@@ -135,7 +160,11 @@ _unren_bootstrap_install() {
         fi
         mv -f "$tmp" "$archive"
     fi
-    _unren_bootstrap_verify_sha256 "$archive" "$expected" || return 1
+    if [[ -n "$expected" || "$local_archive" == 0 ]]; then
+        _unren_bootstrap_verify_sha256 "$archive" "$expected" || return 1
+    else
+        echo "  Warning: local archive has no SHA256; set UNREN_BUNDLE_SHA256 to verify it." >&2
+    fi
     _unren_bootstrap_extract "$archive" "$payload" || return 1
     rm -f "${payload}/.download-"*.tar.xz 2>/dev/null || true
     if ! _unren_bootstrap_verify_license_files "$payload"; then

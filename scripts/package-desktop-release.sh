@@ -14,6 +14,7 @@ INCLUDE=(
     UnRen.sh UnRen.command
     unren tools patches licenses docs
     scripts/bootstrap.sh scripts/verify_compliance.py
+    scripts/ensure-sdk-runtime.sh scripts/populate-sdk.sh scripts/unren-local.sh
 )
 
 INCLUDE_SLIM=( "${INCLUDE[@]}" )
@@ -62,6 +63,7 @@ build_one() {
 
 main() {
     need_tar
+    python3 -m json.tool "${ROOT}/manifest.json" >/dev/null
     mkdir -p "$OUT"
     : > "$CHECKSUMS"
 
