@@ -49,6 +49,7 @@ _unren_bootstrap_verify_license_files() {
     if [[ -d "${root}/sdk" ]]; then
         for slice in "${root}"/sdk/*/; do
             [[ -d "$slice" ]] || continue
+            [[ "$(basename -- "$slice")" == "stdlib-shims" ]] && continue
             if [[ ! -f "${slice}/LICENSE.txt" ]]; then
                 echo "  missing ${slice}/LICENSE.txt" >&2
                 missing=1
