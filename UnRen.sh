@@ -134,10 +134,10 @@ _unren_bootstrap_extract() {
 
 _unren_bootstrap_replace_payload() {
     local payload="${1:?}" staging="${2:?}"
-    local preserve=""
+    local preserve="" item base
 
     mkdir -p "$payload"
-    if [[ -d "${payload}/sdk" && ! -e "${staging}/sdk" ]]; then
+    if [[ -d "${payload}/sdk" ]]; then
         preserve="$(mktemp -d "$(dirname "$payload")/.unren-sdk-preserve.XXXXXX")"
         mv "${payload}/sdk" "${preserve}/sdk"
     fi
@@ -148,8 +148,14 @@ _unren_bootstrap_replace_payload() {
     )
     cp -a "${staging}/." "$payload/"
 
-    if [[ -n "$preserve" && -d "${preserve}/sdk" && ! -e "${payload}/sdk" ]]; then
-        mv "${preserve}/sdk" "${payload}/sdk"
+    if [[ -n "$preserve" && -d "${preserve}/sdk" ]]; then
+        mkdir -p "${payload}/sdk"
+        for item in "${preserve}"/sdk/py[23]-*; do
+            [[ -e "$item" ]] || continue
+            base="$(basename -- "$item")"
+            [[ -e "${payload}/sdk/${base}" ]] && continue
+            mv "$item" "${payload}/sdk/${base}"
+        done
     fi
     [[ -n "$preserve" ]] && rm -rf "$preserve"
 }
