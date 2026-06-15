@@ -207,7 +207,7 @@ Origins and versions: `tools/SOURCES.md`, `manifest.json`, `docs/SOURCE_INVENTOR
 
 ## Legal notes
 
-- **UnRen-Desktop** is **GPL-3.0** (`LICENSE`). Third-party tools keep their own licenses.
+- **UnRen-Desktop** is **GPL-3.0** (v3 or later) — legal terms in `LICENSE`; attribution and lineage in `NOTICE`.
 - Offline bundles that include GPL tools (forall, altrpatool) must ship under GPL-3.0.
 - **altrpatool** and **UnRen-forall** staging are **GPL-3** — full text in `licenses/GPL-3.0.txt`.
 - **rpycCorrector** is **BSD-2-Clause** — Anne O'nymous copyright preserved in source and `licenses/`.
@@ -231,8 +231,7 @@ Game test notes and known titles: **`docs/TESTING.md`**.
 
 ## License
 
-GNU GPL v3.0 — see `LICENSE` (Copyright 2022–2026 Kijuz).
+**GPL-3.0** (v3 or later) — full text in `LICENSE`. Project attribution and lineage in `NOTICE`.
+Third-party components: `THIRD_PARTY_LICENSES.md`, `tools/SOURCES.md`.
 
 Maintainer: **Kijuz** on [F95zone](https://f95zone.to/) · GitHub: [zujik](https://github.com/zujik)
-
-Third-party components: `THIRD_PARTY_LICENSES.md`, `NOTICE`, `tools/SOURCES.md`.
