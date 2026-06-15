@@ -5,10 +5,6 @@
 UNREN_RELEASE_REPO="${UNREN_RELEASE_REPO:-https://github.com/zujik/UnRen-Desktop}"
 UNREN_RELEASE_TAG="${UNREN_RELEASE_TAG:-v2.0.0-alpha.1}"
 UNREN_BUNDLE="${UNREN_BUNDLE:-slim}"
-UNREN_DEFAULT_RELEASE_REPO="https://github.com/zujik/UnRen-Desktop"
-UNREN_DEFAULT_RELEASE_TAG="v2.0.0-alpha.1"
-UNREN_DEFAULT_SLIM_SHA256="da0c9b69110019e536faaad3bc2fc19e8b37230f535d63d69ceda474716fc9d2"
-UNREN_DEFAULT_FULL_SHA256="c958ef1627e047a2d160ea07f176cbf81727372fa7fdcc46f81b7d60dc572def"
 
 _unren_bootstrap_version() {
     printf '%s' "${UNREN_RELEASE_TAG#v}"
@@ -29,6 +25,11 @@ _unren_bootstrap_bundle_url() {
     name="$(_unren_bootstrap_bundle_name)"
     printf '%s/releases/download/%s/%s' \
         "${UNREN_RELEASE_REPO}" "${UNREN_RELEASE_TAG}" "$name"
+}
+
+_unren_bootstrap_checksums_url() {
+    printf '%s/releases/download/%s/SHA256SUMS-desktop' \
+        "${UNREN_RELEASE_REPO}" "${UNREN_RELEASE_TAG}"
 }
 
 _unren_bootstrap_payload_dir() {
@@ -68,16 +69,6 @@ _unren_bootstrap_sha256_file() {
     local payload
     payload="$(_unren_bootstrap_payload_dir "$script_dir")"
     [[ -f "${payload}/.unren-bundle.sha256" ]] && cat "${payload}/.unren-bundle.sha256"
-}
-
-_unren_bootstrap_default_sha256() {
-    [[ "${UNREN_RELEASE_REPO}" == "${UNREN_DEFAULT_RELEASE_REPO}" ]] || return 0
-    [[ "${UNREN_RELEASE_TAG}" == "${UNREN_DEFAULT_RELEASE_TAG}" ]] || return 0
-
-    case "${UNREN_BUNDLE:-slim}" in
-        full) printf '%s\n' "${UNREN_DEFAULT_FULL_SHA256}" ;;
-        slim|*) printf '%s\n' "${UNREN_DEFAULT_SLIM_SHA256}" ;;
-    esac
 }
 
 _unren_bootstrap_verify_sha256() {
@@ -122,6 +113,43 @@ _unren_bootstrap_download() {
     return 1
 }
 
+_unren_bootstrap_release_sha256() {
+    local script_dir="${1:?}"
+    local payload sums tmp url name expected
+
+    payload="$(_unren_bootstrap_payload_dir "$script_dir")"
+    sums="${payload}/.download-SHA256SUMS-desktop"
+    tmp="${sums}.part"
+    url="$(_unren_bootstrap_checksums_url)"
+    name="$(_unren_bootstrap_bundle_name)"
+
+    echo "  Fetching checksums: ${url}" >&2
+    mkdir -p "$payload"
+    if ! _unren_bootstrap_download "$url" "$tmp"; then
+        rm -f "$tmp"
+        return 1
+    fi
+    mv -f "$tmp" "$sums"
+
+    expected="$(awk -v name="$name" '
+        {
+            file = $2
+            sub(/^\*/, "", file)
+            sub(/^\.\//, "", file)
+            if (file == name) {
+                print $1
+                found = 1
+                exit
+            }
+        }
+        END { if (!found) exit 1 }
+    ' "$sums")" || {
+        echo "[!] Checksum file did not contain ${name}." >&2
+        return 1
+    }
+    printf '%s\n' "$expected"
+}
+
 _unren_bootstrap_extract() {
     local archive="${1:?}" dest="${2:?}"
     mkdir -p "$dest"
@@ -137,15 +165,20 @@ _unren_bootstrap_install() {
     local payload url archive expected sha_file tmp local_archive=0
 
     payload="$(_unren_bootstrap_payload_dir "$script_dir")"
+    if [[ -n "${UNREN_BOOTSTRAP_ARCHIVE:-}" && -f "${UNREN_BOOTSTRAP_ARCHIVE}" ]]; then
+        local_archive=1
+    fi
+
     expected="${UNREN_BUNDLE_SHA256:-}"
     sha_file="$(_unren_bootstrap_sha256_file "$script_dir")"
     [[ -z "$expected" && -n "$sha_file" ]] && expected="$sha_file"
-    [[ -z "$expected" ]] && expected="$(_unren_bootstrap_default_sha256)"
+    if [[ -z "$expected" && "$local_archive" == 0 ]]; then
+        expected="$(_unren_bootstrap_release_sha256 "$script_dir")" || return 1
+    fi
     mkdir -p "$payload"
 
-    if [[ -n "${UNREN_BOOTSTRAP_ARCHIVE:-}" && -f "${UNREN_BOOTSTRAP_ARCHIVE}" ]]; then
+    if [[ "$local_archive" == 1 ]]; then
         archive="${UNREN_BOOTSTRAP_ARCHIVE}"
-        local_archive=1
         echo "  Using local archive: ${archive}" >&2
     else
         url="$(_unren_bootstrap_bundle_url)"
