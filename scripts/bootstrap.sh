@@ -102,16 +102,37 @@ _unren_bootstrap_download() {
 _unren_bootstrap_extract() {
     local archive="${1:?}" dest="${2:?}"
     mkdir -p "$dest"
-    rm -rf "${dest:?}/"*
     if ! tar -xJf "$archive" -C "$dest" --strip-components=1 2>/dev/null; then
         rm -rf "${dest:?}/"*
         tar -xJf "$archive" -C "$dest"
     fi
 }
 
+_unren_bootstrap_replace_payload() {
+    local payload="${1:?}" staging="${2:?}"
+    local preserve=""
+
+    mkdir -p "$payload"
+    if [[ -d "${payload}/sdk" && ! -e "${staging}/sdk" ]]; then
+        preserve="$(mktemp -d "$(dirname "$payload")/.unren-sdk-preserve.XXXXXX")"
+        mv "${payload}/sdk" "${preserve}/sdk"
+    fi
+
+    (
+        shopt -s dotglob nullglob
+        rm -rf "${payload:?}/"*
+    )
+    cp -a "${staging}/." "$payload/"
+
+    if [[ -n "$preserve" && -d "${preserve}/sdk" && ! -e "${payload}/sdk" ]]; then
+        mv "${preserve}/sdk" "${payload}/sdk"
+    fi
+    [[ -n "$preserve" ]] && rm -rf "$preserve"
+}
+
 _unren_bootstrap_install() {
     local script_dir="${1:?}"
-    local payload url archive expected sha_file tmp
+    local payload url archive expected sha_file tmp staging
 
     payload="$(_unren_bootstrap_payload_dir "$script_dir")"
     expected="${UNREN_BUNDLE_SHA256:-}"
@@ -136,13 +157,20 @@ _unren_bootstrap_install() {
         mv -f "$tmp" "$archive"
     fi
     _unren_bootstrap_verify_sha256 "$archive" "$expected" || return 1
-    _unren_bootstrap_extract "$archive" "$payload" || return 1
-    rm -f "${payload}/.download-"*.tar.xz 2>/dev/null || true
-    if ! _unren_bootstrap_verify_license_files "$payload"; then
-        echo "[!] Download incomplete — license files missing. Refusing to run." >&2
+    staging="$(mktemp -d "$(dirname "$payload")/.unren-bootstrap.XXXXXX")"
+    if ! _unren_bootstrap_extract "$archive" "$staging"; then
+        rm -rf "$staging"
         return 1
     fi
-    printf '%s\n' "${expected}" > "${payload}/.unren-bundle.sha256" 2>/dev/null || true
+    if ! _unren_bootstrap_verify_license_files "$staging"; then
+        echo "[!] Download incomplete — license files missing. Refusing to run." >&2
+        rm -rf "$staging"
+        return 1
+    fi
+    _unren_bootstrap_replace_payload "$payload" "$staging"
+    rm -rf "$staging"
+    rm -f "${payload}/.download-"*.tar.xz 2>/dev/null || true
+    [[ -n "$expected" ]] && printf '%s\n' "${expected}" > "${payload}/.unren-bundle.sha256" 2>/dev/null || true
     echo "  Payload ready: ${payload}" >&2
     return 0
 }

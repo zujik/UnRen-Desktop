@@ -262,6 +262,7 @@ _unren_launcher_sdk_elif_block() {
     while IFS= read -r slice; do
         [[ -n "$slice" ]] || continue
         local slice_py
+        _unren_sdk_slice_matches_py_major "$slice" "$py_major" || continue
         sdk_root="$(_unren_sdk_slice_dir "$slice" "$app")"
         slice_py="$(_unren_sdk_slice_py_major "$slice")"
         lib_dir="$(_unren_sdk_lib_dir "$sdk_root" "$slice_py" "$platform")" || continue

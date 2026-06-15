@@ -38,20 +38,18 @@ _unren_sdk_slice_local_archive() {
 }
 
 _unren_auto_fetch_sdk_enabled() {
+    local app="${1:-${UNREN_APP:-}}" py_major="${2:-}" platform="${3:-}"
+    local sdk_root sdk_lib
+
     [[ "${UNREN_AUTO_FETCH_SDK:-}" == 0 ]] && return 1
     [[ "${UNREN_FETCH_SDK:-}" == 1 ]] && return 0
     [[ "${UNREN_AUTO_FETCH_SDK:-}" == 1 ]] && return 0
-    # Slim bootstrap: payload has no usable sdk/ tree.
-    if [[ ! -d "${UNREN_ROOT}/sdk" ]]; then
-        return 0
+
+    if [[ -n "$app" && -n "$py_major" && -n "$platform" ]] &&
+        _unren_resolve_sdk_runtime "$app" "$py_major" "$platform" sdk_root sdk_lib; then
+        return 1
     fi
-    local slice
-    while IFS= read -r slice; do
-        [[ -n "$slice" ]] || continue
-        if _unren_sdk_slice_exists "$slice" "${UNREN_APP:-}"; then
-            return 1
-        fi
-    done < <(_unren_sdk_fallback_chain "${UNREN_APP:-}")
+
     return 0
 }
 
@@ -99,7 +97,7 @@ _unren_try_auto_fetch_sdk_slices() {
     local app="$1" py_major="$2" platform="$3"
     local slice fetched=0
 
-    _unren_auto_fetch_sdk_enabled || return 1
+    _unren_auto_fetch_sdk_enabled "$app" "$py_major" "$platform" || return 1
 
     if _unren_resolve_sdk_runtime "$app" "$py_major" "$platform" _sdk_r _sdk_l; then
         return 0
