@@ -41,6 +41,30 @@ unren_die() {
     exit 1
 }
 
+_unren_machine() {
+    uname -m
+}
+
+# Map a game path or .app bundle to the Ren'Py autorun root (game/ + renpy/ live here).
+_unren_renpy_autorun_root() {
+    local target="$1"
+    [[ -n "$target" && -e "$target" ]] || return 1
+    if [[ -e "${target}/Contents/Resources/autorun/game" ]]; then
+        printf '%s\n' "${target}/Contents/Resources/autorun"
+        return 0
+    fi
+    if [[ -e "${target}/Contents/Resources/game" &&
+          ( -e "${target}/Contents/Resources/renpy" || -e "${target}/Contents/Resources/renpy.py" ) ]]; then
+        printf '%s\n' "${target}/Contents/Resources"
+        return 0
+    fi
+    if [[ -e "${target}/renpy" && -e "${target}/game" ]]; then
+        printf '%s\n' "$target"
+        return 0
+    fi
+    return 1
+}
+
 # Bash 3.2 compatibility (macOS /bin/bash).
 _unren_tolower() {
     printf '%s' "$1" | tr '[:upper:]' '[:lower:]'

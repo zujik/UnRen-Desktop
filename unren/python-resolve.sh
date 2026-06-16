@@ -294,34 +294,30 @@ resolve_game_and_python() {
     UNREN_SDK_LIB=""
     PYARGS=()
 
-    local py_major platform
+    local py_major platform autorun
 
     platform="$(_unren_renpy_platform)"
-    py_major="$(_unren_guess_python_major "${UNREN_TARGET}" "$platform")"
+    if ! autorun="$(_unren_renpy_autorun_root "${UNREN_TARGET}" 2>/dev/null)"; then
+        unren_die "Unable to determine Ren'Py game layout in: ${UNREN_TARGET}"
+    fi
+    UNREN_APP="$autorun"
+    UNREN_GAME="${UNREN_APP}/game"
+    py_major="$(_unren_guess_python_major "$UNREN_APP" "$platform")"
 
-    # macOS .app bundle
-    if [[ -e "${UNREN_TARGET}/Contents/Resources/autorun/game" ]]; then
-        UNREN_APP="${UNREN_TARGET}/Contents/Resources/autorun"
-        UNREN_GAME="${UNREN_APP}/game"
+    if [[ "${UNREN_TARGET}" == *.app || -e "${UNREN_TARGET}/Contents/MacOS" ]]; then
         UNREN_PYTHON="$(_unren_find_app_bundle_python "${UNREN_TARGET}" || true)"
         [[ -z "$UNREN_PYTHON" ]] && \
             UNREN_PYTHON="$(_unren_find_game_tree_python "$UNREN_APP" "$py_major" || true)"
-    elif [[ -e "${UNREN_TARGET}/Contents/Resources/game" &&
-            ( -e "${UNREN_TARGET}/Contents/Resources/renpy" ||
-              -e "${UNREN_TARGET}/Contents/Resources/renpy.py" ) ]]; then
-        UNREN_APP="${UNREN_TARGET}/Contents/Resources"
-        UNREN_GAME="${UNREN_APP}/game"
-        UNREN_PYTHON="$(_unren_find_app_bundle_python "${UNREN_TARGET}" || true)"
-    elif [[ -e "${UNREN_TARGET}/renpy" && -e "${UNREN_TARGET}/game" ]]; then
-        UNREN_APP="${UNREN_TARGET}"
-        UNREN_GAME="${UNREN_TARGET}/game"
-        UNREN_PYTHON="$(_unren_find_game_tree_python "$UNREN_APP" "$py_major" || true)"
     else
-        unren_die "Unable to determine Ren'Py game layout in: ${UNREN_TARGET}"
+        UNREN_PYTHON="$(_unren_find_game_tree_python "$UNREN_APP" "$py_major" || true)"
     fi
 
     if [[ -n "$UNREN_PYTHON" ]]; then
         chmod -f +x "$UNREN_PYTHON" 2>/dev/null || true
+        if is_osx; then
+            xattr -rd com.apple.quarantine "$UNREN_PYTHON" 2>/dev/null || true
+            xattr -rd com.apple.quarantine "${UNREN_TARGET}" 2>/dev/null || true
+        fi
     fi
 
     if [[ -n "$UNREN_PYTHON" && -x "$UNREN_PYTHON" ]]; then
@@ -339,7 +335,9 @@ resolve_game_and_python() {
     # Fallback: bundled SDK runtimes shipped with UnRen-Desktop
     local sdk_root sdk_py sdk_lib
 
-    py_major="$(_unren_guess_python_major "$UNREN_APP" "$platform")"
+    if is_osx; then
+        xattr -rd com.apple.quarantine "${UNREN_ROOT}/sdk" 2>/dev/null || true
+    fi
 
     if _unren_resolve_sdk_runtime "$UNREN_APP" "$py_major" "$platform" sdk_root sdk_lib; then
         sdk_py="$(_unren_sdk_python_runner "$sdk_lib" "$sdk_root")"
@@ -370,7 +368,8 @@ resolve_game_and_python() {
         return 0
     fi
 
-    unren_die "No game Python found and no usable bundled SDK runtime in sdk/. See sdk/README.md"
+    unren_die "No game Python found and no usable bundled SDK runtime in sdk/. See sdk/README.md
+  (py${py_major}, platform ${platform}; refresh with: rm -rf \"${UNREN_ROOT}/../unren-desktop\" and re-run)"
 }
 
 # rpatool is Python 3 — never run it with the game's embedded py2 SDK interpreter.

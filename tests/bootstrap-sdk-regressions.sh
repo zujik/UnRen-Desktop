@@ -110,6 +110,33 @@ test_bootstrap_preserves_sdk_and_rejects_partial_payloads() {
 }
 
 test_py3_does_not_use_stale_py2_slice
+test_app_bundle_script_version_and_mac_sdk() {
+    local tmp app sdk_root sdk_lib major
+    tmp="$(mktemp -d)"
+
+    app="${tmp}/Hollow.app/Contents/Resources/autorun"
+    UNREN_ROOT="${tmp}/unren-desktop"
+    mkdir -p "${app}/game" "${UNREN_ROOT}"
+    printf '8.0.0\n' > "${app}/game/script_version.txt"
+    make_sdk_slice "$UNREN_ROOT" "py3-8.5.3" "lib/py3-mac-universal"
+
+    # shellcheck source=../unren/platform.sh
+    source "${ROOT}/unren/platform.sh"
+    # shellcheck source=../unren/sdk-resolve.sh
+    source "${ROOT}/unren/sdk-resolve.sh"
+
+    major="$(_unren_script_version_major_from_app "${tmp}/Hollow.app")"
+    [[ "$major" == 8 ]] ||
+        fail "app bundle major was ${major}, expected 8"
+
+    _unren_resolve_sdk_runtime "$app" 3 mac-universal sdk_root sdk_lib ||
+        fail "mac-universal SDK not resolved"
+    [[ "$sdk_lib" == *py3-mac-universal* ]] ||
+        fail "unexpected lib dir: ${sdk_lib}"
+
+    rm -rf "$tmp"
+}
+test_app_bundle_script_version_and_mac_sdk
 test_bootstrap_preserves_sdk_and_rejects_partial_payloads
 
 printf 'bootstrap-sdk-regressions: ok\n'

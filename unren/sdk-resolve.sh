@@ -31,7 +31,11 @@ _unren_is_rpc3_game() {
 }
 
 _unren_script_version_major_from_app() {
-    local app="$1" sv detected f
+    local app="$1" sv detected f autorun
+
+    if autorun="$(_unren_renpy_autorun_root "$app" 2>/dev/null)"; then
+        app="$autorun"
+    fi
 
     if sv="$(_unren_read_script_version_txt \
         "${app}/game/script_version.txt" \
@@ -179,7 +183,7 @@ _unren_sdk_platform_name() {
                 else
                     printf 'darwin-x86_64\n'
                 fi
-            elif is_osx && [[ "$(_unren_machine)" == arm64* ]]; then
+            elif [[ "$(uname -s)" == Darwin ]] && [[ "$(_unren_machine)" == arm64* ]]; then
                 printf 'darwin-arm64\n'
             else
                 printf 'darwin-x86_64\n'
@@ -203,34 +207,60 @@ _unren_sdk_platform_name() {
     esac
 }
 
-_unren_sdk_lib_dir() {
-    local sdk_root=$1 py_major=$2 platform=$3
-    local layout plat_dir
-
-    layout="$(_unren_sdk_layout "$sdk_root")"
-    plat_dir="$(_unren_sdk_platform_name "$platform" "$sdk_root")"
-
-    case "$layout" in
-        modern)
-            printf '%s\n' "${sdk_root}/lib/py${py_major}-${plat_dir}"
+_unren_sdk_platform_candidates() {
+    local platform="$1"
+    case "$platform" in
+        mac-universal|*-darwin*|Darwin-*)
+            printf '%s\n' mac-universal darwin-arm64 darwin-x86_64
             ;;
-        renpy6)
-            printf '%s\n' "${sdk_root}/lib/${plat_dir}"
+        linux-i686|*-i686|*-i386)
+            printf '%s\n' linux-i686 linux-x86_64
             ;;
-        renpy5)
-            printf '%s\n' "${sdk_root}/lib/linux-x86"
+        linux-x86_64|*-x86_64|amd64|Linux-*)
+            printf '%s\n' linux-x86_64 linux-i686
             ;;
         *)
-            return 1
+            printf '%s\n' "$platform"
             ;;
     esac
 }
 
+_unren_sdk_lib_dir() {
+    local sdk_root=$1 py_major=$2 platform=$3
+    local layout plat_dir lib_dir
+
+    layout="$(_unren_sdk_layout "$sdk_root")"
+    while IFS= read -r plat_dir; do
+        [[ -n "$plat_dir" ]] || continue
+        case "$layout" in
+            modern)
+                lib_dir="${sdk_root}/lib/py${py_major}-${plat_dir}"
+                ;;
+            renpy6)
+                lib_dir="${sdk_root}/lib/${plat_dir}"
+                ;;
+            renpy5)
+                lib_dir="${sdk_root}/lib/linux-x86"
+                ;;
+            *)
+                return 1
+                ;;
+        esac
+        [[ -d "$lib_dir" ]] || continue
+        printf '%s\n' "$lib_dir"
+        return 0
+    done < <(_unren_sdk_platform_candidates "$platform")
+    return 1
+}
+
 _unren_sdk_lib_usable() {
     local lib_dir=$1
-    [[ -d "$lib_dir" ]] && {
-        [[ -x "${lib_dir}/python" || -x "${lib_dir}/python.real" || -x "${lib_dir}/renpy" ]]
-    }
+    [[ -d "$lib_dir" ]] || return 1
+    chmod -f +x "${lib_dir}/python" "${lib_dir}/python.real" "${lib_dir}/renpy" 2>/dev/null || true
+    if [[ "$(uname -s)" == Darwin ]]; then
+        xattr -rd com.apple.quarantine "$lib_dir" 2>/dev/null || true
+    fi
+    [[ -x "${lib_dir}/python" || -x "${lib_dir}/python.real" || -x "${lib_dir}/renpy" ]]
 }
 
 _unren_sdk_pythonhome() {

@@ -100,6 +100,11 @@ _unren_fetch_sdk_slice() {
         echo "[!] SDK slice ${slice} missing after extract." >&2
         return 1
     fi
+    chmod -f +x "${dest_root}/${slice}/lib"/*/python "${dest_root}/${slice}/lib"/*/python.real \
+        "${dest_root}/${slice}/lib"/*/renpy 2>/dev/null || true
+    if [[ "$(uname -s)" == Darwin ]]; then
+        xattr -rd com.apple.quarantine "${dest_root}/${slice}" 2>/dev/null || true
+    fi
     echo "  SDK slice ready: ${dest_root}/${slice}" >&2
     return 0
 }
@@ -117,7 +122,12 @@ _unren_try_auto_fetch_sdk_slices() {
     echo "  No usable SDK in game or UnRen payload — fetching runtime slice(s) ..." >&2
     while IFS= read -r slice; do
         [[ -n "$slice" ]] || continue
-        _unren_sdk_slice_exists "$slice" "$app" && continue
+        if _unren_sdk_slice_exists "$slice" "$app"; then
+            if _unren_resolve_sdk_runtime "$app" "$py_major" "$platform" _sdk_r _sdk_l; then
+                return 0
+            fi
+            continue
+        fi
         if _unren_fetch_sdk_slice "$slice"; then
             fetched=1
             if _unren_resolve_sdk_runtime "$app" "$py_major" "$platform" _sdk_r _sdk_l; then
@@ -127,7 +137,7 @@ _unren_try_auto_fetch_sdk_slices() {
     done < <(_unren_sdk_fallback_chain "$app")
 
     if (( fetched )); then
-        if is_osx; then
+        if [[ "$(uname -s)" == Darwin ]]; then
             echo "[!] SDK slice downloaded but no macOS runtime is usable on this machine." >&2
             echo "    Update UnRen to a release with py*-mac-universal SDK slices, or use a Mac .app build." >&2
         fi
