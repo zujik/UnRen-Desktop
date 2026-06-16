@@ -102,3 +102,32 @@ _unren_canonical_path() {
     base="$(basename "$f")"
     printf '%s/%s\n' "$dir" "$base"
 }
+
+# Bash 3.2 + set -u: expanding "${arr[@]}" on an empty array is an error.
+_unren_array_copy_ref() {
+    local _dest_var="$1" _src_var="$2" len
+    eval "len=\${#${_src_var}[@]}"
+    if ((len > 0)); then
+        eval "$_dest_var=(\"\${${_src_var}[@]}\")"
+    else
+        eval "$_dest_var=()"
+    fi
+}
+
+_unren_array_assign() {
+    local _var="$1"; shift
+    if (($# > 0)); then
+        eval "$_var=(\"\$@\")"
+    else
+        eval "$_var=()"
+    fi
+}
+
+_unren_py_invoke() {
+    local py="$1"; shift
+    if ((${#PYARGS[@]} > 0)); then
+        "$py" "${PYARGS[@]}" "$@"
+    else
+        "$py" "$@"
+    fi
+}

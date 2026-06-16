@@ -8,14 +8,14 @@ _unren_forall_archive_extensions() {
     [[ -x "$py" ]] || py="$(command -v python3 2>/dev/null || true)"
     if [[ -z "$py" ]]; then
         _exts=(".rpa" ".jas" ".rpc")
-        eval "$_exts_var=(\"\${_exts[@]}\")"
+        _unren_array_assign "$_exts_var" "${_exts[@]}"
         return 0
     fi
     pushd "${UNREN_APP}" >/dev/null || return 1
-    raw="$("$py" "${PYARGS[@]}" "${DETECT_RPA_EXT}" "${UNREN_APP}" 2>/dev/null)" || {
+    raw="$(_unren_py_invoke "$py" "${DETECT_RPA_EXT}" "${UNREN_APP}" 2>/dev/null)" || {
         popd >/dev/null || true
         _exts=(".rpa" ".jas" ".rpc")
-        eval "$_exts_var=(\"\${_exts[@]}\")"
+        _unren_array_assign "$_exts_var" "${_exts[@]}"
         return 0
     }
     popd >/dev/null || true
@@ -25,7 +25,7 @@ _unren_forall_archive_extensions() {
     if [[ ${#_exts[@]} -eq 0 ]]; then
         _exts=(".rpa" ".jas" ".rpc")
     fi
-    eval "$_exts_var=(\"\${_exts[@]}\")"
+    _unren_array_assign "$_exts_var" "${_exts[@]}"
 }
 
 _unren_forall_collect_archives() {
@@ -45,13 +45,15 @@ _unren_forall_collect_archives() {
                 [[ "$lower" == *.org ]] && continue
                 [[ "$lower" == *.bak ]] && continue
                 canon="$(_unren_canonical_path "$f")"
-                _unren_list_contains "$canon" "${_seen[@]}" && continue
+                if ((${#_seen[@]} > 0)) && _unren_list_contains "$canon" "${_seen[@]}"; then
+                    continue
+                fi
                 _seen+=("$canon")
                 _files+=("$f")
             done
         done
     done
-    eval "$_files_var=(\"\${_files[@]}\")"
+    _unren_array_copy_ref "$_files_var" _files
 }
 
 _unren_forall_pick_extractor() {
@@ -94,7 +96,7 @@ unren_wos_decrypt_if_needed() {
     echo
     pushd "${UNREN_APP}" >/dev/null || return 1
     set +e
-    UNREN_APP="${UNREN_APP}" "${py}" "${PYARGS[@]}" "${WOS_DECRYPT_ALL}" 2>&1 \
+    UNREN_APP="${UNREN_APP}" _unren_py_invoke "$py" "${WOS_DECRYPT_ALL}" 2>&1 \
         | awk '!/^Co.*exec_prefix/{ if (length) print "  > "$0 }'
     rc=$?
     set -e

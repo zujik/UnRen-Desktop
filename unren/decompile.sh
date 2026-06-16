@@ -8,16 +8,18 @@ _unren_decompile_roots() {
     for d in "${UNREN_APP}/game" "${UNREN_GAME}"; do
         [[ -d "$d" ]] || continue
         d="$(cd -P -- "$d" 2>/dev/null && pwd)" || continue
-        _unren_list_contains "$d" "${_roots[@]}" && continue
+        if ((${#_roots[@]} > 0)) && _unren_list_contains "$d" "${_roots[@]}"; then
+            continue
+        fi
         _roots+=("$d")
     done
     if [[ "${UNREN_GAME}" != */game && -d "${UNREN_GAME}/game" ]]; then
         d="$(cd -P -- "${UNREN_GAME}/game" 2>/dev/null && pwd)" || d=""
-        if [[ -n "$d" ]] && ! _unren_list_contains "$d" "${_roots[@]}"; then
+        if [[ -n "$d" ]] && { ((${#_roots[@]} == 0)) || ! _unren_list_contains "$d" "${_roots[@]}"; }; then
             _roots+=("$d")
         fi
     fi
-    eval "$_roots_var=(\"\${_roots[@]}\")"
+    _unren_array_copy_ref "$_roots_var" _roots
 }
 
 _unren_decompile_primary_root() {

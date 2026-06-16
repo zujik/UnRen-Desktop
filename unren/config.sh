@@ -9,6 +9,8 @@ QUICK_LOAD_KEY="${QUICK_LOAD_KEY:-K_F9}"
 
 MIN_GAME_PYVER=2007018
 
+PYARGS=()
+
 RPATOOL="${UNREN_ROOT}/tools/rpatool-py3/rpatool.py"
 ALTRPATOOL="${UNREN_ROOT}/tools/altrpatool-py3/altrpatool.py"
 RPYCCORRECT="${UNREN_ROOT}/tools/rpyccorrect-py3/rpyccorrect.py"
