@@ -126,7 +126,13 @@ _unren_try_auto_fetch_sdk_slices() {
             if _unren_resolve_sdk_runtime "$app" "$py_major" "$platform" _sdk_r _sdk_l; then
                 return 0
             fi
-            continue
+            # e.g. git clone without mac LFS objects — slice dir exists but wrong platform
+            if [[ -d "${UNREN_ROOT}/sdk/${slice}" ]]; then
+                echo "  SDK slice ${slice} present but not usable here — refreshing ..." >&2
+                rm -rf "${UNREN_ROOT}/sdk/${slice}"
+            else
+                continue
+            fi
         fi
         if _unren_fetch_sdk_slice "$slice"; then
             fetched=1
