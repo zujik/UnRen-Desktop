@@ -152,7 +152,8 @@ _unren_sdk_slice_exists() {
 
 _unren_sdk_layout() {
     local sdk_root=$1
-    if [[ -d "${sdk_root}/lib/py3-linux-x86_64" || -d "${sdk_root}/lib/py2-linux-x86_64" ]]; then
+    if [[ -d "${sdk_root}/lib/py3-linux-x86_64" || -d "${sdk_root}/lib/py2-linux-x86_64" ||
+          -d "${sdk_root}/lib/py3-mac-universal" || -d "${sdk_root}/lib/py2-mac-universal" ]]; then
         printf 'modern\n'
     elif [[ -d "${sdk_root}/lib/linux-x86_64" || -d "${sdk_root}/lib/linux-i686" ]]; then
         printf 'renpy6\n'
@@ -167,7 +168,18 @@ _unren_sdk_platform_name() {
     local platform="$1"
     case "$platform" in
         mac-universal|*-darwin*|Darwin-*)
-            if [[ -d "${2}/lib/py3-darwin-arm64" || -d "${2}/lib/py2-darwin-arm64" ]]; then
+            if [[ -d "${2}/lib/py3-mac-universal" || -d "${2}/lib/py2-mac-universal" ]]; then
+                printf 'mac-universal\n'
+            elif [[ -d "${2}/lib/py3-darwin-arm64" || -d "${2}/lib/py2-darwin-arm64" ]]; then
+                printf 'darwin-arm64\n'
+            elif [[ -d "${2}/lib/py3-darwin-x86_64" || -d "${2}/lib/py2-darwin-x86_64" ||
+                    -d "${2}/lib/darwin-arm64" || -d "${2}/lib/darwin-x86_64" ]]; then
+                if [[ -d "${2}/lib/darwin-arm64" || -d "${2}/lib/py3-darwin-arm64" ]]; then
+                    printf 'darwin-arm64\n'
+                else
+                    printf 'darwin-x86_64\n'
+                fi
+            elif is_osx && [[ "$(_unren_machine)" == arm64* ]]; then
                 printf 'darwin-arm64\n'
             else
                 printf 'darwin-x86_64\n'

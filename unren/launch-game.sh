@@ -130,7 +130,11 @@ _unren_legacy_game_lib_dir() {
         linux-x86_64) legacy="${app}/lib/linux-x86_64" ;;
         linux-i686) legacy="${app}/lib/linux-i686" ;;
         mac-universal|darwin-*|Darwin-*)
-            if [[ -d "${app}/lib/darwin-arm64" ]]; then
+            if [[ -d "${app}/lib/py3-mac-universal" ]]; then
+                legacy="${app}/lib/py3-mac-universal"
+            elif [[ -d "${app}/lib/py2-mac-universal" ]]; then
+                legacy="${app}/lib/py2-mac-universal"
+            elif [[ -d "${app}/lib/darwin-arm64" ]]; then
                 legacy="${app}/lib/darwin-arm64"
             else
                 legacy="${app}/lib/darwin-x86_64"
@@ -166,7 +170,9 @@ _unren_launcher_game_lib_if_block() {
         linux-x86_64) legacy="${app}/lib/linux-x86_64" ;;
         linux-i686) legacy="${app}/lib/linux-i686" ;;
         mac-universal|darwin-*|Darwin-*)
-            if [[ -d "${app}/lib/darwin-arm64" ]]; then
+            if [[ -d "${app}/lib/py${py_major}-mac-universal" ]]; then
+                legacy="${app}/lib/py${py_major}-mac-universal"
+            elif [[ -d "${app}/lib/darwin-arm64" ]]; then
                 legacy="${app}/lib/darwin-arm64"
             else
                 legacy="${app}/lib/darwin-x86_64"

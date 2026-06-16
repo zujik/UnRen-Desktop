@@ -35,7 +35,9 @@ done
 _pop_plat_dir() {
     case "$(uname -s)" in
         Darwin)
-            if [[ -d "${1}/lib/py3-darwin-arm64" ]]; then
+            if [[ -d "${1}/lib/py3-mac-universal" ]]; then
+                echo "py3-mac-universal"
+            elif [[ -d "${1}/lib/py3-darwin-arm64" ]]; then
                 echo "py3-darwin-arm64"
             else
                 echo "py3-darwin-x86_64"
@@ -88,6 +90,13 @@ copy_py3() {
     fi
     if _dest_py3_usable "$PY3_DEST" && [[ "${FORCE_POPULATE_SDK:-}" != 1 ]]; then
         echo "  keep py3 (sdk/py3-8.5.3 already has Linux runtime; set FORCE_POPULATE_SDK=1 to overwrite)"
+        mkdir -p "${PY3_DEST}/lib"
+        for libpart in py3-mac-universal py3-darwin-x86_64 py3-darwin-arm64; do
+            _copy_tree_if_missing \
+                "${PY3_SRC}/lib/${libpart}" \
+                "${PY3_DEST}/lib/${libpart}" \
+                "$libpart"
+        done
         return 0
     fi
 
@@ -101,7 +110,7 @@ copy_py3() {
             cp -a "${PY3_SRC}/renpy" "${PY3_DEST}/renpy"
         fi
     fi
-    for libpart in python3.12 py3-linux-x86_64 py3-linux-i686 py3-darwin-x86_64 py3-darwin-arm64; do
+    for libpart in python3.12 py3-linux-x86_64 py3-linux-i686 py3-mac-universal py3-darwin-x86_64 py3-darwin-arm64; do
         _copy_tree_if_missing \
             "${PY3_SRC}/lib/${libpart}" \
             "${PY3_DEST}/lib/${libpart}" \
@@ -127,6 +136,13 @@ copy_py2() {
     if [[ -x "${PY2_DEST}/lib/py2-${plat}/python" || -x "${PY2_DEST}/lib/py2-${plat}/python.real" ]] &&
         [[ "${FORCE_POPULATE_SDK:-}" != 1 ]]; then
         echo "  keep py2 (sdk/py2-7.8.7 already has Linux runtime; set FORCE_POPULATE_SDK=1 to overwrite)"
+        mkdir -p "${PY2_DEST}/lib"
+        for libpart in py2-mac-universal py2-darwin-x86_64; do
+            _copy_tree_if_missing \
+                "${PY2_SRC}/lib/${libpart}" \
+                "${PY2_DEST}/lib/${libpart}" \
+                "$libpart"
+        done
         return 0
     fi
 
@@ -140,7 +156,7 @@ copy_py2() {
             cp -a "${PY2_SRC}/renpy" "${PY2_DEST}/renpy"
         fi
     fi
-    for libpart in python2.7 py2-linux-x86_64 py2-linux-i686 py2-darwin-x86_64; do
+    for libpart in python2.7 py2-linux-x86_64 py2-linux-i686 py2-mac-universal py2-darwin-x86_64; do
         _copy_tree_if_missing \
             "${PY2_SRC}/lib/${libpart}" \
             "${PY2_DEST}/lib/${libpart}" \

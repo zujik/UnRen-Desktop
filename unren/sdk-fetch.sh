@@ -72,9 +72,17 @@ _unren_fetch_sdk_slice() {
         echo "  URL: ${url}" >&2
         tmp="${archive}.part"
         if command -v curl >/dev/null 2>&1; then
-            curl -fL --retry 3 --retry-delay 2 -o "$tmp" "$url" || return 1
+            if ! curl -fL --retry 3 --retry-delay 2 -o "$tmp" "$url"; then
+                echo "[!] curl failed for ${url}" >&2
+                rm -f "$tmp"
+                return 1
+            fi
         elif command -v wget >/dev/null 2>&1; then
-            wget -O "$tmp" "$url" || return 1
+            if ! wget -O "$tmp" "$url"; then
+                echo "[!] wget failed for ${url}" >&2
+                rm -f "$tmp"
+                return 1
+            fi
         else
             echo "[!] Need curl or wget to fetch SDK slice." >&2
             return 1
@@ -82,7 +90,10 @@ _unren_fetch_sdk_slice() {
         mv -f "$tmp" "$archive"
     fi
 
-    tar -xjf "$archive" -C "$dest_root"
+    if ! tar -xjf "$archive" -C "$dest_root"; then
+        echo "[!] tar failed extracting ${archive}" >&2
+        return 1
+    fi
     rm -f "${dest_root}/.download-"*.tar.bz2 2>/dev/null || true
 
     if ! _unren_sdk_slice_exists "$slice" "${UNREN_APP:-}"; then
@@ -115,7 +126,13 @@ _unren_try_auto_fetch_sdk_slices() {
         fi
     done < <(_unren_sdk_fallback_chain "$app")
 
-    (( fetched )) && return 0
+    if (( fetched )); then
+        if is_osx; then
+            echo "[!] SDK slice downloaded but no macOS runtime is usable on this machine." >&2
+            echo "    Update UnRen to a release with py*-mac-universal SDK slices, or use a Mac .app build." >&2
+        fi
+        return 1
+    fi
     echo "[!] Could not fetch any SDK slice from GitHub Releases." >&2
     echo "    Upload unren-sdk-*.tar.bz2 to the release (scripts/package-sdk-release.sh)." >&2
     echo "    Or use UNREN_BUNDLE=full, or set UNREN_SDK_SLICE_DIR to local archives." >&2
