@@ -31,33 +31,33 @@
       "linux": {
         "filename": "unren-desktop-starter-2.0.0-alpha.1.tar.xz",
         "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-starter-2.0.0-alpha.1.tar.xz",
-        "sha256": "f13431b8f8d4aa9ead32717d4a759581960f936b21ce6fd661a93d79c79d50a0",
+        "sha256": "c08d841aeaf6b76da6382e9b80c7d43291c5e71c18336e1629663e919b2ab439",
         "contains": ["UnRen.sh"]
       },
       "mac": {
         "filename": "unren-desktop-starter-mac-2.0.0-alpha.1.tar.xz",
         "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-starter-mac-2.0.0-alpha.1.tar.xz",
-        "sha256": "8361cfa2e70243dba86a8b7139c588ab425f9cb0804229436fd07c99e154c38b",
+        "sha256": "1f2bd20257c232e6a04cea2ae53ac79885131bfb68b89942a295f8fe44165523",
         "contains": ["UnRen.command"],
         "fetches": "UnRen.sh"
       },
       "unren_sh": {
         "filename": "UnRen.sh",
         "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/UnRen.sh",
-        "sha256": "77e7037b0ce6c91a7669c514049c82f0b569e31aa1788fa8c31060a63fe8ea64"
+        "sha256": "834657c4f6c2b1852f8590c03429ab612995204e66cf9b5ddd113510ad05e6b1"
       }
     },
     "bundles": {
       "slim": {
         "filename": "unren-desktop-slim-2.0.0-alpha.1.tar.xz",
         "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-slim-2.0.0-alpha.1.tar.xz",
-        "sha256": "55261bb4d246dd5044ff5b3b71ef8ed2c4d73cb0a6ffa84dc1607d82d169896c",
+        "sha256": "720f471f6d79865a6ac10ebb78c9854e7480fe08431b297ed28f2a914e85ace8",
         "payload_only": true
       },
       "full": {
         "filename": "unren-desktop-full-2.0.0-alpha.1.tar.xz",
         "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-full-2.0.0-alpha.1.tar.xz",
-        "sha256": "c6d79a829747336d989e1e133e934eba6cc4ccfccfdee5d5e3e080561277046e",
+        "sha256": "5fe98a8fb16aa165ac25f3bcb2d79afd14b48654a14be971b2722734f13b6af0",
         "includes_sdk": true
       }
     },
