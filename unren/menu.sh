@@ -276,6 +276,8 @@ unren_main() {
     fi
     echo
 
+    _unren_mac_auto_quarantine_clear "$UNREN_TARGET"
+
     resolve_game_and_python || unren_die "Failed to resolve game Python for: ${UNREN_TARGET}"
     echo "Game folder: ${UNREN_GAME}"
     echo "Python:      ${UNREN_PYTHON}"

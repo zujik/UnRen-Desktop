@@ -10,7 +10,16 @@ Formerly known as **UnRen-Linux.sh**; renamed to reflect cross-platform support.
 
 **Linux** — download `UnRen.sh` from [Releases](https://github.com/zujik/UnRen-Desktop/releases) and place it in the game folder (alongside `game/`, `lib/`, `renpy/`). Run `./UnRen.sh` or double-click if your file manager allows executing scripts. First run downloads `unren-desktop/` automatically.
 
-**macOS** — download `UnRen.command` from Releases and save it in `~/UnRen-Desktop` or your home folder. Drag the game folder or `.app` onto `UnRen.command`. First run downloads `UnRen.sh` and `unren-desktop/`, then opens a terminal with the menu.
+**macOS** — download `UnRen.command` from Releases into `~/UnRen-Desktop`. Run from Terminal (Finder drag onto `.command` is unreliable):
+
+```bash
+brew install bash    # once — macOS system bash is 3.2, UnRen needs 4+
+cd ~/UnRen-Desktop
+xattr -cr .            # once — clears Gatekeeper quarantine on download
+./UnRen.command ~/Downloads/Hollow.app
+```
+
+First run downloads `UnRen.sh` and `unren-desktop/`. Quarantine on the **game** is cleared automatically for `.app` bundles; option **m** clears it manually.
 
 Press **g** in the menu to launch the game — including Windows-only builds, using an on-demand Ren'Py SDK slice.
 
@@ -69,9 +78,9 @@ The script auto-detects the game when `game/` and `renpy/` are in the current fo
 
 **Important:** Ren'Py games already have a `lib/` folder (Python runtime). UnRen bash modules live in **`unren/`**, not `lib/`.
 
-### macOS drag-and-drop
+### macOS
 
-Use **`UnRen.command`** for drag-and-drop from Finder. `UnRen.sh` is the shared engine; Linux users run it from inside the game folder.
+Use **`UnRen.command`** from Terminal (see Option A). `UnRen.sh` is the shared engine.
 
 ## What it does
 

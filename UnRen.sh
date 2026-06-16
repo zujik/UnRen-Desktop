@@ -3,6 +3,27 @@
 # Copyright (C) 2022-2026 Kijuz — licensed under GPL-3.0 (see LICENSE)
 # https://github.com/zujik/UnRen-Desktop
 
+# macOS ships Bash 3.2; UnRen needs Bash 4+ (namerefs, associative arrays).
+if [[ "${BASH_VERSINFO[0]:-0}" -lt 4 ]]; then
+    for _unren_bash in /opt/homebrew/bin/bash /usr/local/bin/bash; do
+        if [[ -x "$_unren_bash" ]]; then
+            exec "$_unren_bash" "$0" "$@"
+        fi
+    done
+    if [[ "$(uname -s)" == Darwin* ]]; then
+        cat >&2 <<'EOF'
+[!] UnRen-Desktop requires Bash 4+ (macOS includes Bash 3.2).
+
+  brew install bash
+  /opt/homebrew/bin/bash UnRen.command /path/to/game
+
+Or upgrade the payload after: brew install bash
+EOF
+        exit 1
+    fi
+fi
+unset _unren_bash
+
 set -euo pipefail
 set +H
 

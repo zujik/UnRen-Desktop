@@ -320,12 +320,11 @@ _unren_sdk_fallback_chain() {
 
 _unren_resolve_sdk_runtime() {
     local app="$1" py_major=$2 platform=$3
-    local -n _root_out=$4
-    local -n _lib_out=$5
+    local _root_var="$4" _lib_var="$5"
     local slice resolved_root resolved_lib
 
-    _root_out=""
-    _lib_out=""
+    eval "$_root_var=\"\""
+    eval "$_lib_var=\"\""
 
     while IFS= read -r slice; do
         [[ -n "$slice" ]] || continue
@@ -336,8 +335,8 @@ _unren_resolve_sdk_runtime() {
         resolved_lib="$(_unren_sdk_lib_dir "$resolved_root" "$slice_py" "$platform")" || continue
         _unren_sdk_lib_usable "$resolved_lib" || continue
         _unren_sdk_runtime_usable "$slice" "$resolved_root" "$resolved_lib" || continue
-        _root_out="$resolved_root"
-        _lib_out="$resolved_lib"
+        eval "$_root_var=\"\$resolved_root\""
+        eval "$_lib_var=\"\$resolved_lib\""
         return 0
     done < <(_unren_sdk_fallback_chain "$app")
 
