@@ -70,9 +70,11 @@ _unren_read_lines_to_array() {
 }
 
 _unren_canonical_path() {
-    local f="$1"
+    local f="$1" dir base
     if command -v realpath >/dev/null 2>&1; then
         realpath -s "$f" 2>/dev/null && return 0
     fi
-    (cd -P "$(dirname -- "$f")" && pwd)/$(basename -- "$f")
+    dir="$(cd -P "$(dirname "$f")" && pwd)"
+    base="$(basename "$f")"
+    printf '%s/%s\n' "$dir" "$base"
 }
