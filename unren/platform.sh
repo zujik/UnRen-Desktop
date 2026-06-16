@@ -40,3 +40,39 @@ unren_die() {
     printf -- '%s\n\n' "$*" >&2
     exit 1
 }
+
+# Bash 3.2 compatibility (macOS /bin/bash).
+_unren_tolower() {
+    printf '%s' "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+_unren_toupper() {
+    printf '%s' "$1" | tr '[:lower:]' '[:upper:]'
+}
+
+_unren_list_contains() {
+    local needle="$1" x
+    shift
+    for x in "$@"; do
+        [[ "$x" == "$needle" ]] && return 0
+    done
+    return 1
+}
+
+_unren_read_lines_to_array() {
+    local _var="$1" line
+    shift
+    eval "$_var=()"
+    while IFS= read -r line; do
+        [[ -n "$line" ]] || continue
+        eval "$_var+=(\"\$line\")"
+    done < <("$@")
+}
+
+_unren_canonical_path() {
+    local f="$1"
+    if command -v realpath >/dev/null 2>&1; then
+        realpath -s "$f" 2>/dev/null && return 0
+    fi
+    (cd -P "$(dirname -- "$f")" && pwd)/$(basename -- "$f")
+}

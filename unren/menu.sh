@@ -23,7 +23,7 @@ unren_menu() {
 
     while true; do
         unren_menu_refresh_state
-        mapfile -t pending < <(_unren_menu_patch_nums_pending)
+        _unren_read_lines_to_array pending _unren_menu_patch_nums_pending
         pending_count=${#pending[@]}
 
         echo " Available Options:"

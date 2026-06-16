@@ -13,7 +13,7 @@ _unren_is_innocent_witches_game() {
     fi
 
     base="$(basename "$app")"
-    lower="${base,,}"
+    lower="$(_unren_tolower "$base")"
     case "$lower" in
         *innocent*witch*) return 0 ;;
     esac

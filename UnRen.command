@@ -1,17 +1,7 @@
 #!/usr/bin/env bash
-# macOS entry — pass game path as arguments (Finder drop is unreliable; use Terminal).
+# macOS entry — pass game path as arguments (use Terminal; Finder drop is unreliable).
 # Downloads UnRen.sh on first run if only this file was copied from the release.
 set -euo pipefail
-
-# Same Bash 4+ requirement as UnRen.sh (re-exec before any other logic).
-if [[ "${BASH_VERSINFO[0]:-0}" -lt 4 ]]; then
-    for _unren_bash in /opt/homebrew/bin/bash /usr/local/bin/bash; do
-        if [[ -x "$_unren_bash" ]]; then
-            exec "$_unren_bash" "$0" "$@"
-        fi
-    done
-fi
-unset _unren_bash
 
 UNREN_RELEASE_REPO="${UNREN_RELEASE_REPO:-https://github.com/zujik/UnRen-Desktop}"
 UNREN_RELEASE_TAG="${UNREN_RELEASE_TAG:-v2.0.0-alpha.1}"

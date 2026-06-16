@@ -134,8 +134,8 @@ _unren_menu_refresh_state() {
     [[ -f "${UNREN_GAME}/unren-rollback.rpy" ]] && UNREN_MENU_PATCH_ROLLBACK=1
     [[ -f "${UNREN_GAME}/unren-nsync.rpy" ]] && UNREN_MENU_PATCH_NSYNC=1
 
-    mapfile -t workflow < <(_unren_menu_workflow_nums)
-    mapfile -t pending < <(_unren_menu_patch_nums_pending)
+    _unren_read_lines_to_array workflow _unren_menu_workflow_nums
+    _unren_read_lines_to_array pending _unren_menu_patch_nums_pending
     combo=()
     for n in "${workflow[@]}" "${pending[@]}"; do
         [[ -n "$n" ]] && combo+=("$n")

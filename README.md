@@ -10,16 +10,15 @@ Formerly known as **UnRen-Linux.sh**; renamed to reflect cross-platform support.
 
 **Linux** — download `UnRen.sh` from [Releases](https://github.com/zujik/UnRen-Desktop/releases) and place it in the game folder (alongside `game/`, `lib/`, `renpy/`). Run `./UnRen.sh` or double-click if your file manager allows executing scripts. First run downloads `unren-desktop/` automatically.
 
-**macOS** — download `UnRen.command` from Releases into `~/UnRen-Desktop`. Run from Terminal (Finder drag onto `.command` is unreliable):
+**macOS** — download `UnRen.command` from Releases into `~/UnRen-Desktop`. Run from Terminal:
 
 ```bash
-brew install bash    # once — macOS system bash is 3.2, UnRen needs 4+
 cd ~/UnRen-Desktop
 xattr -cr .            # once — clears Gatekeeper quarantine on download
 ./UnRen.command ~/Downloads/Hollow.app
 ```
 
-First run downloads `UnRen.sh` and `unren-desktop/`. Quarantine on the **game** is cleared automatically for `.app` bundles; option **m** clears it manually.
+First run downloads `UnRen.sh` and `unren-desktop/`. Uses system `/bin/bash` (3.2). Quarantine on `.app` bundles is cleared automatically; option **m** clears it manually.
 
 Press **g** in the menu to launch the game — including Windows-only builds, using an on-demand Ren'Py SDK slice.
 

@@ -1,25 +1,23 @@
 # Decompile .rpyc files with unrpyc (Python 3)
 
 _unren_decompile_roots() {
-    local -n _roots=$1
-    local -A seen=()
+    local _roots_var="$1"
+    local -a _roots=()
     local d
-    _roots=()
+    eval "$_roots_var=()"
     for d in "${UNREN_APP}/game" "${UNREN_GAME}"; do
         [[ -d "$d" ]] || continue
-        d="$(cd -P "$d" 2>/dev/null && pwd)" || continue
-        [[ -n "${seen[$d]+x}" ]] && continue
-        seen[$d]=1
+        d="$(cd -P -- "$d" 2>/dev/null && pwd)" || continue
+        _unren_list_contains "$d" "${_roots[@]}" && continue
         _roots+=("$d")
     done
-    # UNREN_GAME is usually APP/game already; only nest when it is the distro root.
     if [[ "${UNREN_GAME}" != */game && -d "${UNREN_GAME}/game" ]]; then
-        d="$(cd -P "${UNREN_GAME}/game" 2>/dev/null && pwd)" || d=""
-        if [[ -n "$d" && -z "${seen[$d]+x}" ]]; then
-            seen[$d]=1
+        d="$(cd -P -- "${UNREN_GAME}/game" 2>/dev/null && pwd)" || d=""
+        if [[ -n "$d" ]] && ! _unren_list_contains "$d" "${_roots[@]}"; then
             _roots+=("$d")
         fi
     fi
+    eval "$_roots_var=(\"\${_roots[@]}\")"
 }
 
 _unren_decompile_primary_root() {
@@ -71,8 +69,9 @@ _unren_decompile_relpath() {
 }
 
 _unren_decompile_auto_opts() {
-    local -n _opts=$1
+    local _opts_var="$1"
     local major py_major has_sl1=0 opt
+    eval "local -a _opts=(\"\${${_opts_var}[@]}\")"
 
     for opt in "${_opts[@]}"; do
         [[ "$opt" == "--sl1-as-python" ]] && has_sl1=1
@@ -87,6 +86,7 @@ _unren_decompile_auto_opts() {
             echo >&2
         fi
     fi
+    eval "$_opts_var=(\"\${_opts[@]}\")"
 }
 
 _unren_decompile_source_path() {
@@ -110,10 +110,9 @@ _unren_rpy_is_stub() {
 _unren_decompile_targets() {
     local want_clobber=$1
     local force_all=$2
-    local -n _out=$3
+    local _out_var="$3"
+    local -a _out=()
     local rpyc rel source
-
-    _out=()
 
     while IFS= read -r -d '' rpyc; do
         _unren_decompile_is_unren_patch "$rpyc" && continue
@@ -134,6 +133,7 @@ _unren_decompile_targets() {
             continue
         fi
     done < <(_unren_decompile_find)
+    eval "$_out_var=(\"\${_out[@]}\")"
 }
 
 unren_decompile() {

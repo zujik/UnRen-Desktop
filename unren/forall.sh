@@ -2,18 +2,20 @@
 # https://github.com/Lurmel/UnRen-forall — see tools/forall/ATTRIBUTION.md
 
 _unren_forall_archive_extensions() {
-    local -n _exts=$1
+    local _exts_var="$1"
     local raw py="${UNREN_PYTHON}" line
-    _exts=()
+    local -a _exts=()
     [[ -x "$py" ]] || py="$(command -v python3 2>/dev/null || true)"
-    [[ -n "$py" ]] || {
+    if [[ -z "$py" ]]; then
         _exts=(".rpa" ".jas" ".rpc")
+        eval "$_exts_var=(\"\${_exts[@]}\")"
         return 0
-    }
+    fi
     pushd "${UNREN_APP}" >/dev/null || return 1
     raw="$("$py" "${PYARGS[@]}" "${DETECT_RPA_EXT}" "${UNREN_APP}" 2>/dev/null)" || {
         popd >/dev/null || true
         _exts=(".rpa" ".jas" ".rpc")
+        eval "$_exts_var=(\"\${_exts[@]}\")"
         return 0
     }
     popd >/dev/null || true
@@ -23,31 +25,33 @@ _unren_forall_archive_extensions() {
     if [[ ${#_exts[@]} -eq 0 ]]; then
         _exts=(".rpa" ".jas" ".rpc")
     fi
+    eval "$_exts_var=(\"\${_exts[@]}\")"
 }
 
 _unren_forall_collect_archives() {
-    local -n _files=$1
-    local -a exts=() ext
-    local dir f base lower canon
-    declare -A _seen=()
-    _files=()
+    local _files_var="$1"
+    local -a exts=() _files=() _seen=()
+    local dir f base lower upper canon
     _unren_forall_archive_extensions exts
     for dir in "${UNREN_APP}" "${UNREN_GAME}"; do
         [[ -d "$dir" ]] || continue
         for ext in "${exts[@]}"; do
-            lower="${ext,,}"
-            for f in "${dir}"/*"${ext}" "${dir}"/*"${lower}" "${dir}"/*"${ext^^}"; do
+            lower="$(_unren_tolower "$ext")"
+            upper="$(_unren_toupper "$ext")"
+            for f in "${dir}"/*"${ext}" "${dir}"/*"${lower}" "${dir}"/*"${upper}"; do
                 [[ -f "$f" ]] || continue
                 base="$(basename "$f")"
-                [[ "${base,,}" == *.org ]] && continue
-                [[ "${base,,}" == *.bak ]] && continue
-                canon="$(realpath -s "$f" 2>/dev/null || printf '%s' "$f")"
-                [[ -n "${_seen[$canon]+x}" ]] && continue
-                _seen[$canon]=1
+                lower="$(_unren_tolower "$base")"
+                [[ "$lower" == *.org ]] && continue
+                [[ "$lower" == *.bak ]] && continue
+                canon="$(_unren_canonical_path "$f")"
+                _unren_list_contains "$canon" "${_seen[@]}" && continue
+                _seen+=("$canon")
                 _files+=("$f")
             done
         done
     done
+    eval "$_files_var=(\"\${_files[@]}\")"
 }
 
 _unren_forall_pick_extractor() {
