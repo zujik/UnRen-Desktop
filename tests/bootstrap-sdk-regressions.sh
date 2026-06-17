@@ -179,6 +179,27 @@ test_app_bundle_script_version_and_mac_sdk() {
     rm -rf "$tmp"
 }
 test_app_bundle_script_version_and_mac_sdk
+test_decompile_empty_targets_bash32() {
+    local tmp targets
+    tmp="$(mktemp -d)"
+
+    UNREN_APP="${tmp}/game"
+    UNREN_GAME="${UNREN_APP}/game"
+    mkdir -p "$UNREN_GAME"
+
+    # shellcheck source=../unren/platform.sh
+    source "${ROOT}/unren/platform.sh"
+    # shellcheck source=../unren/decompile.sh
+    source "${ROOT}/unren/decompile.sh"
+
+    _unren_decompile_targets 0 0 targets ||
+        fail "_unren_decompile_targets failed on empty game tree"
+    [[ ${#targets[@]} -eq 0 ]] ||
+        fail "expected no decompile targets, got ${#targets[@]}"
+
+    rm -rf "$tmp"
+}
+test_decompile_empty_targets_bash32
 test_bootstrap_preserves_sdk_and_rejects_partial_payloads
 
 printf 'bootstrap-sdk-regressions: ok\n'
