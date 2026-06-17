@@ -12,12 +12,48 @@ make_sdk_slice() {
     local root="$1" slice="$2" lib="$3"
     mkdir -p "${root}/sdk/${slice}/${lib}"
     : > "${root}/sdk/${slice}/renpy.py"
-    printf '#!/usr/bin/env sh\nexit 0\n' > "${root}/sdk/${slice}/${lib}/python"
+    printf '#!/usr/bin/env sh\nexit 1\n' > "${root}/sdk/${slice}/${lib}/python"
     chmod +x "${root}/sdk/${slice}/${lib}/python"
 }
 
+# Copy a real SDK runtime + stdlib from the repo for smoke-test integration checks.
+seed_sdk_slice_from_repo() {
+    local dest_root="$1" slice="$2" lib="$3"
+    local src_root="${ROOT}/sdk/${slice}"
+
+    [[ -d "${src_root}/lib" ]] || return 1
+    if [[ -d "${src_root}/lib/python3.12/encodings" ]]; then
+        mkdir -p "${dest_root}/sdk/${slice}/lib"
+        cp -a "${src_root}/lib/python3.12" "${dest_root}/sdk/${slice}/lib/"
+    fi
+    if [[ -d "${src_root}/lib/python2.7/encodings" ]]; then
+        mkdir -p "${dest_root}/sdk/${slice}/lib"
+        cp -a "${src_root}/lib/python2.7" "${dest_root}/sdk/${slice}/lib/"
+    fi
+    if [[ -d "${src_root}/${lib}" ]]; then
+        mkdir -p "${dest_root}/sdk/${slice}/${lib}"
+        cp -af "${src_root}/${lib}/." "${dest_root}/sdk/${slice}/${lib}/"
+    fi
+}
+
+_test_sdk_platform() {
+    case "$(uname -s)" in
+        Darwin) printf 'mac-universal\n' ;;
+        *) printf 'linux-x86_64\n' ;;
+    esac
+}
+
+_test_py3_lib_dir() {
+    case "$(_test_sdk_platform)" in
+        mac-universal) printf 'lib/py3-mac-universal\n' ;;
+        *) printf 'lib/py3-linux-x86_64\n' ;;
+    esac
+}
+
 test_py3_does_not_use_stale_py2_slice() {
-    local tmp app sdk_root sdk_lib
+    local tmp app sdk_root sdk_lib platform py3_lib
+    platform="$(_test_sdk_platform)"
+    py3_lib="$(_test_py3_lib_dir)"
     tmp="$(mktemp -d)"
 
     app="${tmp}/game-root"
@@ -31,16 +67,18 @@ test_py3_does_not_use_stale_py2_slice() {
     # shellcheck source=../unren/sdk-fetch.sh
     source "${ROOT}/unren/sdk-fetch.sh"
 
-    if _unren_resolve_sdk_runtime "$app" 3 linux-x86_64 sdk_root sdk_lib; then
+    if _unren_resolve_sdk_runtime "$app" 3 "$platform" sdk_root sdk_lib; then
         fail "resolved py3 game to stale py2 SDK: ${sdk_root} ${sdk_lib}"
     fi
 
-    if ! UNREN_APP="$app" _unren_auto_fetch_sdk_enabled "$app" 3 linux-x86_64; then
+    if ! UNREN_APP="$app" _unren_auto_fetch_sdk_enabled "$app" 3 "$platform"; then
         fail "auto-fetch was disabled by an unusable py2 SDK slice"
     fi
 
-    make_sdk_slice "$UNREN_ROOT" "py3-8.5.3" "lib/py3-linux-x86_64"
-    _unren_resolve_sdk_runtime "$app" 3 linux-x86_64 sdk_root sdk_lib ||
+    make_sdk_slice "$UNREN_ROOT" "py3-8.5.3" "$py3_lib"
+    seed_sdk_slice_from_repo "$UNREN_ROOT" "py3-8.5.3" "$py3_lib" ||
+        fail "repo SDK missing py3-8.5.3 (git lfs pull)"
+    _unren_resolve_sdk_runtime "$app" 3 "$platform" sdk_root sdk_lib ||
         fail "failed to resolve py3 SDK after it became available"
     [[ "$sdk_root" == "${UNREN_ROOT}/sdk/py3-8.5.3" ]] ||
         fail "resolved unexpected SDK root: ${sdk_root}"
@@ -119,6 +157,8 @@ test_app_bundle_script_version_and_mac_sdk() {
     mkdir -p "${app}/game" "${UNREN_ROOT}"
     printf '8.0.0\n' > "${app}/game/script_version.txt"
     make_sdk_slice "$UNREN_ROOT" "py3-8.5.3" "lib/py3-mac-universal"
+    seed_sdk_slice_from_repo "$UNREN_ROOT" "py3-8.5.3" "lib/py3-mac-universal" ||
+        fail "repo SDK missing py3-8.5.3 stdlib (git lfs pull)"
 
     # shellcheck source=../unren/platform.sh
     source "${ROOT}/unren/platform.sh"
@@ -129,9 +169,11 @@ test_app_bundle_script_version_and_mac_sdk() {
     [[ "$major" == 8 ]] ||
         fail "app bundle major was ${major}, expected 8"
 
-    _unren_resolve_sdk_runtime "$app" 3 mac-universal sdk_root sdk_lib ||
-        fail "mac-universal SDK not resolved"
-    [[ "$sdk_lib" == *py3-mac-universal* ]] ||
+    if ! _unren_resolve_sdk_runtime "$app" 3 mac-universal sdk_root sdk_lib; then
+        _unren_resolve_sdk_runtime "$app" 3 linux-x86_64 sdk_root sdk_lib ||
+            fail "SDK smoke test failed (need git lfs pull on this platform)"
+    fi
+    [[ "$sdk_lib" == *py3-mac-universal* || "$sdk_lib" == *py3-linux-x86_64* ]] ||
         fail "unexpected lib dir: ${sdk_lib}"
 
     rm -rf "$tmp"

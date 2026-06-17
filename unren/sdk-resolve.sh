@@ -127,22 +127,27 @@ _unren_pythonhome_has_stdlib() {
     }
 }
 
+_unren_sdk_python_smoke_test() {
+    local py_bin="$1" phome="${2:-}"
+
+    [[ -n "$py_bin" && -x "$py_bin" ]] || return 1
+    if [[ -n "$phome" && -d "$phome" ]] && _unren_pythonhome_has_stdlib "$phome"; then
+        env PYTHONHOME="$phome" PYTHONPATH="${phome}" \
+            "$py_bin" -c "import encodings" >/dev/null 2>&1 && return 0
+    fi
+    env -u PYTHONHOME -u PYTHONPATH \
+        "$py_bin" -c "import encodings" >/dev/null 2>&1
+}
+
 _unren_sdk_runtime_usable() {
     local slice="$1" sdk_root="$2" lib_dir="$3"
-    local phome
+    local phome py_bin
 
     _unren_sdk_lib_usable "$lib_dir" || return 1
+    py_bin="$(_unren_sdk_python_runner "$lib_dir" "$sdk_root")"
+    [[ -n "$py_bin" && -x "$py_bin" ]] || return 1
     phome="$(_unren_sdk_pythonhome "$sdk_root" "$lib_dir")"
-    if _unren_pythonhome_has_stdlib "$phome"; then
-        return 0
-    fi
-    # Ren'Py 7/8 SDK: embedded python carries stdlib; do not require PYTHONHOME.
-    case "$slice" in
-        py3-*|py2-*)
-            [[ -x "${lib_dir}/python" || -x "${lib_dir}/python.real" || -x "${lib_dir}/renpy" ]]
-            ;;
-        *) return 1 ;;
-    esac
+    _unren_sdk_python_smoke_test "$py_bin" "$phome"
 }
 
 _unren_sdk_slice_exists() {

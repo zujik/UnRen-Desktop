@@ -31,7 +31,7 @@ After cloning:
 
 ```bash
 git lfs install
-git lfs pull    # Linux + macOS runtimes (py*-linux-* and py*-mac-universal)
+git lfs pull    # Linux + macOS runtimes and Python stdlib (lib/python3.12, lib/python2.7)
 ```
 
 If `lib/py3-mac-universal/` or `lib/py2-mac-universal/` is missing after pull, run
