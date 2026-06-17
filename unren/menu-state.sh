@@ -81,14 +81,18 @@ _unren_menu_patch_nums_pending() {
     if (( ! UNREN_MENU_PATCH_QUICK )); then nums+=(4); fi
     if (( ! UNREN_MENU_PATCH_SKIP )); then nums+=(5); fi
     if (( ! UNREN_MENU_PATCH_ROLLBACK )); then nums+=(6); fi
-    printf '%s\n' "${nums[@]}"
+    if ((${#nums[@]} > 0)); then
+        printf '%s\n' "${nums[@]}"
+    fi
 }
 
 _unren_menu_workflow_nums() {
     local -a nums=()
     if (( UNREN_MENU_HAS_ARCHIVES && ! UNREN_MENU_GUARD_IW )); then nums+=(1); fi
     if (( UNREN_MENU_HAS_RPYC && ! UNREN_MENU_HAS_RPC3 && ! UNREN_MENU_GUARD_IW )); then nums+=(2); fi
-    printf '%s\n' "${nums[@]}"
+    if ((${#nums[@]} > 0)); then
+        printf '%s\n' "${nums[@]}"
+    fi
 }
 
 _unren_menu_refresh_state() {
@@ -137,9 +141,16 @@ _unren_menu_refresh_state() {
     _unren_read_lines_to_array workflow _unren_menu_workflow_nums
     _unren_read_lines_to_array pending _unren_menu_patch_nums_pending
     combo=()
-    for n in "${workflow[@]}" "${pending[@]}"; do
-        [[ -n "$n" ]] && combo+=("$n")
-    done
+    if ((${#workflow[@]} > 0)); then
+        for n in "${workflow[@]}"; do
+            [[ -n "$n" ]] && combo+=("$n")
+        done
+    fi
+    if ((${#pending[@]} > 0)); then
+        for n in "${pending[@]}"; do
+            [[ -n "$n" ]] && combo+=("$n")
+        done
+    fi
 
     local opt9_extra="deobfuscate + install launcher"
     (( UNREN_MENU_HAS_MANGLED_RPYC )) && opt9_extra="rpycCorrector + ${opt9_extra}"

@@ -200,6 +200,39 @@ test_decompile_empty_targets_bash32() {
     rm -rf "$tmp"
 }
 test_decompile_empty_targets_bash32
+test_menu_all_patches_applied_bash32() {
+    local tmp
+    tmp="$(mktemp -d)"
+
+    UNREN_ROOT="${ROOT}"
+    UNREN_APP="${tmp}/game"
+    UNREN_GAME="${UNREN_APP}/game"
+    mkdir -p "$UNREN_GAME"
+    touch "${UNREN_GAME}/unren-dev.rpy" "${UNREN_GAME}/unren-quick.rpy" \
+        "${UNREN_GAME}/unren-skip.rpy" "${UNREN_GAME}/unren-rollback.rpy"
+
+    UNREN_MENU_PATCH_DEV=1
+    UNREN_MENU_PATCH_QUICK=1
+    UNREN_MENU_PATCH_SKIP=1
+    UNREN_MENU_PATCH_ROLLBACK=1
+    UNREN_MENU_HAS_ARCHIVES=0
+    UNREN_MENU_HAS_RPYC=0
+    UNREN_MENU_HAS_RPC3=0
+    UNREN_MENU_GUARD_IW=0
+
+    # shellcheck source=../unren/platform.sh
+    source "${ROOT}/unren/platform.sh"
+    # shellcheck source=../unren/menu-state.sh
+    source "${ROOT}/unren/menu-state.sh"
+
+    _unren_menu_patch_nums_pending >/dev/null ||
+        fail "patch nums pending crashed with all patches applied"
+    _unren_menu_refresh_state ||
+        fail "menu refresh crashed with all patches applied"
+
+    rm -rf "$tmp"
+}
+test_menu_all_patches_applied_bash32
 test_bootstrap_preserves_sdk_and_rejects_partial_payloads
 
 printf 'bootstrap-sdk-regressions: ok\n'
