@@ -233,6 +233,42 @@ test_menu_all_patches_applied_bash32() {
     rm -rf "$tmp"
 }
 test_menu_all_patches_applied_bash32
+test_py2_699_sdk_smoke_mac() {
+    local sdk_root lib_dir
+
+    [[ -x "${ROOT}/sdk/py2-6.99.14.3/lib/darwin-x86_64/python" ]] || return 0
+    [[ -d "${ROOT}/sdk/py2-6.99.14.3/lib/pythonlib2.7/encodings" ]] || return 0
+
+    # shellcheck source=../unren/sdk-resolve.sh
+    source "${ROOT}/unren/sdk-resolve.sh"
+
+    sdk_root="${ROOT}/sdk/py2-6.99.14.3"
+    lib_dir="${sdk_root}/lib/darwin-x86_64"
+    _unren_sdk_runtime_usable "py2-6.99.14.3" "$sdk_root" "$lib_dir" ||
+        fail "py2-6.99.14.3 darwin-x86_64 SDK failed smoke test (need -EO + pythonlib2.7)"
+}
+test_py2_699_sdk_smoke_mac
+test_magic_shop_renpy_major() {
+    local app major
+
+    [[ -d "${ROOT}/../Downloads/Magic_Shop_1.03-win/renpy" ]] && \
+        app="${ROOT}/../Downloads/Magic_Shop_1.03-win" || \
+        app="${HOME}/Downloads/Magic_Shop_1.03-win"
+    [[ -f "${app}/renpy/vc_version.py" ]] || return 0
+
+    # shellcheck source=../unren/config.sh
+    source "${ROOT}/unren/config.sh"
+    # shellcheck source=../unren/sdk-resolve.sh
+    source "${ROOT}/unren/sdk-resolve.sh"
+    # shellcheck source=../unren/python-resolve.sh
+    source "${ROOT}/unren/python-resolve.sh"
+
+    major="$(_unren_script_version_major_from_app "$app")"
+    [[ "$major" == 6 ]] || fail "Magic Shop major was ${major}, expected 6 (not vc_version build id)"
+    [[ "$(_unren_guess_python_major "$app" mac-universal)" == 2 ]] ||
+        fail "Magic Shop should resolve to py2"
+}
+test_magic_shop_renpy_major
 test_bootstrap_preserves_sdk_and_rejects_partial_payloads
 
 printf 'bootstrap-sdk-regressions: ok\n'

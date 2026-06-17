@@ -119,7 +119,7 @@ _unren_try_auto_fetch_sdk_slices() {
         return 0
     fi
 
-    echo "  No usable SDK in game or UnRen payload — fetching runtime slice(s) ..." >&2
+    echo "  No usable SDK in game or UnRen payload — fetching Ren'Py runtime slice(s) ..." >&2
     while IFS= read -r slice; do
         [[ -n "$slice" ]] || continue
         if _unren_sdk_slice_exists "$slice" "$app"; then
@@ -133,6 +133,9 @@ _unren_try_auto_fetch_sdk_slices() {
             else
                 continue
             fi
+        fi
+        if [[ "$(uname -s)" == Darwin && "$slice" == py2-6.99.14.3 ]]; then
+            echo "  Note: Ren'Py 6 uses darwin-x86_64 (Rosetta on Apple Silicon); slice also ships Linux libs." >&2
         fi
         if _unren_fetch_sdk_slice "$slice"; then
             fetched=1

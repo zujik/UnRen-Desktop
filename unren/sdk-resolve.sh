@@ -58,24 +58,30 @@ _unren_script_version_major_from_app() {
         fi
     done
 
-    if [[ -f "${app}/renpy/vc_version.py" ]]; then
-        sv="$(grep -m1 '^version' "${app}/renpy/vc_version.py" 2>/dev/null \
-            | sed -n "s/.*['\"]\\([0-9][0-9]*\\)\\..*/\\1/p")"
-        [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
-        sv="$(perl -nle 'if (/\b(?:vc_)?version\s*=\s*[\x22\x27]?([0-9]+)/) { print $1; exit }' \
-            "${app}/renpy/vc_version.py" 2>/dev/null)"
-        [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
-    fi
-
     if [[ -f "${app}/renpy/__init__.py" ]]; then
         sv="$(grep -m1 'version_tuple' "${app}/renpy/__init__.py" 2>/dev/null \
             | sed -n 's/.*([[:space:]]*\([0-9][0-9]*\).*/\1/p')"
-        [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
+        if [[ -n "$sv" && "$sv" -le 10 ]]; then
+            printf '%s\n' "$sv"
+            return 0
+        fi
         sv="$(perl -ne '
             if (/version_tuple\s*=\s*\(\s*(\d+)/) { push @v, $1 }
             END { if (@v) { @v = sort { $b <=> $a } @v; print $v[0] } }
         ' "${app}/renpy/__init__.py" 2>/dev/null)"
-        [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
+        if [[ -n "$sv" && "$sv" -le 10 ]]; then
+            printf '%s\n' "$sv"
+            return 0
+        fi
+    fi
+
+    if [[ -f "${app}/renpy/vc_version.py" ]]; then
+        sv="$(grep -m1 '^version' "${app}/renpy/vc_version.py" 2>/dev/null \
+            | sed -n "s/.*['\"]\\([0-9][0-9]*\\)\\..*/\\1/p")"
+        if [[ -n "$sv" && "$sv" -le 10 ]]; then
+            printf '%s\n' "$sv"
+            return 0
+        fi
     fi
 
     if [[ -f "${DETECT_RENPY_VERSION:-}" ]]; then
@@ -123,20 +129,38 @@ _unren_sdk_slice_matches_py_major() {
 _unren_pythonhome_has_stdlib() {
     local pyhome="$1"
     [[ -n "$pyhome" && -d "$pyhome" ]] && {
-        [[ -f "${pyhome}/site.py" || -f "${pyhome}/site.pyc" || -d "${pyhome}/encodings" ]]
+        [[ -f "${pyhome}/site.py" || -f "${pyhome}/site.pyc" || -f "${pyhome}/site.pyo" ||
+           -d "${pyhome}/encodings" ]]
     }
 }
 
 _unren_sdk_python_smoke_test() {
-    local py_bin="$1" phome="${2:-}"
+    local py_bin="$1" phome="${2:-}" sdk_root="${3:-}"
+    local -a py_args=()
+    local args_line
 
     [[ -n "$py_bin" && -x "$py_bin" ]] || return 1
-    if [[ -n "$phome" && -d "$phome" ]] && _unren_pythonhome_has_stdlib "$phome"; then
-        env PYTHONHOME="$phome" PYTHONPATH="${phome}" \
-            "$py_bin" -c "import encodings" >/dev/null 2>&1 && return 0
+    if [[ -n "$sdk_root" ]]; then
+        args_line="$(_unren_sdk_py_args "$sdk_root")"
+        [[ -n "$args_line" ]] && py_args=($args_line)
     fi
-    env -u PYTHONHOME -u PYTHONPATH \
-        "$py_bin" -c "import encodings" >/dev/null 2>&1
+
+    if [[ -n "$phome" && -d "$phome" ]] && _unren_pythonhome_has_stdlib "$phome"; then
+        if ((${#py_args[@]} > 0)); then
+            env PYTHONHOME="$phome" PYTHONPATH="${phome}" \
+                "$py_bin" "${py_args[@]}" -c "import encodings" >/dev/null 2>&1 && return 0
+        else
+            env PYTHONHOME="$phome" PYTHONPATH="${phome}" \
+                "$py_bin" -c "import encodings" >/dev/null 2>&1 && return 0
+        fi
+    fi
+    if ((${#py_args[@]} > 0)); then
+        env -u PYTHONHOME -u PYTHONPATH \
+            "$py_bin" "${py_args[@]}" -c "import encodings" >/dev/null 2>&1
+    else
+        env -u PYTHONHOME -u PYTHONPATH \
+            "$py_bin" -c "import encodings" >/dev/null 2>&1
+    fi
 }
 
 _unren_sdk_runtime_usable() {
@@ -147,7 +171,7 @@ _unren_sdk_runtime_usable() {
     py_bin="$(_unren_sdk_python_runner "$lib_dir" "$sdk_root")"
     [[ -n "$py_bin" && -x "$py_bin" ]] || return 1
     phome="$(_unren_sdk_pythonhome "$sdk_root" "$lib_dir")"
-    _unren_sdk_python_smoke_test "$py_bin" "$phome"
+    _unren_sdk_python_smoke_test "$py_bin" "$phome" "$sdk_root"
 }
 
 _unren_sdk_slice_exists() {
@@ -283,7 +307,11 @@ _unren_sdk_pythonhome() {
             ;;
         renpy6)
             plat_pyhome="${lib_dir}/lib/python2.7"
-            if [[ -d "$plat_pyhome" ]]; then
+            if _unren_pythonhome_has_stdlib "$plat_pyhome"; then
+                printf '%s\n' "$plat_pyhome"
+            elif _unren_pythonhome_has_stdlib "${sdk_root}/lib/pythonlib2.7"; then
+                printf '%s\n' "${sdk_root}/lib/pythonlib2.7"
+            elif [[ -d "$plat_pyhome" ]]; then
                 printf '%s\n' "$plat_pyhome"
             elif [[ -d "${sdk_root}/lib/pythonlib2.7" ]]; then
                 printf '%s\n' "${sdk_root}/lib/pythonlib2.7"

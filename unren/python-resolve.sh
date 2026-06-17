@@ -241,6 +241,11 @@ _unren_renpy_platform() {
 _unren_guess_python_major() {
     local app="$1" platform="$2" sv renpy_major
 
+    if _unren_is_rpc3_game "$app"; then
+        printf '2\n'
+        return 0
+    fi
+
     renpy_major="$(_unren_script_version_major_from_app "$app")"
     if (( renpy_major >= 8 )); then
         printf '3\n'
