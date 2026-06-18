@@ -6,11 +6,23 @@ Formerly known as **UnRen-Linux.sh**; renamed to reflect cross-platform support.
 
 ## Quick start
 
-UnRen is a **folder tool**, not a single script. You need `UnRen.sh` plus `unren/`, `tools/`, `patches/`, and `sdk/`.
+### Option A — Download (recommended)
 
-**Important:** Ren'Py games already have a `lib/` folder (Python runtime). UnRen bash modules live in **`unren/`**, not `lib/`. Copying everything into a game root is fine — but do not expect UnRen modules to appear under the game's `lib/`.
+**Linux** — download `UnRen.sh` from [Releases](https://github.com/zujik/UnRen-Desktop/releases) and place it in the game folder (alongside `game/`, `lib/`, `renpy/`). Run `./UnRen.sh` or double-click if your file manager allows executing scripts. First run downloads `unren-desktop/` automatically.
 
-### Option A — Run from the repo (no copy into game)
+**macOS** — download `UnRen.command` from Releases into `~/UnRen-Desktop`. Run from Terminal:
+
+```bash
+cd ~/UnRen-Desktop
+xattr -cr .            # once — clears Gatekeeper quarantine on download
+./UnRen.command ~/Downloads/Hollow.app
+```
+
+First run downloads `UnRen.sh` and `unren-desktop/`. Uses system `/bin/bash` (3.2). Quarantine on `.app` bundles is cleared automatically; option **m** clears it manually.
+
+Press **g** in the menu to launch the game — including Windows-only builds, using an on-demand Ren'Py SDK slice.
+
+### Option B — Git clone (developers / offline)
 
 ```bash
 git clone https://github.com/zujik/UnRen-Desktop.git
@@ -19,11 +31,11 @@ git lfs pull
 ./UnRen.sh /path/to/GameFolder
 ```
 
-### Option B — Copy into the game (classic UnRen style)
+### Option C — Copy full tree into the game (classic UnRen style)
 
 Copy **all** UnRen-Desktop files and folders into the game. Two layouts work:
 
-**B1 — Flat into game root** (same layout as original UnRen.bat):
+**C1 — Flat into game root** (same layout as original UnRen.bat):
 
 ```
 GameFolder/
@@ -42,7 +54,7 @@ cd /path/to/GameFolder
 ./UnRen.sh
 ```
 
-**B2 — Subfolder** (keeps game root cleaner):
+**C2 — Subfolder** (keeps game root cleaner):
 
 ```
 GameFolder/
@@ -61,13 +73,13 @@ cd /path/to/GameFolder/UnRen
 ./UnRen.sh
 ```
 
-The script auto-detects the game when `game/` and `renpy/` are in the current folder, or in the parent folder (B2).
+The script auto-detects the game when `game/` and `renpy/` are in the current folder, or in the parent folder (C2, or bootstrap `unren-desktop/` layout).
 
-**Do not** copy only `UnRen.sh` — that will fail with missing `unren/` errors.
+**Important:** Ren'Py games already have a `lib/` folder (Python runtime). UnRen bash modules live in **`unren/`**, not `lib/`.
 
 ### macOS
 
-Double-click `UnRen.command`, or use Option A/B above.
+Use **`UnRen.command`** from Terminal (see Option A). `UnRen.sh` is the shared engine.
 
 ## What it does
 

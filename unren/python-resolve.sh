@@ -12,8 +12,20 @@ _unren_sdk_platform_dir() {
 
     if is_osx; then
         case "$machine" in
-            arm64|aarch64) echo "${sdk_root}/lib/py${py_major}-darwin-arm64" ;;
-            *) echo "${sdk_root}/lib/py${py_major}-darwin-x86_64" ;;
+            arm64|aarch64)
+                if [[ -d "${sdk_root}/lib/py${py_major}-mac-universal" ]]; then
+                    echo "${sdk_root}/lib/py${py_major}-mac-universal"
+                else
+                    echo "${sdk_root}/lib/py${py_major}-darwin-arm64"
+                fi
+                ;;
+            *)
+                if [[ -d "${sdk_root}/lib/py${py_major}-mac-universal" ]]; then
+                    echo "${sdk_root}/lib/py${py_major}-mac-universal"
+                else
+                    echo "${sdk_root}/lib/py${py_major}-darwin-x86_64"
+                fi
+                ;;
         esac
     else
         case "$machine" in
@@ -141,6 +153,64 @@ _unren_configure_sdk_python_env() {
     fi
 }
 
+_unren_find_app_bundle_python() {
+    local target="$1" root cand
+    for root in \
+        "${target}/Contents/MacOS" \
+        "${target}/Contents/Resources/autorun" \
+        "${target}/Contents/Resources"; do
+        [[ -d "$root" ]] || continue
+        while IFS= read -r cand; do
+            [[ -n "$cand" && -f "$cand" ]] || continue
+            chmod -f +x "$cand" 2>/dev/null || true
+            printf '%s\n' "$cand"
+            return 0
+        done < <(find "$root" \( -name python -o -name python.real \) -type f 2>/dev/null | head -1)
+    done
+    return 1
+}
+
+_unren_find_game_tree_python() {
+    local app="$1" py_major="${2:-}" lib_dir
+    local -a candidates=()
+
+    if [[ -n "$py_major" ]]; then
+        candidates+=(
+            "${app}/lib/py${py_major}-mac-universal/python"
+            "${app}/lib/py${py_major}-mac-universal/python.real"
+            "${app}/lib/py${py_major}-darwin-arm64/python"
+            "${app}/lib/py${py_major}-darwin-arm64/python.real"
+            "${app}/lib/py${py_major}-darwin-x86_64/python"
+            "${app}/lib/py${py_major}-linux-x86_64/python"
+            "${app}/lib/py${py_major}-linux-x86_64/python.real"
+        )
+    fi
+    candidates+=(
+        "${app}/lib/mac-universal/python"
+        "${app}/lib/darwin-arm64/python"
+        "${app}/lib/darwin-x86_64/python"
+        "${app}/lib/linux-x86_64/python"
+    )
+
+    for lib_dir in "${candidates[@]}"; do
+        [[ -x "$lib_dir" ]] || continue
+        printf '%s\n' "$lib_dir"
+        return 0
+    done
+
+    find "${app}/lib" -path "*$(_unren_machine)*" -type f -name python 2>/dev/null | head -1
+}
+
+_unren_python_imports_encodings() {
+    local py_bin="$1"
+    if [[ -n "${PYTHONHOME:-}" ]]; then
+        env PYTHONHOME="$PYTHONHOME" PYTHONPATH="${PYTHONPATH:-}" \
+            "$py_bin" -c "import encodings" >/dev/null 2>&1
+    else
+        env -u PYTHONHOME -u PYTHONPATH "$py_bin" -c "import encodings" >/dev/null 2>&1
+    fi
+}
+
 _unren_renpy_platform() {
     if [[ -n "${RENPY_PLATFORM:-}" ]]; then
         printf '%s\n' "$RENPY_PLATFORM"
@@ -170,6 +240,11 @@ _unren_renpy_platform() {
 
 _unren_guess_python_major() {
     local app="$1" platform="$2" sv renpy_major
+
+    if _unren_is_rpc3_game "$app"; then
+        printf '2\n'
+        return 0
+    fi
 
     renpy_major="$(_unren_script_version_major_from_app "$app")"
     if (( renpy_major >= 8 )); then
@@ -224,40 +299,50 @@ resolve_game_and_python() {
     UNREN_SDK_LIB=""
     PYARGS=()
 
-    # macOS .app bundle
-    if [[ -e "${UNREN_TARGET}/Contents/Resources/autorun/renpy" &&
-          -e "${UNREN_TARGET}/Contents/Resources/autorun/game" ]]; then
-        UNREN_APP="${UNREN_TARGET}/Contents/Resources/autorun"
-        UNREN_GAME="${UNREN_APP}/game"
-        UNREN_PYTHON="$(find "${UNREN_TARGET}/Contents/MacOS" -type f -name python 2>/dev/null | head -1)"
-    elif [[ -e "${UNREN_TARGET}/renpy" && -e "${UNREN_TARGET}/game" ]]; then
-        UNREN_APP="${UNREN_TARGET}"
-        UNREN_GAME="${UNREN_TARGET}/game"
-        UNREN_PYTHON="$(find "${UNREN_TARGET}/lib" -path "*$(_unren_machine)*" -type f -name python 2>/dev/null | head -1)"
-        if [[ -z "$UNREN_PYTHON" ]]; then
-            UNREN_PYTHON="$(find "${UNREN_TARGET}/lib" -type f -name python 2>/dev/null | head -1)"
-        fi
-    else
+    local py_major platform autorun
+
+    platform="$(_unren_renpy_platform)"
+    if ! autorun="$(_unren_renpy_autorun_root "${UNREN_TARGET}" 2>/dev/null)"; then
         unren_die "Unable to determine Ren'Py game layout in: ${UNREN_TARGET}"
+    fi
+    UNREN_APP="$autorun"
+    UNREN_GAME="${UNREN_APP}/game"
+    py_major="$(_unren_guess_python_major "$UNREN_APP" "$platform")"
+
+    if [[ "${UNREN_TARGET}" == *.app || -e "${UNREN_TARGET}/Contents/MacOS" ]]; then
+        UNREN_PYTHON="$(_unren_find_app_bundle_python "${UNREN_TARGET}" || true)"
+        [[ -z "$UNREN_PYTHON" ]] && \
+            UNREN_PYTHON="$(_unren_find_game_tree_python "$UNREN_APP" "$py_major" || true)"
+    else
+        UNREN_PYTHON="$(_unren_find_game_tree_python "$UNREN_APP" "$py_major" || true)"
     fi
 
     if [[ -n "$UNREN_PYTHON" ]]; then
         chmod -f +x "$UNREN_PYTHON" 2>/dev/null || true
+        if is_osx; then
+            xattr -rd com.apple.quarantine "$UNREN_PYTHON" 2>/dev/null || true
+            xattr -rd com.apple.quarantine "${UNREN_TARGET}" 2>/dev/null || true
+        fi
     fi
 
     if [[ -n "$UNREN_PYTHON" && -x "$UNREN_PYTHON" ]]; then
-        if env -u PYTHONHOME -u PYTHONPATH "$UNREN_PYTHON" -c "import encodings" >/dev/null 2>&1; then
+        if _unren_python_imports_encodings "$UNREN_PYTHON"; then
             _unren_configure_python_env "$UNREN_PYTHON" "${UNREN_APP}" || true
+            return 0
+        fi
+        _unren_configure_python_env "$UNREN_PYTHON" "${UNREN_APP}" || true
+        if _unren_python_imports_encodings "$UNREN_PYTHON"; then
             return 0
         fi
         UNREN_PYTHON=""
     fi
 
     # Fallback: bundled SDK runtimes shipped with UnRen-Desktop
-    local py_major sdk_root sdk_py platform sdk_lib
+    local sdk_root sdk_py sdk_lib
 
-    platform="$(_unren_renpy_platform)"
-    py_major="$(_unren_guess_python_major "$UNREN_APP" "$platform")"
+    if is_osx; then
+        xattr -rd com.apple.quarantine "${UNREN_ROOT}/sdk" 2>/dev/null || true
+    fi
 
     if _unren_resolve_sdk_runtime "$UNREN_APP" "$py_major" "$platform" sdk_root sdk_lib; then
         sdk_py="$(_unren_sdk_python_runner "$sdk_lib" "$sdk_root")"
@@ -274,7 +359,22 @@ resolve_game_and_python() {
         return 0
     fi
 
-    unren_die "No game Python found and no usable bundled SDK runtime in sdk/. See sdk/README.md"
+    if _unren_try_auto_fetch_sdk_slices "$UNREN_APP" "$py_major" "$platform" &&
+        _unren_resolve_sdk_runtime "$UNREN_APP" "$py_major" "$platform" sdk_root sdk_lib; then
+        sdk_py="$(_unren_sdk_python_runner "$sdk_lib" "$sdk_root")"
+        [[ -z "$sdk_py" || ! -x "$sdk_py" ]] && sdk_py="${sdk_lib}/python"
+        if [[ ! -x "$sdk_py" ]]; then
+            unren_die "Bundled SDK Python missing under ${sdk_lib}"
+        fi
+        UNREN_SDK_ROOT="${sdk_root}"
+        UNREN_SDK_LIB="${sdk_lib}"
+        UNREN_PYTHON="${sdk_py}"
+        _unren_configure_sdk_python_env "$UNREN_PYTHON" "${sdk_root}" "${sdk_lib}"
+        return 0
+    fi
+
+    unren_die "No game Python found and no usable bundled SDK runtime in sdk/. See sdk/README.md
+  (py${py_major}, platform ${platform}; refresh with: rm -rf \"${UNREN_ROOT}/../unren-desktop\" and re-run)"
 }
 
 # rpatool is Python 3 — never run it with the game's embedded py2 SDK interpreter.

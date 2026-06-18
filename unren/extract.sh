@@ -12,7 +12,7 @@ _unren_run_altrpatool() {
     echo "  Using altrpatool for $(basename "$archive") ..."
     pushd "${UNREN_APP}" >/dev/null || return 1
     set +e
-    "${py}" "${PYARGS[@]}" "${ALTRPATOOL}" \
+    _unren_py_invoke "$py" "${ALTRPATOOL}" \
         -x "$(realpath --relative-to="${UNREN_APP}" "$rel_arch")" \
         -o "$(realpath --relative-to="${UNREN_APP}" "$rel_out")" -r 2>&1 \
         | awk '!/^Co.*exec_prefix/ && !/Could not extract file  from archive:/{ if (length) print "  > "$0 }'

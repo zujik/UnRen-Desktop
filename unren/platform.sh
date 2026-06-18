@@ -40,3 +40,94 @@ unren_die() {
     printf -- '%s\n\n' "$*" >&2
     exit 1
 }
+
+_unren_machine() {
+    uname -m
+}
+
+# Map a game path or .app bundle to the Ren'Py autorun root (game/ + renpy/ live here).
+_unren_renpy_autorun_root() {
+    local target="$1"
+    [[ -n "$target" && -e "$target" ]] || return 1
+    if [[ -e "${target}/Contents/Resources/autorun/game" ]]; then
+        printf '%s\n' "${target}/Contents/Resources/autorun"
+        return 0
+    fi
+    if [[ -e "${target}/Contents/Resources/game" &&
+          ( -e "${target}/Contents/Resources/renpy" || -e "${target}/Contents/Resources/renpy.py" ) ]]; then
+        printf '%s\n' "${target}/Contents/Resources"
+        return 0
+    fi
+    if [[ -e "${target}/renpy" && -e "${target}/game" ]]; then
+        printf '%s\n' "$target"
+        return 0
+    fi
+    return 1
+}
+
+# Bash 3.2 compatibility (macOS /bin/bash).
+_unren_tolower() {
+    printf '%s' "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+_unren_toupper() {
+    printf '%s' "$1" | tr '[:lower:]' '[:upper:]'
+}
+
+_unren_list_contains() {
+    local needle="$1" x
+    shift
+    for x in "$@"; do
+        [[ "$x" == "$needle" ]] && return 0
+    done
+    return 1
+}
+
+_unren_read_lines_to_array() {
+    local _var="$1" line
+    shift
+    eval "$_var=()"
+    while IFS= read -r line; do
+        [[ -n "$line" ]] || continue
+        eval "$_var+=(\"\$line\")"
+    done < <("$@")
+}
+
+_unren_canonical_path() {
+    local f="$1" dir base
+    if command -v realpath >/dev/null 2>&1; then
+        realpath -s "$f" 2>/dev/null && return 0
+    fi
+    dir="$(cd -P "$(dirname "$f")" && pwd)"
+    base="$(basename "$f")"
+    printf '%s/%s\n' "$dir" "$base"
+}
+
+# Bash 3.2 + set -u: expanding "${arr[@]}" on an empty array is an error.
+_unren_array_copy_ref() {
+    local _dest_var="$1" _src_var="$2" len
+    eval "len=\${#${_src_var}[@]}"
+    if ((len > 0)); then
+        eval "$_dest_var=(\"\${${_src_var}[@]}\")"
+    else
+        eval "$_dest_var=()"
+    fi
+}
+
+_unren_array_assign() {
+    local _var="$1"; shift
+    if (($# > 0)); then
+        eval "$_var=(\"\$@\")"
+    else
+        eval "$_var=()"
+    fi
+}
+
+_unren_py_invoke() {
+    local py="$1"; shift
+    if ((${#PYARGS[@]} > 0)); then
+        "$py" "${PYARGS[@]}" "$@"
+    else
+        "$py" "$@"
+    fi
+}

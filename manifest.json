@@ -23,6 +23,67 @@
     ],
     "mirror_repository": "https://github.com/zujik/UnRen-Dependencies"
   },
+  "releases": {
+    "repository": "https://github.com/zujik/UnRen-Desktop",
+    "tag": "v2.0.0-alpha.1",
+    "default_bundle": "slim",
+    "starter": {
+      "linux": {
+        "filename": "unren-desktop-starter-2.0.0-alpha.1.tar.xz",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-starter-2.0.0-alpha.1.tar.xz",
+        "sha256": "c08d841aeaf6b76da6382e9b80c7d43291c5e71c18336e1629663e919b2ab439",
+        "contains": ["UnRen.sh"]
+      },
+      "mac": {
+        "filename": "unren-desktop-starter-mac-2.0.0-alpha.1.tar.xz",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-starter-mac-2.0.0-alpha.1.tar.xz",
+        "sha256": "1f2bd20257c232e6a04cea2ae53ac79885131bfb68b89942a295f8fe44165523",
+        "contains": ["UnRen.command"],
+        "fetches": "UnRen.sh"
+      },
+      "unren_sh": {
+        "filename": "UnRen.sh",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/UnRen.sh",
+        "sha256": "834657c4f6c2b1852f8590c03429ab612995204e66cf9b5ddd113510ad05e6b1"
+      }
+    },
+    "bundles": {
+      "slim": {
+        "filename": "unren-desktop-slim-2.0.0-alpha.1.tar.xz",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-slim-2.0.0-alpha.1.tar.xz",
+        "sha256": "db532970ca6632ffb75e1a0a802d464967e7c7e732551aa24c45724fefe4d4e3",
+        "payload_only": true
+      },
+      "full": {
+        "filename": "unren-desktop-full-2.0.0-alpha.1.tar.xz",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-desktop-full-2.0.0-alpha.1.tar.xz",
+        "sha256": "4a678ea01ae787062dd83868a83f979f038584e30395241596c81ba42d86b010",
+        "includes_sdk": true
+      }
+    },
+    "sdk_slices": {
+      "py3-8.5.3": {
+        "filename": "unren-sdk-py3-8.5.3.tar.bz2",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-sdk-py3-8.5.3.tar.bz2",
+        "sha256": "ada1547f01a161a893e617b069d2a86044cdc7626631664f5e93efbd35bbb2fb"
+      },
+      "py2-7.8.7": {
+        "filename": "unren-sdk-py2-7.8.7.tar.bz2",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-sdk-py2-7.8.7.tar.bz2",
+        "sha256": "936d087d6efd5fd6b1fb8f4cedc80e41715019124544689ac9bc1bec0c4171ba"
+      },
+      "py2-6.99.14.3": {
+        "filename": "unren-sdk-py2-6.99.14.3.tar.bz2",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-sdk-py2-6.99.14.3.tar.bz2",
+        "sha256": "9520abb7013fe4ff7fec1262a685d2a4c925a75031ae7d6874b924b887e56929"
+      },
+      "py2-5.6.7": {
+        "filename": "unren-sdk-py2-5.6.7.tar.bz2",
+        "url": "https://github.com/zujik/UnRen-Desktop/releases/download/v2.0.0-alpha.1/unren-sdk-py2-5.6.7.tar.bz2",
+        "sha256": "a12e79c8224634bac41b4fa509ddaeba468d3f3299d4da13f4b0401df4ae241d"
+      }
+    }
+  },
   "dependencies": {
     "unrpyc": {
       "version": "2.0.4",

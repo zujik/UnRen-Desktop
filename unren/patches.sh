@@ -1,5 +1,20 @@
 # Install Ren'Py patch scripts into the game folder
 
+# BSD grep (macOS) has no --include; scan .rpy/.rpym only and stop at first hit.
+_unren_game_script_grep() {
+    local pattern="$1" use_ere="${2:-0}"
+    local f
+
+    while IFS= read -r -d '' f; do
+        if [[ "$use_ere" == 1 ]]; then
+            grep -qE "$pattern" "$f" 2>/dev/null && return 0
+        else
+            grep -Fq "$pattern" "$f" 2>/dev/null && return 0
+        fi
+    done < <(find "${UNREN_GAME}" \( -name '*.rpy' -o -name '*.rpym' \) -type f -print0 2>/dev/null)
+    return 1
+}
+
 _patch_install() {
     local name="$1"
     local dest="${UNREN_GAME}/${name}"
@@ -48,8 +63,8 @@ unren_sync_remove() {
 unren_console() {
     echo " Creating Developer/Console file..."
     _patch_install "unren-dev.rpy"
-    if ! grep -rqE '^[[:space:]]*label[[:space:]]+Dev_Room([[:space:]:]|$)' "${UNREN_GAME}" 2>/dev/null &&
-        grep -rq 'Dev_Room' "${UNREN_GAME}" 2>/dev/null; then
+    if ! _unren_game_script_grep '^[[:space:]]*label[[:space:]]+Dev_Room([[:space:]:]|$)' 1 &&
+        _unren_game_script_grep 'Dev_Room' 0; then
         _patch_install "unren-dev-compat.rpy"
         echo "  + Dev_Room stub (release build omits dev label)"
     fi

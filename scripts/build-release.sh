@@ -4,7 +4,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-VERSION="$(grep UNREN_VERSION "${ROOT}/unren/config.sh" | cut -d'"' -f2)"
+VERSION="$(grep '^UNREN_VERSION=' "${ROOT}/unren/config.sh" | head -1 | cut -d'"' -f2)"
 OUT="${ROOT}/dist"
 ARCHIVE="${OUT}/UnRen-Desktop-${VERSION}.zip"
 

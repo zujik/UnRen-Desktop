@@ -31,7 +31,11 @@ _unren_is_rpc3_game() {
 }
 
 _unren_script_version_major_from_app() {
-    local app="$1" sv detected f
+    local app="$1" sv detected f autorun
+
+    if autorun="$(_unren_renpy_autorun_root "$app" 2>/dev/null)"; then
+        app="$autorun"
+    fi
 
     if sv="$(_unren_read_script_version_txt \
         "${app}/game/script_version.txt" \
@@ -54,24 +58,30 @@ _unren_script_version_major_from_app() {
         fi
     done
 
-    if [[ -f "${app}/renpy/vc_version.py" ]]; then
-        sv="$(grep -m1 '^version' "${app}/renpy/vc_version.py" 2>/dev/null \
-            | sed -n "s/.*['\"]\\([0-9][0-9]*\\)\\..*/\\1/p")"
-        [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
-        sv="$(perl -nle 'if (/\b(?:vc_)?version\s*=\s*[\x22\x27]?([0-9]+)/) { print $1; exit }' \
-            "${app}/renpy/vc_version.py" 2>/dev/null)"
-        [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
-    fi
-
     if [[ -f "${app}/renpy/__init__.py" ]]; then
         sv="$(grep -m1 'version_tuple' "${app}/renpy/__init__.py" 2>/dev/null \
             | sed -n 's/.*([[:space:]]*\([0-9][0-9]*\).*/\1/p')"
-        [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
+        if [[ -n "$sv" && "$sv" -le 10 ]]; then
+            printf '%s\n' "$sv"
+            return 0
+        fi
         sv="$(perl -ne '
             if (/version_tuple\s*=\s*\(\s*(\d+)/) { push @v, $1 }
             END { if (@v) { @v = sort { $b <=> $a } @v; print $v[0] } }
         ' "${app}/renpy/__init__.py" 2>/dev/null)"
-        [[ -n "$sv" ]] && printf '%s\n' "$sv" && return 0
+        if [[ -n "$sv" && "$sv" -le 10 ]]; then
+            printf '%s\n' "$sv"
+            return 0
+        fi
+    fi
+
+    if [[ -f "${app}/renpy/vc_version.py" ]]; then
+        sv="$(grep -m1 '^version' "${app}/renpy/vc_version.py" 2>/dev/null \
+            | sed -n "s/.*['\"]\\([0-9][0-9]*\\)\\..*/\\1/p")"
+        if [[ -n "$sv" && "$sv" -le 10 ]]; then
+            printf '%s\n' "$sv"
+            return 0
+        fi
     fi
 
     if [[ -f "${DETECT_RENPY_VERSION:-}" ]]; then
@@ -107,29 +117,61 @@ _unren_sdk_slice_py_major() {
     esac
 }
 
+_unren_sdk_slice_matches_py_major() {
+    local slice="$1" py_major="$2"
+    local slice_py
+
+    [[ -n "$py_major" ]] || return 0
+    slice_py="$(_unren_sdk_slice_py_major "$slice")"
+    [[ "$slice_py" == "$py_major" ]]
+}
+
 _unren_pythonhome_has_stdlib() {
     local pyhome="$1"
     [[ -n "$pyhome" && -d "$pyhome" ]] && {
-        [[ -f "${pyhome}/site.py" || -f "${pyhome}/site.pyc" || -d "${pyhome}/encodings" ]]
+        [[ -f "${pyhome}/site.py" || -f "${pyhome}/site.pyc" || -f "${pyhome}/site.pyo" ||
+           -d "${pyhome}/encodings" ]]
     }
+}
+
+_unren_sdk_python_smoke_test() {
+    local py_bin="$1" phome="${2:-}" sdk_root="${3:-}"
+    local -a py_args=()
+    local args_line
+
+    [[ -n "$py_bin" && -x "$py_bin" ]] || return 1
+    if [[ -n "$sdk_root" ]]; then
+        args_line="$(_unren_sdk_py_args "$sdk_root")"
+        [[ -n "$args_line" ]] && py_args=($args_line)
+    fi
+
+    if [[ -n "$phome" && -d "$phome" ]] && _unren_pythonhome_has_stdlib "$phome"; then
+        if ((${#py_args[@]} > 0)); then
+            env PYTHONHOME="$phome" PYTHONPATH="${phome}" \
+                "$py_bin" "${py_args[@]}" -c "import encodings" >/dev/null 2>&1 && return 0
+        else
+            env PYTHONHOME="$phome" PYTHONPATH="${phome}" \
+                "$py_bin" -c "import encodings" >/dev/null 2>&1 && return 0
+        fi
+    fi
+    if ((${#py_args[@]} > 0)); then
+        env -u PYTHONHOME -u PYTHONPATH \
+            "$py_bin" "${py_args[@]}" -c "import encodings" >/dev/null 2>&1
+    else
+        env -u PYTHONHOME -u PYTHONPATH \
+            "$py_bin" -c "import encodings" >/dev/null 2>&1
+    fi
 }
 
 _unren_sdk_runtime_usable() {
     local slice="$1" sdk_root="$2" lib_dir="$3"
-    local phome
+    local phome py_bin
 
     _unren_sdk_lib_usable "$lib_dir" || return 1
+    py_bin="$(_unren_sdk_python_runner "$lib_dir" "$sdk_root")"
+    [[ -n "$py_bin" && -x "$py_bin" ]] || return 1
     phome="$(_unren_sdk_pythonhome "$sdk_root" "$lib_dir")"
-    if _unren_pythonhome_has_stdlib "$phome"; then
-        return 0
-    fi
-    # Ren'Py 7/8 SDK: embedded python carries stdlib; do not require PYTHONHOME.
-    case "$slice" in
-        py3-*|py2-*)
-            [[ -x "${lib_dir}/python" || -x "${lib_dir}/python.real" || -x "${lib_dir}/renpy" ]]
-            ;;
-        *) return 1 ;;
-    esac
+    _unren_sdk_python_smoke_test "$py_bin" "$phome" "$sdk_root"
 }
 
 _unren_sdk_slice_exists() {
@@ -143,7 +185,8 @@ _unren_sdk_slice_exists() {
 
 _unren_sdk_layout() {
     local sdk_root=$1
-    if [[ -d "${sdk_root}/lib/py3-linux-x86_64" || -d "${sdk_root}/lib/py2-linux-x86_64" ]]; then
+    if [[ -d "${sdk_root}/lib/py3-linux-x86_64" || -d "${sdk_root}/lib/py2-linux-x86_64" ||
+          -d "${sdk_root}/lib/py3-mac-universal" || -d "${sdk_root}/lib/py2-mac-universal" ]]; then
         printf 'modern\n'
     elif [[ -d "${sdk_root}/lib/linux-x86_64" || -d "${sdk_root}/lib/linux-i686" ]]; then
         printf 'renpy6\n'
@@ -158,7 +201,18 @@ _unren_sdk_platform_name() {
     local platform="$1"
     case "$platform" in
         mac-universal|*-darwin*|Darwin-*)
-            if [[ -d "${2}/lib/py3-darwin-arm64" || -d "${2}/lib/py2-darwin-arm64" ]]; then
+            if [[ -d "${2}/lib/py3-mac-universal" || -d "${2}/lib/py2-mac-universal" ]]; then
+                printf 'mac-universal\n'
+            elif [[ -d "${2}/lib/py3-darwin-arm64" || -d "${2}/lib/py2-darwin-arm64" ]]; then
+                printf 'darwin-arm64\n'
+            elif [[ -d "${2}/lib/py3-darwin-x86_64" || -d "${2}/lib/py2-darwin-x86_64" ||
+                    -d "${2}/lib/darwin-arm64" || -d "${2}/lib/darwin-x86_64" ]]; then
+                if [[ -d "${2}/lib/darwin-arm64" || -d "${2}/lib/py3-darwin-arm64" ]]; then
+                    printf 'darwin-arm64\n'
+                else
+                    printf 'darwin-x86_64\n'
+                fi
+            elif [[ "$(uname -s)" == Darwin ]] && [[ "$(_unren_machine)" == arm64* ]]; then
                 printf 'darwin-arm64\n'
             else
                 printf 'darwin-x86_64\n'
@@ -182,34 +236,60 @@ _unren_sdk_platform_name() {
     esac
 }
 
-_unren_sdk_lib_dir() {
-    local sdk_root=$1 py_major=$2 platform=$3
-    local layout plat_dir
-
-    layout="$(_unren_sdk_layout "$sdk_root")"
-    plat_dir="$(_unren_sdk_platform_name "$platform" "$sdk_root")"
-
-    case "$layout" in
-        modern)
-            printf '%s\n' "${sdk_root}/lib/py${py_major}-${plat_dir}"
+_unren_sdk_platform_candidates() {
+    local platform="$1"
+    case "$platform" in
+        mac-universal|*-darwin*|Darwin-*)
+            printf '%s\n' mac-universal darwin-arm64 darwin-x86_64
             ;;
-        renpy6)
-            printf '%s\n' "${sdk_root}/lib/${plat_dir}"
+        linux-i686|*-i686|*-i386)
+            printf '%s\n' linux-i686 linux-x86_64
             ;;
-        renpy5)
-            printf '%s\n' "${sdk_root}/lib/linux-x86"
+        linux-x86_64|*-x86_64|amd64|Linux-*)
+            printf '%s\n' linux-x86_64 linux-i686
             ;;
         *)
-            return 1
+            printf '%s\n' "$platform"
             ;;
     esac
 }
 
+_unren_sdk_lib_dir() {
+    local sdk_root=$1 py_major=$2 platform=$3
+    local layout plat_dir lib_dir
+
+    layout="$(_unren_sdk_layout "$sdk_root")"
+    while IFS= read -r plat_dir; do
+        [[ -n "$plat_dir" ]] || continue
+        case "$layout" in
+            modern)
+                lib_dir="${sdk_root}/lib/py${py_major}-${plat_dir}"
+                ;;
+            renpy6)
+                lib_dir="${sdk_root}/lib/${plat_dir}"
+                ;;
+            renpy5)
+                lib_dir="${sdk_root}/lib/linux-x86"
+                ;;
+            *)
+                return 1
+                ;;
+        esac
+        [[ -d "$lib_dir" ]] || continue
+        printf '%s\n' "$lib_dir"
+        return 0
+    done < <(_unren_sdk_platform_candidates "$platform")
+    return 1
+}
+
 _unren_sdk_lib_usable() {
     local lib_dir=$1
-    [[ -d "$lib_dir" ]] && {
-        [[ -x "${lib_dir}/python" || -x "${lib_dir}/python.real" || -x "${lib_dir}/renpy" ]]
-    }
+    [[ -d "$lib_dir" ]] || return 1
+    chmod -f +x "${lib_dir}/python" "${lib_dir}/python.real" "${lib_dir}/renpy" 2>/dev/null || true
+    if [[ "$(uname -s)" == Darwin ]]; then
+        xattr -rd com.apple.quarantine "$lib_dir" 2>/dev/null || true
+    fi
+    [[ -x "${lib_dir}/python" || -x "${lib_dir}/python.real" || -x "${lib_dir}/renpy" ]]
 }
 
 _unren_sdk_pythonhome() {
@@ -227,7 +307,11 @@ _unren_sdk_pythonhome() {
             ;;
         renpy6)
             plat_pyhome="${lib_dir}/lib/python2.7"
-            if [[ -d "$plat_pyhome" ]]; then
+            if _unren_pythonhome_has_stdlib "$plat_pyhome"; then
+                printf '%s\n' "$plat_pyhome"
+            elif _unren_pythonhome_has_stdlib "${sdk_root}/lib/pythonlib2.7"; then
+                printf '%s\n' "${sdk_root}/lib/pythonlib2.7"
+            elif [[ -d "$plat_pyhome" ]]; then
                 printf '%s\n' "$plat_pyhome"
             elif [[ -d "${sdk_root}/lib/pythonlib2.7" ]]; then
                 printf '%s\n' "${sdk_root}/lib/pythonlib2.7"
@@ -280,58 +364,54 @@ _unren_sdk_fallback_chain() {
 
     if _unren_is_rpc3_game "$app"; then
         wanted=(py2-6.99.14.3 py2-7.8.7 py2-5.6.7)
-        for slice in "${wanted[@]}"; do
-            _unren_sdk_slice_exists "$slice" "$app" && printf '%s\n' "$slice"
-        done
-        return 0
+    else
+        major="$(_unren_script_version_major_from_app "$app")"
+        case "$major" in
+            8|9|10)
+                wanted=(py3-8.5.3)
+                ;;
+            7)
+                wanted=(py2-7.8.7 py2-6.99.14.3)
+                ;;
+            6)
+                wanted=(py2-6.99.14.3 py2-7.8.7)
+                ;;
+            5)
+                wanted=(py2-5.6.7 py2-6.99.14.3 py2-7.8.7)
+                ;;
+            4|3|2|1)
+                wanted=(py2-5.6.7 py2-6.99.14.3)
+                ;;
+            *)
+                wanted=(py3-8.5.3 py2-7.8.7 py2-6.99.14.3 py2-5.6.7)
+                ;;
+        esac
     fi
 
-    major="$(_unren_script_version_major_from_app "$app")"
-    case "$major" in
-        8|9|10)
-            wanted=(py3-8.5.3 py2-7.8.7)
-            ;;
-        7)
-            wanted=(py2-7.8.7 py2-6.99.14.3)
-            ;;
-        6)
-            wanted=(py2-6.99.14.3 py2-7.8.7)
-            ;;
-        5)
-            wanted=(py2-5.6.7 py2-6.99.14.3 py2-7.8.7)
-            ;;
-        4|3|2|1)
-            wanted=(py2-5.6.7 py2-6.99.14.3)
-            ;;
-        *)
-            wanted=(py3-8.5.3 py2-7.8.7 py2-6.99.14.3 py2-5.6.7)
-            ;;
-    esac
-
     for slice in "${wanted[@]}"; do
-        _unren_sdk_slice_exists "$slice" "$app" && printf '%s\n' "$slice"
+        printf '%s\n' "$slice"
     done
 }
 
 _unren_resolve_sdk_runtime() {
     local app="$1" py_major=$2 platform=$3
-    local -n _root_out=$4
-    local -n _lib_out=$5
+    local _root_var="$4" _lib_var="$5"
     local slice resolved_root resolved_lib
 
-    _root_out=""
-    _lib_out=""
+    eval "$_root_var=\"\""
+    eval "$_lib_var=\"\""
 
     while IFS= read -r slice; do
         [[ -n "$slice" ]] || continue
         local slice_py phome
+        _unren_sdk_slice_matches_py_major "$slice" "$py_major" || continue
         resolved_root="$(_unren_sdk_slice_dir "$slice" "$app")"
         slice_py="$(_unren_sdk_slice_py_major "$slice")"
         resolved_lib="$(_unren_sdk_lib_dir "$resolved_root" "$slice_py" "$platform")" || continue
         _unren_sdk_lib_usable "$resolved_lib" || continue
         _unren_sdk_runtime_usable "$slice" "$resolved_root" "$resolved_lib" || continue
-        _root_out="$resolved_root"
-        _lib_out="$resolved_lib"
+        eval "$_root_var=\"\$resolved_root\""
+        eval "$_lib_var=\"\$resolved_lib\""
         return 0
     done < <(_unren_sdk_fallback_chain "$app")
 
